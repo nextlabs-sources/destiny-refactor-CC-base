@@ -1,0 +1,39 @@
+<xs:schema targetNamespace="http://bluejungle.com/destiny/types/inquiry_alert/v1" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:tns="http://bluejungle.com/destiny/types/inquiry_alert/v1"
+			xmlns:basicTypes="http://bluejungle.com/destiny/types/basic/v1"
+			xmlns:messagingTypes="http://bluejungle.com/destiny/types/messaging/v1"
+			xmlns:inquiryTypes="http://bluejungle.com/destiny/types/inquiry/v1">
+
+	<xs:import namespace="http://bluejungle.com/destiny/types/basic/v1" schemaLocation="BasicTypes.v1.xsd"/>
+	<xs:import namespace="http://bluejungle.com/destiny/types/messaging/v1" schemaLocation="MessagingTypes.v1.xsd"/>
+	
+	<xs:complexType name="InquiryAlertData">
+		<xs:sequence>
+			<xs:element name="title" type="xs:string"/>
+<!--			<xs:element name="inqueryData" type="inquiryTypes:InquiryData"/> -->
+			<xs:element name="threshold" type="basicTypes:Threshold"/>
+<!--			<xs:element name="summary" type="inquiryTypes:summaryType" minOccurs="0" maxOccurs="1"/> -->
+			<xs:element name="messageTemplate" type="xs:string"/>
+			<xs:element name="messageHandleConfig" type="messagingTypes:MessegeHandlerConfig"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="InquiryAlertDTO">
+		<xs:sequence>
+			<xs:element name="id" type="basicTypes:Id"/>
+			<xs:element name="title" type="xs:string"/>
+<!--			<xs:element name="inquery" type="inquiryTypes:InquiryDTO"/> -->
+			<xs:element name="threshold" type="basicTypes:Threshold"/>
+<!--			<xs:element name="summary" type="inquiryTypes:summaryType" minOccurs="0" maxOccurs="1"/> -->
+			<xs:element name="messageTemplate" type="xs:string"/>
+			<xs:element name="messageHandleConfig" type="messagingTypes:MessegeHandlerConfig"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="InquiryAlertDTOList">
+		<xs:sequence>
+				<xs:element name="inquiryAlert" type="tns:InquiryAlertDTO" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

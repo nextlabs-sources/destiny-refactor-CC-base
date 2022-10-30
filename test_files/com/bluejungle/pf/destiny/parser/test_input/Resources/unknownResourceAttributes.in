@@ -1,0 +1,1 @@
+resource r01 = resource.unknown1.attribute1 OR resource.unknown2."attribute2"

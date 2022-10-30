@@ -1,0 +1,86 @@
+<?xml version="1.0" ?>
+<!DOCTYPE project [
+    <!ENTITY classpaths SYSTEM "build-scripts/etc/classpath.skel">
+    <!ENTITY taskdefs SYSTEM "build-scripts/etc/build-tasks.skel">
+]>
+
+<project name="ddif-tools" default="build">
+    <!-- Environment-->
+    <property name="src.dir"      value="${basedir}"/>
+    <property name="build.dest"   value="${build.root.dir}/server/directory/classes"/>
+    <property name="build.dest.test" value="${build.root.dir}/server/directory/testclasses"/>
+    <property name="doc.dest"     value="${build.root.dir}/server/directory/doc"/>
+    <property name="tools.src.dir"  value="com/bluejungle/ldap/tools"/>
+
+    <path id="compile.ddif.tools.classpath">
+        <path refid="compile.classpath"/>
+        <pathelement path="${build.dest}"/>
+        <pathelement path="${xlib_jar_dir}/ldap.jar"/>
+        <pathelement path="${build.root.dir}/crypt.jar"/>
+        <pathelement path="${build.root.dir}/common-framework.jar"/>
+    </path>
+    
+    <!-- Build -->
+    <target name="pre-build">
+        <mkdir dir="${build.dest}"/>
+        <mkdir dir="${build.dest.test}"/>
+        <mkdir dir="${build.root.dir}/include"/>
+    </target>
+    
+    <target name="compile" depends="pre-build">
+        <javac
+            srcdir="${src.dir}/src/java/main"
+            destdir="${build.dest}"
+            debug="${compile.debug}"
+            verbose="${compile.verbose}">
+            <classpath refid="compile.ddif.tools.classpath"/>
+        </javac>
+    </target>
+    
+    <target name="jar" depends="compile">
+        <!-- Tools JAR -->
+        <jar destfile="${build.root.dir}/ddif-tools.jar" basedir="${build.dest}" includes="${tools.src.dir}/**"/>
+    </target>
+
+    <target name="build">
+        <ant target="compile" inheritRefs="true"/>
+        <ant target="jar" inheritRefs="true"/>
+    </target>
+
+    <target name="tests" depends="build">
+        <junit fork="true" printsummary="withOutAndErr" showoutput="yes" haltonfailure="${junit.haltonfailure}" failureproperty="junit.fail">
+            <formatter type="xml"/>
+            <jvmarg value="-Djava.library.path=${tools.lib.dir}"/>
+            <classpath>
+                <pathelement path="${build.dest}"/>
+                <pathelement path="${build.dest.test}"/>
+                <path refid="compile.ddif.tools.classpath"/>
+            </classpath>
+        </junit>
+    </target>
+
+    <!-- Creates the deployment structure of the import utility -->
+    <property name="setup.root.dir" value="${build.root.dir}"/>
+    
+    <property name="directory.root.dir" value="${setup.root.dir}/Directory"/>
+    <property name="tools.root.dir" value="${directory.root.dir}/Tools"/>
+    <property name="tools.sources.dir" value="${tools.root.dir}/sources"/>
+    <property name="tools.config.dir" value="${tools.root.dir}/config"/>
+    <property name="tools.temp.dir" value="${tools.root.dir}/temp"/>
+    <property name="tools.lib.dir" value="${tools.root.dir}/lib"/>
+    <property name="tools.log.dir" value="${tools.root.dir}/log"/>
+    <property name="openldap.root.dir" value="${directory.root.dir}/OpenLDAP"/>
+
+    <target name="create_directory_structure">
+        <mkdir dir="${directory.root.dir}"/>
+        
+        <!-- Tools directory layout -->
+        <mkdir dir="${tools.root.dir}"/>
+        <mkdir dir="${tools.sources.dir}"/>
+        <mkdir dir="${tools.config.dir}"/>
+        <mkdir dir="${tools.lib.dir}"/>
+        <mkdir dir="${tools.log.dir}"/>
+
+    </target>
+
+</project>

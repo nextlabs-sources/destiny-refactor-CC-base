@@ -1,0 +1,5 @@
+POLICY UnknownOwner
+    FOR resource.owner = "unknown-owner@unknown.domain"
+    ON FALSE
+    BY FALSE
+    DO DENY

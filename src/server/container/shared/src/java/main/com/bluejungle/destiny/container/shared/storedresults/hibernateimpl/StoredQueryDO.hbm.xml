@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.storedresults.hibernateimpl">
+	
+	<class name="StoredQueryDO" table="STORED_QUERY">
+        
+		<!-- Generic persisted properties -->
+		<id name="id">
+			<generator class="native"/>
+		</id>
+
+		<!-- Time of stored query creation -->		
+        <property name="creationTime" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType">
+			<column name="creationTime" index="storedQueryCreationTime" not-null="true"/>
+		</property>
+		<!-- name of the result data object to be used to read the ids-->
+		<property name="dataObjectName" type="string" not-null="true"/>
+		<!-- name of the data object that the id refer to -->
+		<property name="resultObjectName" type="string" not-null="true"/>
+
+		<!-- Statistics about the stored query results -->
+		<component name="statistics" class="StoredQueryResultsStatisticsDO">
+			<!-- Total number of records fetched -->
+			<property name="availableRowCount"/>
+			<!-- Minimum occurence count of a value -->
+			<property name="minValue"/>
+			<!-- Maximum occurence count of a value -->
+			<property name="maxValue"/>
+			<!-- Sum of all value occurences -->
+			<property name="sumValue"/>
+			<!-- Total number of macthing rows -->
+			<property name="totalRowCount"/>
+		</component>
+
+		<!-- List of results by id (if query is by id) -->
+		<list name="idResults" 
+			 inverse="true" 
+			 cascade="all-delete-orphan" 
+			 lazy="true"
+			 table="STORED_QUERY_BY_ID_RESULTS">
+			<key column="stored_query_id"/>
+			<index column="id"/>
+			<one-to-many class="StoredQueryByIdResultDO"/>
+		</list>
+		
+		<!-- List of actual summary results -->
+		<list name="summaryResults" 
+			 inverse="true" 
+			 cascade="all-delete-orphan" 
+			 lazy="true"
+			 table="STORED_QUERY_SUMMARY_RESULTS">
+			<key column="stored_query_id"/>
+			<index column="id"/>
+			<one-to-many class="StoredQuerySummaryResultDO"/>
+		</list>
+	</class>
+
+</hibernate-mapping>

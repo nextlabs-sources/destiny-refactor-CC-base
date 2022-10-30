@@ -1,0 +1,82 @@
+#!/bin/sh
+
+# Look at the targets file and build everything
+
+if [ ! -n "$PLATFORMDIR" ] ; then
+    echo "\$PLATFORMDIR is not defined.  Please set env variable \$PLATFORMDIR";
+    exit;
+fi
+
+what="-a";                      # i.e. compile all
+type=
+kver=
+
+while getopts "uka" o; 
+do
+    case "$o" in
+    k)    what="-"$o;;
+    u)    what="-"$o;;
+    a)    what="-"$o;;
+    esac
+done
+
+numopts=$(($OPTIND-1));
+numargs=$(($#-$numopts));
+
+
+if [ $numargs -lt 1 ] || [ $numargs -gt 2 ] ; then
+  echo "$0 [-uk]  release|debug [kernel-version]"
+  echo "   -u compile user modules only"
+  echo "   -k compile kernel modules only"
+  echo " default compile both user and kernel modules"
+  exit 1;
+fi
+
+shift $numopts
+
+type=$1;
+
+if [ $type != "release" ] && [ $type != "debug" ]; then
+    echo "Please enter the release|debug for build type"
+    exit 1;
+fi
+
+shift 1;
+
+if [ "$1". != . ] ; then
+    kver=$1;
+fi
+
+echo $what;
+echo $type
+echo $kver
+
+
+targetlist=
+
+if [ $what == "-a" ] || [ $what == "-u" ] ; then
+  targetlist=${targetlist}" "${PLATFORMDIR}/build/targets
+fi
+
+if [ $what == "-a" ] || [ $what == "-k" ] ; then
+  targetlist=${targetlist}" "${PLATFORMDIR}/build/kernel_targets
+fi
+
+for t in $targetlist ; do 
+    cat $t | \
+    while read line
+        do
+            echo "[ ----- Going to ${PLATFORMDIR}/$line ----- ]"
+            cd ${PLATFORMDIR}/$line;
+            make BUILDTYPE=$type KVERSION=$kver clean;
+            make BUILDTYPE=$type KVERSION=$kver;
+            if [ $? != 0 ] ; then
+                echo
+                echo "***  Fail building at ${PLATFORMDIR}/$line ***"
+                echo
+                break;
+            fi
+            cd - >/dev/null
+            echo
+        done
+done

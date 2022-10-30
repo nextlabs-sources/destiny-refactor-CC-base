@@ -1,0 +1,818 @@
+grammar PolicyLanguage;
+
+options {
+    k=*;
+    backtrack=true;
+    memoize=true;
+    output=AST;
+    ASTLabelType = CommonTree;
+}
+
+tokens {
+    ALL;
+    ALLOW;
+    AND;
+    ANY;
+    ANY_ATTRIBUTE;
+    APPLY_TARGET;
+    ARGUMENT;
+    ASSIGNMENT;
+    ATTRIBUTE;
+    BASE;
+    BOOLEAN;
+    CALL;
+    CODE;
+    COMPONENT;
+    COMPOSITE;
+    CONTEXT_SECTION;
+    CONTEXT_TYPE;
+    CONTEXTS;
+    CS_STRING;
+    DATE;
+    DENY;
+    DOUBLE;
+    EQUALS;
+    FALSE;
+    FUNCTION_TYPE;
+    IGNORE_TARGET;
+    INTEGER;
+    MULTIVALUED;
+    MULTIVALUE;
+    NEG_INCLUSION;
+    NEG_MATCH;
+    NOT;
+    NOTHING;
+    NULL;
+    OBLIGATION;
+    OBLIGATION_TYPE;
+    OPTIONAL;
+    OR;
+    PATH;
+    POLICY;
+    POLICY_SET;
+    POLICY_TYPE;
+    POS_INCLUSION;
+    POS_MATCH;
+    REFERENCE;
+    REFERENCED_CONTEXT_TYPE;
+    REQUIRED;
+    RULE;
+    SET_AGGREGATE;
+    STRING;
+    TARGET_CONTEXT;
+    TRUE;
+    TYPE;
+    UNARY;
+    UNIQUE;
+    USES;
+}
+
+@header {
+
+package com.nextlabs.language.parser.antlr.v1;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
+
+}
+
+@lexer::header {
+
+package com.nextlabs.language.parser.antlr.v1;
+
+}
+
+@lexer::members {
+
+private RecognitionException lastError;
+
+public RecognitionException getLastError() {
+    return lastError;
+}
+
+public void clearLastError() {
+    lastError = null;
+}
+
+@Override
+public void reportError(RecognitionException e) {
+    lastError = e;
+}
+
+private void removeDelimiters() throws RecognitionException {
+    String t = getText();
+    int len = t.length()-1;
+    char last = t.charAt(len);
+    if (last=='\n' || last=='\r') {
+        throw new RecognitionException(input);
+    }
+    if (t.indexOf('\\')==-1) {
+        setText(t.substring(1, len));
+    } else {
+        StringBuffer out = new StringBuffer();
+        for (int i = 1 ; i < len ; i++) {
+            char c = t.charAt(i);
+            if (c=='\\') {
+                c = t.charAt(++i);
+                switch(c) {
+                case 'b': c = '\b'; break;
+                case 'f': c = '\f'; break;
+                case 'r': c = '\r'; break;
+                case 't': c = '\t'; break;
+                case 'n': c = '\n'; break;
+                }
+                out.append(c);
+            } else {
+                out.append(c);
+            }
+        }
+        setText(out.toString());
+    }
+}
+
+}
+
+@members {
+
+private static final Set<String> keywords;
+private static final Set<String> tokens;
+
+static {
+    PolicyLanguageLexer lexer = new PolicyLanguageLexer();
+    Set<String> tmpKeywords = new HashSet<String>();
+    Set<String> tmpTokens = new HashSet<String>();
+    for (String s : tokenNames) {
+        // Consider only keyword tokens
+        if (s.matches("'[A-Za-z].+'")) {
+            // Exclude tokens that are allowed for use as identifiers
+            String t = s.substring(1, s.length()-1).toLowerCase();
+            tmpTokens.add(t);
+            lexer.setCharStream(new ANTLRStringStream(t));
+            PolicyLanguageParser parser = new PolicyLanguageParser(new CommonTokenStream(lexer));
+            try {
+                identifier_return tok = parser.identifier();
+                if (tok.tree == null) {
+                    tmpKeywords.add(t);
+                }
+            } catch (RecognitionException ignored) {
+                // This will never happen because the input set is controlled
+            }
+        }
+    }
+    keywords = Collections.unmodifiableSet(tmpKeywords);
+    tokens = Collections.unmodifiableSet(tmpTokens);
+}
+
+public static boolean isKeyword(String s) {
+    return keywords.contains(s.toLowerCase());
+}
+
+public static boolean isToken(String s) {
+    return tokens.contains(s.toLowerCase());
+}
+
+public static Set<String> getTokens() {
+    return tokens;
+}
+
+public static Set<String> getKeywords() {
+    return keywords;
+}
+
+private RecognitionException lastError;
+
+public RecognitionException getLastError() {
+    return lastError;
+}
+
+public void clearLastError() {
+    lastError = null;
+}
+
+@Override
+public void reportError(RecognitionException e) {
+    lastError = e;
+}
+
+}
+
+/*
+ * Policy Language Parser Rules
+ */
+
+program returns [List<CommonTree> res = new ArrayList<CommonTree>()]
+    :   (declaration {
+        // FIXME: +++
+        CommonTree ct = $declaration.tree;
+        if (ct != null) {
+            TokenStream ts = this.getTokenStream();
+            int is = ct.startIndex;
+            while(is > 0 && ts.get(is-1).getChannel()==Token.HIDDEN_CHANNEL) {
+                is--;
+            }
+            int ie = ct.stopIndex;
+            for ( int i = is ; i != ie ; i++ ) {
+                Token t = ts.get(i);
+                if (t.getType() == PolicyLanguageLexer.Comment) {
+                    //System.out.println("Comment: "+t.getText());
+                }
+            }
+        }
+        // FIXME: ---
+        $res.add(ct);
+    })+ EOF
+    ;
+
+declaration
+    :   policyTypeDeclaration
+    |   contextTypeDeclaration
+    |   obligationTypeDeclaration
+    |   functionTypeDeclaration
+    |   policyDeclaration
+    |   policySetDeclaration
+    |   componentDeclaration
+    ;
+
+onePolicyTypeDeclaration
+    : policyTypeDeclaration EOF -> policyTypeDeclaration
+    ;
+
+oneContextTypeDeclaration
+    :   contextTypeDeclaration EOF -> contextTypeDeclaration
+    ;
+
+oneObligationTypeDeclaration
+    :   obligationTypeDeclaration EOF -> obligationTypeDeclaration
+    ;
+
+oneFunctionTypeDeclaration
+    :   functionTypeDeclaration EOF -> functionTypeDeclaration
+    ;
+
+onePolicyDeclaration
+    :   policyDeclaration EOF -> policyDeclaration
+    ;
+
+onePolicySetDeclaration
+    :   policySetDeclaration EOF -> policySetDeclaration
+    ;
+
+oneComponentDeclaration
+    :   componentDeclaration EOF -> componentDeclaration
+    ;
+
+oneExpression
+    :   setExpression EOF -> setExpression
+    ;
+
+/*
+ * Policy Type Language (PTL) Portion
+ */
+
+fragment
+policyTypeDeclaration
+    :   'policy' 'type' path extensionBase?
+        (contextSection (COMMA contextSection)*)?
+        ('uses' uses=referenceList)?
+        ('with' 'obligation' with=referenceList)?
+        -> ^(POLICY_TYPE path extensionBase?
+                contextSection*
+                (^(USES $uses))?
+                (^(OBLIGATION $with))?
+            )
+    ;
+
+fragment
+contextSection
+    :   requiredOrOptional referenceList 'as' identifier
+        -> ^(CONTEXT_SECTION identifier
+                requiredOrOptional
+                ^(CONTEXTS referenceList)
+            )
+    ;
+
+fragment
+requiredOrOptional
+    :   'required' -> REQUIRED
+    |   'optional' -> OPTIONAL
+    ;
+
+fragment
+contextTypeDeclaration
+    :   'context' path extensionBase?
+        contextAttributeDeclaration (COMMA contextAttributeDeclaration)*
+        -> ^(CONTEXT_TYPE path
+                extensionBase?
+                contextAttributeDeclaration+
+            )
+    ;
+
+fragment
+contextAttributeDeclaration
+    :   identifier unique? dataType
+        -> ^(ATTRIBUTE identifier unique? dataType)
+    |   identifier? ASTERISK unique? dataType
+        -> ^(ANY_ATTRIBUTE identifier? unique? dataType)
+    ;
+
+fragment
+unique
+    :   'unique' -> UNIQUE
+    ;
+
+fragment
+obligationTypeDeclaration
+    :   'obligation' path argumentListDeclaration?
+        -> ^(OBLIGATION_TYPE path argumentListDeclaration?)
+    ;
+
+fragment
+functionTypeDeclaration
+    :   'function' path argumentListDeclaration? 'returns' dataType 
+        -> ^(FUNCTION_TYPE path dataType argumentListDeclaration?)
+    ;
+
+fragment
+argumentListDeclaration
+    :   OPEN argumentDeclaration (COMMA argumentDeclaration)* CLOSE
+        -> argumentDeclaration+
+    ;
+
+fragment
+argumentDeclaration
+    :    identifier dataType requiredOrOptional? (EQUALS setExpression)?
+         -> ^(ARGUMENT identifier dataType requiredOrOptional? setExpression?)
+    ;
+
+/*
+ * Policy Definition Language (PDL) Portion
+ */
+
+fragment
+policyDeclaration
+    :   'policy' path (extensionBase | typeBase)
+        targetContext*
+        'do' rule+
+        obligation*
+        -> ^(POLICY path
+                extensionBase?
+                typeBase?
+                targetContext*
+                rule+
+                obligation*
+            )
+    ;
+
+fragment
+targetContext
+    :   identifier setExpression
+        -> ^(TARGET_CONTEXT identifier setExpression)
+    ;
+
+fragment
+policySetDeclaration
+    :   'policy' 'set' path listOfPolicyTypes
+        (   applyTarget ignoreTarget
+        |   ignoreTarget applyTarget
+        |   applyTarget
+        |   ignoreTarget
+        )?
+        overridePolicy
+        (OPEN referenceList CLOSE)?
+        -> ^(POLICY_SET
+                path
+                listOfPolicyTypes
+                applyTarget?
+                ignoreTarget?
+                overridePolicy
+                referenceList?
+            )
+    ;
+
+fragment
+listOfPolicyTypes
+    :   'of' referenceList -> referenceList
+    ;
+
+fragment
+overridePolicy
+    :   'allow' 'overrides' -> ALLOW
+    |   'deny' 'overrides' -> DENY
+    ;
+
+fragment
+applyTarget
+    :   'apply' 'when' targetContext* -> ^(APPLY_TARGET targetContext*)
+    ;
+
+fragment
+ignoreTarget
+    :   'ignore' 'when' targetContext* -> ^(IGNORE_TARGET targetContext*)
+    ;
+
+fragment
+componentDeclaration
+    :    'component' path 'is' reference EQUALS setExpression
+         -> ^(COMPONENT path reference setExpression)
+    ;
+
+fragment
+setExpression
+    :   setConjunction (op=orOperator setConjunction)*
+        -> {op!=null}?
+            ^(COMPOSITE orOperator+ setConjunction+)
+        -> setConjunction
+    ;
+
+fragment
+orOperator 
+    :    'or' -> OR
+    ;
+
+fragment
+setConjunction
+    :   setUnary (op=andOperator setUnary)*
+        -> {op!=null}?
+            ^(COMPOSITE andOperator+ setUnary+)
+        -> setUnary
+    ;
+
+fragment
+andOperator
+    :   'and' -> AND
+    ;
+
+fragment
+setUnary
+    :    op=setUnaryOperator? disjunction
+         -> {op!=null}?
+             ^(UNARY setUnaryOperator disjunction)
+         -> disjunction
+    ; 
+
+fragment
+setUnaryOperator
+    :   'any' -> ANY
+    |   'all' -> ALL
+    ;
+
+fragment
+disjunction
+    :   conjunction (op=orOperator conjunction)*
+        -> {op!=null}?
+            ^(COMPOSITE orOperator+ conjunction+)
+        -> conjunction
+    ;
+
+fragment
+conjunction
+    :   negation (op=andOperator negation)*
+        -> {op!=null}?
+            ^(COMPOSITE andOperator+ negation+)
+        -> negation
+    ;
+
+fragment
+negation
+    :   'not' negation
+        -> ^(UNARY NOT negation)
+    |   relation (op=andOperator relation)*
+        -> {op!=null}?
+            ^(COMPOSITE andOperator+ relation+)
+        -> relation
+    ;
+
+fragment
+relation
+    :   addition (op = relationOperator addition)?
+        -> {op != null}?
+            ^(relationOperator addition addition)
+        -> addition
+    ;
+
+fragment
+addition
+    :   multiplication (op=additiveOperator multiplication)*
+        -> {op!=null}?
+            ^(COMPOSITE additiveOperator+ multiplication+)
+        -> multiplication
+    ;
+
+fragment
+multiplication
+    :   unary (op=multiplicativeOperator unary)*
+        -> {op!=null}?
+            ^(COMPOSITE multiplicativeOperator+ unary+)
+        -> unary
+    ;
+
+fragment
+unary
+    :   (MINUS ~IntegerLiteral) => MINUS unary
+        -> ^(UNARY MINUS unary)
+    |   dotExpression
+    ;
+
+fragment
+dotExpression
+    :   primaryExpression (dot=DOT identifier)*
+        -> {dot!=null}?
+            ^(DOT primaryExpression identifier*)
+        -> primaryExpression
+    ;
+
+fragment
+primaryExpression
+    :   literal
+    |   functionExpression
+    |   reference
+    |   OPEN disjunction CLOSE -> disjunction
+    ;
+
+fragment
+literal
+    :   'null' -> NULL
+    |   'true' -> TRUE
+    |   ASTERISK -> TRUE
+    |   'false' -> FALSE
+    |   integerLiteral
+    |   FPLiteral
+    |   StringLiteral
+    |   setAggregate
+    ;
+
+fragment
+setAggregate
+    :   OPEN (literal (COMMA literal)* )? CLOSE -> ^(SET_AGGREGATE literal*)
+    ;
+
+fragment
+relationOperator
+    :   EQUALS EQUALS -> EQUALS
+    |   NOT_EQUALS
+    |   GREATER
+    |   GREATER_OR_EQUALS
+    |   LESS
+    |   LESS_OR_EQUALS
+    |   'matches' -> POS_MATCH
+    |   'does' 'not' 'match' -> NEG_MATCH
+    |   'in' -> POS_INCLUSION
+    |   'not' 'in' -> NEG_INCLUSION
+    ;
+
+fragment
+additiveOperator
+    :    PLUS
+    |    MINUS
+    ;
+
+fragment
+multiplicativeOperator
+    :    ASTERISK
+    |    DIV
+    |    REM
+    ;
+
+fragment
+functionExpression
+    :   reference OPEN argumentList? CLOSE -> ^(CALL reference argumentList?)
+    ;
+
+fragment
+rule
+    :   outcome ruleCondition -> ^(RULE outcome ruleCondition)
+    ;
+
+fragment
+ruleCondition
+    :   'when' disjunction -> disjunction
+    |   'by' 'default' -> TRUE
+    |   -> TRUE
+    ;
+
+fragment
+outcome
+    :   'allow' -> ALLOW
+    |   'deny' -> DENY
+    |   'nothing' -> NOTHING
+    ;
+
+fragment
+obligation
+    :   'on' outcome 'do' functionExpression (COMMA functionExpression)*
+        -> ^(OBLIGATION outcome functionExpression+)
+    ;
+
+/*
+ * Common Rules
+ */
+
+fragment
+path
+    :   identifier (PATH_SEPARATOR identifier)* -> ^(PATH identifier+)
+    ;
+
+fragment
+reference
+    :   path
+    |   'id' integerLiteral ->  ^(REFERENCE integerLiteral)
+    ;
+
+fragment
+extensionBase
+    :   'extends' reference -> ^(BASE reference)
+    ;
+
+fragment
+typeBase
+    :   'is' reference -> ^(TYPE reference)
+    ;
+
+fragment
+dataType
+    :   'boolean' -> BOOLEAN
+    |   'date' -> DATE
+    |   'integer' -> INTEGER
+    |   'double' -> DOUBLE
+    |   'case' 'sensitive' 'string' -> CS_STRING
+    |   ('case' 'insensitive')? 'string' -> STRING
+    |   'code' ( OPEN StringLiteral (COMMA StringLiteral)* CLOSE )?
+        -> ^(CODE StringLiteral*)
+    |   'references' reference -> ^(REFERENCED_CONTEXT_TYPE reference)
+    |   'multivalued' dataType -> ^(MULTIVALUE dataType)
+    ;
+
+fragment
+referenceList
+    :   reference (COMMA reference)* -> reference+
+    ;
+
+fragment
+argumentList
+    :   disjunction (COMMA disjunction)* -> ^(ASSIGNMENT disjunction)+
+    |   argumentAssignment (COMMA argumentAssignment)* -> argumentAssignment+
+    ;
+
+fragment
+argumentAssignment
+    :   identifier EQUALS disjunction -> ^(ASSIGNMENT identifier disjunction)
+    ;
+
+fragment
+identifier
+    :   n=(Identifier
+    |   'allow'
+    |   'apply'
+    |   'as'
+    |   'by'
+    |   'case'
+    |   'code'
+    |   'date'
+    |   'default'
+    |   'deny'
+    |   'double'
+    |   'ignore'
+    |   'insensitive'
+    |   'integer'
+    |   'is'
+    |   'nothing'
+    |   'of'
+    |   'on'
+    |   'optional'
+    |   'overrides'
+    |   'references'
+    |   'required'
+    |   'returns'
+    |   'sensitive'
+    |   'set'
+    |   'string'
+    |   'type'
+    |   'unique'
+    |   'uses'
+    |   'when'
+    |   'with') {
+        n.setType(Identifier);
+    }
+    ;
+
+fragment
+integerLiteral
+    :   sign=additiveOperator? IntegerLiteral {
+            if(sign!=null&&sign.getTree()!=null && ((CommonTree)sign.getTree()).getToken().getType()==MINUS) {
+                $IntegerLiteral.setText("-"+$IntegerLiteral.getText());
+            }
+        }
+        -> IntegerLiteral
+    ;
+
+/*
+ * Lexer Rules
+ */
+
+fragment
+IntegerLiteral
+    :   Digit+
+    ;
+
+FPLiteral
+    :   (IntegerLiteral DOT Digit) => IntegerLiteral DOT Digit+ Exponent?
+    |   IntegerLiteral Exponent
+    |   DOT Digit+ Exponent?
+    |   IntegerLiteral {_type = IntegerLiteral;}
+    ;
+
+fragment
+Exponent
+    :   ('e'|'E') (PLUS|MINUS)? IntegerLiteral
+    ;
+
+StringLiteral
+    :   '"' ( EscapeSequence | ~('\\'|'"'|'\n'|'\r') )* ('"'|'\n'|'\r') {
+        removeDelimiters();
+    }
+    ;
+
+EQUALS            : '=';
+NOT_EQUALS        : '!' '=';
+GREATER           : '>';
+GREATER_OR_EQUALS : '>' '=';
+LESS              : '<';
+LESS_OR_EQUALS    : '<' '=';
+COMMA             : ',';
+DOT               : '.';
+PLUS              : '+';
+MINUS             : '-';
+ASTERISK          : '*';
+DIV               : '/';
+REM               : '%';
+OPEN              : '(';
+CLOSE             : ')';
+
+fragment
+BRA               : '[';
+
+fragment
+KET               : ']';
+
+PATH_SEPARATOR
+    :   ':'
+    ;
+
+Identifier
+    :   IdentifierStart (IdentifierStart | Digit)*
+    |   BRA ( '\\' KET | ~(KET|'\n'|'\r') )+ (KET|'\n'|'\r') {
+        removeDelimiters();
+    }
+    ;
+
+fragment
+Digit
+    :   '0'..'9'
+    ;
+
+fragment
+EscapeSequence
+    :   '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\'|'\n'|'\r')
+    ;
+
+fragment
+IdentifierStart
+    :   '$'
+    |   '_'
+    |   'A'..'Z'
+    |   'a'..'z'
+    ;
+
+Whitespace
+    :   (' '|'\r'|'\t'|'\u000C'|'\n')+ {$channel=HIDDEN;}
+    ;
+
+Comment
+    :   MultilineComment
+    |   EndOfLineComment
+    ;
+
+fragment
+MultilineComment
+    :   '/*' ( options {greedy=false;} : . )* '*/' {
+        $channel=HIDDEN;
+        int len = getText().length()-2;
+        setText(getText().substring(2, len));
+    }
+    ;
+
+fragment
+EndOfLineComment
+    :   '//' ~('\n'|'\r')* ('\n'|'\r'|) {
+        $channel=HIDDEN;
+        String t = getText();
+        int last = t.length()-1;
+        while (last != 0 && (t.charAt(last)=='\n' || t.charAt(last)=='\r')) {
+            last--;
+        }
+        setText(getText().substring(2, last+1));
+    }
+    ;

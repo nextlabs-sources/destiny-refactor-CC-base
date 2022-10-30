@@ -1,0 +1,21 @@
+policy deploy_everywhere
+for *
+on *
+by *
+do allow
+deployed to * with agent.type = fsa, * with agent.type = da or host.name = "foofoo" with agent.type=da
+
+policy deploy_somewhere
+for *
+on *
+by *
+do allow
+deployed to agent.id = 2345
+
+
+policy deploy_somewhere_else
+for *
+on *
+by *
+do allow
+deployed to true

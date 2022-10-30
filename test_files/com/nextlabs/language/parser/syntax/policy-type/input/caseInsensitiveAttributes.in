@@ -1,0 +1,10 @@
+context caseInsensitiveAttributes0
+    name0 case insensitive string
+
+context caseInsensitiveAttributes1
+    name1 case insensitive string
+,   name2 case insensitive string
+
+context caseInsensitiveAttributes2 extends caseInsensitiveAttributes1
+    name3 case insensitive string
+,   name4 case insensitive string

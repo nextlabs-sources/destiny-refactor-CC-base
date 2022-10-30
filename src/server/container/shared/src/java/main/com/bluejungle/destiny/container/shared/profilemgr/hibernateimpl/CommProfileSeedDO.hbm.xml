@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.profilemgr.hibernateimpl">
+	
+	<class name="CommProfileSeedDO" table="COMM_PROFILE_SEED">
+        		
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		
+		<property name="lastUpdated" column="last_updated" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType" not-null="true"/>
+		
+		<!-- map of seeded items -->
+		<map name="seedItems" lazy="false" table="COMM_PROFILE_SEED_ITEMS">
+			<key>
+				<column name="SEED_COMM_PROFILE_ID" not-null="true"/>
+			</key>
+			<index column="SEED_NAME" type="string"/>
+			<element type="long" column="COMM_PROFILE_ID"/>
+		</map>
+	</class>
+
+</hibernate-mapping>

@@ -1,0 +1,8 @@
+policy simple_policy
+    description "Simple Policy"
+    DO DENY
+    FOR resource.fso.name="*.txt"
+    ON OPEN OR EDIT
+    TO *
+    BY user.name="John Unauthorized"
+    ON DENY DO LOG

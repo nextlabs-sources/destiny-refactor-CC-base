@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web
+Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+    <display-name>DCC Policy Controller application with REST api</display-name>
+    
+    <listener>
+        <listener-class>org.apache.axis.transport.http.AxisHTTPSessionListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>com.nextlabs.destiny.container.dpc.DPCContextListener</listener-class>
+    </listener>
+    
+    <context-param>
+        <param-name>ComponentClass</param-name>
+        <param-value>com.nextlabs.destiny.container.dpc.DPCComponentImpl</param-value>
+    </context-param>
+    
+    <servlet>
+        <servlet-name>DPCServlet</servlet-name>
+        <display-name>DPC Servlet</display-name>
+        <servlet-class>org.apache.axis.transport.http.AxisServlet</servlet-class>  
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>DPCServlet</servlet-name>
+        <url-pattern>/servlet/DPCServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>DPCServlet</servlet-name>
+        <url-pattern>*.jws</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>DPCServlet</servlet-name>
+        <url-pattern>/services/*</url-pattern>
+    </servlet-mapping>
+
+    <session-config>
+        <!-- Default to 5 minute session timeouts -->
+        <session-timeout>5</session-timeout>
+    </session-config>
+
+    <!-- currently the W3C havent settled on a media type for WSDL;
+         http://www.w3.org/TR/2003/WD-wsdl12-20030303/#ietf-draft
+         for now we go with the basic 'it's XML' response -->
+    <mime-mapping>
+        <extension>wsdl</extension>
+        <mime-type>text/xml</mime-type>
+    </mime-mapping>
+
+    <mime-mapping>
+        <extension>xsd</extension>
+        <mime-type>text/xml</mime-type>
+    </mime-mapping>
+
+    <welcome-file-list id="WelcomeFileList">
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    
+    <login-config>
+        <auth-method>CLIENT-CERT</auth-method>
+    </login-config>
+    
+    <filter>
+        <filter-name>authenticationFilter</filter-name>
+        <filter-class>com.nextlabs.oauth2.servlet.JwtAuthenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>authenticationFilter</filter-name>
+        <url-pattern>/PDPConnector/*</url-pattern>
+		<url-pattern>/authorization/*</url-pattern>
+    </filter-mapping>
+    <servlet>
+        <servlet-name>evaluationRequest</servlet-name>
+        <servlet-class>com.nextlabs.evaluationconnector.listeners.EvaluationRequestServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>evaluationRequest</servlet-name>
+        <url-pattern>/PDPConnector/*</url-pattern>
+		<url-pattern>/authorization/*</url-pattern>
+    </servlet-mapping>
+    <context-param>
+        <param-name>PropertiesFile</param-name>
+        <param-value>/WEB-INF/rest-api-connector.properties</param-value>
+    </context-param>
+</web-app>

@@ -1,0 +1,34 @@
+<project name="ddac_test_build" default="build">
+    <var name="nlbuildroot" value="${basedir}/../../../../../../.." />
+    <property name="test.src.dir" value="${basedir}"/>
+    <property name="build.dest"   value="${build.root.dir}/server/container/ddac/testclasses"/>
+    <property name="build.gendest" value="${build.root.dir}/server/container/ddac/genclasses"/>
+    
+    <property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+    <path id="compile.ddac.test.classpath">
+        <path refid="compile.classpath"/>
+    	<pathelement path="${build.root.dir}/common-framework.jar"/>
+    	<pathelement path="${xlib_jar_dir}/junit-4.3.jar"/>
+    </path>
+
+    <target name="build" depends="jar">
+    </target>
+
+    <target name="compile" depends="pre-build">
+        <javac srcdir="${test.src.dir}" destdir="${build.dest}" debug="${compile.debug}" verbose="${compile.verbose}">
+            <classpath refid="compile.ddac.test.classpath"/>   
+        </javac>
+    </target>
+    
+    <target name="jar" depends="compile">
+        <jar destfile="${build.root.dir}/ddac-tests.jar">
+            <fileset dir="${build.dest}"/>
+        </jar>
+    </target>
+    
+    <target name="pre-build">
+        <mkdir dir="${build.dest}"/>
+    </target>
+
+</project>

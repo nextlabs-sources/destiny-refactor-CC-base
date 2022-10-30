@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.inquirymgr.hibernateimpl">
+
+	<class name="ApplicationGroupDO" table="CACHED_APPLICATIONGROUP">
+	
+		<id name="id">
+			<generator class="assigned"/>
+		</id>
+
+		<property name="name" not-null="true" unique="true"/>
+		
+		<set name="applications"
+				table="CACHED_APPLICATION_APPLICATIONGROUP"
+				lazy="true"
+				cascade="save-update">
+			<key column="APPLICATIONGROUP_ID"/>
+			<many-to-many class="ApplicationDO" column="APPLICATION_ID"/>
+		</set>			
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,82 @@
+<config>
+        <jars>
+                <jar in="${initial.jar.name}" out="${final.jar.name}"/>
+        </jars>
+        <property name="incremental-obfuscation" value="../../build-scripts/etc/allatori-log.xml"/>
+        <property name="log-file" value="log.xml"/>
+        <keep-names>
+                <!-- Keep serialization information around in general -->
+                <class template="class * instanceof java.io.Serializable">
+                        <field template="static final long serialVersionUID"/>
+                        <method template="void writeObject(java.io.ObjectOutputStream)"/>
+                        <method template="void readObject(java.io.ObjectInputStream)"/>
+                        <method template="java.lang.Object writeReplace()"/>
+                        <method template="java.lang.Object readResolve()"/>
+                </class>
+	         <class template="class com.bluejungle.pf.destiny.policymap.STRLog">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.destiny.policymap.PolicyQueryImpl">
+		         <field template="public COMP_INFO "/>
+	         </class>
+	         <class template="class com.bluejungle.pf.destiny.policymap.ServerTargetResolver">
+		         <field template="public COMP_INFO "/>
+	         </class>
+	         <class template="class com.bluejungle.pf.destiny.policymap.MapBuilder">
+	         </class>
+                 <class template="class com.bluejungle.pf.destiny.policymap.ReferenceResolver">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+                 </class>
+	         <class template="class com.bluejungle.pf.destiny.lifecycle.LifecycleManager*">
+		         <field access="package+"/>
+		         <method access="package+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.destiny.lifecycle.DeploymentEntity">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.destiny.lifecycle.DevelopmentEntity">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.destiny.lib.axis.IPolicyDeployment">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.domain.destiny.common.DefaultSpecManager">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.domain.destiny.common.ServerSpecManager">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.domain.destiny.policymap.StaticAttributeTracker">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.destiny.lib.DictionaryHelper">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.destiny.lib.DMSServiceImpl">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+
+		 <!-- Added for BatchDeployer -->
+	         <class template="class com.bluejungle.pf.tools.DeploymentToolsBase">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+
+		 <!-- Added for BatchDeployer -->
+	         <class template="class com.bluejungle.pf.tools.CollectingPQLVisitor">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+
+        </keep-names>
+</config>

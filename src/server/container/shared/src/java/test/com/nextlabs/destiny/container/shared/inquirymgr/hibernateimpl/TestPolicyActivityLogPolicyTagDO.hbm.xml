@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.nextlabs.destiny.container.shared.inquirymgr.hibernateimpl">
+	
+	<!-- This mapping file needs to be in sync with the DABS policy activity log entry DO mapping file -->
+	<class name="TestPolicyActivityLogPolicyTagDO" table="POLICY_TAGS">
+		<id name="id">
+			<generator class="native">
+				<param name="sequence">custom_tag_sequence</param>
+			</generator>
+		</id>
+		<many-to-one name="activityLog" 
+		             class="com.bluejungle.destiny.container.shared.inquirymgr.hibernateimpl.TestPolicyActivityLogDO" 
+		             column="policy_log_id"
+		             not-null="true"
+                     index="palpt_ref_pal_id_index"/> 
+		<property name="key">
+			<column name="tag_name" not-null="true"/>
+		</property>
+		<property name="value">
+			<column name="tag_value" not-null="false" length="4000"/>
+		</property>
+	</class>
+</hibernate-mapping>

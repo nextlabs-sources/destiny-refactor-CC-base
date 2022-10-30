@@ -1,0 +1,2 @@
+FILE_SERVER
+id 0 POLICY TestPolicy FOR resource.owner_ldap_group = "BLUEJUNGLE.COM:Groups:engineering" ON * BY * DO deny

@@ -1,0 +1,11 @@
+policy minimal_policy
+    description "Minimal policy"
+    DO ALLOW
+    FOR resource.fso."urn:bails:exportcontrol:businessauthorizationcategory:name" = "export control name"
+    ON EDIT OR OPEN OR RUN
+    TO *
+    BY user.company = "Evil Industries"
+    ON DENY DO LOG "Access denied", DONOTLOG
+    ON ALLOW DO LOG "Access granted", DONOTLOG
+
+

@@ -1,0 +1,133 @@
+#!/bin/sh
+# All sources, binaries and HTML pages (C) copyright 2006 by Blue Jungle Inc.,
+# Redwood City CA, Ownership remains with Blue Jungle Inc,
+# All rights reserved worldwide.
+# Author : Saumitra Das
+# Date   : 07/10/2006
+# Note   : init script for cm core kernel functionality(syscalls interceptn) module
+#
+# $Id$
+#
+
+# Install the syslistener module including creating device node.
+
+# Source function library.
+. /etc/init.d/functions
+
+BJ_ROOT=/usr/local/bj
+BJ_MOD=bj_sysl
+BJ_DEV=$BJ_MOD
+BJ_DEVFILE=/dev/$BJ_MOD
+BJ_MODFILE=$BJ_ROOT/bin/$BJ_MOD.ko
+BJ_DAEMON=$BJ_ROOT/bin/bjcmd
+BJ_START=$BJ_ROOT/bin/bjcmd
+BJ_STOP=$BJ_ROOT/bin/bjcmstop
+RETVAL=0
+
+export BJ_ROOT
+
+function start() {
+        # Check for simple-but-common errors.
+
+        # Check the module and daemon files.
+        echo -n $"Checking module and daemon files: "
+        if [ -f $BJ_MODFILE -a -f $BJ_START -a -f $BJ_DAEMON ]
+	then :
+	    success
+	    echo
+        else
+            failure
+	    echo
+            return $RETVAL
+        fi
+
+	# Install the module
+        echo -n $"Installing BJ module: "
+	insmod -f $BJ_MODFILE BJ_ROOT=$BJ_ROOT 
+	RETVAL=$?
+        if [ $RETVAL -eq 0 ]
+	then :
+            success
+	    echo
+        else
+            failure
+	    echo
+            return $RETVAL
+        fi
+
+        # Retrieve major just assigned
+	BJ_MAJOR=`grep $BJ_DEV /proc/devices | awk "{print \\$1}"`
+
+	# Make device nodes
+        echo -n $"Creating BJ device: "
+	rm -f $BJ_DEVFILE
+	mknod $BJ_DEVFILE c $BJ_MAJOR 0
+        if [ -c $BJ_DEVFILE ]
+	then :
+	    success
+	    echo
+	else
+	    failure
+	    echo
+	    rmmod -f $BJ_MOD
+            return $RETVAL
+	fi
+
+        # Start daemon.
+        prog=`basename ${BJ_DAEMON}`
+        echo -n $"Starting $prog: "
+	daemon ${BJ_START}
+	RETVAL=$?
+        if [ $RETVAL -eq 0 ]; then
+            success
+        else
+            failure
+	    rm -f $BJ_DEVFILE
+	    rmmod -f $BJ_MOD
+        fi
+        echo
+        return $RETVAL
+}
+
+function stop() {
+        # Stop daemons.
+        prog=`basename ${BJ_DAEMON}`
+        echo -n $"Stopping $prog: "
+	daemon ${BJ_STOP}
+        RETVAL=$?
+        echo
+        if [ $RETVAL -eq 0 ]; then
+		rm -f /dev/$BJ_DEV
+		rmmod -f $BJ_MOD
+        fi
+	echo
+        return $RETVAL
+}
+
+# See how we were called.
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status ${BJ_DAEMON}
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    condrestart)
+	if test "x`pidof ${BJ_DAEMON}`" != x; then
+		stop
+		start
+	fi
+	;;
+    *)
+        echo $"Usage: $0 {start|stop|restart|condrestart|status}"
+        RETVAL=1
+esac
+
+exit $RETVAL

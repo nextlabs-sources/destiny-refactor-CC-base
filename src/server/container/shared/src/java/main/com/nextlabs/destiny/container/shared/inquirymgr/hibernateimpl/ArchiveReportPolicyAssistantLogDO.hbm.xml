@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.nextlabs.destiny.container.shared.inquirymgr.hibernateimpl">
+	
+        <class name="ArchiveReportPolicyAssistantLogDO" 
+                table="ARCHIVE_OBLIGATION_LOG">
+                <id name="id">
+                        <generator class="assigned"/>
+                </id>
+                <property name="logUid" column="ref_log_id" not-null="true"/>
+                <property name="policyAssistantName">
+                        <column name="name" length="256" not-null="true"/>
+                </property>
+                <property name="attrOne">
+                        <column name="attr_one" length="1024" not-null="false"/>
+                </property>
+                <property name="attrTwo">
+                        <column name="attr_two" length="1024" not-null="false"/>
+                </property>
+                <property name="attrThree">
+                        <column name="attr_three" length="1024" not-null="false"/>
+                </property>
+        </class>
+</hibernate-mapping>

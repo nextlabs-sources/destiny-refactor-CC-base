@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<export-file>
+<export-entities name="Sample/Compensation Planning/Compensation Data Duplication">
+        <type>POLICY</type>
+        <pql>ID 72 STATUS DRAFT CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR *&#xd;
+        ON *&#xd;
+        BY appuser.did = resource.dso.owner&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+POLICY "Sample/Compensation Planning/Compensation Data Duplication"&#xd;
+    DESCRIPTION "SHOULDNOTSHOWUP Prevents that duplication of Compensation Reporting data to uncontrolled locations and the distibution of this information via email or instant messaging."&#xd;
+    ATTRIBUTE USAGE&#xd;
+    FOR (TRUE AND (FALSE OR resource.GROUP="Compensation Reporting"))&#xd;
+    ON (TRUE AND (action.GROUP="Duplicate" OR action.GROUP="Distribute"))&#xd;
+    TO (TRUE AND NOT ((FALSE OR resource.GROUP="Compensation Reporting")))&#xd;
+    BY ((TRUE AND TRUE) AND (TRUE AND TRUE) AND (TRUE AND TRUE))&#xd;
+    DO deny "Compensation data cannot be duplicated outside of controlled areas."&#xd;
+    ON deny DO log&#xd;
+</pql>
+</export-entities>
+
+</export-file>

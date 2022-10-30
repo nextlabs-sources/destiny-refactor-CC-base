@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+					xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+					xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+					xmlns:faults="http://bluejungle.com/destiny/framework/types"
+					xmlns:interfaces="http://bluejungle.com/destiny/services/enrollment"
+					xmlns:tns="http://bluejungle.com/destiny/services/enrollment"
+					targetNamespace="http://bluejungle.com/destiny/services/enrollment">
+
+	<wsdl:import	namespace="http://bluejungle.com/destiny/services/enrollment" 
+					location="../interfaces/EnrollmentInterfaces.wsdl"/>
+	
+	<wsdl:binding name="EnrollmentIFBinding" type="tns:EnrollmentIF">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+		<wsdl:operation  name="getRealms">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dem" parts="realmName" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dem" parts="realms" use="literal"/>
+			</wsdl:output>
+			
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			
+			<!-- base EnrollmentIF faults -->
+			<wsdl:fault name="DictionaryFault">
+				<soap:fault name="DictionaryFault" use="literal"/>
+			</wsdl:fault>
+			
+			<!-- operation specific fault -->
+			<wsdl:fault name="NotFoundFault">
+				<soap:fault name="NotFoundFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="createRealm">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dem" parts="realm" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dem" use="literal"/>
+			</wsdl:output>
+			
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			
+			<!-- base EnrollmentIF faults -->
+			<wsdl:fault name="DictionaryFault">
+				<soap:fault name="DictionaryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="EnrollmentInternalFault">
+				<soap:fault name="EnrollmentInternalFault" use="literal"/>
+			</wsdl:fault>
+			
+			<!-- operation specific fault -->
+			<wsdl:fault name="DuplicatedFault">
+				<soap:fault name="DuplicatedFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="InvalidConfigurationFault">
+				<soap:fault name="InvalidConfigurationFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="updateRealm">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dem" parts="realm" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dem" use="literal"/>
+			</wsdl:output>
+			
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			
+			<!-- base EnrollmentIF faults -->
+			<wsdl:fault name="DictionaryFault">
+				<soap:fault name="DictionaryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="EnrollmentInternalFault">
+				<soap:fault name="EnrollmentInternalFault" use="literal"/>
+			</wsdl:fault>
+			
+			<!-- operation specific fault -->
+			<wsdl:fault name="InvalidConfigurationFault">
+				<soap:fault name="InvalidConfigurationFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="NotFoundFault">
+				<soap:fault name="NotFoundFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="deleteRealm">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dem" parts="realm" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dem" use="literal"/>
+			</wsdl:output>
+			
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			
+			<!-- base EnrollmentIF faults -->
+			<wsdl:fault name="DictionaryFault">
+				<soap:fault name="DictionaryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="EnrollmentInternalFault">
+				<soap:fault name="EnrollmentInternalFault" use="literal"/>
+			</wsdl:fault>
+			
+			<!-- operation specific fault -->
+			<wsdl:fault name="InvalidConfigurationFault">
+				<soap:fault name="InvalidConfigurationFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="NotFoundFault">
+				<soap:fault name="NotFoundFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="enrollRealm">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dem" parts="realm" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dem" use="literal"/>
+			</wsdl:output>
+			
+			
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			
+			<!-- base EnrollmentIF faults -->
+			<wsdl:fault name="DictionaryFault">
+				<soap:fault name="DictionaryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="EnrollmentInternalFault">
+				<soap:fault name="EnrollmentInternalFault" use="literal"/>
+			</wsdl:fault>
+			
+			<!-- operation specific fault -->
+			<wsdl:fault name="EnrollmentFailedFault">
+				<soap:fault name="EnrollmentFailedFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="InvalidConfigurationFault">
+				<soap:fault name="InvalidConfigurationFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="NotFoundFault">
+				<soap:fault name="NotFoundFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		
+		<wsdl:operation name="getColumns">
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dem" parts="realms" use="literal"/>
+			</wsdl:output>
+			
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			
+			<!-- base EnrollmentIF faults -->
+			<wsdl:fault name="DictionaryFault">
+				<soap:fault name="DictionaryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="EnrollmentInternalFault">
+				<soap:fault name="EnrollmentInternalFault" use="literal"/>
+			</wsdl:fault>
+			
+			<!-- operation specific fault -->
+		</wsdl:operation>
+		
+		<wsdl:operation name="addColumn">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dem" parts="column" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dem" use="literal"/>
+			</wsdl:output>
+			
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			
+			<!-- base EnrollmentIF faults -->
+			<wsdl:fault name="DictionaryFault">
+				<soap:fault name="DictionaryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="EnrollmentInternalFault">
+				<soap:fault name="EnrollmentInternalFault" use="literal"/>
+			</wsdl:fault>
+			
+			<!-- operation specific fault -->
+			<wsdl:fault name="DuplicatedFault">
+				<soap:fault name="DuplicatedFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="InvalidConfigurationFault">
+				<soap:fault name="InvalidConfigurationFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="delColumn">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dem" parts="logicalName" use="literal"/>
+			</wsdl:input>
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dem" parts="elementType" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dem" use="literal"/>
+			</wsdl:output>
+			
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			
+			<!-- base EnrollmentIF faults -->
+			<wsdl:fault name="DictionaryFault">
+				<soap:fault name="DictionaryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="EnrollmentInternalFault">
+				<soap:fault name="EnrollmentInternalFault" use="literal"/>
+			</wsdl:fault>
+			
+			<!-- operation specific fault -->
+			<wsdl:fault name="InvalidConfigurationFault">
+				<soap:fault name="InvalidConfigurationFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="NotFoundFault">
+				<soap:fault name="NotFoundFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+
+	</wsdl:binding>
+</wsdl:definitions>

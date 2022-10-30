@@ -1,0 +1,2 @@
+DESKTOP 5.0.0.0.0
+id 0 POLICY TestPolicy FOR * ON * BY * WHERE call_function("a", "b") = 0 DO deny ON deny DO Log

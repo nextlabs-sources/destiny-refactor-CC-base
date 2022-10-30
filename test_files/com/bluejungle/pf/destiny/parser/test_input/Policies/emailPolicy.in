@@ -1,0 +1,3 @@
+policy emailPolicy
+    FOR NAME="/secret/**" and WORD_DOCS ON SENDTO SENT_TO OutsideUsers BY *
+    DO DENY

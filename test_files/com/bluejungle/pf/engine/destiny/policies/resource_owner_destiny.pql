@@ -1,0 +1,1 @@
+resource owner_destiny_test = resource.owner_group = "destiny_group_level2" and resource.name = "**owner_destiny.test"

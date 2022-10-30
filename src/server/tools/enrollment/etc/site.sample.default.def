@@ -1,0 +1,6 @@
+#
+# Note: Use full path to refer LDIF file name
+#       Use '/' instead of '\' for file path seperator!
+#
+site.filename   C:/builds/destiny/seed_data/bluejungle.com.ldif 
+

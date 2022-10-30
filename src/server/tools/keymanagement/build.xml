@@ -1,0 +1,82 @@
+<project name="keymanagement-tool" default="build"  basedir=".">
+    <property name="src.main.dir"        value="src/java/main"/>
+    <property name="src.test.dir"        value="src/java/test"/>
+    <property name="src.etc.dir"         value="etc"/>
+    <property name="build.dest"          value="${build.root.dir}/server/tools/keymanagement/classes"/>
+    <property name="build.test.dest"     value="${build.root.dir}/server/tools/keymanagement/testClasses"/>
+    <property name="keymanagement.tool.dir" value="${build.root.dir}/tools/keymanagement"/>
+
+    <path id="compile.keymanagement.classpath">
+        <path refid="compile.classpath"/>
+        <pathelement path="${build.root.dir}/app-framework.jar"/>
+        <pathelement path="${build.root.dir}/keymanagement-service.jar"/>
+		<pathelement path="${build.root.dir}/keymanagement-types.jar"/>
+        <pathelement path="${build.root.dir}/client-security-config.jar"/>
+        <pathelement path="${build.root.dir}/common-framework.jar"/>
+        <pathelement path="${build.root.dir}/crypt.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-types.jar"/>
+        <pathelement path="${build.root.dir}/server-tools-common.jar"/>
+    </path>
+
+    <target name="build" depends="jar">
+        <copy todir="${keymanagement.tool.dir}" failonerror="true">
+            <fileset dir="${build.root.dir}">
+                <include name="app-framework.jar"/>
+                <include name="client-security-config.jar"/>
+                <include name="common-framework.jar"/>
+                <include name="keymanagement.jar"/>
+                <include name="keymanagement-service.jar"/>
+                <include name="keymanagement-types.jar"/>
+                <include name="server-tools-common.jar"/>
+                <include name="server-shared-services.jar"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="compile-main" depends="prepare">
+        <javac srcdir="${src.main.dir}" 
+               destdir="${build.dest}" 
+               debug="${compile.debug}" 
+               verbose="${compile.verbose}" 
+               source="${compile.source}"
+               target="${compile.target}"
+               bootclasspath="${compile.bootclasspath}"
+        >
+            <classpath refid="compile.keymanagement.classpath"/>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile-main" description="Creates the tools common jar">
+        <jar destfile="${build.root.dir}/keymanagement.jar" manifest="etc/keymanagement-manifest.txt">
+            <fileset dir="${build.dest}">
+                <include name="**/*"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="prepare">
+        <!-- Setup folders -->
+        <mkdir dir="${build.dest}"/>
+        <mkdir dir="${keymanagement.tool.dir}"/>
+        <mkdir dir="${keymanagement.tool.dir}/security"/>
+    </target>
+
+    <!-- Setup the keymanagement tool -->
+    <target name="setup-tool" depends="build">
+        <!-- Setup security -->
+        <copy todir="${keymanagement.tool.dir}/security" 
+        	  file="${build.root.dir}/keymanagement-keystore.jks" 
+        	  failonerror="true"
+        />
+
+        <!-- Setup config/definition files -->
+        <copy todir="${keymanagement.tool.dir}" failonerror="true" flatten="true">
+            <fileset dir="${src.etc.dir}">
+                <include name="keymanagement.bat.template"/>
+                <include name="keymanagement.bat"/>
+				<include name="keymanagement.sh"/>
+                <include name="keymanagement.logging.properties"/>
+            </fileset>
+        </copy>
+    </target>
+</project>

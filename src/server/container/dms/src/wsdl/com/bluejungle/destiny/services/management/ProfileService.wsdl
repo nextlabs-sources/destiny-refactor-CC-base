@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+                  xmlns:common="http://bluejungle.com/destiny/framework/types"
+                  xmlns:types="http://bluejungle.com/destiny/services/management/types" 
+				  xmlns:basicTypes="http://bluejungle.com/destiny/framework/types" 
+                  xmlns:tns="http://bluejungle.com/destiny/services/management" 
+                  targetNamespace="http://bluejungle.com/destiny/services/management" 
+                  name="ProfileService">
+					
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://bluejungle.com/destiny/services/management">
+			<xsd:import namespace="http://bluejungle.com/destiny/services/management/types" schemaLocation="types/BaseProfile.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/services/management/types" schemaLocation="types/CommProfile.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/services/management/types" schemaLocation="types/AgentProfile.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/services/management/types" schemaLocation="types/UserProfile.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/framework/types" 
+						schemaLocation="../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicFaults.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/framework/types" 
+						schemaLocation="../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicTypes.xsd"/>
+						
+            
+            <!-- The following types are defined for specifying query parameters when attempting to retrieve profiles -->
+			<!-- Note that there used to be a base dto query type which contained the fetchSize element.  It was removed, however, when Axis wasn't able to handle it -->
+            
+            <xsd:complexType name="AgentProfileDTOQuery">
+				<xsd:sequence>
+					<xsd:element name="agentProfileDTOQueryTermSet" type="types:AgentProfileDTOQueryTermSet" minOccurs="0"/>
+					<xsd:element name="fromResult" type="types:AgentProfileDTO" minOccurs="0"/> 
+					<xsd:element name="sortField" type="types:AgentProfileDTOQueryField" minOccurs="0"/>
+		            <xsd:element name="fetchSize" type="xsd:int" default="-1"/>                    
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="CommProfileDTOQuery">
+                <xsd:sequence>
+					<xsd:element name="commProfileDTOQueryTermSet" type="types:CommProfileDTOQueryTermSet" minOccurs="0"/>
+					<xsd:element name="fromResult" type="types:CommProfileDTO" minOccurs="0"/>
+					<xsd:element name="sortField" type="types:CommProfileDTOQueryField" minOccurs="0"/>
+		            <xsd:element name="fetchSize" type="xsd:int" default="50"/>                    
+                </xsd:sequence>
+            </xsd:complexType>
+            
+            <xsd:complexType name="UserProfileDTOQuery">
+                <xsd:sequence>
+					<xsd:element name="userProfileDTOQueryTermSet" type="types:UserProfileDTOQueryTermSet" minOccurs="0"/>
+					<xsd:element name="fromResult" type="types:UserProfileDTO" minOccurs="0"/>
+					<xsd:element name="sortField" type="types:UserProfileDTOQueryField" minOccurs="0"/>
+		            <xsd:element name="fetchSize" type="xsd:int" default="50"/>                    
+                </xsd:sequence>
+            </xsd:complexType>  
+                    
+		</xsd:schema>
+	</wsdl:types>
+
+    <!-- Messages used when adding a profile -->
+	<wsdl:message name="addAgentProfileRequest">
+		<wsdl:part name="agentProfileInfo" type="types:AgentProfileInfo"/>
+	</wsdl:message>
+	<wsdl:message name="addAgentProfileResponse">
+		<wsdl:part name="agentProfileAdded" type="types:AgentProfileDTO"/>
+	</wsdl:message>
+   	<wsdl:message name="addCommProfileRequest">
+		<wsdl:part name="commProfileInfo" type="types:CommProfileInfo"/>
+	</wsdl:message>
+	<wsdl:message name="addCommProfileResponse">
+		<wsdl:part name="commProfileAdded" type="types:CommProfileDTO"/>
+	</wsdl:message>
+   	<wsdl:message name="addUserProfileRequest">
+		<wsdl:part name="userProfileInfo" type="types:UserProfileInfo"/>
+	</wsdl:message>
+	<wsdl:message name="addUserProfileResponse">
+		<wsdl:part name="userProfileAdded" type="types:UserProfileDTO"/>
+	</wsdl:message>
+
+    <!-- Messages used when updating a profile -->
+	<wsdl:message name="updateAgentProfileRequest">
+		<wsdl:part name="agentProfileDTO" type="types:AgentProfileDTO"/>
+	</wsdl:message>
+   	<wsdl:message name="updateCommProfileRequest">
+		<wsdl:part name="commProfileDTO" type="types:CommProfileDTO"/>
+	</wsdl:message>
+   	<wsdl:message name="updateUserProfileRequest">
+		<wsdl:part name="userProfileDTO" type="types:UserProfileDTO"/>
+	</wsdl:message>
+	<wsdl:message name="updateProfileResponse">
+	</wsdl:message>
+
+    <!-- Messages used when querying for profiles -->
+	<wsdl:message name="getAgentProfilesRequest">
+		<wsdl:part name="agentProfileQuery" type="tns:AgentProfileDTOQuery"/>
+	</wsdl:message>
+	<wsdl:message name="getCommProfilesRequest">
+		<wsdl:part name="commProfileQuery" type="tns:CommProfileDTOQuery"/>
+	</wsdl:message>
+   	<wsdl:message name="getUserProfilesRequest">
+		<wsdl:part name="userProfileQuery" type="tns:UserProfileDTOQuery"/>
+	</wsdl:message>
+	<wsdl:message name="getAgentProfilesResponse">
+		<wsdl:part name="agentProfileQueryResult" type="types:AgentProfileDTOList"/>
+	</wsdl:message>
+    	<wsdl:message name="getCommProfilesResponse">
+		<wsdl:part name="commProfileQueryResult" type="types:CommProfileDTOList"/>
+	</wsdl:message>
+    <wsdl:message name="getUserProfilesResponse">
+		<wsdl:part name="userProfileQueryResult" type="types:UserProfileDTOList"/>
+	</wsdl:message>
+
+    <!-- Messages used when removing a profile -->
+	<wsdl:message name="removeProfileRequest">
+		<wsdl:part name="id" type="xsd:long"/>
+	</wsdl:message>
+	<wsdl:message name="removeProfileResponse">
+	</wsdl:message>
+	
+	<wsdl:message name="getActivityJournalingSettingsRequest" >
+		<wsdl:part name="agentTypeId" type="xsd:string" />	
+	</wsdl:message>
+	<wsdl:message name="getActivityJournalingSettingsResponse">
+		<wsdl:part name="activityJournalingSettings" type="types:ActivityJournalingSettingsDTOList" />
+	</wsdl:message>
+		
+	<wsdl:message name="CommitFault">
+		<wsdl:part name="CommitFault" type="common:CommitFault"/>
+	</wsdl:message>
+	
+	<wsdl:message name="UnauthorizedCallerFault">
+		<wsdl:part name="UnauthorizedCallerFault" type="common:UnauthorizedCallerFault"/>
+	</wsdl:message>
+	
+	<wsdl:message name="ServiceNotReadyFault">
+		<wsdl:part name="ServiceNotReadyFault" type="common:ServiceNotReadyFault"/>
+	</wsdl:message>
+	
+	<wsdl:message name="UnknownEntryFault">
+		<wsdl:part name="UnknownEntryFault" type="common:UnknownEntryFault"/>
+	</wsdl:message>
+	
+	<wsdl:message name="UniqueConstraintViolationFault">
+		<wsdl:part name="UniqueConstraintViolationFault" type="common:UniqueConstraintViolationFault"/>
+	</wsdl:message>
+	
+    <!-- Profile Server Interface -->
+	<wsdl:portType name="ProfileServiceIF">
+	
+        <!--  Operations for adding a profile -->
+		<wsdl:operation name="addAgentProfile">
+			<wsdl:input  message="tns:addAgentProfileRequest"/>
+			<wsdl:output message="tns:addAgentProfileResponse"/>
+			<wsdl:fault name="CommitFault" message="tns:CommitFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="UniqueConstraintViolationFault" message="tns:UniqueConstraintViolationFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="addCommProfile">
+			<wsdl:input  message="tns:addCommProfileRequest"/>
+			<wsdl:output message="tns:addCommProfileResponse"/>
+			<wsdl:fault name="CommitFault" message="tns:CommitFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>			
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+    		<wsdl:fault name="UniqueConstraintViolationFault" message="tns:UniqueConstraintViolationFault"/>
+		</wsdl:operation>        
+   		<wsdl:operation name="addUserProfile">
+			<wsdl:input  message="tns:addUserProfileRequest"/>
+			<wsdl:output message="tns:addUserProfileResponse"/>
+			<wsdl:fault name="CommitFault" message="tns:CommitFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>			
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="UniqueConstraintViolationFault" message="tns:UniqueConstraintViolationFault"/>
+		</wsdl:operation>
+        	
+        <!-- Operations for updating a profile -->
+		<wsdl:operation name="updateAgentProfile">
+			<wsdl:input  message="tns:updateAgentProfileRequest"/>
+			<wsdl:output message="tns:updateProfileResponse"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>			
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="updateCommProfile">
+			<wsdl:input  message="tns:updateCommProfileRequest"/>
+			<wsdl:output message="tns:updateProfileResponse"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>        
+   		<wsdl:operation name="updateUserProfile">
+			<wsdl:input  message="tns:updateUserProfileRequest"/>
+			<wsdl:output message="tns:updateProfileResponse"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+        	
+        <!-- Operation for retrieving profiles -->
+		<wsdl:operation name="getAgentProfiles">
+			<wsdl:input  message="tns:getAgentProfilesRequest"/>
+			<wsdl:output message="tns:getAgentProfilesResponse"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>			
+		</wsdl:operation>
+		<wsdl:operation name="getCommProfiles">
+			<wsdl:input  message="tns:getCommProfilesRequest"/>
+			<wsdl:output message="tns:getCommProfilesResponse"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+		</wsdl:operation>        
+        <wsdl:operation name="getUserProfiles">
+			<wsdl:input  message="tns:getUserProfilesRequest"/>
+			<wsdl:output message="tns:getUserProfilesResponse"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+		</wsdl:operation>
+        	
+        <!-- Operation for removing a profile -->
+		<wsdl:operation name="removeAgentProfile">
+			<wsdl:input  message="tns:removeProfileRequest"/>
+			<wsdl:output message="tns:removeProfileResponse"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>			
+		</wsdl:operation>
+		<wsdl:operation name="removeCommProfile">
+			<wsdl:input  message="tns:removeProfileRequest"/>
+			<wsdl:output message="tns:removeProfileResponse"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>			
+		</wsdl:operation>        
+        <wsdl:operation name="removeUserProfile">
+			<wsdl:input  message="tns:removeProfileRequest"/>
+			<wsdl:output message="tns:removeProfileResponse"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+		</wsdl:operation>
+        	
+		<wsdl:operation name="getActivityJournalingSettings">
+			<wsdl:input message="tns:getActivityJournalingSettingsRequest"/>
+			<wsdl:output message="tns:getActivityJournalingSettingsResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	
+    
+    <!-- Profile Service Binding -->
+	<wsdl:binding name="ProfileServiceIFBinding" type="tns:ProfileServiceIF">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+		
+		<wsdl:operation name="addAgentProfile">
+			<wsdl:input>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>  <!-- FIXME - Note required namespace attribute to other developers -->
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:output>
+			<wsdl:fault name="CommitFault">
+				<soap:fault name="CommitFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UniqueConstraintViolationFault">
+				<soap:fault name="UniqueConstraintViolationFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="addCommProfile">
+			<wsdl:input>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:output>
+			<wsdl:fault name="CommitFault">
+				<soap:fault name="CommitFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UniqueConstraintViolationFault">
+				<soap:fault name="UniqueConstraintViolationFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>        
+   		<wsdl:operation name="addUserProfile">
+			<wsdl:input>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:output>
+			<wsdl:fault name="CommitFault">
+				<soap:fault name="CommitFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UniqueConstraintViolationFault">
+				<soap:fault name="UniqueConstraintViolationFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+        
+		<wsdl:operation name="updateAgentProfile">
+			<wsdl:input>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:output>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>        
+        <wsdl:operation name="updateCommProfile">
+			<wsdl:input>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:output>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>        
+   		<wsdl:operation name="updateUserProfile">
+			<wsdl:input>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:output>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+
+		<wsdl:operation name="getAgentProfiles">
+			<wsdl:input>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:output>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getCommProfiles">
+			<wsdl:input>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:output>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>        
+        <wsdl:operation name="getUserProfiles">
+			<wsdl:input>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:output>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+        
+		<wsdl:operation name="removeAgentProfile">
+			<wsdl:input>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:output>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="removeCommProfile">
+			<wsdl:input>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:output>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>        
+        <wsdl:operation name="removeUserProfile">
+			<wsdl:input>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:output>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getActivityJournalingSettings">
+			<wsdl:input>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+        
+	</wsdl:binding>
+	
+	<wsdl:service name="ProfileService">
+		<wsdl:port name="ProfileServiceIFPort" binding="tns:ProfileServiceIFBinding">
+			<soap:address location="http://localhost:8080/dms/services/ProfileServiceIFPort"/>
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

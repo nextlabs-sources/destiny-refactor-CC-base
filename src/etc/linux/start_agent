@@ -1,0 +1,93 @@
+#!/bin/sh
+
+# A script to start the agent on linux
+
+
+if [ ! -n "$BJROOT" ] ; then
+    echo "\$BJROOT is not defined.  Please set env variable \$BJROOT";
+    exit;
+fi
+
+# This is the build target directory structure
+jlibpath=${BJROOT}/jlib
+# Todo: Should clean up the Java code, native library code should sit in lib
+libpath=${BJROOT}/lib
+binpath=${BJROOT}/bin
+etcpath=${BJROOT}/etc
+
+if [ ! -f $binpath/controlmodule ] ; then
+    echo "controlmodule does not exist in ${BJROOT}/bin";
+    exit;
+fi
+
+
+
+# List of jarfiles required
+jarfiles=(  agent-controlmanager.jar \
+            common-domain.jar        \
+            common-domain-types.jar  \
+            common-framework.jar     \
+            server-base.jar          \
+            common-pf.jar            \
+            management-types.jar     \
+            agent-types.jar          \
+            agent-common.jar         \
+            dabs-common-services.jar \
+            dabs-agent-services.jar  \
+            log-types.jar            \
+            agent-ipc.jar            \
+            client-pf.jar            \
+            dcsf-types.jar           \
+            policy-types.jar         \
+            deployment-types.jar     \
+            server-shared-types.jar  \
+            crypt.jar                \
+         )
+
+# List of external jar files rquired
+ext_jarfiles=(  antlr.jar                     \
+                axis.jar                      \
+                commons-logging.jar           \
+                castor-0.9.5.4.jar            \
+                jaxrpc.jar                    \
+                xercesImpl.jar                \
+                xmlParserAPIs.jar             \
+                commons-discovery-0.2.jar     \
+                saaj.jar                      \
+                wsdl4j-1.5.1.jar              \
+                ehcache-1.1.jar               \
+                commons-collections-2.1.1.jar \
+                junit.jar                     \
+                activation.jar                \
+                mail.jar                      \
+            )
+
+
+classpath=
+
+# Check for the existence of the files
+for j in "${jarfiles[@]}" ;  do
+    if [ ! -f $jlibpath/$j ] ; then
+        echo "$jlibpath/$j does not exist";
+        exit;
+    fi
+    classpath=${jlibpath}/$j":"$classpath;
+done
+
+for j in "${ext_jarfiles[@]}" ;  do
+    if [ ! -f $jlibpath/$j ] ; then
+        echo "$jlibpath/$j does not exist";
+        exit;
+    fi
+   classpath=${jlibpath}/$j":"$classpath;
+done
+
+
+$binpath/controlmodule -f \
+    -d java.class.path=\":${classpath}\" \
+    -d java.library.path=${libpath}     \
+    -d java.util.logging.config.file=${etcpath}/agent.logging.properties \
+    -x debug -x runjdwp:transport=dt_socket,address=9000,server=y,suspend=n \
+    -w ${BJROOT} \
+    -a FileServer \
+

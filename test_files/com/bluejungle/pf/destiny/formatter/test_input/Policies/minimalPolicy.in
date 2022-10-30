@@ -1,0 +1,10 @@
+policy first_policy_v2
+    description "this policy is also trivial"
+    attribute governance
+    attribute usage
+    attribute access
+    severity 123456789
+    DO ALLOW
+    FOR * ON * TO * BY *
+    ON DENY DO LOG "Access denied", DONOTLOG
+    ON ALLOW DO LOG "Access granted", DONOTLOG

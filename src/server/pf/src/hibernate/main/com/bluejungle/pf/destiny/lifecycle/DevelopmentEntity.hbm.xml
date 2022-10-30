@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping package="com.bluejungle.pf.destiny.lifecycle">
+    <class name="DevelopmentEntity" table="development_entities">
+        <id name="id">
+            <generator class="native"/>
+        </id>
+        <version name="version" column="version"/>
+        <property name="owner" type="long" not-null="false"/>
+        <property name="apPql" type="text">
+            <column name="appql" length="8192" not-null="false"/>
+        </property>
+        <property name="name" type="string">
+            <column name="name" length="800" not-null="true" index="nameAndType"/>
+        </property>
+        <property name="description" type="text">
+            <column name="description" length="1024" not-null="false"/>
+        </property>
+        <property name="pqlStr" type="text">
+            <column name="pql" length="8192" not-null="true"/>
+        </property>
+        <property name="status" type="com.bluejungle.pf.destiny.lifecycle.LifecycleManager$UserTypeForDevelopmentStatus">
+            <column name="status" sql-type="char(2)" not-null="true"/>
+        </property>
+        <property name="type" type="com.bluejungle.pf.destiny.lifecycle.LifecycleManager$UserTypeForEntityType">
+            <column name="type" sql-type="char(2)" length="2" not-null="true" index="nameAndType"/>
+        </property>
+        <property name="lastUpdated" column="last_updated" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="true" />
+        <property name="created" column="created" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="true" />
+        <property name="lastModified" column="last_modified" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="true" />
+        <property name="modifier" type="long" not-null="false"/>
+        <property name="submittedTime" column="submitted_time" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false" />
+        <property name="submitter" type="long" not-null="false"/>
+        <property name="hidden" column="hidden" type="yes_no" not-null="false" />
+        <property name="hasDependencies" column="has_dependencies" type="com.bluejungle.framework.datastore.hibernate.usertypes.TernaryUserType" not-null="true"/>
+        <property name="subPolicy" column="is_sub_policy" type="com.bluejungle.framework.datastore.hibernate.usertypes.TernaryUserType" not-null="true"/>
+        <bag name="allDeploymentEntities" inverse="true" lazy="true">
+            <key column="development_id"/>
+            <one-to-many class="DeploymentEntity"/>
+        </bag>
+    </class>
+</hibernate-mapping>

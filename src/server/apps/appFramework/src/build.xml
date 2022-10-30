@@ -1,0 +1,28 @@
+<project name="App Framework Project" default="build" >
+	
+    <property name="jar.main.base.dir"   value="${build.root.dir}/appframework/classes"/>
+    <property name="jar.test.base.dir"   value="${build.root.dir}/appframework/testclasses"/>   
+
+	<!-- This is the master build file for the app framework project -->
+	<target name="build" depends="build-components, jar"> 
+	</target>
+	
+    <target name="build-components">
+        <ant dir="java/main" target="build" inheritrefs="true"/>
+        <ant dir="java/test" target="build" inheritrefs="true"/>
+    </target>
+        
+    <target name="jar">
+        <jar destfile="${build.root.dir}/app-framework.jar">
+            <fileset dir="${jar.main.base.dir}">
+                <include name="**/*.class"/>
+            </fileset>
+        </jar>
+     
+        <jar destfile="${build.root.dir}/app-framework-test.jar">
+            <fileset dir="${jar.test.base.dir}">
+                <include name="**/*.class"/>
+            </fileset>
+        </jar>        
+    </target>
+</project>

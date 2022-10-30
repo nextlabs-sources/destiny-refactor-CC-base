@@ -1,0 +1,35 @@
+# This is a sample definition file for an application enrollment. 
+
+enroll.users					    false
+enroll.contacts					    false
+enroll.computers				    false
+enroll.applications				    true
+
+# missing values will be written as blank or the equivalent rather than skipped
+store.missing.attributes            true
+
+#
+# Required attributes
+#
+entry.attributefor.staticid			uniqueGlobalIdentifier
+
+application.requirements		    (objectClass=Application)
+user.requirements		            (objectClass=User)
+contact.requirements		        (objectClass=Contact)
+computer.requirements		        (objectClass=Computer)
+
+group.requirements					(objectClass=Group)
+group.attributefor.enumeration		member
+
+#
+# Attribute mappings
+#
+application.string.uniqueName           fullyQualifiedName
+application.string.displayName			cn
+application.cs-string.appFingerPrint    applicationFingerPrint
+application.cs-string.systemreference   uniqueSystemIdentifier
+
+
+# NOTE: use '/' instead '\' for file path seperator
+# NOTE: use full path 
+ldif.filename         [FILE_DIR]/applications.ldif 

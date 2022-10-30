@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.agentmgr.hibernateimpl">
+	
+	<class name="AgentRegistrationDO" table="AGENT_REGISTRATION">
+		<!-- Generic persisted properties -->
+		<id name="id">
+			<generator class="native"/>
+		</id>
+
+		<!-- Object-specific properties -->
+		<property name="registrationTime" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType" not-null="true"/>
+		
+		<many-to-one
+			name="agent"
+			class="AgentDO"
+			column="agent_id"
+			not-null="true">
+		</many-to-one>
+
+	</class>
+
+</hibernate-mapping>

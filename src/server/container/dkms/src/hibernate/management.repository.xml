@@ -1,0 +1,16 @@
+<!DOCTYPE hibernate-configuration PUBLIC 
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-2.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!--
+            Persisted object class mappings
+        -->
+        <mapping resource="com/bluejungle/destiny/container/shared/applicationusers/repository/hibernateimpl/hibernate/AccessDomainDO.hbm.xml"/>
+        <mapping resource="com/bluejungle/destiny/container/shared/applicationusers/repository/hibernateimpl/hibernate/AccessGroupDO.hbm.xml"/>
+        <mapping resource="com/bluejungle/destiny/container/shared/applicationusers/repository/hibernateimpl/hibernate/ApplicationUserDO.hbm.xml"/>
+        <mapping resource="com/bluejungle/destiny/container/shared/applicationusers/repository/hibernateimpl/hibernate/SuperUserDO.hbm.xml"/>
+
+    </session-factory>
+</hibernate-configuration>

@@ -1,0 +1,128 @@
+<xs:schema 	targetNamespace="http://bluejungle.com/destiny/types/users/v1" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:types="http://bluejungle.com/destiny/types/users/v1"
+			xmlns:basicTypes="http://bluejungle.com/destiny/types/basic/v1">
+	
+	<xs:complexType name="User">
+		<xs:sequence>
+			<xs:element name="firstName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="lastName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="displayName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UserClass">
+		<xs:sequence>
+			<xs:element name="displayName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="enrollmentType" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="UserClassList">
+		<xs:sequence>
+			<xs:element name="classes" type="types:UserClass" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UserList">
+		<xs:sequence>
+			<xs:element name="users" type="types:User" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="UserQueryFieldName">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="firstName"/>
+			<xs:enumeration value="lastName"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="UserQuerySpec">
+		<xs:sequence>
+			<xs:element name="searchSpec" type="types:UserQueryTermList" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="sortSpec" type="types:UserSortTermList" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="limit" type="xs:positiveInteger" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UserQueryTerm">
+		<xs:sequence>
+			<xs:element name="fieldName" type="types:UserQueryFieldName" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="expression" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="UserQueryTermList">
+		<xs:sequence>
+			<xs:element name="terms" type="types:UserQueryTerm" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="UserSortFieldName">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="firstName"/>
+			<xs:enumeration value="lastName"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="UserSortTerm">
+		<xs:sequence>
+			<xs:element name="fieldName" type="types:UserSortFieldName" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="direction" type="basicTypes:SortDirection" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="UserSortTermList">
+		<xs:sequence>
+			<xs:element name="terms" type="types:UserSortTerm" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="UserClassQueryFieldName">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="displayName"/>
+			<xs:enumeration value="name"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="UserClassQuerySpec">
+		<xs:sequence>
+			<xs:element name="searchSpec" type="types:UserClassQueryTermList" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="sortSpec" type="types:UserClassSortTermList" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UserClassQueryTerm">
+		<xs:sequence>
+			<xs:element name="fieldName" type="types:UserClassQueryFieldName" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="expression" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UserClassQueryTermList">
+		<xs:sequence>
+			<xs:element name="terms" type="types:UserClassQueryTerm" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="UserClassSortFieldName">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="displayName"/>
+			<xs:enumeration value="name"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="UserClassSortTerm">
+		<xs:sequence>
+			<xs:element name="fieldName" type="types:UserClassSortFieldName" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="direction" type="basicTypes:SortDirection" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+		<xs:complexType name="UserClassSortTermList">
+		<xs:sequence>
+			<xs:element name="terms" type="types:UserClassSortTerm" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

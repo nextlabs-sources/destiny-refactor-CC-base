@@ -1,0 +1,417 @@
+{
+
+    "Request": {
+
+        "CombinedDecision": false,
+
+        "ReturnPolicyIdList": false,
+
+        "XPathVersion": "http://www.w3.org/TR/1999/REC-xpath-19991116",
+
+        "Category": [
+
+            {
+
+                "CategoryId": "urn:nextlabs:names:evalsvc:1.0:attribute-category:application",
+
+                "Id": "application1",
+
+                "Attribute": [
+
+                    {
+
+                        "AttributeId": "urn:nextlabs:names:evalsvc:1.0:application:application-id",
+
+                        "Value": "word",
+
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+
+                        "IncludeInResult": false
+
+                    }
+
+                ]
+
+            },
+
+            {
+
+                "CategoryId": "urn:nextlabs:names:evalsvc:1.0:attribute-category:host",
+
+                "Id": "host1",
+
+                "Attribute": [
+
+                    {
+
+                        "DataType": "http://www.w3.org/2001/XMLSchema#ipAddress",
+
+                        "AttributeId": "urn:nextlabs:names:evalsvc:1.0:host:inet_address",
+
+                        "Value": "10.63.0.131",
+
+                        "IncludeInResult": "false"
+
+                    }
+
+                ]
+
+            },
+
+            {
+
+                "CategoryId": "urn:oasis:names:tc:xacml:1.0:subject-category:recipient-subject",
+
+                "Id": "additionalData1",
+
+                "Attribute": [
+
+                    {
+
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+
+                        "AttributeId": "urn:nextlabs:names:evalsvc:1.0:recipient:email",
+
+                        "Value": [
+
+                            "shiqiang.duan@nextlabs.com",
+
+                            "aishwarya@nextlabs.com",
+
+                            "amila.silva@nextlabs.com"
+
+                        ],
+
+                        "IncludeInResult": "false"
+
+                    }
+
+                ]
+
+            }
+
+        ],
+
+        "Subject": [
+
+            {
+
+                "CategoryId": "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
+
+                "Id": "subject1",
+
+                "Attribute": [
+
+                    {
+
+                        "AttributeId": "urn:oasis:names:tc:xacml:1.0:subject:subject-id",
+
+                        "Value": "aishwarya",
+
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+
+                        "IncludeInResult": false
+
+                    },
+
+                    {
+
+                        "AttributeId": "role",
+
+                        "Value": "QA",
+
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+
+                        "IncludeInResult": false
+
+                    },
+
+                    {
+
+                        "AttributeId": "dept",
+
+                        "Value": "Dept1",
+
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+
+                        "IncludeInResult": false
+
+                    }
+
+                ]
+
+            },
+
+            {
+
+                "CategoryId": "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
+
+                "Id": "subject2",
+
+                "Attribute": [
+
+                    {
+
+                        "AttributeId": "urn:oasis:names:tc:xacml:1.0:subject:subject-id",
+
+                        "Value": "duan",
+
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+
+                        "IncludeInResult": false
+
+                    },
+
+                    {
+
+                        "AttributeId": "role",
+
+                        "Value": "QA",
+
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+
+                        "IncludeInResult": false
+
+                    },
+
+                    {
+
+                        "AttributeId": "dept",
+
+                        "Value": "Dept1",
+
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+
+                        "IncludeInResult": false
+
+                    }
+
+                ]
+
+            }
+
+        ],
+
+        "Action": [
+
+            {
+
+                "CategoryId": "urn:oasis:names:tc:xacml:3.0:attribute-category:action",
+
+                "Id": "action1",
+
+                "Attribute": [
+
+                    {
+
+                        "AttributeId": "urn:oasis:names:tc:xacml:1.0:action:action-id",
+
+                        "Value": "OPEN",
+
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+
+                        "IncludeInResult": false
+
+                    }
+
+                ]
+
+            }
+
+        ],
+
+        "Resource": [
+
+            {
+
+                "CategoryId": "urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+
+                "Id": "resource1",
+
+                "Attribute": [
+
+                    {
+
+                        "AttributeId": "urn:oasis:names:tc:xacml:1.0:resource:resource-id",
+
+                        "Value": "c:/foo.txt",
+
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+
+                        "IncludeInResult": false
+
+                    },
+
+                    {
+
+                        "AttributeId": "urn:nextlabs:names:evalsvc:1.0:resource:resource-type",
+
+                        "Value": "fso",
+
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+
+                        "IncludeInResult": false
+
+                    },
+
+                    {
+
+                        "AttributeId": "urn:nextlabs:names:evalsvc:1.0:resource:resource-dimension",
+
+                        "Value": "from",
+
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+
+                        "IncludeInResult": false
+
+                    },
+
+                    {
+
+                        "AttributeId": "table",
+
+                        "Value": "customer",
+
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+
+                        "IncludeInResult": false
+
+                    }
+
+                ]
+
+            },
+
+            {
+
+                "CategoryId": "urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+
+                "Id": "resource2",
+
+                "Attribute": [
+
+                    {
+
+                        "AttributeId": "urn:oasis:names:tc:xacml:1.0:resource:resource-id",
+
+                        "Value": "c:/foo.txt",
+
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+
+                        "IncludeInResult": false
+
+                    },
+
+                    {
+
+                        "AttributeId": "urn:nextlabs:names:evalsvc:1.0:resource:resource-type",
+
+                        "Value": "fso",
+
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+
+                        "IncludeInResult": false
+
+                    },
+
+                    {
+
+                        "AttributeId": "urn:nextlabs:names:evalsvc:1.0:resource:resource-dimension",
+
+                        "Value": "from",
+
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+
+                        "IncludeInResult": false
+
+                    },
+
+                    {
+
+                        "AttributeId": "table",
+
+                        "Value": "customer",
+
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+
+                        "IncludeInResult": false
+
+                    }
+
+                ]
+
+            }
+
+        ],
+
+        "MultiRequests": {
+
+            "RequestReference": [
+
+                {
+
+                    "ReferenceId": [
+
+                        "subject1",
+
+                        "resource1",
+
+                        "action1",
+
+                        "application1",
+
+                        "host1",
+
+                        "additionalData1"
+
+                    ]
+
+                },
+
+                {
+
+                    "ReferenceId": [
+
+                        "subject2",
+
+                        "resource1",
+
+                        "action1",
+
+                        "application1",
+
+                        "host1",
+
+                        "additionalData1"
+
+                    ]
+
+                },
+
+                {
+
+                    "ReferenceId": [
+
+                        "subject2",
+
+                        "resource2",
+
+                        "action1",
+
+                        "application1",
+
+                        "host1",
+
+                        "additionalData1"
+
+                    ]
+
+                }
+
+            ]
+
+        }
+
+    }
+
+}

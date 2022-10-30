@@ -1,0 +1,29 @@
+<custom-reports-ui xmlns="http://nextlabs.com/customapps/v1">
+
+	<!-- Header label of the report list panel -->
+	<list-header>ITAR Reports</list-header>
+
+	<!-- Header label of the report description panel -->
+	<description-header>Description</description-header>
+
+	<!-- Header label prefix of the report parameter panel -->
+	<parameter-header>Report Details</parameter-header>
+
+	<report-list>
+		<report-parameters title="ITAR lifecycle - Trend">
+			<!-- Appended to  the parameter panel header label -->
+			<parameter-header-suffix>ITAR Report 1</parameter-header-suffix>
+
+			<!-- Text box widget. The name is supplied to reporter library
+                     during report generation -->
+			<text-box>
+				<name>policy</name>
+				<label>Filter by Policy</label>
+			</text-box>
+			<text-box>
+				<name>resource</name>
+				<label>Filter by Resource</label>
+			</text-box>
+		</report-parameters>
+	</report-list>
+</custom-reports-ui>

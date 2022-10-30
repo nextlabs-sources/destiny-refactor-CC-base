@@ -1,0 +1,30 @@
+Miscellaneous things to make Linux life easier
+
+Product files
+=============
+
+- destiny-i386.conf
+  so file directory for the ldconfig, to be installed as part of the product
+
+- bjfse
+  The new service script (supposedly replace start_agent), to be installed as part 
+  of the product
+
+Development tool
+================
+
+- bluejunglerc
+  Setup all the environment variables for the Linux to work with perforce and compile
+
+- setplatformrc
+  Setup the environment variables for Linux to compile
+
+- bjbjfiles
+  List of files to send to BJBJ team.  We should have control on this because we
+  cannot export all the files to foreign country.
+
+- start_agent
+  A start script to run the agent (probably obsolute when kernel driver is introduced)
+
+
+I know product files and development tools shouldn't put together....

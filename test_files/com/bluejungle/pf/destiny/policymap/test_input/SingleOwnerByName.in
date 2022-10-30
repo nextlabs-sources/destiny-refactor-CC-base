@@ -1,0 +1,2 @@
+FILE_SERVER
+id 0 POLICY TestPolicy FOR resource.fso.owner = "jimmy.carter@test.bluejungle.com" ON * BY * DO deny

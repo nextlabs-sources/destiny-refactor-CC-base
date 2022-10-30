@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.inquirymgr.hibernateimpl">
+	
+	<class name="InquiryDO" table="INQUIRY">
+		
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		
+		<property name="targetData" type="com.bluejungle.destiny.container.shared.inquirymgr.hibernateimpl.InquiryTargetDataUserType" not-null="true"/>
+		
+		<set name="actions" inverse="true" cascade="all-delete-orphan" lazy="false">
+			<key column="inquiry_id"/>
+			<one-to-many class="InquiryActionDO"/>
+		</set>
+		
+		<set name="obligations" inverse="true" cascade="all-delete-orphan" lazy="false">
+			<key column="inquiry_id"/>
+			<one-to-many class="InquiryObligationDO"/>
+		</set>
+		
+		<set name="policies" inverse="true" cascade="all-delete-orphan" lazy="false">
+			<key column="inquiry_id"/>
+			<one-to-many class="InquiryPolicyDO"/>
+		</set>
+		
+		<set name="policyDecisions" inverse="true" cascade="all-delete-orphan" lazy="false">
+			<key column="inquiry_id"/>
+			<one-to-many class="InquiryPolicyDecisionDO"/>
+		</set>
+		
+		<set name="resources" inverse="true" cascade="all-delete-orphan" lazy="false">
+			<key column="inquiry_id"/>
+			<one-to-many class="InquiryResourceDO"/>
+		</set>
+		
+		<set name="users" inverse="true" cascade="all-delete-orphan" lazy="false">
+			<key column="inquiry_id"/>
+			<one-to-many class="InquiryUserDO"/>
+		</set>
+
+		<property name="loggingLevel" column="logging_level" not-null="true"/>
+	</class>
+</hibernate-mapping>

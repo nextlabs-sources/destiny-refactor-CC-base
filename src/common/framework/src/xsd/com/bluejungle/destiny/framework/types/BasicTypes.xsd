@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- WARNING!!! - When changing anything in this file, make sure you also consider updating the customer public BasicTypes within DAC -->	
+<xs:schema  targetNamespace="http://bluejungle.com/destiny/framework/types" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:types="http://bluejungle.com/destiny/framework/types">
+
+    <!-- An Object Identifier - -->
+	<xs:simpleType name="ID">
+        <xs:restriction base="xs:integer"> 
+            <xs:maxinclusive value="9223372036854775807"/> <!-- FIXME Currently the same as type "long".  Revisit when ID's in system are clarified -->
+            <xs:mininclusive value="-9223372036854775808"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+	<!-- List of IDs -->
+	<xs:complexType name="IDList">
+		<xs:sequence>
+			<xs:element name="IDList" type="types:ID" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>	
+		
+    <!-- 
+        A Human Readable Identifier without spaces
+    -->
+    <xs:simpleType name="name">
+        <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="128"/>
+            <xs:pattern value="{^#x20}*"/>
+        </xs:restriction>    
+    </xs:simpleType>
+    
+    <!-- 
+        A Human Friendly Title
+        token = The set of Strings not containing a carriage return, line feed, 
+                tab, leading and trailing spaces, and internal sequences of two 
+                or more spaces 
+    -->
+	<xs:simpleType name="title">
+        <xs:restriction base="xs:token"> 
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
+        
+	<xs:complexType name="time-interval-DTO">
+		<xs:sequence>
+			<xs:element name="time" type="xs:unsignedShort" minoccurs="1"/>
+			<xs:element name="time-unit" type="types:time-units" 
+				default="seconds"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="time-units">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="days"/>
+			<xs:enumeration value="hours"/>
+			<xs:enumeration value="minutes"/>
+			<xs:enumeration value="seconds"/>
+			<xs:enumeration value="milliseconds"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

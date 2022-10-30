@@ -1,0 +1,10 @@
+policy simple_reference_policy
+    description "Simple Reference Policy"
+    DO DENY
+    FOR resource.fso.name="*.txt"
+    ON OPEN OR EDIT
+    TO *
+    BY GROUP="USER/Unauthorized"
+    ON DENY DO LOG
+
+COMPONENT  "USER/Unauthorized"  = user.name = "E Vilgenius"

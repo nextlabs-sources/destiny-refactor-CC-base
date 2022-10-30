@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE copyright [
+  <!ENTITY services SYSTEM "file:com/bluejungle/destiny/client/axis/services.include">
+]>
+
+<deployment name="defaultClientConfig"
+            xmlns="http://xml.apache.org/axis/wsdd/"
+            xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+ <handler name="authHandler" type="java:com.bluejungle.destiny.appframework.appsecurity.axis.AuthenticationHandler"/>
+
+ <globalConfiguration>
+   <parameter name="disablePrettyXML" value="true"/>
+   <requestFlow>
+     <handler type="authHandler"/> 	
+   </requestFlow>
+   <responseFlow>
+     <handler type="authHandler"/> 	
+   </responseFlow>
+ </globalConfiguration>
+ <transport name="http" pivot="java:org.apache.axis.transport.http.HTTPSender"/>
+ <transport name="local" pivot="java:org.apache.axis.transport.local.LocalSender"/>
+ <transport name="java" pivot="java:org.apache.axis.transport.java.JavaSender"/>
+ 
+ &services;
+ 
+</deployment>
+

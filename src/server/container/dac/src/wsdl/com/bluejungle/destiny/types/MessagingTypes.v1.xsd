@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://bluejungle.com/destiny/types/messaging/v1" 
+			xmlns:tns="http://bluejungle.com/destiny/types/messaging/v1"
+			xmlns:basicTypes="http://bluejungle.com/destiny/types/basic/v1"
+			xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:import namespace="http://bluejungle.com/destiny/types/basic/v1" schemaLocation="BasicTypes.v1.xsd"/>
+
+	<xs:complexType name="MessegeHandlerConfig">
+		<xs:sequence>
+			<xs:element name="messageHandlerName" type="basicTypes:Name"/>
+			<xs:element name="messageHandlerProperties" type="tns:MessageHandlerProperties" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="MessageHandlerProperties">
+		<xs:sequence>
+			<xs:element name="MessageHandlerProperty" type="basicTypes:Property" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

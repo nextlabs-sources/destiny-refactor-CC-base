@@ -1,0 +1,131 @@
+<project name="automation_tools" default="build">
+
+	<var name="nlbuildroot" value="${basedir}/../../../../.." />
+	<property name="automation.src.dir"      value="${basedir}"/>
+	<property name="automation.etc.dir"      value="${build.root.dir}/tools/automation/etc"/>
+	<property name="automation.tool.dir"      value="${build.root.dir}/tools/automation/jar"/>
+	<property name="build.dest"   value="${build.root.dir}/server/tools/automation/classes/main"/>
+	<property name="doc.dest"   value="${build.root.dir}/server/tools/automation/doc"/>
+
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	<path id="compile.automation.classpath">
+		<path refid="compile.classpath"/>
+		<pathelement path="${build.root.dir}/agent-manager.jar"/>
+		<pathelement path="${build.root.dir}/common-domain.jar"/>
+		<pathelement path="${build.root.dir}/common-framework.jar"/>
+		<pathelement path="${build.root.dir}/common-pf.jar"/>
+		<pathelement path="${build.root.dir}/inquiry-manager-shared.jar"/>
+		<pathelement path="${build.root.dir}/management-types.jar"/>
+		<pathelement path="${build.root.dir}/policy-deploy-manager.jar"/>
+		<pathelement path="${build.root.dir}/profile-manager.jar"/>
+		<pathelement path="${build.root.dir}/server-base.jar"/>
+		<pathelement path="${build.root.dir}/server-datasource.jar"/>
+		<pathelement path="${build.root.dir}/server-dcsf.jar"/>
+		<pathelement path="${build.root.dir}/server-dcsf-test.jar"/>
+		<pathelement path="${build.root.dir}/server-framework.jar"/>
+		<pathelement path="${build.root.dir}/server-pf.jar"/>
+		<pathelement path="${build.root.dir}/server-pf-tests.jar"/>
+		<pathelement path="${build.root.dir}/server-shared-tests.jar"/>
+		<pathelement path="${build.root.dir}/dac-services.jar"/>
+		<pathelement path="${build.root.dir}/dac-types.jar"/>
+		<pathelement path="${build.root.dir}/app-framework.jar"/>
+		<pathelement path="${build.root.dir}/app-framework-test.jar"/>
+		<pathelement path="${build.root.dir}/server-shared-services.jar"/>
+		<pathelement path="${build.root.dir}/server-shared-types.jar"/>
+		<pathelement path="${build.dest}"/>
+	</path>
+         
+
+	<target name="build" depends="jar"/>
+		
+	<target name="compile" depends="pre-build">
+            <javac srcdir="${automation.src.dir}" destdir="${build.dest}" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+                <classpath refid="compile.automation.classpath"/>
+            </javac>
+	</target>
+	
+    <target name="doc">
+        <mkdir dir="${doc.dest}"/>
+        <javadoc sourcepath="${automation.src.dir}" destdir="${doc.dest}" linksource="yes" 
+                 classpathref="compile.server_shared.classpath" source="${compile.source}" >
+            <packageset dir="${src.dir}" defaultexcludes="yes">
+                <include name="**/*"/>
+            </packageset>
+        </javadoc>
+    </target>
+                         
+	<target name="jar" depends="compile" description="creates a jar file for the tool">
+		<jar destfile="${build.root.dir}/automation.jar">
+			<fileset dir="${build.dest}">
+				<include name="**/*"/>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="pre-build">
+		<mkdir dir="${build.dest}"/>
+		<mkdir dir="${automation.tool.dir}"/>
+	</target>
+	
+	<target name="setup-tool">
+		<copy todir="${automation.tool.dir}" failonerror="true">
+			<fileset dir="${build.root.dir}">
+				<include name="automation.jar"/>
+				<include name="agent-manager.jar"/>
+				<include name="common-domain.jar"/>
+				<include name="common-framework.jar"/>
+				<include name="common-pf.jar"/>
+				<include name="inquiry-manager-shared.jar"/>
+				<include name="management-types.jar"/>
+				<include name="policy-deploy-manager.jar"/>
+				<include name="profile-manager.jar"/>
+				<include name="server-base.jar"/>
+				<include name="server-datasource.jar"/>
+				<include name="server-dcsf.jar"/>
+				<include name="server-dcsf-test.jar"/>
+				<include name="server-framework.jar"/>
+				<include name="server-pf.jar"/>
+				<include name="server-pf-tests.jar"/>
+				<include name="server-shared-tests.jar"/>
+				<include name="dac-services.jar"/>
+				<include name="dac-types.jar"/>
+				<include name="app-framework.jar"/>
+				<include name="app-framework-test.jar"/>
+				<include name="server-shared-services.jar"/>
+				<include name="server-shared-types.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/junit-4.3.jar" failonerror="true"/>
+		<copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/commons-logging-1.0.4.jar" failonerror="true"/>
+		<copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/ehcache-1.1.jar" failonerror="true"/>
+		<copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/commons-collections-3.2.jar" failonerror="true"/>
+		<copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/commons-discovery-0.2.jar" failonerror="true"/>
+		<copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/mail.jar" failonerror="true"/>
+		<copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/axis.jar" failonerror="true"/>
+		<copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/xercesImpl.jar" failonerror="true"/>
+		<copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/jaxrpc.jar" failonerror="true"/>
+		<copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/antlr.jar" failonerror="true"/>
+		<copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/postgresql-9.2-1002.jdbc4.jar" failonerror="true"/>
+		<copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/ldap.jar" failonerror="true"/>
+		<copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/hibernate2.jar" failonerror="true"/>
+		<copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/odmg-3.0.jar" failonerror="true"/>
+		<copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/cglib-full-2.0.2.jar" failonerror="true"/>
+		<copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/dom4j-1.4.jar" failonerror="true"/>
+		<copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/jta.jar" failonerror="true"/>
+		<copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/saaj.jar" failonerror="true"/>
+		<copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/wsdl4j-1.5.1.jar" failonerror="true"/>
+		<copy todir="${automation.tool.dir}" file="${oracle.jdbc}" failonerror="true"/>
+        <copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/db2jcc.jar" failonerror="true"/>
+        <copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/db2jcc_license_cu.jar" failonerror="true"/>
+        <copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/sqljdbc4.jar" failonerror="true"/>
+        <copy todir="${automation.tool.dir}" file="${xlib_jar_dir}/jtds-1.2.2.jar" failonerror="true"/>
+		<copy todir="${automation.etc.dir}" file="../etc/client-config.wsdd" failonerror="true"/>
+	</target>
+
+	<target name="package-log-remover" depends="jar">
+		<jar destfile="${build.root.dir}/logremover.jar" filesetmanifest="merge">
+			<zipgroupfileset dir="${automation.tool.dir}"/>
+		</jar>
+	</target>
+</project>

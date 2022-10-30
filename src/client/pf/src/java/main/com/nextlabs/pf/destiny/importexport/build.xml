@@ -1,0 +1,22 @@
+<project basedir="." name="importexport_tool" default="build">
+	<property name="src.dir"      value="${basedir}"/>
+	<property name="build.dest"   value="${build.root.dir}/server/tools/importexport/classes/main"/>
+		
+	<path id="compile.classpath">
+		<path refid="compile.classpath"/>
+		<pathelement path="${build.root.dir}/agent-manager.jar"/>
+	</path>
+	    
+	<target name="init">
+		<mkdir dir="${build.dest}" />
+	</target>
+		
+    <target name="build" depends="compile" />        
+   
+	<target name="compile" depends="init"> 
+		<javac srcdir="${src.dir}" destdir="${build.dest}" debug="${compile.debug}" verbose="${compile.verbose}"  source="${compile.source}" target="${compile.target}" executable="${compile.executable}" bootclasspath="${compile.bootclasspath}">
+			<include name="**/*.java"/>
+			<classpath refid="compile.classpath"/>
+        </javac>
+	</target>
+</project>

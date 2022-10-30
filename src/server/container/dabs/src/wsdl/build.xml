@@ -1,0 +1,316 @@
+<project name="dabs_wsdl_build" default="build">
+    
+    <property name="wsdl.src.dir"      value="${basedir}"/>
+    <property name="build.dest"   value="${build.root.dir}/server/container/dabs/WEB-INF/classes"/>
+    <property name="build.gendest" value="${build.root.dir}/server/container/dabs/genclasses"/>
+    <property name="services.agent.dir" value="com/bluejungle/destiny/services/agent"/>
+    <property name="services.deployment.dir" value="com/bluejungle/destiny/services/deployment"/>
+    <property name="services.log.dir" value="com/bluejungle/destiny/services/log"/>
+    <property name="services.ping.dir" value="com/bluejungle/destiny/services/ping"/>
+    <property name="nextlabs.servicebase.dir" value="com/nextlabs/destiny/"/>
+    <property name="nextlabs.log.services.v2.dir" value="${nextlabs.servicebase.dir}/services/log/v2"/>
+    <property name="nextlabs.log.types.v2.dir" value="${nextlabs.servicebase.dir}/types/log/v2"/>
+    <property name="nextlabs.log.interfaces.v2.dir" value="${nextlabs.servicebase.dir}/interfaces/log/v2"/>
+    <property name="nextlabs.log.bindings.v2.dir" value="${nextlabs.servicebase.dir}/bindings/log/v2"/>
+    <property name="nextlabs.log.services.v3.dir" value="${nextlabs.servicebase.dir}/services/log/v3"/>
+    <property name="nextlabs.log.types.v3.dir" value="${nextlabs.servicebase.dir}/types/log/v3"/>
+    <property name="nextlabs.log.interfaces.v3.dir" value="${nextlabs.servicebase.dir}/interfaces/log/v3"/>
+    <property name="nextlabs.log.bindings.v3.dir" value="${nextlabs.servicebase.dir}/bindings/log/v3"/>
+    <property name="nextlabs.log.services.v4.dir" value="${nextlabs.servicebase.dir}/services/log/v4"/>
+    <property name="nextlabs.log.types.v4.dir" value="${nextlabs.servicebase.dir}/types/log/v4"/>
+    <property name="nextlabs.log.interfaces.v4.dir" value="${nextlabs.servicebase.dir}/interfaces/log/v4"/>
+    <property name="nextlabs.log.bindings.v4.dir" value="${nextlabs.servicebase.dir}/bindings/log/v4"/>
+    <property name="nextlabs.log.services.v5.dir" value="${nextlabs.servicebase.dir}/services/log/v5"/>
+    <property name="nextlabs.log.types.v5.dir" value="${nextlabs.servicebase.dir}/types/log/v5"/>
+    <property name="nextlabs.log.interfaces.v5.dir" value="${nextlabs.servicebase.dir}/interfaces/log/v5"/>
+    <property name="nextlabs.log.bindings.v5.dir" value="${nextlabs.servicebase.dir}/bindings/log/v5"/>
+
+    <path id="compile.dabs.classpath">
+        <path refid="compile.classpath"/>
+        <pathelement path="${build.root.dir}/common-framework.jar"/>
+        <pathelement path="${build.root.dir}/management-types.jar"/>
+        <pathelement path="${build.root.dir}/server-framework.jar"/>
+        <pathelement path="${build.root.dir}/server-datasource.jar"/>
+        <pathelement path="${build.root.dir}/server-base.jar"/>
+        <pathelement path="${build.root.dir}/server-dcsf.jar"/>
+        <pathelement path="${build.root.dir}/server-dcsf-test.jar"/>
+        <pathelement path="${build.root.dir}/agent-manager.jar"/>
+        <pathelement path="${build.root.dir}/policy-deploy-manager.jar"/>
+        <pathelement path="${build.root.dir}/profile-manager.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-enumerations.jar"/>
+        <pathelement path="${build.dest}"/>
+        <pathelement path="${build.gendest}"/>
+    </path>
+    
+    <target name="build"/>
+    
+    <target name="pre-build">
+        <mkdir dir="${build.dest}"/>
+        <mkdir dir="${build.gendest}"/>
+        <mkdir dir="${gen.dir}/${services.deployment.dir}/"/>
+        <mkdir dir="${gen.dir}/${services.agent.dir}/"/>
+        <mkdir dir="${gen.dir}/${services.log.dir}/"/>
+        <mkdir dir="${gen.dir}/${services.ping.dir}/"/>
+        <mkdir dir="${gen.dir}/${nextlabs.servicebase.dir}/"/>
+    </target>
+    
+    <target name="wsdl-compile" description="Compile generated wsdl code">
+        <javac srcdir="${gen.dir}" destdir="${build.gendest}" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="compile.classpath"/>
+            <include name="${services.deployment.dir}/**/*.java"/>
+            <include name="${services.agent.dir}/**/*.java"/>
+            <include name="${services.log.dir}/**/*.java"/>
+            <include name="${services.ping.dir}/**/*.java"/>
+            <include name="${nextlabs.servicebase.dir}/**/*.java"/>
+        </javac>
+    </target>
+    
+    <target name="wsdl-generate" depends="pre-build" description="Generates code from WSDL">
+
+        <!-- Takes care of PolicyDeploymentService -->
+        <wsdl2java url="${wsdl.src.dir}/${services.deployment.dir}/PolicyDeploymentService.wsdl"
+                   output="${gen.dir}"
+                   deployscope="application"
+                   serverSide="yes"
+                   skeletonDeploy="no"
+                   implementationClassName="com.bluejungle.destiny.container.dabs.DABSPolicyDeploymentServiceImpl"
+                   noimports="no"
+                   verbose="yes"
+                   testcase="yes"
+                   nowrapped="true"
+                   factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+                   timeout="-1"
+                   trustedCallers="DCC">
+
+        </wsdl2java>		
+        <move file="${gen.dir}/${services.deployment.dir}/deploy.wsdd" tofile="${gen.dir}/${services.deployment.dir}/deploy-PolicyDeploymentService.wsdd"/>
+        <move file="${gen.dir}/${services.deployment.dir}/undeploy.wsdd" tofile="${gen.dir}/${services.deployment.dir}/undeploy-PolicyDeploymentService.wsdd"/>
+
+        <!-- Takes care of AgentDeploymentService -->
+        <wsdl2java url="${wsdl.src.dir}/${services.deployment.dir}/AgentDeploymentService.wsdl"
+                   output="${gen.dir}"
+                   deployscope="application"
+                   serverSide="yes"
+                   skeletonDeploy="no"
+                   implementationClassName="com.bluejungle.destiny.container.dabs.DABSAgentDeploymentServiceImpl"
+                   noimports="no"
+                   verbose="yes"
+                   testcase="yes"
+                   nowrapped="true"
+                   factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+                   timeout="-1"
+                   trustedCallers="DCC">
+
+        </wsdl2java>		
+        <move file="${gen.dir}/${services.deployment.dir}/deploy.wsdd" tofile="${gen.dir}/${services.deployment.dir}/deploy-AgentDeploymentService.wsdd"/>
+        <move file="${gen.dir}/${services.deployment.dir}/undeploy.wsdd" tofile="${gen.dir}/${services.deployment.dir}/undeploy-AgentDeploymentService.wsdd"/>
+        
+        <!-- Takes care of AgentService -->
+        <wsdl2java url="${wsdl.src.dir}/${services.agent.dir}/AgentService.wsdl"
+                   output="${gen.dir}"
+                   deployscope="application"
+                   serverSide="yes"
+                   skeletonDeploy="no"
+                   implementationClassName="com.bluejungle.destiny.container.dabs.DABSAgentServiceImpl"
+                   noimports="no"
+                   verbose="yes"
+                   testcase="yes"
+                   nowrapped="true"
+                   timeout="-1"
+                   factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+                   accessList="Agent=*- registerAgent;Temp_Agent=registerAgent">
+        </wsdl2java>		
+        <move file="${gen.dir}/${services.agent.dir}/deploy.wsdd" tofile="${gen.dir}/${services.agent.dir}/deploy-AgentService.wsdd"/>
+        <move file="${gen.dir}/${services.agent.dir}/undeploy.wsdd" tofile="${gen.dir}/${services.agent.dir}/undeploy-AgentService.wsdd"/>
+        
+        <!-- Takes care of LogService -->
+        <wsdl2java url="${wsdl.src.dir}/${services.log.dir}/LogService.wsdl"
+                   output="${gen.dir}"
+                   deployscope="application"
+                   serverSide="yes"
+                   skeletonDeploy="no"
+                   implementationClassName="com.bluejungle.destiny.container.dabs.DABSLogServiceImpl"
+                   noimports="no"
+                   verbose="yes"
+                   testcase="yes"
+                   nowrapped="true"
+                   timeout="-1"
+                   factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+                   trustedCallers="Agent DCC">
+        </wsdl2java>		
+        <move file="${gen.dir}/${services.log.dir}/deploy.wsdd" tofile="${gen.dir}/${services.log.dir}/deploy-LogService.wsdd"/>
+        <move file="${gen.dir}/${services.log.dir}/undeploy.wsdd" tofile="${gen.dir}/${services.log.dir}/undeploy-LogService.wsdd"/>
+        
+        <!-- Takes care of LogService.v2 -->
+        <wsdl2java url="${wsdl.src.dir}/${nextlabs.servicebase.dir}/services/LogService.v2.wsdl"
+                   output="${gen.dir}"
+                   deployscope="application"
+                   serverSide="yes"
+                   skeletonDeploy="no"
+                   implementationClassName="com.nextlabs.destiny.bindings.log.v2.DABSLogServiceImpl"
+                   noimports="no"
+                   verbose="yes"
+                   testcase="yes"
+                   nowrapped="true"
+                   timeout="-1"
+                   factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+                   trustedCallers="Agent DCC">
+            <mapping namespace="http://nextlabs.com/destiny/services/log/v2"
+                     package="com.nextlabs.destiny.services.log.v2" />
+            <mapping namespace="http://nextlabs.com/destiny/bindings/log/v2"
+                     package="com.nextlabs.destiny.bindings.log.v2" />
+            <mapping namespace="http://nextlabs.com/destiny/interfaces/log/v2"
+                     package="com.nextlabs.destiny.interfaces.log.v2" />
+            <mapping namespace="http://nextlabs.com/destiny/types/log/v2"
+                     package="com.nextlabs.destiny.types.log.v2" />
+        </wsdl2java>	
+        <move file="${gen.dir}/${nextlabs.log.services.v2.dir}/deploy.wsdd" tofile="${gen.dir}/${nextlabs.log.services.v2.dir}/deploy-LogService.v2.wsdd"/>
+        <move file="${gen.dir}/${nextlabs.log.services.v2.dir}/undeploy.wsdd" tofile="${gen.dir}/${nextlabs.log.services.v2.dir}/undeploy-LogService.v2.wsdd"/>
+        <!-- Takes care of LogService.v3 -->
+        <wsdl2java url="${wsdl.src.dir}/${nextlabs.servicebase.dir}/services/LogService.v3.wsdl"
+                   output="${gen.dir}"
+                   deployscope="application"
+                   serverSide="yes"
+                   skeletonDeploy="no"
+                   implementationClassName="com.nextlabs.destiny.bindings.log.v3.DABSLogServiceImpl"
+                   noimports="no"
+                   verbose="yes"
+                   testcase="yes"
+                   nowrapped="true"
+                   timeout="-1"
+                   factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+                   trustedCallers="Agent DCC">
+            <mapping namespace="http://nextlabs.com/destiny/services/log/v3"
+                     package="com.nextlabs.destiny.services.log.v3" />
+            <mapping namespace="http://nextlabs.com/destiny/bindings/log/v3"
+                     package="com.nextlabs.destiny.bindings.log.v3" />
+            <mapping namespace="http://nextlabs.com/destiny/interfaces/log/v3"
+                     package="com.nextlabs.destiny.interfaces.log.v3" />
+            <mapping namespace="http://nextlabs.com/destiny/types/log/v3"
+                     package="com.nextlabs.destiny.types.log.v3" />
+        </wsdl2java>	
+        <move file="${gen.dir}/${nextlabs.log.services.v3.dir}/deploy.wsdd" tofile="${gen.dir}/${nextlabs.log.services.v3.dir}/deploy-LogService.v3.wsdd"/>
+        <move file="${gen.dir}/${nextlabs.log.services.v3.dir}/undeploy.wsdd" tofile="${gen.dir}/${nextlabs.log.services.v3.dir}/undeploy-LogService.v3.wsdd"/>
+        
+        <!-- Takes care of LogService.v4 -->
+        <wsdl2java url="${wsdl.src.dir}/${nextlabs.servicebase.dir}/services/LogService.v4.wsdl"
+                   output="${gen.dir}"
+                   deployscope="application"
+                   serverSide="yes"
+                   skeletonDeploy="no"
+                   implementationClassName="com.nextlabs.destiny.bindings.log.v4.DABSLogServiceImpl"
+                   noimports="no"
+                   verbose="yes"
+                   testcase="yes"
+                   nowrapped="true"
+                   factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+                   timeout="-1"
+                   trustedCallers="Agent DCC">
+            <mapping namespace="http://nextlabs.com/destiny/services/log/v4"
+                     package="com.nextlabs.destiny.services.log.v4" />
+            <mapping namespace="http://nextlabs.com/destiny/bindings/log/v4"
+                     package="com.nextlabs.destiny.bindings.log.v4" />
+            <mapping namespace="http://nextlabs.com/destiny/interfaces/log/v4"
+                     package="com.nextlabs.destiny.interfaces.log.v4" />
+            <mapping namespace="http://nextlabs.com/destiny/types/log/v4"
+                     package="com.nextlabs.destiny.types.log.v4" />
+        </wsdl2java>	
+        <move file="${gen.dir}/${nextlabs.log.services.v4.dir}/deploy.wsdd" tofile="${gen.dir}/${nextlabs.log.services.v4.dir}/deploy-LogService.v4.wsdd"/>
+        <move file="${gen.dir}/${nextlabs.log.services.v4.dir}/undeploy.wsdd" tofile="${gen.dir}/${nextlabs.log.services.v4.dir}/undeploy-LogService.v4.wsdd"/>
+		
+		<!-- Takes care of LogService.v5 -->
+        <wsdl2java url="${wsdl.src.dir}/${nextlabs.servicebase.dir}/services/LogService.v5.wsdl"
+                   output="${gen.dir}"
+                   deployscope="application"
+                   serverSide="yes"
+                   skeletonDeploy="no"
+                   implementationClassName="com.nextlabs.destiny.bindings.log.v5.DABSLogServiceImpl"
+                   noimports="no"
+                   verbose="yes"
+                   testcase="yes"
+                   nowrapped="true"
+                   factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+                   trustedCallers="Agent DCC">
+            <mapping namespace="http://nextlabs.com/destiny/services/log/v5"
+                     package="com.nextlabs.destiny.services.log.v5" />
+            <mapping namespace="http://nextlabs.com/destiny/bindings/log/v5"
+                     package="com.nextlabs.destiny.bindings.log.v5" />
+            <mapping namespace="http://nextlabs.com/destiny/interfaces/log/v5"
+                     package="com.nextlabs.destiny.interfaces.log.v5" />
+            <mapping namespace="http://nextlabs.com/destiny/types/log/v5"
+                     package="com.nextlabs.destiny.types.log.v5" />
+        </wsdl2java>	
+        <move file="${gen.dir}/${nextlabs.log.services.v5.dir}/deploy.wsdd" tofile="${gen.dir}/${nextlabs.log.services.v5.dir}/deploy-LogService.v5.wsdd"/>
+        <move file="${gen.dir}/${nextlabs.log.services.v5.dir}/undeploy.wsdd" tofile="${gen.dir}/${nextlabs.log.services.v5.dir}/undeploy-LogService.v5.wsdd"/>
+		
+        <!-- Takes care of PingService -->
+        <wsdl2java url="${wsdl.src.dir}/${services.ping.dir}/PingService.wsdl"
+                   output="${gen.dir}"
+                   deployscope="application"
+                   serverSide="yes"
+                   skeletonDeploy="no"
+                   implementationClassName="com.bluejungle.destiny.container.dabs.DABSPingServiceImpl"
+                   noimports="no"
+                   verbose="yes"
+                   testcase="yes"
+                   nowrapped="true"
+                   timeout="-1"
+                   factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+                   trustedCallers="DCC">
+        </wsdl2java>		
+        <move file="${gen.dir}/${services.ping.dir}/deploy.wsdd" tofile="${gen.dir}/${services.ping.dir}/deploy-PingService.wsdd"/>
+        <move file="${gen.dir}/${services.ping.dir}/undeploy.wsdd" tofile="${gen.dir}/${services.ping.dir}/undeploy-PingService.wsdd"/>
+    </target>
+    
+    <target name="wsdl-jar" description="Packages compiled WSDL code">
+        <jar destfile="${build.root.dir}/dabs-dcc-services.jar">
+            <fileset dir="${build.gendest}">
+                <include name="${services.deployment.dir}/*.class"/>
+                <include name="${services.ping.dir}/*.class"/>
+            </fileset>
+        </jar>
+        <jar destfile="${build.root.dir}/deployment-types.jar">
+            <fileset dir="${build.gendest}">
+                <include name="${services.deployment.dir}/types/*.class"/>
+            </fileset>
+        </jar>
+        
+        <jar destfile="${build.root.dir}/dabs-agent-services.jar">
+            <fileset dir="${build.gendest}">
+                <include name="${services.agent.dir}/*.class"/>
+            </fileset>
+        </jar>
+        <jar destfile="${build.root.dir}/agent-types.jar">
+            <fileset dir="${build.gendest}">
+                <include name="${services.agent.dir}/types/*.class"/>
+            </fileset>
+        </jar>
+        
+        <jar destfile="${build.root.dir}/dabs-common-services.jar">
+            <fileset dir="${build.gendest}">
+                <include name="${services.log.dir}/*.class"/>
+                <include name="${nextlabs.log.interfaces.v2.dir}/*.class"/>
+                <include name="${nextlabs.log.services.v2.dir}/*.class"/>
+                <include name="${nextlabs.log.bindings.v2.dir}/*.class"/>
+                <include name="${nextlabs.log.interfaces.v3.dir}/*.class"/>
+                <include name="${nextlabs.log.services.v3.dir}/*.class"/>
+                <include name="${nextlabs.log.bindings.v3.dir}/*.class"/>
+                <include name="${nextlabs.log.interfaces.v4.dir}/*.class"/>
+                <include name="${nextlabs.log.services.v4.dir}/*.class"/>
+                <include name="${nextlabs.log.bindings.v4.dir}/*.class"/>
+				<include name="${nextlabs.log.interfaces.v5.dir}/*.class"/>
+                <include name="${nextlabs.log.services.v5.dir}/*.class"/>
+                <include name="${nextlabs.log.bindings.v5.dir}/*.class"/>
+            </fileset>
+        </jar>
+        <jar destfile="${build.root.dir}/log-types.jar">
+            <fileset dir="${build.gendest}">
+                <include name="${services.log.dir}/types/*.class"/>
+                <include name="${nextlabs.log.types.v2.dir}/*.class"/>
+                <include name="${nextlabs.log.types.v3.dir}/*.class"/>
+                <include name="${nextlabs.log.types.v4.dir}/*.class"/>
+                <include name="${nextlabs.log.types.v5.dir}/*.class"/>
+            </fileset>
+        </jar>
+    </target>
+</project>

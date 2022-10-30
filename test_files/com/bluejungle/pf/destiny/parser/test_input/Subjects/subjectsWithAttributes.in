@@ -1,0 +1,11 @@
+principal     s1 = PRINCIPAL = "abc";
+principal     s2 = PRINCIPAL.NAME = "abc";
+principal     s3 = PRINCIPAL.GROUP = "abc";
+principal     h1 = PRINCIPAL.HOST = "abc";
+principal		a1 = PRINCIPAL.APPLICATION = "abc";
+principal     s4 = PRINCIPAL.HOST.LOCATION = "abc";
+principal     s5 = PRINCIPAL.blahblahblah = "abc";
+principal		s6 = PRINCIPAL.USER.NAME = "foo";
+principal		s7 = PRINCIPAL.USER = "foo";
+principal		h2 = PRINCIPAL.HOST.NAME = "abc";
+principal		h3 = PRINCIPAL.APPLICATION.NAME = "abc";

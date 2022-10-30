@@ -1,0 +1,5 @@
+// This is a simple component
+component Simple is document = (true and true and (true or false))
+
+/* This is another component */
+component user:[Component] is id 345= (true and true)

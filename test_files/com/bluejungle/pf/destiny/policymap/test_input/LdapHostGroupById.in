@@ -1,0 +1,2 @@
+FILE_SERVER
+id 0 POLICY TestPolicy FOR * ON * BY host.ldapgroupid = $TEST.BLUEJUNGLE.COM:Groups:System Software Upgrade$ DO deny

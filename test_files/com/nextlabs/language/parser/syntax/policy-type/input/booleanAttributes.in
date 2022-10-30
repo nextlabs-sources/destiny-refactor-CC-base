@@ -1,0 +1,10 @@
+context booleanAttributes0
+    name0 boolean
+
+context booleanAttributes1
+    name1 boolean
+,   name2 boolean
+
+context booleanAttributes2 extends booleanAttributes1
+    name3 boolean
+,   name4 boolean

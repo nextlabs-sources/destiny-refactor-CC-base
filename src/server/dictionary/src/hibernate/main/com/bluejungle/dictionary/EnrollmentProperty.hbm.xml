@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping package="com.bluejungle.dictionary">
+    <class name="EnrollmentProperty" table="DICT_ENROLLMENT_PROPERTIES" dynamic-update="false">
+        <id name="id" column="ID" access="field">
+            <generator class="native"/>
+        </id>
+        <version name="version" column="VERSION" access="field"/>
+
+        <property name="name" access="field" type="string">
+            <column name="name" length="128" not-null="true" unique-key="UniquePropertyNameInEnrollment"/>
+        </property>
+        <property name="type" access="field" type="com.bluejungle.dictionary.EnrollmentProperty$PropertyTypeUserType"/>
+        <property name="value" access="field" type="string">
+            <column name="property_value" length="4000" not-null="false"/>
+        </property>
+        <many-to-one name="enrollment" class="Enrollment" outer-join="true" access="field">
+            <column name="enrollment_id" not-null="true" unique-key="UniquePropertyNameInEnrollment"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,2 @@
+FILE_SERVER 1.9.9.9.9
+id 0 POLICY TestPolicy FOR * ON * BY user.mail_domain="b.com" DO deny

@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+
+<!--
+ * This digester file only containsl the database informaion only.
+ * This file needs to be updated if the configuration.digester.ruler.xml is changed. 
+-->
+<digester-rules>
+    <pattern value="DestinyConfiguration">
+    	<pattern value="ActionList">
+            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.ActionListConfigDO"/>
+
+            <pattern value="Action">
+                <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.ActionConfigDO"/>
+                <call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String"/>
+                <call-method-rule pattern="DisplayName" methodname="setDisplayName" paramcount="0" paramtypes="java.lang.String"/>
+                <call-method-rule pattern="ShortName" methodname="setShortName" paramcount="0" paramtypes="java.lang.String"/>
+                <call-method-rule pattern="Category" methodname="setCategory" paramcount="0" paramtypes="java.lang.String"/>
+                <set-next-rule methodname="addAction"/>
+            </pattern>
+            
+            <set-next-rule methodname="setActionListConfig"/>
+        </pattern>
+    
+        <!-- Read repository configuration list -->
+        <pattern value="Repositories">
+            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.RepositoryConfigurationList"/>
+
+            <!-- Read individual repository configuration -->
+            <pattern value="Repository">
+                <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.RepositoryConfigurationDO"/>
+
+                <call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String"/>
+                <call-method-rule pattern="ConnectionPoolName" methodname="setConnectionPoolName" paramcount="0" paramtypes="java.lang.String"/>
+
+                <!-- Read the property overrides list -->
+                <pattern value="Properties">
+                    <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyList"/>
+
+                    <!-- Read an individual property override -->
+                    <pattern value="Property">
+                        <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyDO"/>
+
+                        <call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String"/>
+                        <call-method-rule pattern="Value" methodname="setValue" paramcount="0" paramtypes="java.lang.String"/>
+
+                        <set-next-rule methodname="addProperty"/>
+                    </pattern>
+
+                    <set-next-rule methodname="setProperties"/>
+                </pattern>
+
+                <set-next-rule methodname="addRepository"/>
+            </pattern>
+
+            <!-- Read the connection pool configurations -->
+            <pattern value="ConnectionPools">
+                <pattern value="ConnectionPool">
+                    <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.ConnectionPoolConfigurationDO"/>
+
+                    <call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String"/>
+                    <call-method-rule pattern="Username" methodname="setUserName" paramcount="0" paramtypes="java.lang.String"/>
+                    <call-method-rule pattern="Password" methodname="setPassword" paramcount="0" paramtypes="java.lang.String"/>
+                    <call-method-rule pattern="ConnectString" methodname="setJDBCConnectString" paramcount="0" paramtypes="java.lang.String"/>
+                    <call-method-rule pattern="DriverClassName" methodname="setDriverClassName" paramcount="0" paramtypes="java.lang.String"/>
+                    <call-method-rule pattern="MaxPoolSize" methodname="setMaxPoolSize" paramcount="0" paramtypes="java.lang.Integer"/>
+
+                    <!-- Read the property overrides list -->
+                    <pattern value="Properties">
+                        <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyList"/>
+
+                        <!-- Read an individual property override -->
+                        <pattern value="Property">
+                            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyDO"/>
+
+                            <call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String"/>
+                            <call-method-rule pattern="Value" methodname="setValue" paramcount="0" paramtypes="java.lang.String"/>
+
+                            <set-next-rule methodname="addProperty"/>
+                        </pattern>
+
+                        <set-next-rule methodname="setProperties"/>
+                    </pattern>
+
+                    <set-next-rule methodname="addConnectionPool"/>
+                </pattern>
+            </pattern>
+
+            <set-next-rule methodname="setRepositories"/>
+        </pattern>
+    </pattern>
+</digester-rules>

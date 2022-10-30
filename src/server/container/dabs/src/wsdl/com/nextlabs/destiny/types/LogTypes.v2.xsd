@@ -1,0 +1,11 @@
+<xs:schema 	targetNamespace="http://nextlabs.com/destiny/types/log/v2" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:types="http://nextlabs.com/destiny/types/log/v2">
+
+	<xs:simpleType name="LogStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Success"/>
+			<xs:enumeration value="Failed"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

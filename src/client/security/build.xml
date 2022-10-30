@@ -1,0 +1,56 @@
+<!--$Id: //depot/Destiny/D_Nimbus/release/8.1/main/src/client/security/build.xml#1 $-->
+<project name="client-security" default="build">
+
+	<var name="nlbuildroot" value="${basedir}/../../.." />
+	<property name="java.main.src.dir" value="${basedir}/src/java/main"/>
+    <property name="build.dest"        value="${build.root.dir}/client/security/classes"/>
+    <property name="doc.dest"          value="${build.root.dir}/client/security/doc"/>
+	<property name="build.metainf"     value="${build.dest}/META-INF"/>
+	<property name="build.client.config.dest"        value="${build.dest}/com/bluejungle/destiny/client/axis/"/>
+
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	<path id="this.compile.classpath">
+        <path refid="compile.classpath"/>
+        <pathelement location="${xlib_jar_dir}/axis.jar"/>
+    </path>
+
+    <target name="pre-build">
+        <mkdir dir="${build.dest}"/>
+        <mkdir dir="${build.metainf}"/>
+    </target>
+
+    <target name="compile" depends="pre-build">
+        <javac srcdir="${java.main.src.dir}" destdir="${build.dest}" debug="${compile.debug}"
+            verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="this.compile.classpath"/>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <copy file="${basedir}/etc/org.apache.axis.EngineConfigurationFactory" todir="${build.metainf}/services"/>
+        <copy file="${basedir}/etc/client-config.wsdd" todir="${build.client.config.dest}"/>
+        <jar destfile="${build.root.dir}/client-security-config.jar" basedir="${build.dest}" />
+    </target>
+
+    <target name="run-tests-ui" depends="jar"/>
+	
+    <target name="tests" depends="jar"/>
+
+    <target name="doc">
+        <mkdir dir="${doc.dest}"/>
+        <javadoc sourcepath="${java.main.src.dir}" destdir="${doc.dest}" linksource="yes"
+            classpathref="this.compile.classpath" source="${compile.source}" >
+            <packageset dir="${java.main.src.dir}" defaultexcludes="yes">
+                <include name="com/bluejungle/security/**"/>
+            </packageset>
+            <tag name="requires" description="Requires: " scope="methods"/>
+            <tag name="modifies" description="Modifies: " scope="methods"/>
+            <tag name="effects" description="Effects: " scope="methods"/>
+        </javadoc>
+    </target>
+
+    <target name="build" depends="jar">
+    </target>
+
+</project>

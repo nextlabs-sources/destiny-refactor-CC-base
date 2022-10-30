@@ -1,0 +1,94 @@
+<project name="dkms_wsdl_build" default="build">
+	
+	<property name="wsdl.src.dir"      value="${basedir}"/>
+	<property name="build.dest"   value="${build.root.dir}/server/container/dkms/WEB-INF/classes"/>
+	<property name="build.gendest" value="${build.root.dir}/server/container/dkms/genclasses"/>
+	<property name="services.keymanagement.dir" value="com/nextlabs/destiny/services/keymanagement"/>
+	<property name="server.src.dir" value="${src.dir}/../.." /> 
+
+	<path id="compile.dkms.wsdl.classpath">
+		<path refid="compile.classpath"/>
+		<pathelement path="${build.dest}"/>
+		<pathelement path="${build.gendest}"/>
+	</path>
+
+	<target name="build">
+	</target>
+	
+	<target name="pre-build">
+		<mkdir dir="${build.dest}"/>
+		<mkdir dir="${build.gendest}"/>
+	</target>
+	
+	<target name="wsdl-compile" description="Compile generated wsdl code">
+		<javac srcdir="${gen.dir}" destdir="${build.gendest}" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+			<classpath refid="compile.classpath"/>
+			<include name="${services.keymanagement.dir}/**/*.java"/>
+		</javac>
+	</target>
+	
+	<target name="wsdl-generate" depends="pre-build" description="Generates code from WSDL">
+
+		<wsdl2java url="${wsdl.src.dir}/${services.keymanagement.dir}/KeyManagementService.wsdl"
+				output="${gen.dir}"
+				deployscope="application"
+				serverSide="yes"
+				skeletonDeploy="no"
+				clientApplication="Management Console"
+				userAuthRequired="true"
+				implementationClassName="com.nextlabs.destiny.container.dkms.DKMSKeyManagementServiceImpl"
+				noimports="no"
+				verbose="yes"
+				testcase="yes"
+				nowrapped="true"
+				factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+				timeout="-1"
+				trustedCallers="Keymanagement">
+		</wsdl2java>
+		<move file="${gen.dir}/${services.keymanagement.dir}/deploy.wsdd" tofile="${gen.dir}/${services.keymanagement.dir}/deploy-KeyManagementService.wsdd"/>
+		<move file="${gen.dir}/${services.keymanagement.dir}/undeploy.wsdd" tofile="${gen.dir}/${services.keymanagement.dir}/undeploy-KeyManagementService.wsdd"/>
+		<delete file="${gen.dir}/com/nextlabs/destiny/container/dkms/DKMSKeyManagementServiceImpl.java" />
+		
+		
+		<wsdl2java url="${wsdl.src.dir}/${services.keymanagement.dir}/KeyManagementDCCService.wsdl"
+				output="${gen.dir}"
+				deployscope="application"
+				serverSide="yes"
+				skeletonDeploy="no"
+				userAuthRequired="false"
+				implementationClassName="com.nextlabs.destiny.container.dkms.DKMSKeyManagementDCCServiceImpl"
+				noimports="no"
+				verbose="yes"
+				testcase="yes"
+				nowrapped="true"
+				timeout="-1"
+				factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+				trustedCallers="DCC">
+		</wsdl2java>
+		<move file="${gen.dir}/${services.keymanagement.dir}/deploy.wsdd" tofile="${gen.dir}/${services.keymanagement.dir}/deploy-KeyManagementDCCService.wsdd"/>
+		<move file="${gen.dir}/${services.keymanagement.dir}/undeploy.wsdd" tofile="${gen.dir}/${services.keymanagement.dir}/undeploy-KeyManagementDCCService.wsdd"/>
+		<delete file="${gen.dir}/com/nextlabs/destiny/container/dkms/DKMSKeyManagementDCCServiceImpl.java" />
+		
+	</target>
+	
+	<target name="wsdl-jar" description="Packages compiled WSDL code">
+		<jar destfile="${build.root.dir}/keymanagement-service.jar">
+			<fileset dir="${build.gendest}">
+				<include name="com/nextlabs/destiny/services/keymanagement/*.class"/>
+				<exclude name="com/nextlabs/destiny/services/keymanagement/*DCC*.class"/>
+			</fileset>
+		</jar>
+		
+		<jar destfile="${build.root.dir}/keymanagement-dcc-service.jar">
+			<fileset dir="${build.gendest}">
+				<include name="com/nextlabs/destiny/services/keymanagement/*DCC*.class"/>
+			</fileset>
+		</jar>
+		
+		<jar destfile="${build.root.dir}/keymanagement-types.jar">
+			<fileset dir="${build.gendest}">
+				<include name="**/types/**/*.class"/>
+			</fileset>
+		</jar>
+	</target>
+</project>

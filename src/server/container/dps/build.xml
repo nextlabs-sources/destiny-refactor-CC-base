@@ -1,0 +1,308 @@
+<project name="dps_main_build" default="build">
+
+	<var name="nlbuildroot" value="${basedir}/../../../.." />
+	<property name="src.dir"                 value="${basedir}"/>
+    <property name="main.src.dir"            value="${src.dir}/src/java/main"/>
+    <property name="wsdl.main.src.dir"       value="${src.dir}/src/wsdl/main" />
+    <property name="test.src.dir"            value="${src.dir}/src/java/test"/>
+    <property name="src.hibernate.dir"       value="${src.dir}/src/hibernate"/>
+    <property name="server.src.dir"          value="${src.dir}/../.."/>
+    <property name="policyedit.hib.dir"      value="${server.src.dir}/pf/src/hibernate"/>
+    <property name="build.dest"              value="${build.root.dir}/server/container/dps/WEB-INF/classes"/>
+    <property name="build.gendest"           value="${build.root.dir}/server/container/dps/WEB-INF/classes/wsdl"/>
+    <property name="build.webapp"            value="${build.root.dir}/server/container/dps"/>
+    <property name="build.webinf"            value="${build.webapp}/WEB-INF"/>
+    <property name="build.weblib"            value="${build.webapp}/WEB-INF/lib"/>
+    <property name="build.webconf"           value="${build.webapp}/WEB-INF/conf"/>
+    <property name="build.test.dest"         value="${build.root.dir}/server/container/dps/WEB-INF/testclasses"/>
+    <property name="service.dps.dir"         value="com/bluejungle/destiny/container/dps"/>
+    <property name="service.policy.dir"      value="com/bluejungle/destiny/services/policy"/>
+    <property name="server.base.dir"         value="${src.root.dir}/server/base/"/>
+    <property name="services.policy.dir"     value="com/bluejungle/destiny/services/policy" />
+    <property name="services.deployment.dir" value="com/bluejungle/destiny/services/deployment"/>
+    <property name="servicesbase.dir"        value="com/bluejungle/destiny/"/>
+
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	<path id="compile.dps.classpath">
+        <path refid="compile.classpath"/>
+        <pathelement path="${build.root.dir}/agent-manager.jar"/>
+        <pathelement path="${build.root.dir}/common-domain-types.jar"/>
+        <pathelement path="${build.root.dir}/common-domain.jar"/>
+        <pathelement path="${build.root.dir}/common-framework-types.jar"/>
+        <pathelement path="${build.root.dir}/common-framework.jar"/>
+        <pathelement path="${build.root.dir}/common-ind.jar"/>
+        <pathelement path="${build.root.dir}/common-pf.jar"/>
+        <pathelement path="${build.root.dir}/dcsf-types.jar"/>
+        <pathelement path="${build.root.dir}/management-types.jar"/>
+        <pathelement path="${build.root.dir}/policy-deploy-manager.jar"/>
+        <pathelement path="${build.root.dir}/policy-services.jar"/>
+        <pathelement path="${build.root.dir}/policy-types.jar"/>
+        <pathelement path="${build.root.dir}/profile-manager.jar"/>
+        <pathelement path="${build.root.dir}/secure-session-types.jar"/>
+        <pathelement path="${build.root.dir}/secure-session.jar"/>
+        <pathelement path="${build.root.dir}/server-base.jar"/>
+        <pathelement path="${build.root.dir}/server-datasource.jar"/>
+        <pathelement path="${build.root.dir}/server-dcsf.jar"/>
+        <pathelement path="${build.root.dir}/server-framework.jar"/>
+        <pathelement path="${build.root.dir}/server-pf.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-applicationusers.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-enumerations.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-pf.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-services-impl.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-services.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-types.jar"/>
+		<pathelement path="${build.root.dir}/server-shared-utils.jar"/>
+		<pathelement path="${build.root.dir}/dms-services.jar"/>
+		<pathelement path="${build.root.dir}/version-types.jar"/>
+        <pathelement path="${build.dest}"/>
+        <pathelement path="${build.gendest}"/>
+    </path>
+
+    <path id="compile.dps.test.classpath">
+        <path refid="compile.dps.classpath"/>
+        <pathelement path="${build.root.dir}/common-framework-test.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-tests.jar"/>
+        <pathelement path="${build.root.dir}/server-pf-tests.jar"/>
+        <pathelement path="${build.root.dir}/server-dcsf-test.jar"/>
+    	<pathelement path="${build.root.dir}/common-version.jar"/>
+    	<pathelement path="${build.root.dir}/common-version-impl.jar"/>
+    </path>
+        
+    <target name="pre-build">
+        <mkdir dir="${build.dest}"/>
+        <mkdir dir="${build.test.dest}"/>
+        <mkdir dir="${build.gendest}"/>
+    </target>
+
+    <target name="pre-build-wsdl">
+        <mkdir dir="${build.dest}/wsdl" />
+        <mkdir dir="${gen.dir}/${services.policy.dir}/" />
+        <mkdir dir="${gen.dir}/wsdl/" />        
+    </target>
+
+    <target name="wsdl-generate" depends="pre-build-wsdl" description="Generates code from WSDL">
+        <copy file="${build.root.dir}/PolicyEditorTypes.xsd" todir="${wsdl.main.src.dir}/com/bluejungle/pf/destiny/services/types" />
+        <copy file="${build.root.dir}/BasicTypes.xsd" todir="${wsdl.main.src.dir}/com/bluejungle/pf/destiny/services/types" />
+        <copy file="${build.root.dir}/Search.xsd" todir="${wsdl.main.src.dir}/com/bluejungle/pf/destiny/services/types" />
+        <copy file="${build.root.dir}/PolicyTypes.xsd" todir="${wsdl.main.src.dir}/com/bluejungle/pf/destiny/services/types" />
+        <copy file="${build.root.dir}/PolicyEditorFaults.xsd" todir="${wsdl.main.src.dir}/com/bluejungle/pf/destiny/services/types" />
+
+        <wsdl2java url="${wsdl.main.src.dir}/com/bluejungle/pf/destiny/services/PolicyEditor.wsdl"
+            all="true"
+            output="${gen.dir}/wsdl"
+            deployscope="application"
+            skeletonDeploy="no"
+            implementationClassName="com.bluejungle.destiny.container.dps.DPSPolicyEditorServiceImpl"
+            noimports="no"
+            verbose="yes"
+            testcase="yes"
+            nowrapped="true"
+            serverSide="yes"
+            userAuthRequired="false"
+            factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+            timeout="-1"
+            trustedCallers="DCC PolicyAuthor"/>
+
+        <move file="${gen.dir}/wsdl/${services.policy.dir}/deploy.wsdd" tofile="${gen.dir}/${services.policy.dir}/deploy-PolicyEditor.wsdd" />
+        <move file="${gen.dir}/wsdl/${services.policy.dir}/undeploy.wsdd" tofile="${gen.dir}/${services.policy.dir}/undeploy-PolicyEditor.wsdd" />
+        <delete file="${gen.dir}/wsdl/com/bluejungle/destiny/container/dps/DPSPolicyEditorServiceImpl.java" />
+        <delete file="${wsdl.main.src.dir}/com/bluejungle/pf/destiny/types/services/PolicyEditorTypes.xsd" />
+        <delete file="${wsdl.main.src.dir}/com/bluejungle/pf/destiny/types/services/BasicTypes.xsd" />        
+        <delete file="${wsdl.main.src.dir}/com/bluejungle/pf/destiny/types/services/Search.xsd" />
+        <delete file="${wsdl.main.src.dir}/com/bluejungle/pf/destiny/types/services/PolicyTypes.xsd" />
+        <delete file="${wsdl.main.src.dir}/com/bluejungle/pf/destiny/types/services/PolicyEditorFaults.xsd" />
+    </target>
+
+    <target name="wsdl-compile" description="Compile generated WSDL code">
+        <javac srcdir="${gen.dir}/wsdl" destdir="${build.dest}/wsdl" debug="${compile.debug}" verbose="${compile.verbose}" includes="${services.policy.dir}/**" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="compile.dps.classpath" />
+        </javac>
+        <!-- The line below includes only services/policy/Default**IF classes: -->
+        <javac srcdir="${main.src.dir}" destdir="${build.dest}/wsdl" debug="${compile.debug}" verbose="${compile.verbose}" includes="**/services/**" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="compile.dps.classpath"/>
+        </javac>
+    </target>
+
+    <target name="wsdl-jar" description="Packages compiled WSDL code">
+        <jar destfile="${build.root.dir}/policy-services.jar">
+            <fileset dir="${build.dest}/wsdl">
+                <include name="${services.policy.dir}/*.class" />
+            </fileset>
+        </jar>
+        <jar destfile="${build.root.dir}/policy-types.jar">
+            <fileset dir="${build.dest}/wsdl">
+                <include name="${services.policy.dir}/types/**/*.class" />
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="doc">
+        <mkdir dir="${doc.dest}"/>
+        <javadoc sourcepath="${src.dir}" destdir="${doc.dest}" linksource="yes"
+            classpathref="compile.dps.classpath" source="${compile.source}" >
+            <packageset dir="${src.dir}" defaultexcludes="yes"/>
+        </javadoc>
+    </target>
+
+    <target name="setup-webapp" depends="pre-build">
+        <mkdir dir="${build.weblib}"/>
+        <mkdir dir="${build.root.dir}/work"/>
+        <mkdir dir="${build.root.dir}/webapps"/>
+        <copy todir="${build.weblib}">
+            <fileset dir="${build.root.dir}">
+                <include name="agent-manager.jar"/>
+                <include name="common-dictionary.jar"/>
+                <include name="common-domain-types.jar" />
+                <include name="common-domain.jar"/>
+                <include name="common-framework.jar"/>
+                <include name="common-ind.jar"/>
+                <include name="common-pf.jar"/>
+                <include name="crypt.jar"/>
+                <include name="dabs-agent-services.jar"/>
+                <include name="dabs-common-services.jar"/>
+                <include name="dabs-dcc-services.jar"/>
+                <include name="ind-sharepoint.jar"/>
+                <include name="messages.jar"/>
+                <include name="policy-services.jar"/>
+                <include name="profile-manager.jar"/>
+                <include name="secure-session-types.jar"/>
+                <include name="secure-session.jar"/>
+                <include name="server-datasource.jar"/>
+                <include name="server-dcsf.jar"/>
+                <include name="server-dictionary.jar"/>
+                <include name="server-framework.jar"/>
+                <include name="server-pf.jar"/>
+                <include name="server-shared-applicationusers.jar"/>
+                <include name="server-shared-enumerations.jar"/>
+                <include name="server-shared-pf.jar"/>
+                <include name="server-shared-services-impl.jar"/>
+                <include name="server-shared-services.jar"/>
+                <include name="server-shared-types.jar"/>
+				<include name="common-version-impl.jar"/>
+				<include name="dms-services.jar"/>
+				<include name="policy-deploy-manager.jar"/>
+				<include name="server-shared-utils.jar"/>
+				<include name="version-types.jar"/>
+				<include name="version.jar"/>
+            </fileset>
+            <fileset refid="axis.jars"/>
+            <fileset refid="xerces.jars"/>
+        </copy>
+        
+        <copy file="${xlib_jar_dir}/mail.jar" todir="${build.weblib}" failonerror="true"/>
+        <copy file="${xlib_jar_dir}/activation.jar" todir="${build.weblib}" failonerror="true"/>    
+        <copy file="${build.root.dir}/management-types.jar" todir="${build.weblib}" failonerror="true"/>
+        <copy file="${build.root.dir}/common-domain-types.jar" todir="${build.weblib}" failonerror="true"/>   
+        <copy file="${build.root.dir}/common-framework-types.jar" todir="${build.weblib}" failonerror="true"/>       
+        <copy file="${build.root.dir}/deployment-types.jar" todir="${build.weblib}" failonerror="true"/>
+        <copy file="${build.root.dir}/agent-types.jar" todir="${build.weblib}" failonerror="true"/>
+        <copy file="${build.root.dir}/log-types.jar" todir="${build.weblib}" failonerror="true"/>
+        <copy file="${build.root.dir}/policy-types.jar" todir="${build.weblib}" failonerror="true"/>
+        <copy file="${build.root.dir}/server-axis-security.jar" todir="${build.weblib}" failonerror="true"/>     
+        <copy file="${build.root.dir}/server-shared-types.jar" todir="${build.weblib}" failonerror="true"/>     
+        <copy file="${build.root.dir}/server-shared-enrollment.jar" todir="${build.weblib}" failonerror="true"/>     
+
+        <copy file="${xlib_jar_dir}/ldap.jar" todir="${build.weblib}" failonerror="true"/>
+        <copy file="${xlib_jar_dir}/antlr.jar" todir="${build.weblib}" failonerror="true"/>
+
+        <!-- Copy the EHCACHE jar -->
+        <copy file="${xlib_jar_dir}/ehcache-1.1.jar" todir="${build.weblib}" failonerror="true"/>
+		
+        <!-- For Md5 Digests -->
+        <copy file="${xlib_jar_dir}/commons-codec-1.8.jar" todir="${build.weblib}" failonerror="true"/>   
+        <copy file="${xlib_jar_dir}/sharepoint-services.jar" todir="${build.weblib}" failonerror="true"/>   
+        <copy file="${xlib_jar_dir}/commons-httpclient-3.0-rc2.jar" todir="${build.weblib}" failonerror="true"/>   
+        <copy file="${xlib_jar_dir}/commons-digester.jar" todir="${build.weblib}" failonerror="true"/>   
+        <copy file="${xlib_jar_dir}/commons-beanutils.jar" todir="${build.weblib}" failonerror="true"/>   
+        <copy file="${xlib_jar_dir}/commons-collections-3.2.jar" todir="${build.weblib}" failonerror="true"/>   
+
+        <copy file="${src.dir}/etc/web.xml" todir="${build.webinf}" failonerror="true"/>
+        <copy file="${src.dir}/etc/index.html" todir="${build.webapp}" failonerror="true"/>
+        <copy file="${wsdd.template.dir}/server-config.wsdd" todir="${build.webinf}" failonerror="true"/>
+
+        <!-- Add Policy Editor Service to Server WSDD -->
+        <java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+            <arg value="server"/>
+            <arg value="${gen.dir}/${service.policy.dir}/deploy-PolicyEditor.wsdd"/>
+            <classpath>
+              <path refid="compile.dps.classpath"/>
+              <pathelement location="${build.root.dir}/common-framework-types.jar"/>              
+            </classpath>
+        </java>
+
+        <!-- Add Secure Session Service to Server WSDD -->
+        <java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+            <arg value="server"/>
+            <arg value="${gen.dir}/secureService/dps/${servicesbase.dir}/services/secure_session/v1/deploy-SecureSessionService.wsdd"/>
+          <classpath>
+              <path refid="compile.dps.classpath"/>
+              <pathelement location="${build.root.dir}/common-framework-types.jar"/>              
+            </classpath>
+        </java>
+        
+    </target>
+
+    <target name="setup-war" depends="setup-webapp">
+         <war destfile="${war.dir}/dps.war" basedir="${build.webapp}" webxml="${build.webinf}/web.xml" excludes="genclasses/**/*.*, testclasses/**/*.*, WEB-INF/classes/wsdl/**/*"/>
+    </target>
+
+    <target name="compile" depends="pre-build">
+        <!-- The line below excludes services/policy/Default**IF classes: -->
+        <javac srcdir="${main.src.dir}" destdir="${build.dest}" debug="${compile.debug}" verbose="${compile.verbose}" excludes="**/services/**" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="compile.dps.classpath"/>
+        </javac>
+        <javac srcdir="${test.src.dir}" destdir="${build.test.dest}" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="compile.dps.test.classpath"/>
+        </javac>
+    </target>
+
+    <target name="build" depends="compile, setup-webapp, setup-datasources, setup-war"/>
+
+    <target name="setup-datasources">
+        <copy toDir="${build.weblib}" failonerror="true">
+            <fileset refid="hibernate.lib"/>
+        </copy>
+        <copy file="${xlib_jar_dir}/hibernate2.jar" todir="${build.weblib}" failonerror="true"/>
+
+        <!-- Copy datasource information -->
+        <copy file="${src.hibernate.dir}/policyframework.repository.xml" todir="${build.webconf}" failonerror="true"/>
+        <copy file="${src.hibernate.dir}/dictionary.repository.xml" todir="${build.webconf}" failonerror="true"/>
+        <copy file="${src.hibernate.dir}/activity.repository.xml" todir="${build.webconf}" failonerror="true"/>
+        <copy file="${src.hibernate.dir}/management.repository.xml" todir="${build.webconf}" failonerror="true"/>
+        <copy file="${server.base.dir}/resource/main/common.repository.properties" todir="${build.webconf}" failonerror="true"/>
+
+        <!-- Copy all the hibernate mapping files into the build directory as well-->
+        <copy todir="${build.dest}/${service.dps.dir}" failonerror="true" verbose="true">
+            <fileset dir="${policyedit.hib.dir}/main/com/bluejungle/pf/destiny/lifecycle">
+                <include name="**/*.hbm.xml"/>
+            </fileset>
+        </copy>
+    </target>
+    
+    <target name="tests">
+        <junit printsummary="withOutAndErr" showoutput="yes" haltonfailure="${junit.haltonfailure}" failureproperty="junit.fail" fork="true">
+            <sysproperty key="src.root.dir" value="${src.root.dir}"/>
+            <sysproperty key="build.root.dir" value="${build.root.dir}" />        
+            <formatter type="xml"/>
+            <test name="com.bluejungle.destiny.container.dps.HostsWithAgentsTransferTaskTest" todir="${log.dir}/tests"/>
+            <classpath>
+                <path refid="compile.dps.test.classpath"/>
+                <pathelement path="${build.main.dest}"/>
+                <pathelement path="${build.test.dest}"/>
+                <pathelement path="${xlib_jar_dir}/commons-collections-3.2.jar"/>
+                <pathelement path="${xlib_jar_dir}/dom4j-1.4.jar"/>
+                <pathelement path="${xlib_jar_dir}/hibernate2.jar"/>
+                <pathelement path="${xlib_jar_dir}/cglib-full-2.0.2.jar"/>
+                <pathelement path="${xlib_jar_dir}/odmg-3.0.jar"/>
+                <pathelement path="${xlib_jar_dir}/jta.jar"/>
+                <pathelement path="${xlib_jar_dir}/postgresql-9.2-1002.jdbc4.jar"/>
+                <pathelement path="${build.root.dir}/common-framework-types.jar"/>
+                <pathelement path="${build.root.dir}/crypt.jar"/>
+                <pathelement path="${xlib_jar_dir}/antlr.jar"/>
+				<pathelement path="${xlib_jar_dir}/commons-digester.jar"/>
+            	<pathelement path="${xlib_jar_dir}/commons-beanutils.jar"/>
+            </classpath>            
+        </junit>
+    </target>
+</project>

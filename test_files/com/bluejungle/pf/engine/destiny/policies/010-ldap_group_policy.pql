@@ -1,0 +1,8 @@
+POLICY LdapPolicy
+    DESCRIPTION "Policy that allows engineers access to Java files and denies it to everyone else"
+    FOR resource.name = "?c:\\**.ldap"
+    ON *
+    BY (PRINCIPAL.USER.LDAPGROUP = "BLUEJUNGLE.COM:Groups:engineering" AND PRINCIPAL.APPLICATION.DISPLAYNAME = "small")
+    DO ALLOW
+    BY DEFAULT DO DENY
+    ON ALLOW DO log

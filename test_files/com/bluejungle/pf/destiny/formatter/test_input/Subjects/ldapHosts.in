@@ -1,0 +1,1 @@
+host with_groups2 = host.ldapgroup = "ldap3" or host.ldapgroup = "ldap4"

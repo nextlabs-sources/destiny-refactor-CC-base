@@ -1,0 +1,11 @@
+if  ($?P4CLIENT == 0) then
+  echo "You must use setclient first to setup the Perforce client"
+else
+  set p = `p4 info | grep 'Client root' | sed 's/^.*\://g'`
+  if ($p == "") then
+    echo "Cannot find the platform"
+  else
+    setenv PLATFORMDIR `find $p -name "platform"`
+    cd $PLATFORMDIR/../../; setenv PROJROOT `pwd`;cd -
+  endif
+endif

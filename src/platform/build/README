@@ -1,0 +1,20 @@
+Build directory to hold all the build tools
+
+- env.Linux 
+    Environment variables for building on Linux
+
+- Makefile
+    Master makefile for building all the native code.
+    All module directory should point to this file
+
+- targets
+    List of user modules to be compiled.  This list is ordered
+    in terms of module dependency.
+
+- kernel_targets
+    List of kernel drivers and modules to be compiled. 
+
+- build_all 
+    script to build all modules (based on targets) in
+    release mode or debug mode
+

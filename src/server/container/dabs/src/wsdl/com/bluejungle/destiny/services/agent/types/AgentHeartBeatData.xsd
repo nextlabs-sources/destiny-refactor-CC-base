@@ -1,0 +1,22 @@
+<xs:schema 	targetNamespace="http://bluejungle.com/destiny/services/agent/types" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:types="http://bluejungle.com/destiny/services/agent/types"
+			xmlns:policyTypes="http://bluejungle.com/destiny/services/policy/types"
+			xmlns:mgmttypes="http://bluejungle.com/destiny/services/management/types"
+			xmlns:sharedTypes="http://bluejungle.com/destiny/types/shared_folder">
+
+	<xs:import namespace="http://bluejungle.com/destiny/services/policy/types" 
+			   schemaLocation="../../../../../../../../../dps/src/wsdl/main/com/bluejungle/pf/destiny/services/types/PolicyTypes.xsd"/>
+
+	<xs:import namespace="http://bluejungle.com/destiny/types/shared_folder"
+			   schemaLocation="../../../../../../../../../shared/src/wsdl/com/bluejungle/destiny/types/SharedFolderTypes.xsd"/>
+
+	<xs:complexType name="AgentHeartbeatData">
+		<xs:sequence>
+			<xs:element name="profileStatus" type="types:AgentProfileStatusData" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="policyAssemblyStatus" type="policyTypes:DeploymentRequest" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="sharedFolderDataCookie" type="sharedTypes:SharedFolderDataCookie" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="pluginData" type="types:AgentPluginData" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

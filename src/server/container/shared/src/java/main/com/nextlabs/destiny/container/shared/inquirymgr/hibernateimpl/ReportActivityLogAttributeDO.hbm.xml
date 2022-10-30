@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.nextlabs.destiny.container.shared.inquirymgr.hibernateimpl">
+	<class name="ReportActivityLogAttributeDO" table="RPA_LOG_ATTR">
+		<!-- Generic persisted properties -->
+		<composite-id>
+			<key-property name="policyLogId" column="policy_log_id" type="long"/>
+			<key-property name="attributeId" column="attr_id" type="long"/>
+		</composite-id>
+		<property name="attrValue">
+            <column name="attr_value" length="4000" not-null="false"/>
+        </property>		
+	</class>
+</hibernate-mapping>

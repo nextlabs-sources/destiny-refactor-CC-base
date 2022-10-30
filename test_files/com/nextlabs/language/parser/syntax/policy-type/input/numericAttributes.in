@@ -1,0 +1,10 @@
+context numericAttributes0
+    name0 double
+
+context numericAttributes1
+    name1 integer
+,   name2 integer
+
+context numericAttributes2 extends numericAttributes1
+    dynamic1 double
+,   dyna2 integer

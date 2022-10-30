@@ -1,0 +1,139 @@
+<!--$Id: //depot/Destiny/D_Nimbus/release/8.1/main/src/server/container/ddac/src/java/main/build.xml#1 $-->
+
+<project name="ddac" default="build">
+    <var name="nlbuildroot" value="${basedir}/../../../../../../.." />
+
+
+    <property name="src.dir"           value="${basedir}"/>
+    <property name="etc.dir"           value="${src.dir}/etc"/>
+    <property name="hibernate.src.dir" value="${src.dir}/src/hibernate"/>
+    <property name="main.src.dir"      value="${src.dir}/src/java/main"/>
+    <property name="test.src.dir"      value="${src.dir}/src/java/test"/>
+    <property name="server.base.dir"   value="${src.root.dir}/server/base/"/>
+    <property name="build.webapp"      value="${build.root.dir}/server/container/ddac" />
+    <property name="build.webinf"      value="${build.webapp}/WEB-INF"/>
+    <property name="build.weblib"      value="${build.webinf}/lib"/>
+    <property name="build.webconf"     value="${build.webinf}/conf"/>
+    <property name="build.dest"        value="${build.webinf}/classes"/>
+    <property name="config.dest"       value="${run.dir}/server/configuration"/>
+    <property name="scripts.dest"      value="${run.dir}/server/scripts"/>
+
+    <property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+    <path id="compile.ddac.classpath">
+        <path refid="compile.classpath"/>
+        <pathelement path="${build.root.dir}/agent-manager.jar"/>
+        <pathelement path="${build.root.dir}/common-dictionary.jar"/>
+        <pathelement path="${build.root.dir}/common-domain.jar"/>
+        <pathelement path="${build.root.dir}/common-framework.jar"/>
+        <pathelement path="${build.root.dir}/crypt.jar"/>
+        <pathelement path="${build.root.dir}/common-pf.jar"/>
+        <pathelement path="${build.root.dir}/common-version.jar"/>
+        <pathelement path="${build.root.dir}/common-version-impl.jar"/>
+        <pathelement path="${build.root.dir}/policy-deploy-manager.jar"/>
+        <pathelement path="${build.root.dir}/profile-manager.jar"/>
+        <pathelement path="${build.root.dir}/server-base.jar"/>
+        <pathelement path="${build.root.dir}/server-datasource.jar"/>
+        <pathelement path="${build.root.dir}/server-dictionary.jar"/>
+        <pathelement path="${build.root.dir}/server-dcsf.jar"/>
+        <pathelement path="${build.root.dir}/server-framework.jar"/>
+        <pathelement path="${build.root.dir}/server-pf.jar"/>
+        <pathelement path="${build.root.dir}/version.jar"/>
+        <pathelement path="${castor.jar}"/>
+        <pathelement path="${xlib_jar_dir}/castor-0.9.5.4-xml.jar"/>
+        <pathelement path="${build.dest}"/>
+    </path>
+
+    <target name="copy-jars">
+        <copy toDir="${build.weblib}">
+            <fileset dir="${build.root.dir}">
+                <include name="agent-manager.jar"/>
+                <include name="common-dictionary.jar"/>
+                <include name="common-domain.jar"/>
+                <include name="common-framework.jar" />
+                <include name="common-framework-types.jar"/>
+                <include name="common-pf.jar" />
+                <include name="common-version-impl.jar"/>
+                <include name="crypt.jar"/>
+                <include name="dabs-components.jar"/>
+                <include name="dcsf-types.jar"/>
+                <include name="policy-deploy-manager.jar"/>
+                <include name="policy-services.jar" />
+                <include name="policy-types.jar" />
+                <include name="profile-manager.jar" />
+                <include name="server-datasource.jar"/>
+                <include name="server-dcsf.jar"/>
+                <include name="server-dictionary.jar"/>
+                <include name="server-framework.jar"/>
+                <include name="server-pf.jar"/>
+                <include name="server-shared-pf.jar"/>
+                <include name="version.jar"/>
+                <include name="version-types.jar"/>
+            </fileset>
+            <fileset refid="axis.jars"/>
+            <fileset refid="xerces.jars"/>
+            <fileset refid="hibernate.lib"/>
+        </copy>
+        <copy file="${xlib_jar_dir}/mail.jar" todir="${build.weblib}" failonerror="true"/>
+        <copy file="${xlib_jar_dir}/castor-0.9.5.4-xml.jar" todir="${build.weblib}" failonerror="true"/>
+        <copy file="${xlib_jar_dir}/hibernate2.jar" todir="${build.weblib}" failonerror="true"/>
+        <copy file="${xlib_jar_dir}/antlr.jar" todir="${build.weblib}" failonerror="true"/>
+    </target>
+
+    <target name="copy-webxml">
+        <copy file="${etc.dir}/web.xml" toDir="${build.webinf}"/>
+        <copy file="${etc.dir}/ddac_config.xml" toDir="${config.dest}"/>
+        <copy file="${etc.dir}/ddac_mapping.xml" toDir="${config.dest}"/>
+        <copy file="${etc.dir}/remove_rule.ps1" toDir="${scripts.dest}"/>
+        <copy file="${etc.dir}/rule.ps1" toDir="${scripts.dest}"/>
+        <copy file="${etc.dir}/remove_policy.ps1" toDir="${scripts.dest}"/>
+        <copy file="${etc.dir}/policy.ps1" toDir="${scripts.dest}"/>
+    </target>
+
+    <target name="setup" depends="pre-build,copy-jars,copy-webxml"/>
+
+    <target name="compile">
+        <javac srcdir="${main.src.dir}" 
+               destdir="${build.dest}" 
+               debug="${compile.debug}" 
+               verbose="${compile.verbose}" 
+               source="${compile.source}"
+               target="${compile.target}"
+        	   bootclasspath="${compile.bootclasspath}"       
+        >
+            <classpath refid="compile.ddac.classpath"/>
+        </javac>
+    </target>
+
+    <target name="pre-build">
+        <mkdir dir="${build.dest}"/>
+    </target>
+    
+    <target name="jar" depends="compile">
+        <jar destfile="${build.root.dir}/ddac-components.jar">
+            <fileset dir="${build.dest}">
+                <include name="**/*"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="setup-datasources">
+        <!-- Copy datasource information -->
+        <copy file="${hibernate.src.dir}/management.repository.xml" todir="${build.webconf}" failonerror="true"/>
+        <copy file="${hibernate.src.dir}/activity.repository.xml" todir="${build.webconf}" failonerror="true"/>
+        <copy file="${hibernate.src.dir}/policyframework.repository.xml" todir="${build.webconf}" failonerror="true"/>
+        <copy file="${hibernate.src.dir}/dictionary.repository.xml" todir="${build.webconf}" failonerror="true"/>
+        <copy file="${server.base.dir}/resource/main/common.repository.properties" todir="${build.webconf}" failonerror="true"/>
+    </target>
+
+    <target name="setup-war">
+        <war destfile="${war.dir}/ddac.war" basedir="${build.webapp}" webxml="${build.webinf}/web.xml"/>
+    </target>
+
+    <target name="build-test">
+        <ant dir="${test.src.dir}" target="build" inheritrefs="true"/>
+    </target>
+
+    <target name="build" depends="setup, jar, setup-datasources, setup-war, build-test"/>
+
+</project>

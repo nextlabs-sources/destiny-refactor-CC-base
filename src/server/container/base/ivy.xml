@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="1.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation=
+                  "http://incubator.apache.org/ivy/schemas/ivy.xsd">
+    <info organisation="nextlabs"
+          module="server-container-base"
+		  revision="2.5"/>
+    <configurations>
+	    <conf name="main" visibility="public" />
+		<conf name="test" visibility="public" />
+		<conf name="report" visibility="private" />
+	</configurations>
+	<publications>
+	    <artifact conf="main" name="server-dcsf" />
+	    <artifact conf="test" name="server-dcsf-test" />
+		<!-- TestServerFrameworkSuite already tested in the framework 
+		<artifact conf="report" type="xml" name="test/TEST-com.bluejungle.framework.TestServerFrameworkSuite" />
+		-->
+	</publications>
+	<dependencies>
+	    <!-- Dependencies for main and test -->
+		<dependency org="nextlabs" name="server-base" rev="latest.integration" conf="main,test->main" />
+		<dependency org="nextlabs" name="server-framework" rev="latest.integration" conf="main,test->main" />
+
+	    <!-- Dependencies for main only -->
+		<dependency org="nextlabs" name="common-framework" rev="latest.integration" conf="main->main" />
+		<dependency org="nextlabs" name="server-framework" rev="latest.integration" conf="main->main" />
+
+	    <!-- Dependencies for test only -->
+        <dependency org="nextlabs" name="common-framework" rev="latest.integration" conf="test->test" />
+	</dependencies>
+</ivy-module>

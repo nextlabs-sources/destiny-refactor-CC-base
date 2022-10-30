@@ -1,0 +1,36 @@
+# This is a template connection file for enrolling Collaboration Portal Sites. For more 
+# information on using connection files, please consult your Administrator's Guide.
+
+# Domain Name: replace with your actual domain name
+# CAUTION: This value is ignored as of 4/14/2009.  See Bug 9083.
+domain      LINUXTEST
+
+# Login User Name: replace with an actual user name of the service account.
+# It must be a local user on the portal server.
+login       jimmy.carter
+
+# Portal Server password: You can replace this dummy string with your real
+# password in clear text in  this file; if you choose to do that, remove the '#' from  
+# password line before you save this file.
+# If you want to encrypt the password, leave the parameter out of 
+# this file altogether, and provide the default password when prompted when 
+# you run Enrollment Manager.
+
+# password    mYpAsSwOrD345
+
+# Portal Sites: Replace the dummy values below with your actual ones.
+#You can list any number of sites in this file, one per line.
+# Please use full URL for each site, and use '\n\' as a line separator.
+
+portals     http://sharepoint2007.linuxtest.bluejungle.com/sites/MySite  \n\
+            http://sharepoint2007.linuxtest.bluejungle.com/MyOtherSite
+
+#-------------------------------------------------------------------------------
+# The start time and pull interval for automatic sync 
+# The format of ScheduledSyncTime must be format of "Oct 4, 2006 8:14 PM"
+# The ScheduledSyncInterv is a positive number in minutes. 
+# Zero value of ScheduledSyncInterv means auto-sync feature is disabled.
+#-------------------------------------------------------------------------------
+ScheduledSyncTime                Sep 27, 2006 8:14 AM
+ScheduledSyncInterv              0
+

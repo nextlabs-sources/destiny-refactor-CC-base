@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: //depot/Destiny/D_Nimbus/release/8.1/main/src/common/pf/src/xsd/com/bluejungle/pf/destiny/services/types/PolicyEditorFaults.xsd#1 $ -->
+<xs:schema  targetNamespace="http://bluejungle.com/destiny/services/policy/types"
+            xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            xmlns:types="http://bluejungle.com/destiny/services/policy/types">
+
+    <xs:import namespace="http://bluejungle.com/destiny/services/policy/types" schemaLocation="PolicyTypes.xsd"/>
+
+    <xs:complexType name="PolicyServiceFault">
+        <xs:attribute name="causeType" type="xs:string" use="optional"/>
+        <xs:attribute name="causeMessage" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="CircularReferenceFault">
+        <xs:sequence>
+            <xs:element name="element" type="types:EntityDescriptorList" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ExternalDataSourceFault">
+        <xs:attribute name="causeType" type="xs:string" use="optional"/>
+        <xs:attribute name="causeMessage" type="xs:string" use="optional"/>
+    </xs:complexType>
+    
+</xs:schema>

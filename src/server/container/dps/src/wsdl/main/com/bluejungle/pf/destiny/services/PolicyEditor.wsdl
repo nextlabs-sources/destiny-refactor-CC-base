@@ -1,0 +1,1566 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="PolicyEditor"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:common="http://bluejungle.com/destiny/framework/types"
+    xmlns:types="http://bluejungle.com/destiny/services/policy/types"
+    xmlns:tns="http://bluejungle.com/destiny/services/policy"
+    targetNamespace="http://bluejungle.com/destiny/services/policy">
+
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://bluejungle.com/destiny/services/policy">
+            <xsd:import namespace="http://bluejungle.com/destiny/services/policy/types"
+                schemaLocation="types/PolicyEditorTypes.xsd"/>
+            <xsd:import namespace="http://bluejungle.com/destiny/services/policy/types"
+                schemaLocation="types/PolicyEditorFaults.xsd"/>
+            <xsd:import namespace="http://bluejungle.com/destiny/framework/types"
+                schemaLocation="../../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicFaults.xsd"/>
+            <xsd:import namespace="http://bluejungle.com/destiny/framework/types"
+                schemaLocation="../../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicTypes.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="empty"/>
+
+    <wsdl:message name="trueorfalse">
+        <wsdl:part name="result" type="xsd:boolean"/>
+    </wsdl:message>
+	
+    <wsdl:message name="count">
+        <wsdl:part name="count" type="xsd:int"/>
+    </wsdl:message>
+
+    <wsdl:message name="id">
+        <wsdl:part name="id" type="xsd:int"/>
+    </wsdl:message>
+
+    <wsdl:message name="stringList">
+        <wsdl:part name="stringList" type="types:StringList"/>
+    </wsdl:message>
+
+    <wsdl:message name="digestList">
+        <wsdl:part name="digestList" type="types:EntityDigestList"/>
+    </wsdl:message>
+ 
+    <wsdl:message name="idList">
+        <wsdl:part name="elementIds" type="types:ListOfIds"/>
+    </wsdl:message>
+
+    <wsdl:message name="when">
+        <wsdl:part name="when" type="xsd:dateTime"/>
+    </wsdl:message>
+
+    <wsdl:message name="domainObjectType">
+        <wsdl:part name="domainObjectType" type="types:DomainObjectEnum"/>
+    </wsdl:message>
+
+    <wsdl:message name="leafObjectType">
+        <wsdl:part name="leafType" type="types:LeafObjectEnum"/>
+    </wsdl:message>
+
+    <wsdl:message name="objectDescriptorsReq">
+        <wsdl:part name="descriptorListReq" type="types:EntityDescriptorList"/>
+    </wsdl:message>
+
+    <wsdl:message name="objectDescriptors">
+        <wsdl:part name="descriptorListReq" type="types:EntityDescriptorList"/>
+    </wsdl:message>
+
+    <wsdl:message name="objectDescriptorsAndDirectFlag">
+        <wsdl:part name="descriptorListReq" type="types:EntityDescriptorList"/>
+        <wsdl:part name="onlyDirect" type="xsd:boolean"/>
+    </wsdl:message>
+
+    <wsdl:message name="objectDigests">
+        <wsdl:part name="digestListReq" type="types:EntityDigestList"/>
+    </wsdl:message>
+
+    <wsdl:message name="objectDigestsAndDirectFlag">
+        <wsdl:part name="digestListReq" type="types:EntityDigestList"/>
+        <wsdl:part name="onlyDirect" type="xsd:boolean"/>
+    </wsdl:message>
+
+     <wsdl:message name="objectDescriptor">
+        <wsdl:part name="descriptor" type="types:EntityDescriptorDTO"/>
+    </wsdl:message>
+
+    <wsdl:message name="objectDescriptorsResp">
+        <wsdl:part name="descriptorListResp" type="types:EntityDescriptorList"/>
+    </wsdl:message>
+
+    <wsdl:message name="objectDigestsResp">
+        <wsdl:part name="digestListResp" type="types:EntityDigestList"/>
+    </wsdl:message>
+
+    <wsdl:message name="ids">
+        <wsdl:part name="elementIds" type="types:ListOfIds"/>
+    </wsdl:message>
+
+    <wsdl:message name="requestedIds">
+        <wsdl:part name="elementIds" type="types:ListOfIds"/>
+        <wsdl:part name="userGroupIds" type="types:ListOfIds"/>
+        <wsdl:part name="hostGroupIds" type="types:ListOfIds"/>
+    </wsdl:message>
+
+    <wsdl:message name="objectDescriptorsUserAndAccess">
+        <wsdl:part name="descriptorListReq" type="types:EntityDescriptorList"/>
+        <wsdl:part name="desiredAccess" type="types:Access"/>
+    </wsdl:message>
+
+    <wsdl:message name="nameTemplateAndTypes">
+        <wsdl:part name="nameTemplate" type="xsd:string"/>
+        <wsdl:part name="domainObjectEnumList" type="types:DomainObjectEnumList"/>
+    </wsdl:message>
+
+    <wsdl:message name="nameTemplateTypeAndFilter">
+        <wsdl:part name="nameTemplate" type="xsd:string"/>
+        <wsdl:part name="domainObjectEnum" type="types:DomainObjectEnum"/>
+        <wsdl:part name="referringType" type="types:DomainObjectEnum"/>
+        <wsdl:part name="onlyDirect" type="xsd:boolean"/>
+    </wsdl:message>
+
+    <wsdl:message name="accessList">
+        <wsdl:part name="accessList" type="types:AccessList"/>
+    </wsdl:message>
+
+    <wsdl:message name="objectUsageList">
+        <wsdl:part name="objectUsageList" type="types:DomainObjectUsageListDTO"/>
+    </wsdl:message>
+
+    <wsdl:message name="pql">
+        <wsdl:part name="pql" type="types:PQL"/>
+    </wsdl:message>
+
+    <wsdl:message name="lockRequest">
+        <wsdl:part name="id" type="common:ID"/>
+        <wsdl:part name="type" type="types:LockRequestType"/>
+    </wsdl:message>
+
+    <wsdl:message name="lockOwner">
+        <wsdl:part name="ownerName" type="xsd:string"/>
+    </wsdl:message>
+
+    <wsdl:message name="forNamesAndTypeInput">
+        <wsdl:part name="nameList" type="types:StringList"/>
+        <wsdl:part name="domainObjectType" type="types:DomainObjectEnum"/>
+    </wsdl:message>
+
+    <wsdl:message name="getDODDigestsInput">
+        <wsdl:part name="nameList" type="types:StringList"/>
+    </wsdl:message>
+
+    <wsdl:message name="saveEntitiesInput">
+        <wsdl:part name="pql" type="types:PQL"/>
+    </wsdl:message>
+
+    <wsdl:message name="objectState">
+        <wsdl:part name="objectState" type="types:DomainObjectStateEnum"/>
+    </wsdl:message>
+
+    <wsdl:message name="attributeNameList">
+        <wsdl:part name="attributeNames" type="types:AttributeDescriptorList"/>
+    </wsdl:message>
+
+    <wsdl:message name="obligationList">
+        <wsdl:part name="obligations" type="types:ObligationDescriptorList"/>
+    </wsdl:message>
+
+    <wsdl:message name="policyActionsList">
+        <wsdl:part name="policyActions" type="types:PolicyActionsDescriptorList"/>
+    </wsdl:message>
+
+    <wsdl:message name="descriptorAndDate">
+        <wsdl:part name="descriptor" type="types:EntityDescriptorDTO"/>
+        <wsdl:part name="theDate" type="xsd:dateTime"/>
+    </wsdl:message>
+
+    <wsdl:message name="descriptorsAndDate">
+        <wsdl:part name="descriptors" type="types:EntityDescriptorList"/>
+        <wsdl:part name="theDate" type="xsd:dateTime"/>
+    </wsdl:message>
+    
+    <wsdl:message name="deployRequest">
+        <wsdl:part name="descriptors" type="types:EntityDescriptorList"/>
+        <wsdl:part name="theDate" type="xsd:dateTime"/>
+    </wsdl:message>
+
+    <wsdl:message name="descriptorsDateAndDirectFlag">
+        <wsdl:part name="descriptors" type="types:EntityDescriptorList"/>
+        <wsdl:part name="theDate" type="xsd:dateTime"/>
+        <wsdl:part name="onlyDirect" type="xsd:boolean"/>
+    </wsdl:message>
+
+    <wsdl:message name="fromAndToDates">
+        <wsdl:part name="from" type="xsd:long"/>
+        <wsdl:part name="to" type="xsd:long"/>
+    </wsdl:message>
+
+    <wsdl:message name="deploymentRecords">
+        <wsdl:part name="records" type="types:DeploymentRecordList"/>
+    </wsdl:message>
+
+    <wsdl:message name="deploymentRecord">
+        <wsdl:part name="record" type="types:DeploymentRecordDTO"/>
+    </wsdl:message>
+
+    <wsdl:message name="timeIntervals">
+        <wsdl:part name="records" type="types:TimeRelationList"/>
+    </wsdl:message>
+    
+    <wsdl:message name="deploymentHistory">
+        <wsdl:part name="records" type="types:DeploymentHistoryList"/>
+    </wsdl:message>
+
+    <wsdl:message name="resourceSubtype">
+        <wsdl:part name="subtypeName" type="xsd:string"/>
+    </wsdl:message>
+        
+    <wsdl:message name="leafObjects">
+        <wsdl:part name="objects" type="types:LeafObjectList"/>
+    </wsdl:message>
+
+    <wsdl:message name="leafObject">
+        <wsdl:part name="leafObject" type="types:LeafObjectDTO"/>
+    </wsdl:message>
+    
+	<wsdl:message name="leafObjectSearchSpec">
+        <wsdl:part name="leafObjectSearchSpec" type="types:LeafObjectSearchSpecDTO"/>
+	</wsdl:message>
+
+    <wsdl:message name="agentList">
+        <wsdl:part name="agents" type="types:AgentStatusList"/>
+    </wsdl:message>
+
+    <wsdl:message name="agentDescriptor">
+        <wsdl:part name="descriptor" type="types:AgentStatusDescriptorDTO"/>
+    </wsdl:message>
+
+    <wsdl:message name="changePasswordRequest">
+        <wsdl:part name="uniqueName" type="xsd:string"/>
+        <wsdl:part name="oldPassword" type="xsd:string"/>
+        <wsdl:part name="newPassword" type="xsd:string"/>
+    </wsdl:message>
+
+    <wsdl:message name="getConfigValueRequest">
+        <wsdl:part name="name" type="xsd:string"/>
+    </wsdl:message>
+
+    <wsdl:message name="getConfigValueResponse">
+        <wsdl:part name="value" type="xsd:string"/>
+    </wsdl:message>
+
+    <wsdl:message name="PolicyServiceFault">
+        <wsdl:part name="PolicyServiceFault" type="types:PolicyServiceFault"/>
+    </wsdl:message>
+
+    <wsdl:message name="ServiceNotReadyFault">
+        <wsdl:part name="ServiceNotReadyFault" type="common:ServiceNotReadyFault"/>
+    </wsdl:message>
+
+    <wsdl:message name="UnauthorizedCallerFault">
+        <wsdl:part name="UnauthorizedCallerFault" type="common:UnauthorizedCallerFault"/>
+    </wsdl:message>
+
+    <wsdl:message name="CircularReferenceFault">
+        <wsdl:part name="circularRef" type="types:CircularReferenceFault"/>
+    </wsdl:message>
+
+    <wsdl:message name="InvalidPasswordFault"/>
+
+    <wsdl:message name="appUserIdType">
+        <wsdl:part name="appUserId" type="common:ID"/>
+    </wsdl:message>
+
+    <wsdl:message name="components">
+        <wsdl:part name="objects" type="types:ComponentList"/>
+    </wsdl:message>
+
+	<wsdl:message name="enrollmentNames">
+		<wsdl:part name="enrollmentNames" type="types:StringList" />
+	</wsdl:message>
+	
+	<wsdl:message name="ExternalDataSourceConnectionInfo">
+		<wsdl:part name="ExternalDataSourceConnectionInfo" type="types:ExternalDataSourceConnectionInfo" />
+	</wsdl:message>
+
+	<wsdl:message name="ResourceIDandResourceTreeNode">
+		<wsdl:part name="id" type="xsd:int" />
+		<wsdl:part name="ResourceTreeNode" type="types:ResourceTreeNode" />
+	</wsdl:message>
+
+	<wsdl:message name="ResourcePreviewInput">
+		<wsdl:part name="id" type="xsd:int" />
+		<wsdl:part name="descriptor" type="types:EntityDescriptorDTO" />
+	</wsdl:message>
+
+	<wsdl:message name="ResourceTreeNodeResult">
+		<wsdl:part name="ResourceTreeNodeResult" type="types:ResourceTreeNodeList" />
+	</wsdl:message>
+
+	<wsdl:message name="ExternalDataSourceFault">
+		<wsdl:part name="ExternalDataSourceFault" type="types:ExternalDataSourceFault" />
+	</wsdl:message>
+	
+	<wsdl:message name="policyEditorRole">
+        <wsdl:part name="policyEditorRole" type="types:PolicyEditorRoles"/>
+    </wsdl:message>
+
+
+    <wsdl:message name="realmList">
+         <wsdl:part name="realmList" type="types:RealmList"/>
+    </wsdl:message>
+
+    <wsdl:portType name="PolicyEditorIF">
+
+        <wsdl:operation name="changePassword">
+            <wsdl:input message="tns:changePasswordRequest"/>
+            <wsdl:output message="tns:empty"/>
+            <wsdl:fault name="InvalidPasswordFault" message="tns:InvalidPasswordFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getConfigValue">
+            <wsdl:input message="tns:getConfigValueRequest"/>
+            <wsdl:output message="tns:getConfigValueResponse"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getNumDeployedPolicies">
+            <wsdl:input message="tns:empty"/>
+            <wsdl:output message="tns:count"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getLatestDeploymentTime">
+            <wsdl:input message="tns:empty"/>
+            <wsdl:output message="tns:when"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="objectLock">
+            <wsdl:input message="tns:lockRequest"/>
+            <wsdl:output message="tns:lockOwner"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDescriptorsForNameAndType">
+            <wsdl:input message="tns:nameTemplateAndTypes"/>
+            <wsdl:output message="tns:objectDescriptorsResp"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getEntitiesForNamesAndType">
+            <wsdl:input message="tns:forNamesAndTypeInput"/>
+            <wsdl:output message="tns:pql"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getEntitiesForDescriptors">
+            <wsdl:input message="tns:objectDescriptorsReq"/>
+            <wsdl:output message="tns:pql"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDODDigests">
+            <wsdl:input message="tns:getDODDigestsInput"/>
+            <wsdl:output message="tns:objectDigestsResp"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDescriptorsByIds">
+            <wsdl:input message="tns:ids"/>
+            <wsdl:output message="tns:objectDescriptorsResp"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDODDigestsByIds">
+            <wsdl:input message="tns:ids"/>
+            <wsdl:output message="tns:objectDigestsResp"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="saveEntitiesDigest">
+            <wsdl:input message="tns:saveEntitiesInput"/>
+            <wsdl:output message="tns:objectDigestsResp"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="saveEntities">
+            <wsdl:input message="tns:saveEntitiesInput"/>
+            <wsdl:output message="tns:objectDescriptorsResp"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getReferringObjectsForGroup">
+            <wsdl:input message="tns:nameTemplateTypeAndFilter"/>
+            <wsdl:output message="tns:objectDescriptorsResp"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="CircularReferenceFault" message="tns:CircularReferenceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getReferringObjectsAsOf">
+            <wsdl:input message="tns:descriptorsDateAndDirectFlag"/>
+            <wsdl:output message="tns:objectDescriptorsResp"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="CircularReferenceFault" message="tns:CircularReferenceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDependencies">
+            <wsdl:input message="tns:objectDescriptorsAndDirectFlag"/>
+            <wsdl:output message="tns:objectDescriptorsResp"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="CircularReferenceFault" message="tns:CircularReferenceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDependenciesDigest">
+            <wsdl:input message="tns:objectDigestsAndDirectFlag"/>
+            <wsdl:output message="tns:objectDigestsResp"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="CircularReferenceFault" message="tns:CircularReferenceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getUsageList">
+            <wsdl:input message="tns:objectDescriptorsReq"/>
+            <wsdl:output message="tns:objectUsageList"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDescriptorsForState">
+            <wsdl:input message="tns:objectState"/>
+            <wsdl:output message="tns:objectDescriptorsResp"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getSubjectAttributes">
+            <wsdl:input message="tns:domainObjectType"/>
+            <wsdl:output message="tns:attributeNameList"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getResourceAttributes">
+            <wsdl:input message="tns:resourceSubtype"/>
+            <wsdl:output message="tns:attributeNameList"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getCustomResourceAttributes">
+            <wsdl:input message="tns:resourceSubtype"/>
+            <wsdl:output message="tns:attributeNameList"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getObligationDescriptors">
+            <wsdl:input message="tns:empty"/>
+            <wsdl:output message="tns:obligationList"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getPolicyActionsDescriptors">
+            <wsdl:input message="tns:empty"/>
+            <wsdl:output message="tns:policyActionsList"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDeployedObjectDescriptors">
+            <wsdl:input message="tns:descriptorsAndDate"/>
+            <wsdl:output message="tns:objectDescriptorsResp"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDeployedObjects">
+            <wsdl:input message="tns:descriptorsAndDate"/>
+            <wsdl:output message="tns:pql"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+		<wsdl:operation name="hasObjectsToDeploy">
+		    <wsdl:input message="tns:empty"/>
+			<wsdl:output message="tns:trueorfalse"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>			
+		</wsdl:operation>
+		
+        <wsdl:operation name="getDependenciesAsOf">
+            <wsdl:input message="tns:descriptorsAndDate"/>
+            <wsdl:output message="tns:objectDescriptorsResp"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="CircularReferenceFault" message="tns:CircularReferenceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="DescriptorsForDeploymentRecord">
+            <wsdl:input message="tns:deploymentRecord"/>
+            <wsdl:output message="tns:objectDescriptorsResp"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDeploymentHistory">
+            <wsdl:input message="tns:objectDescriptor"/>
+            <wsdl:output message="tns:deploymentHistory"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="scheduleDeployment">
+            <wsdl:input message="tns:deployRequest"/>
+            <wsdl:output message="tns:deploymentRecord"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="scheduleUndeployment">
+            <wsdl:input message="tns:deployRequest"/>
+            <wsdl:output message="tns:deploymentRecord"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="cancelScheduledDeployment">
+            <wsdl:input message="tns:deploymentRecord"/>
+            <wsdl:output message="tns:empty"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDeploymentRecords">
+            <wsdl:input message="tns:fromAndToDates"/>
+            <wsdl:output message="tns:deploymentRecords"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="runLeafObjectQuery">
+            <wsdl:input message="tns:leafObjectSearchSpec"/>
+            <wsdl:output message="tns:leafObjects"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getLeafObjectsByIds">
+            <wsdl:input message="tns:requestedIds"/>
+            <wsdl:output message="tns:leafObjects"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getMatchingSubjects">
+            <wsdl:input message="tns:objectDescriptor"/>
+            <wsdl:output message="tns:leafObjects"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getSuperUser">
+            <wsdl:input message="tns:empty"/>
+            <wsdl:output message="tns:leafObject"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+        
+        <wsdl:operation name="getMatchingActions">
+            <wsdl:input message="tns:objectDescriptor"/>
+            <wsdl:output message="tns:leafObjects"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getFullyResolvedEntity">
+            <wsdl:input message="tns:objectDescriptor"/>
+            <wsdl:output message="tns:pql"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="CircularReferenceFault" message="tns:CircularReferenceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="ensureOperationIsAllowed">
+            <wsdl:input message="tns:objectDescriptorsUserAndAccess"/>
+            <wsdl:output message="tns:objectDescriptorsResp"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="allowedActions">
+            <wsdl:input message="tns:objectDescriptors"/>
+            <wsdl:output message="tns:accessList"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getAgentList">
+            <wsdl:input message="tns:empty"/>
+            <wsdl:output message="tns:agentList"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getAgentsForDeployedObject">
+            <wsdl:input message="tns:descriptorAndDate"/>
+            <wsdl:output message="tns:agentList"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="deploymentStatusForAgent">
+            <wsdl:input message="tns:agentDescriptor"/>
+            <wsdl:output message="tns:objectDescriptorsResp"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getAccessGroupsForUser">
+            <wsdl:input message="tns:appUserIdType"/>
+            <wsdl:output message="tns:leafObjects"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getAllowedEntitiesForUser">
+            <wsdl:input message="tns:appUserIdType"/>
+            <wsdl:output message="tns:components"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="updateComputersWithAgents">
+            <wsdl:input message="tns:empty"/>
+            <wsdl:output message="tns:empty"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDictionaryEnrollmentNames">
+            <wsdl:input message="tns:policyEditorRole"/>
+            <wsdl:output message="tns:enrollmentNames"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDictionaryEnrollmentRealms">
+            <wsdl:input message="tns:policyEditorRole"/>
+            <wsdl:output message="tns:realmList"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getPortalURLList">
+            <wsdl:input message="tns:empty"/>
+            <wsdl:output message="tns:stringList"/>
+            <wsdl:fault name="ExternalDataSourceFault" message="tns:ExternalDataSourceFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="createExternalDataSource">
+            <wsdl:input message="tns:ExternalDataSourceConnectionInfo"/>
+            <wsdl:output message="tns:id"/>
+            <wsdl:fault name="ExternalDataSourceFault" message="tns:ExternalDataSourceFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getResourceTreeNodeChildren">
+            <wsdl:input message="tns:ResourceIDandResourceTreeNode"/>
+            <wsdl:output message="tns:ResourceTreeNodeResult"/>
+            <wsdl:fault name="ExternalDataSourceFault" message="tns:ExternalDataSourceFault"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getMatchingPortalResource">
+            <wsdl:input message="tns:ResourcePreviewInput"/>
+            <wsdl:output message="tns:ResourceTreeNodeResult"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+        
+        <wsdl:operation name="executePush">
+            <wsdl:input message="tns:empty"/>
+            <wsdl:output message="tns:empty"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+        
+        <wsdl:operation name="schedulePush">
+            <wsdl:input message="tns:when"/>
+            <wsdl:output message="tns:empty"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+        <!-- THIS OPERATION IS FOR UNIT TESTING - IT IS DISABLED IN A PRODUCTION ENVIRONMENT. -->
+        <wsdl:operation name="prepareForTests">
+            <wsdl:input message="tns:empty"/>
+            <wsdl:output message="tns:empty"/>
+            <wsdl:fault name="PolicyServiceFault" message="tns:PolicyServiceFault"/>
+            <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+        </wsdl:operation>
+
+    </wsdl:portType>
+
+    <wsdl:binding name="PolicyEditorIFBinding" type="tns:PolicyEditorIF">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        <wsdl:operation name="getConfigValue">
+            <wsdl:input>
+                <soap:body parts="tns:getConfigValueRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:getConfigValueResponse" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getNumDeployedPolicies">
+            <wsdl:input>
+                <soap:body parts="tns:empty" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:count" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getLatestDeploymentTime">
+            <wsdl:input>
+                <soap:body parts="tns:empty" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:when" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="objectLock">
+            <wsdl:input>
+                <soap:body parts="tns:lockRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:lockOwner" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDescriptorsForNameAndType">
+            <wsdl:input>
+                <soap:body parts="tns:nameTemplateAndTypes" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:objectDescriptorsResp" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getEntitiesForNamesAndType">
+            <wsdl:input>
+                <soap:body parts="tns:forNamesAndTypeInput" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:pql" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getEntitiesForDescriptors">
+            <wsdl:input>
+                <soap:body parts="tns:objectDescriptorsReq" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:pql" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDODDigests">
+            <wsdl:input>
+                <soap:body parts="tns:getDODDigestsInput" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:digestList" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDescriptorsByIds">
+            <wsdl:input>
+                <soap:body parts="tns:ids" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:objectDescriptorsResp" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDODDigestsByIds">
+            <wsdl:input>
+                <soap:body parts="tns:ids" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:objectDigestsResp" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="saveEntitiesDigest">
+            <wsdl:input>
+                <soap:body parts="tns:saveEntitiesInput" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:objectDigestsResp" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="saveEntities">
+            <wsdl:input>
+                <soap:body parts="tns:saveEntitiesInput" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:objectDescriptorsResp" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getReferringObjectsForGroup">
+            <wsdl:input>
+                <soap:body parts="tns:nameTemplateTypeAndFilter" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:objectDescriptorsResp" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="CircularReferenceFault">
+                <soap:fault name="tns:CircularReferenceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getReferringObjectsAsOf">
+            <wsdl:input>
+                <soap:body parts="tns:descriptorsDateAndDirectFlag" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:objectDescriptorsResp" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="CircularReferenceFault">
+                <soap:fault name="tns:CircularReferenceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDependencies">
+            <wsdl:input>
+                <soap:body parts="tns:objectDescriptorsAndDirectFlag" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:objectDescriptorsResp" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="CircularReferenceFault">
+                <soap:fault name="tns:CircularReferenceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDependenciesDigest">
+            <wsdl:input>
+                <soap:body parts="tns:objectDigestsAndDirectFlag" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:objectDigestsResp" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="CircularReferenceFault">
+                <soap:fault name="tns:CircularReferenceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getUsageList">
+            <wsdl:input>
+                <soap:body parts="tns:objectDescriptorsReq" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:objectUsageList" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDescriptorsForState">
+            <wsdl:input>
+                <soap:body parts="tns:objectState" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:objectDescriptorsResp" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getSubjectAttributes">
+            <wsdl:input>
+                <soap:body parts="tns:domainObjectType" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:attributeNameList" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getResourceAttributes">
+            <wsdl:input>
+                <soap:body parts="tns:resourceSubtype" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:attributeNameList" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getCustomResourceAttributes">
+            <wsdl:input>
+                <soap:body parts="tns:resourceSubtype" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:attributeNameList" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getObligationDescriptors">
+            <wsdl:input>
+                <soap:body parts="tns:empty" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:obligationList" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getPolicyActionsDescriptors">
+            <wsdl:input>
+                <soap:body parts="tns:empty" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:policyActionsList" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDeployedObjectDescriptors">
+            <wsdl:input>
+                <soap:body parts="tns:descriptorsAndDate" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:objectDescriptorsResp" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDeployedObjects">
+            <wsdl:input>
+                <soap:body parts="tns:descriptorsAndDate" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:pql" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+		<wsdl:operation name="hasObjectsToDeploy">
+            <wsdl:output>
+                <soap:body parts="tns:trueorfalse" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>		    		    
+		</wsdl:operation>
+		
+        <wsdl:operation name="getDependenciesAsOf">
+            <wsdl:input>
+                <soap:body parts="tns:descriptorsAndDate" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:objectDescriptorsResp" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="CircularReferenceFault">
+                <soap:fault name="tns:CircularReferenceFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="DescriptorsForDeploymentRecord">
+            <wsdl:input>
+                <soap:body parts="tns:deploymentRecord" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:objectDescriptorsResp" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDeploymentHistory">
+            <wsdl:input>
+                <soap:body parts="tns:objectDescriptor" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:timeIntervals" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="scheduleDeployment">
+            <wsdl:input>
+                <soap:body parts="tns:deployRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:deploymentRecord" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="scheduleUndeployment">
+            <wsdl:input>
+                <soap:body parts="tns:deployRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:deploymentRecord" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="cancelScheduledDeployment">
+            <wsdl:input>
+                <soap:body parts="tns:deploymentRecord" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:empty" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDeploymentRecords">
+            <wsdl:input>
+                <soap:body parts="tns:fromAndToDates" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:deploymentRecords" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="runLeafObjectQuery">
+            <wsdl:input>
+                <soap:body parts="tns:leafObjectSeachSpec" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:leafObjects" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getLeafObjectsByIds">
+            <wsdl:input>
+                <soap:body parts="requestedIds" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:leafObjects" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getMatchingSubjects">
+            <wsdl:input>
+                <soap:body parts="tns:objectDescriptor" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:leafObjects" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getSuperUser">
+            <wsdl:input>
+                <soap:body parts="tns:empty" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:leafObject" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="getMatchingActions">
+            <wsdl:input>
+                <soap:body parts="tns:objectDescriptor" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:leafObjects" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getFullyResolvedEntity">
+            <wsdl:input>
+                <soap:body parts="tns:objectDescriptor" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:pql" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="CircularReferenceFault">
+                <soap:fault name="tns:CircularReferenceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="ensureOperationIsAllowed">
+            <wsdl:input>
+                <soap:body parts="tns:objectDescriptorsUserAndAccess" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:objectDescriptorsResp" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="allowedActions">
+            <wsdl:input>
+                <soap:body parts="tns:objectDescriptors" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:accessList" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getAgentList">
+            <wsdl:input>
+                <soap:body parts="tns:empty" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:agentList" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getAgentsForDeployedObject">
+            <wsdl:input>
+                <soap:body parts="tns:descriptorAndDate" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:agentList" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="deploymentStatusForAgent">
+            <wsdl:input>
+                <soap:body parts="tns:agentDescriptor" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:objectDescriptorsResp" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <!-- THIS OPERATION IS FOR UNIT TESTING - IT IS DISABLED IN A PRODUCTION ENVIRONMENT. -->
+        <wsdl:operation name="prepareForTests">
+            <wsdl:input>
+                <soap:body parts="tns:empty" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:empty" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="changePassword">
+            <wsdl:input>
+                <soap:body parts="tns:changePasswordRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:empty" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="InvalidPasswordFault">
+                <soap:fault name="tns:InvalidPasswordFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getAccessGroupsForUser">
+            <wsdl:input>
+                <soap:body parts="tns:appUserIdType" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:leafObjects" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getAllowedEntitiesForUser">
+            <wsdl:input>
+                <soap:body parts="tns:appUserIdType" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:components" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="updateComputersWithAgents">
+            <wsdl:input>
+                <soap:body parts="tns:empty" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:empty" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getDictionaryEnrollmentNames">
+            <wsdl:input>
+                <soap:body parts="tns:policyEditorRole" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:enrollmentNames" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        
+         <wsdl:operation name="getDictionaryEnrollmentRealms">
+            <wsdl:input>
+                <soap:body parts="tns:policyEditorRole" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:realmList" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+
+         <wsdl:operation name="getPortalURLList">
+            <wsdl:input>
+                <soap:body parts="tns:empty" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:stringList" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ExternalDataSourceFault">
+                <soap:fault name="tns:ExternalDataSourceFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+  
+        <wsdl:operation name="createExternalDataSource">
+            <wsdl:input>
+                <soap:body parts="tns:ExternalDataSourceConnectionInfo" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:id" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ExternalDataSourceFault">
+                <soap:fault name="tns:ExternalDataSourceFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="getResourceTreeNodeChildren">
+            <wsdl:input>
+                <soap:body parts="tns:ResourceIDandResourceTreeNode" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:ResourceTreeNodeResult" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ExternalDataSourceFault">
+                <soap:fault name="tns:ExternalDataSourceFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>    
+
+        <wsdl:operation name="getMatchingPortalResource">
+            <wsdl:input>
+                <soap:body parts="tns:ResourcePreviewInput" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:ResourceTreeNodeResult" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="PolicyServiceFault">
+                <soap:fault name="tns:PolicyServiceFault" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="executePush">
+            <wsdl:input>
+                <soap:body parts="tns:empty" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:empty" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        
+         <wsdl:operation name="schedulePush">
+            <wsdl:input>
+                <soap:body parts="tns:when" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="tns:empty" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="ServiceNotReadyFault">
+                <soap:fault name="tns:ServiceNotReadyFault" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        
+
+    </wsdl:binding>
+
+    <wsdl:service name="PolicyEditor">
+        <wsdl:port name="PolicyEditorIFPort" binding="tns:PolicyEditorIFBinding">
+            <soap:address location="http://localhost:8081/dps/services/PolicyEditorIFPort"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,166 @@
+<project name="Tomcat Build" default="setup_tomcat" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+  <property environment="env"/>
+  <property name="env.HOSTNAME" value="${env.COMPUTERNAME}"/>
+
+  <target name="setup_tomcat" depends="setup_tomcat_app, setup_shared_libs, setup_server_xml, setup_certificates, setup_license, setup_logging">
+  </target>
+
+  <target name="setup_tomcat_app">
+    <mkdir dir="${run.dir}"/>
+    <mkdir dir="${tomcat.run.home}"/>
+	<copy todir="${tomcat.run.home}" overwrite="false" includeemptydirs="true">
+	  <fileset dir="${tomcat.home}">
+		<exclude name="bin/tomcat5w.exe"/>
+		<exclude name="src/**"/>
+		<exclude name="apache-tomcat-5.5.20-src/**"/>
+		<exclude name="work/**"/>
+		<exclude name="server/webapps/**"/>
+		<exclude name="webapps/**"/>
+	  </fileset>
+	</copy>
+  </target>
+
+  <target name="setup_shared_libs">
+  	<copy file="${build.root.dir}/server-security.jar" todir="${tomcat.run.home}/lib"/>
+    <copy file="${build.root.dir}/crypt.jar" todir="${tomcat.run.home}/lib"/>
+
+    <!-- Shared Libs-->
+    <mkdir dir="${tomcat.run.home}/shared/lib" />
+    <copy file="${build.root.dir}/server-base.jar" todir="${tomcat.run.home}/shared/lib"/>	
+    <copy file="${build.root.dir}/server-base-internal.jar" todir="${tomcat.run.home}/shared/lib"/>	
+    <copy file="${build.root.dir}/common-version.jar" todir="${tomcat.run.home}/shared/lib"/>	
+    <copy file="${xlib_jar_dir}/c3p0-0.9.1.2.jar" todir="${tomcat.run.home}/shared/lib" failonerror="true"/>
+    <copy file="${xlib_jar_dir}/postgresql-9.2-1002.jdbc4.jar" todir="${tomcat.run.home}/shared/lib" failonerror="true"/>
+    <copy file="${oracle.jdbc}" todir="${tomcat.run.home}/shared/lib" failonerror="true"/>
+    <copy file="${xlib_jar_dir}/sqljdbc4.jar" todir="${tomcat.run.home}/shared/lib" failonerror="true"/>
+  </target>
+
+  <target name="setup_server_xml">
+    <copy todir="${run.dir}" overwrite="false" failonerror="true">
+	  <fileset dir="${src.root.dir}/server/container/dms/etc/" >
+	    <include name="server-template.xml"/>
+		<include name="server-1-template.xml"/>
+		<include name="server-2-template.xml"/>
+	  </fileset>
+	</copy>
+
+	<copy file="${run.dir}/server-template.xml" tofile="${run.dir}/server.xml"/>
+	  <copy file="${run.dir}/server-template.xml" tofile="${run.dir}/server-1-template.xml"/>
+	  <copy file="${run.dir}/server-template.xml" tofile="${run.dir}/server-2-template.xml"/>
+	  <!-- Configures the server.xml files with the correct values -->
+  	  <replace file="${run.dir}/server.xml" token="[BLUEJUNGLE_HOME]" value="${run.dir}"/>
+	  <replace file="${run.dir}/server.xml" token="[DAC_MACHINE]" value="${env.HOSTNAME}"/>
+	  <replace file="${run.dir}/server.xml" token="[DAC_PORT]" value="8443"/>
+	  <replace file="${run.dir}/server.xml" token="[DMS_HOST]" value="${env.HOSTNAME}"/>
+	  <replace file="${run.dir}/server.xml" token="[DMS_PORT]" value="8443"/>
+	  <replace file="${run.dir}/server.xml" token="[EXTERNAL_PORT]" value="8444"/>
+	  <replace file="${run.dir}/server.xml" token="[GENERATED_KEY]" value="4b5971583b4b385902712b58285f315e0c7e3155"/>
+		<replace file="${run.dir}/server.xml" token="[HOSTNAME]" value="${env.HOSTNAME}"/>
+		<replace file="${run.dir}/server.xml" token="[INTERNAL_PORT]" value="8443"/>
+		<replace file="${run.dir}/server.xml" token="[SHUTDOWN_PORT]" value="8006"/>
+		<!-- Enable unsecure port - Debug mode only -->
+		<replace file="${run.dir}/server.xml" token="[DEBUG_CONNECTOR_PORT_NUMBER]" value="8081"/>
+		<replace file="${run.dir}/server.xml" token="[DEBUG_CONNECTOR_BEGIN]" value="[DEBUG_CONNECTOR_BEGIN]-->"/>
+		<replace file="${run.dir}/server.xml" token="[DEBUG_CONNECTOR_END]-->" value=" "/>
+
+		<!-- Configures server-1.xml files with the correct values. Server one has DABS and DAC -->
+		<replace file="${run.dir}/server-1-template.xml" token="[BLUEJUNGLE_HOME]" value="${run.dir}"/>
+		<replace file="${run.dir}/server-1-template.xml" token="[DAC_MACHINE]" value="${env.HOSTNAME}"/>
+		<replace file="${run.dir}/server-1-template.xml" token="[DAC_PORT]" value="8445"/>
+		<replace file="${run.dir}/server-1-template.xml" token="[DMS_HOST]" value="${env.HOSTNAME}"/>
+		<replace file="${run.dir}/server-1-template.xml" token="[DMS_PORT]" value="8447"/>
+		<replace file="${run.dir}/server-1-template.xml" token="[EXTERNAL_PORT]" value="8446"/>
+		<replace file="${run.dir}/server-1-template.xml" token="[GENERATED_KEY]" value="4b5971583b4b385902712b58285f315e0c7e3155"/>
+		<replace file="${run.dir}/server-1-template.xml" token="[HOSTNAME]" value="${env.HOSTNAME}"/>
+		<replace file="${run.dir}/server-1-template.xml" token="[INTERNAL_PORT]" value="8445"/>
+		<replace file="${run.dir}/server-1-template.xml" token="!--[DMS_COMPONENT_BEGIN]-->" value="!--[DMS_COMPONENT_BEGIN]"/>
+		<replace file="${run.dir}/server-1-template.xml" token="!--[DMS_COMPONENT_END]-->" value="[DMS_COMPONENT_END]-->"/>
+		<replace file="${run.dir}/server-1-template.xml" token="!--[DEM_COMPONENT_BEGIN]-->" value="!--[DEM_COMPONENT_BEGIN]"/>
+		<replace file="${run.dir}/server-1-template.xml" token="!--[DEM_COMPONENT_END]-->" value="[DEM_COMPONENT_END]-->"/>
+		<replace file="${run.dir}/server-1-template.xml" token="!--[DPS_COMPONENT_BEGIN]-->" value="!--[DPS_COMPONENT_BEGIN]"/>
+		<replace file="${run.dir}/server-1-template.xml" token="!--[DPS_COMPONENT_END]-->" value="[DPS_COMPONENT_END]-->"/>
+		<replace file="${run.dir}/server-1-template.xml" token="!--[ADMIN_COMPONENT_BEGIN]-->" value="!--[ADMIN_COMPONENT_BEGIN]"/>
+		<replace file="${run.dir}/server-1-template.xml" token="!--[ADMIN_COMPONENT_END]-->" value="[ADMIN_COMPONENT_END]-->"/>
+		<replace file="${run.dir}/server-1-template.xml" token="!--[ODRM_COMPONENT_BEGIN]-->" value="!--[ODRM_COMPONENT_BEGIN]"/>
+		<replace file="${run.dir}/server-1-template.xml" token="!--[ODRM_COMPONENT_END]-->" value="[ODRM_COMPONENT_END]-->"/>
+		<replace file="${run.dir}/server-1-template.xml" token="!--[REPORTER_COMPONENT_BEGIN]-->" value="!--[REPORTER_COMPONENT_BEGIN]"/>
+		<replace file="${run.dir}/server-1-template.xml" token="!--[REPORTER_COMPONENT_END]-->" value="[REPORTER_COMPONENT_END]-->"/>
+		<replace file="${run.dir}/server-1-template.xml" token="[SHUTDOWN_PORT]" value="8007"/>
+		
+		<!-- Minor changes there to support all configs in debug -->
+		<replace file="${run.dir}/server-1-template.xml" token="CE-Core" value="CE-Core-1"/>
+		<replace file="${run.dir}/server-1-template.xml" token="CE-Apps" value="CE-Apps-1"/>		
+		<replace file="${run.dir}/server-1-template.xml" token="_dabs" value="_dabs1"/>		
+		<replace file="${run.dir}/server-1-template.xml" token="_dac" value="_dac1"/>		
+		<replace file="${run.dir}/server-1-template.xml" token="_dcsf" value="_dcsf1"/>		
+		<replace file="${run.dir}/server-1-template.xml" token="_dcsf" value="_dcsf1"/>		
+		<replace file="${run.dir}/server-1-template.xml" token="_dem" value="_dem1"/>		
+		<move file="${run.dir}/server-1-template.xml" tofile="${run.dir}/server-1.xml"/>
+
+		<!-- Configures server-2.xml files with the correct values. Server two has DMS, DPS, DEM, Administrator and Reporter -->
+		<replace file="${run.dir}/server-2-template.xml" token="[BLUEJUNGLE_HOME]" value="${run.dir}"/>
+		<replace file="${run.dir}/server-2-template.xml" token="[DAC_MACHINE]" value="${env.HOSTNAME}"/>
+		<replace file="${run.dir}/server-2-template.xml" token="[DAC_PORT]" value="8445"/>
+		<replace file="${run.dir}/server-2-template.xml" token="[DMS_HOST]" value="${env.HOSTNAME}"/>
+		<replace file="${run.dir}/server-2-template.xml" token="[DMS_PORT]" value="8447"/>
+		<replace file="${run.dir}/server-2-template.xml" token="[EXTERNAL_PORT]" value="8448"/>
+		<replace file="${run.dir}/server-2-template.xml" token="[GENERATED_KEY]" value="4b5971583b4b385902712b58285f315e0c7e3155"/>
+		<replace file="${run.dir}/server-2-template.xml" token="[HOSTNAME]" value="${env.HOSTNAME}"/>
+		<replace file="${run.dir}/server-2-template.xml" token="[INTERNAL_PORT]" value="8447"/>
+		<replace file="${run.dir}/server-2-template.xml" token="!--[DABS_COMPONENT_BEGIN]-->" value="!--[DABS_COMPONENT_BEGIN]"/>
+		<replace file="${run.dir}/server-2-template.xml" token="!--[DABS_COMPONENT_END]-->" value="[DABS_COMPONENT_END]-->"/>
+		<replace file="${run.dir}/server-2-template.xml" token="!--[DAC_COMPONENT_BEGIN]-->" value="!--[DAC_COMPONENT_BEGIN]"/>
+		<replace file="${run.dir}/server-2-template.xml" token="!--[DAC_COMPONENT_END]-->" value="[DAC_COMPONENT_END]-->"/>
+		<replace file="${run.dir}/server-2-template.xml" token="[SHUTDOWN_PORT]" value="8008"/>
+		<!-- Minor changes there to support all configs in debug -->
+		<replace file="${run.dir}/server-2-template.xml" token="CE-Core" value="CE-Core-2"/>
+		<replace file="${run.dir}/server-2-template.xml" token="CE-Apps" value="CE-Apps-2"/>
+		<replace file="${run.dir}/server-2-template.xml" token="_dcsf" value="_dcsf2"/>
+		<replace file="${run.dir}/server-2-template.xml" token="_dem" value="_dem2"/>		
+		<replace file="${run.dir}/server-2-template.xml" token="_dms" value="_dms2"/>		
+		<replace file="${run.dir}/server-2-template.xml" token="_dps" value="_dps2"/>	
+		<replace file="${run.dir}/server-2-template.xml" token="_mgmt" value="_mgmt2"/>
+		
+		<move file="${run.dir}/server-2-template.xml" tofile="${run.dir}/server-2.xml"/>
+  </target>
+
+  <target name="setup_certificates">
+    <mkdir dir="${certificates.dir}" />
+	<copy todir="${certificates.dir}">
+	  <fileset dir="${build.root.dir}" includes="*.jks" />
+	</copy>
+  </target>
+
+  <target name="setup_license">
+    <copy todir="${license.dir}" overwrite="false" failonerror="true">
+	  <fileset dir="${src.root.dir}/server/container/dms/etc/" >
+	    <include name="license.dat"/>
+		<include name="license.jar"/>
+	  </fileset>
+	</copy>
+  </target>
+
+  <target name="setup_logging">
+    <!-- Configures logging.properties -->
+	<!-- Copy the template for the installer -->
+	<copy file="${src.root.dir}/etc/logging.properties-template" todir="${run.dir}" overwrite="false"/>
+
+	<!-- Create a copy for the dev environment build -->
+	<copy file="${src.root.dir}/etc/logging.properties-template" tofile="${run.dir}/logging.properties" overwrite="false"/>
+	<!-- Replace necessary tokens -->
+    <replace dir="${run.dir}" token="#{build.root.dir}" value="${build.root.dir}">
+      <include name="*.xml"/>
+      <include name="*.properties"/>
+    </replace>
+	<replace file="${run.dir}/logging.properties" token="[BLUEJUNGLE_HOME]/server/logs/" value="${build.root.dir}/log/" />
+	<replace file="${run.dir}/logging.properties" token="\" value="/" />
+	<replace file="${run.dir}/logging.properties" token="SEVERE" value="${server.log.level}" />
+	<replace file="${run.dir}/logging.properties" token="WARNING" value="${server.log.level}" />
+
+	<!-- Create copies for the second and third unit test servers -->
+	<copy file="${run.dir}/logging.properties" tofile="${run.dir}/logging-1.properties" overwrite="false"/>
+	<replace file="${run.dir}/logging-1.properties" token="DCC.%g.log" value="DCC-1.%g.log" />
+	<copy file="${run.dir}/logging.properties" tofile="${run.dir}/logging-2.properties" overwrite="false"/>
+	<replace file="${run.dir}/logging-2.properties" token="DCC.%g.log" value="DCC-2.%g.log" />
+  </target>
+</project>

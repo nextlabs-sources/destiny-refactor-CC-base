@@ -1,0 +1,320 @@
+<project name="Shared web services" default="build">
+
+	<property name="src.dir"      value="${basedir}"/>
+	<property name="base.service.dir" value="com/bluejungle/destiny" />
+	<property name="build.gendest" value="${build.root.dir}/server/container/shared/genclasses"/>   
+
+	<target name="pre-build">
+		<mkdir dir="${build.gendest}"/>
+		<mkdir dir="${public.gen.dir}/secureService/dac"/>
+		<mkdir dir="${public.gen.dir}/secureService/dms"/>
+		<mkdir dir="${gen.dir}/secureService/dem"/>
+		<mkdir dir="${gen.dir}/secureService/dms"/>
+		<mkdir dir="${gen.dir}/secureService/dps"/>
+		<mkdir dir="${gen.dir}/secureService/dkms"/>
+	</target>
+	
+	<target name="build" depends="check-wsdl, wsdl-jar">
+	</target>	
+	
+	<target name="check-wsdl">
+		<!-- this is a wholesale check.  If even one xsd or wsdl is out of date with one of the 
+	     wsld-jars, all wsdl gets rebuilt.
+	-->
+		<uptodate property="sharedWsdlBuild.notRequired" targetfile="${build.root.dir}/server-shared-services.jar">
+			<srcfiles dir="${src.dir}/${base.service.dir}" includes="**/*.xsd, **/*.wsdl"/>
+		</uptodate>
+	</target>
+
+	<target name="wsdl-generate" depends="pre-build" unless="sharedWsdlBuild.notRequired">
+		
+		<!-- Takes care of the Secure Session service for DAC -->
+		<wsdl2java url="${src.dir}/${base.service.dir}/services/SecureSessionService.v1.wsdl"
+				output="${public.gen.dir}/secureService/dac"
+				deployscope="application"
+				serverSide="yes"
+				skeletonDeploy="no"
+				implementationClassName="com.bluejungle.destiny.container.shared.securesession.service.SecureSessionServiceV1Impl"
+				noimports="no"
+				verbose="yes"
+				testcase="yes"
+				nowrapped="true"
+				timeout="-1"
+				factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+				trustedCallers="DCC"
+				userAuthRequired="true"
+				clientApplication="Inquiry Center">
+			<mapping namespace="http://bluejungle.com/destiny/services/secure_session/v1"
+					 package="com.bluejungle.destiny.services.secure_session.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/bindings/secure_session/v1"
+					 package="com.bluejungle.destiny.bindings.secure_session.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/interfaces/secure_session/v1"
+					 package="com.bluejungle.destiny.interfaces.secure_session.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/types/secure_session/v1"
+					 package="com.bluejungle.destiny.types.secure_session.v1" />
+		</wsdl2java>
+		<move file="${public.gen.dir}/secureService/dac/${base.service.dir}/services/secure_session/v1/deploy.wsdd" 
+				tofile="${public.gen.dir}/secureService/dac/${base.service.dir}/services/secure_session/v1/deploy-SecureSessionService.wsdd"
+				failonerror="true"
+		/>
+		<move file="${public.gen.dir}/secureService/dac/${base.service.dir}/services/secure_session/v1/undeploy.wsdd" 
+				tofile="${public.gen.dir}/secureService/dac/${base.service.dir}/services/secure_session/v1/undeploy-SecureSessionService.wsdd"
+				failonerror="true"
+		/>
+
+				<!-- Takes care of the Secure Session service for DMS -->
+		<wsdl2java url="${src.dir}/${base.service.dir}/services/SecureSessionService.v1.wsdl"
+				output="${gen.dir}/secureService/dms"
+				deployscope="application"
+				serverSide="yes"
+				skeletonDeploy="no"
+				implementationClassName="com.bluejungle.destiny.container.shared.securesession.service.SecureSessionServiceV1Impl"
+				noimports="no"
+				verbose="yes"
+				testcase="yes"
+				nowrapped="true"
+				timeout="-1"
+				factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+				trustedCallers="DCC"
+				userAuthRequired="true"
+				clientApplication="Management Console">
+			<mapping namespace="http://bluejungle.com/destiny/services/secure_session/v1"
+					 package="com.bluejungle.destiny.services.secure_session.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/bindings/secure_session/v1"
+					 package="com.bluejungle.destiny.bindings.secure_session.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/interfaces/secure_session/v1"
+					 package="com.bluejungle.destiny.interfaces.secure_session.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/types/secure_session/v1"
+					 package="com.bluejungle.destiny.types.secure_session.v1" />
+		</wsdl2java>
+		<move file="${gen.dir}/secureService/dms/${base.service.dir}/services/secure_session/v1/deploy.wsdd" 
+				tofile="${gen.dir}/secureService/dms/${base.service.dir}/services/secure_session/v1/deploy-SecureSessionService.wsdd" 
+				failonerror="true"
+		/>
+		<move file="${gen.dir}/secureService/dms/${base.service.dir}/services/secure_session/v1/undeploy.wsdd" 
+				tofile="${gen.dir}/secureService/dms/${base.service.dir}/services/secure_session/v1/undeploy-SecureSessionService.wsdd" 
+				failonerror="true"
+		/>
+
+				<!-- Takes care of the Secure Session service for DPS -->
+		<wsdl2java url="${src.dir}/${base.service.dir}/services/SecureSessionService.v1.wsdl"
+				output="${gen.dir}/secureService/dps"
+				deployscope="application"
+				serverSide="yes"
+				skeletonDeploy="no"
+				implementationClassName="com.bluejungle.destiny.container.shared.securesession.service.SecureSessionServiceV1Impl"
+				noimports="no"
+				verbose="yes"
+				testcase="yes"
+				nowrapped="true"
+				factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+				trustedCallers="DCC PolicyAuthor"
+				userAuthRequired="true"
+				timeout="-1"
+				clientApplication="Policy Author">
+			<mapping namespace="http://bluejungle.com/destiny/services/secure_session/v1"
+					 package="com.bluejungle.destiny.services.secure_session.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/bindings/secure_session/v1"
+					 package="com.bluejungle.destiny.bindings.secure_session.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/interfaces/secure_session/v1"
+					 package="com.bluejungle.destiny.interfaces.secure_session.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/types/secure_session/v1"
+					 package="com.bluejungle.destiny.types.secure_session.v1" />
+		</wsdl2java>
+		<move file="${gen.dir}/secureService/dps/${base.service.dir}/services/secure_session/v1/deploy.wsdd" 
+				tofile="${gen.dir}/secureService/dps/${base.service.dir}/services/secure_session/v1/deploy-SecureSessionService.wsdd" 
+				failonerror="true"
+		/>
+		<move file="${gen.dir}/secureService/dps/${base.service.dir}/services/secure_session/v1/undeploy.wsdd" 
+				tofile="${gen.dir}/secureService/dps/${base.service.dir}/services/secure_session/v1/undeploy-SecureSessionService.wsdd" 
+				failonerror="true"
+		/>
+		
+		<!-- Takes care of the Secure Session service for DEM -->
+		<wsdl2java url="${src.dir}/${base.service.dir}/services/SecureSessionService.v1.wsdl"
+				output="${gen.dir}/secureService/dem"
+				deployscope="application"
+				serverSide="yes"
+				skeletonDeploy="no"
+				implementationClassName="com.bluejungle.destiny.container.shared.securesession.service.SecureSessionServiceV1Impl"
+				noimports="no"
+				verbose="yes"
+				testcase="yes"
+				nowrapped="true"
+				factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+				trustedCallers="Enrollment"
+				userAuthRequired="true"
+				timeout="-1"
+				clientApplication="EnrollmentMgr">
+			<mapping namespace="http://bluejungle.com/destiny/services/secure_session/v1"
+					 package="com.bluejungle.destiny.services.secure_session.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/bindings/secure_session/v1"
+					 package="com.bluejungle.destiny.bindings.secure_session.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/interfaces/secure_session/v1"
+					 package="com.bluejungle.destiny.interfaces.secure_session.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/types/secure_session/v1"
+					 package="com.bluejungle.destiny.types.secure_session.v1" />
+		</wsdl2java>
+		<move file="${gen.dir}/secureService/dem/${base.service.dir}/services/secure_session/v1/deploy.wsdd" 
+				tofile="${gen.dir}/secureService/dem/${base.service.dir}/services/secure_session/v1/deploy-SecureSessionService.wsdd" 
+				failonerror="true"
+		/>
+		<move file="${gen.dir}/secureService/dem/${base.service.dir}/services/secure_session/v1/undeploy.wsdd" 
+				tofile="${gen.dir}/secureService/dem/${base.service.dir}/services/secure_session/v1/undeploy-SecureSessionService.wsdd" 
+				failonerror="true"
+		/>
+
+		<!-- Takes care of the User Preferences service for DAC -->
+		<wsdl2java url="${src.dir}/${base.service.dir}/services/UserPreferencesService.v1.wsdl"
+				output="${public.gen.dir}/secureService/dac"
+				deployscope="application"
+				serverSide="yes"
+				skeletonDeploy="no"
+				implementationClassName="com.bluejungle.destiny.container.shared.userpreferences.service.UserPreferencesIFBindingImpl"
+				noimports="no"
+				verbose="yes"
+				testcase="yes"
+				nowrapped="true"
+				factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+				trustedCallers="DCC"
+				userAuthRequired="true"
+				timeout="-1"
+				clientApplication="Inquiry Center">
+			<mapping namespace="http://bluejungle.com/destiny/services/user_preferences/v1"
+					 package="com.bluejungle.destiny.services.user_preferences.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/bindings/user_preferences/v1"
+					 package="com.bluejungle.destiny.bindings.user_preferences.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/interfaces/user_preferences/v1"
+					 package="com.bluejungle.destiny.interfaces.user_preferences.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/types/user_preferences/v1"
+					 package="com.bluejungle.destiny.types.user_preferences.v1" />
+		</wsdl2java>
+		<move file="${public.gen.dir}/secureService/dac/${base.service.dir}/services/user_preferences/v1/deploy.wsdd" 
+				tofile="${public.gen.dir}/secureService/dac/${base.service.dir}/services/user_preferences/v1/deploy-UserPreferencesService.wsdd" 
+				failonerror="true"
+		/>
+		<move file="${public.gen.dir}/secureService/dac/${base.service.dir}/services/user_preferences/v1/undeploy.wsdd" 
+				tofile="${public.gen.dir}/secureService/dac/${base.service.dir}/services/user_preferences/v1/undeploy-UserPreferencesService.wsdd" 
+				failonerror="true"
+		/>
+
+	<!-- Takes care of the User Preferences service for DMS -->
+		<wsdl2java url="${src.dir}/${base.service.dir}/services/UserPreferencesService.v1.wsdl"
+				output="${gen.dir}/secureService/dms"
+				deployscope="application"
+				serverSide="yes"
+				skeletonDeploy="no"
+				implementationClassName="com.bluejungle.destiny.container.shared.userpreferences.service.UserPreferencesIFBindingImpl"
+				noimports="no"
+				verbose="yes"
+				testcase="yes"
+				nowrapped="true"
+				factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+				trustedCallers="DCC"
+				userAuthRequired="true"
+				timeout="-1"
+				clientApplication="Inquiry Center">
+			<mapping namespace="http://bluejungle.com/destiny/services/user_preferences/v1"
+					 package="com.bluejungle.destiny.services.user_preferences.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/bindings/user_preferences/v1"
+					 package="com.bluejungle.destiny.bindings.user_preferences.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/interfaces/user_preferences/v1"
+					 package="com.bluejungle.destiny.interfaces.user_preferences.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/types/user_preferences/v1"
+					 package="com.bluejungle.destiny.types.user_preferences.v1" />
+		</wsdl2java>
+		<move file="${gen.dir}/secureService/dms/${base.service.dir}/services/user_preferences/v1/deploy.wsdd" 
+				tofile="${gen.dir}/secureService/dms/${base.service.dir}/services/user_preferences/v1/deploy-UserPreferencesService.wsdd" 
+				failonerror="true"
+		/>
+		<move file="${gen.dir}/secureService/dms/${base.service.dir}/services/user_preferences/v1/undeploy.wsdd" 
+				tofile="${gen.dir}/secureService/dms/${base.service.dir}/services/user_preferences/v1/undeploy-UserPreferencesService.wsdd" 
+				failonerror="true"
+		/>
+		
+		<!-- Takes care of the Secure Session service for DKMS -->
+		<wsdl2java url="${src.dir}/${base.service.dir}/services/SecureSessionService.v1.wsdl"
+				output="${gen.dir}/secureService/dkms"
+				deployscope="application"
+				serverSide="yes"
+				skeletonDeploy="no"
+				implementationClassName="com.bluejungle.destiny.container.shared.securesession.service.SecureSessionServiceV1Impl"
+				noimports="no"
+				verbose="yes"
+				testcase="yes"
+				nowrapped="true"
+				factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+				trustedCallers="DCC Keymanagement"
+				userAuthRequired="true"
+				timeout="-1"
+				clientApplication="KeymanagementMgr">
+			<mapping namespace="http://bluejungle.com/destiny/services/secure_session/v1"
+					 package="com.bluejungle.destiny.services.secure_session.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/bindings/secure_session/v1"
+					 package="com.bluejungle.destiny.bindings.secure_session.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/interfaces/secure_session/v1"
+					 package="com.bluejungle.destiny.interfaces.secure_session.v1" />
+			<mapping namespace="http://bluejungle.com/destiny/types/secure_session/v1"
+					 package="com.bluejungle.destiny.types.secure_session.v1" />
+		</wsdl2java>
+		<move file="${gen.dir}/secureService/dkms/${base.service.dir}/services/secure_session/v1/deploy.wsdd" 
+				tofile="${gen.dir}/secureService/dkms/${base.service.dir}/services/secure_session/v1/deploy-SecureSessionService.wsdd" 
+				failonerror="true"
+		/>
+		<move file="${gen.dir}/secureService/dkms/${base.service.dir}/services/secure_session/v1/undeploy.wsdd" 
+				tofile="${gen.dir}/secureService/dkms/${base.service.dir}/services/secure_session/v1/undeploy-SecureSessionService.wsdd" 
+				failonerror="true"
+		/>
+	</target>
+	
+	<!-- Compiles only the DAC service. DMS is the same and will reuse the same JAR file -->
+	<target name="wsdl-compile" unless="sharedWsdlBuild.notRequired">  
+		<javac 
+				srcdir="${public.gen.dir}/secureService/dac" 
+				destdir="${build.gendest}" 
+				debug="${compile.debug}" 
+				verbose="${compile.verbose}"
+                source="${compile.source}"
+                target="${compile.target}"
+				bootclasspath="${compile.bootclasspath}"
+		>
+			<classpath refid="compile.classpath"/>
+			<include name="**/*.java"/>
+		</javac>
+		
+		<!-- Compile the Axis-generated Java files for the shared-folder-data component -->
+		<javac 
+				srcdir="${gen.dir}" 
+				destdir="${build.gendest}" 
+				debug="${compile.debug}" 
+				verbose="${compile.verbose}"
+                source="${compile.source}"
+                target="${compile.target}"
+				bootclasspath="${compile.bootclasspath}"
+		>
+			<classpath refid="compile.classpath"/>
+			<include name="**/shared_folder/*.java"/>
+			<include name="**/custom_obligations/*.java"/>
+		</javac>
+	</target>
+
+	<!-- JAR the web service generated class files -->
+	<target name="wsdl-jar" unless="sharedWsdlBuild.notRequired">
+		<jar destfile="${build.root.dir}/server-shared-services.jar">
+			<fileset dir="${build.gendest}">
+				<include name="${base.service.dir}/services/**/*"/>
+				<include name="${base.service.dir}/bindings/**/*"/>
+				<include name="${base.service.dir}/interfaces/**/*"/> 
+			</fileset>
+		</jar>
+		<jar destfile="${build.root.dir}/server-shared-types.jar">
+			<fileset dir="${build.gendest}">
+				<include name="${base.service.dir}/types/secure_session/**/*"/>
+				<include name="${base.service.dir}/types/shared_folder/**/*"/>
+				<include name="${base.service.dir}/types/custom_obligations/**/*"/>
+				<include name="${base.service.dir}/types/basic/**/*"/>
+				<include name="${base.service.dir}/types/basic_faults/**/*"/>
+			</fileset>
+		</jar>
+	</target>	
+</project>

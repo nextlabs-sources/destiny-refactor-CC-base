@@ -1,0 +1,122 @@
+# optional, default is tru
+enroll.users                        true
+
+# optional, default is true
+enroll.contacts                     true
+
+# optional, default is true
+enroll.computers                    true
+
+# optional, default is false
+enroll.applications                 false
+
+# optional, default is true
+enroll.groups                       true
+
+# missing values will be written as blank or the equivalent rather than skipped
+store.missing.attributes            true
+
+# required, global unique ID in AD server
+entry.attributefor.staticid          objectGUID
+
+
+# "requirements" means how the Enrollment recognized the entry in AD.
+# The entry type is recognized by the following order: user, contact, comptuer, app, group, structure
+
+#objectClass structure
+# top
+#     person
+#         organizationPerson
+#         user
+#             computer
+#             inetOrgPerson
+#         contact
+
+
+
+# optional if enroll.users is false
+#user.requirements                    objectClass=inetOrgPerson
+user.requirements                     (&(objectClass=user)(!(objectClass=computer)))
+
+# optional if enroll.contacts is false
+contact.requirements                 objectClass=contact
+
+# optional if enroll.computers is false
+computer.requirements                objectClass=computer
+
+# optional if enroll.application is false
+application.requirements             objectClass=Application
+
+# optional if enroll.group is false
+group.requirements                   objectClass=Group
+
+# optional
+# requirement for structural groups. If missing, it will match everything
+structure.requirements               (|(objectClass=organizationalUnit)(objectClass=domain)(objectClass=container))
+
+# Anything that is not recongized will become other or unknown.
+# You will see a warning for every unknown object.
+# If you want to see every unknown object, comment other.requirements out
+# If you don't want to see any unknown object, put ojbectClass=*
+# optional. If the properties is missing, nothing will be other.
+other.requirements                   (|(objectClass=serviceConnectionPoint)(objectClass=connectionPoint))
+
+
+
+# the LDAP attribute for group member
+group.attributefor.enumeration       member
+
+
+
+
+#-------------------------------------------------------------------------------
+# Attribute mappings,
+# user does not want to change left hand side of existing columns
+#-------------------------------------------------------------------------------
+
+#
+# user attribute mappings
+# 
+# the following user mapping is required only if enroll.users is true
+# principalName and (windowsSid or unixSid) are required
+#
+user.string.principalName            userPrincipalName
+user.cs-string.windowsSid            objectSid
+# user.string.unixId                  unixSid
+user.string.displayName              name  
+user.string.firstName                givenName
+user.string.lastName                 sn
+user.multi-string.mail               proxyAddresses
+
+
+
+#
+# contact attribute mappings
+#
+# the following contact mapping is required only if enroll.contacts is true
+# principalName is required
+#
+contact.string.principalName         mail
+contact.string.displayname           name
+contact.string.firstName             firstName
+contact.string.lastName              sn
+contact.multi-string.mail            proxyAddresses
+
+#
+# computer attribute mappings
+#
+# the following computer mapping is required only if enroll.computers is true
+# dnsName and (windowsSid or unixSid) are required
+#
+computer.string.dnsName              dnsHostName
+computer.cs-string.windowsSid        objectSid
+# computer.cstring.unixSid             unixSid
+
+#-------------------------------------------------------------------------------
+# When EnableADDirChgReplication is true, there are two attributes needed for 
+#  sync 
+# Active Directory changes, user does not want to change this mapping 
+#-------------------------------------------------------------------------------
+entry.attributefor.parentid          parentGUID
+entry.attributefor.lastknownparent   lastKnownParent
+entry.attributefor.isdeleted         isDeleted

@@ -1,0 +1,16 @@
+# Delete a CAP
+$name = $args[0]
+$server = $args[1]
+$username = $args[2]
+$password = $args[3]
+
+$securepassword = ConvertTo-SecureString -AsPlainText -Force $password
+
+$error.clear()
+$credential = New-Object System.Management.Automation.PSCredential ($username,$securepassword)
+
+if (!$error) {
+  $error.clear()
+
+  Remove-ADCentralAccessPolicy -Identity:"$name" -Server:"$server" -Credential:$credential -Confirm:$false
+}

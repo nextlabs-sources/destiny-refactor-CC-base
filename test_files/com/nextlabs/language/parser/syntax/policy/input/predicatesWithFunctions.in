@@ -1,0 +1,5 @@
+policy PredicatesWithFunctions is FileSystemPolicy
+    on a()>1 or b(1,2,3)>2 or c(d=e,f=g) != null
+    by id 1()>1 and id 2(a,2,"3",id 4)>2 and id -1(d=e,f="a",g=4,h=id 5 .z)>3
+    for id 1 and not id 2
+do  allow

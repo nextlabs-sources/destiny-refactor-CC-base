@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+                    xmlns:tns="http://bluejungle.com/destiny/interfaces/user_preferences/v1"
+					targetNamespace="http://bluejungle.com/destiny/interfaces/user_preferences/v1"
+					xmlns:basicFaults="http://bluejungle.com/destiny/types/basic_faults/v1">
+			
+	<xs:import namespace="http://bluejungle.com/destiny/types/basic_faults/v1" schemaLocation="../../../../../../../dac/src/wsdl/com/bluejungle/destiny/types/BasicFaults.v1.xsd"/>
+
+	<wsdl:message name="changePasswordRequest">
+		<wsdl:part name="oldPassword" type="xs:string"/>
+		<wsdl:part name="newPassword" type="xs:string"/>        
+	</wsdl:message>
+    
+    <wsdl:message name="changePasswordResponse"/>
+    
+    <wsdl:message name="InvalidPasswordFault"/>
+
+    <wsdl:message name="AccessDeniedFault">
+		<wsdl:part name="AccessDeniedFault" type="basicFaults:AccessDeniedFault"/>
+    </wsdl:message>
+   					
+	<wsdl:portType name="userPreferencesIF">		
+		<!-- Changes User's Password -->
+		<wsdl:operation name="changePassword">
+			<wsdl:input message="tns:changePasswordRequest"/>
+			<wsdl:output message="tns:changePasswordResponse"/>
+			<wsdl:fault name="InvalidPasswordFault" message="tns:InvalidPasswordFault"/>
+			<wsdl:fault name="AccessDeniedFault" message="tns:AccessDeniedFault"/>
+		</wsdl:operation>
+	</wsdl:portType>
+    
+</wsdl:definitions>

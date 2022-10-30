@@ -1,0 +1,25 @@
+function noArgFunction returns date
+
+function multiArgumentFunction(
+    a string
+,   b case sensitive string
+,   c case insensitive string
+,   d boolean
+,   e date
+,   f integer
+,   g code
+,   h code("a", "b", "c")
+,   i references User
+) returns multivalued double
+
+function withDefaults(
+    a string = ""
+,   b case sensitive string = "AaA"
+,   c case insensitive string = "aaa"
+,   d boolean = true
+,   e date = null
+,   f double = 123.456
+,   g code = "a"
+,   h code("a", "b", "c") = "a"
+,   i references User
+) returns integer

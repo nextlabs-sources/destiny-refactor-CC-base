@@ -1,0 +1,13 @@
+policy with_condition
+    DESCRIPTION "this policy has a condition"
+    RULE
+      FOR * ON * BY * // an all-inclusive target
+      WHERE CURRENT_TIME > "1/1/2005 12:00:00"
+      DO DENY
+
+policy identical_with_condition
+    DESCRIPTION "this policy has a condition specified using an optional keyword \"ENVIRONMENT\""
+    RULE
+      FOR * ON * BY * // an all-inclusive target
+      WHERE ENVIRONMENT.CURRENT_TIME > "1\\1\\2005 12:00:00" // no, backslash is NOT allowed there
+      DO DENY

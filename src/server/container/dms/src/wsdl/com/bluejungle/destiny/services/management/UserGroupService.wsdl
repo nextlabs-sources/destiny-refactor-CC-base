@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://bluejungle.com/destiny/services/management" 
+	              xmlns:types="http://bluejungle.com/destiny/services/management/types" 
+				  xmlns:tns="http://bluejungle.com/destiny/services/management" 
+				  xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" 
+				  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+
+   <wsdl:import namespace="http://bluejungle.com/destiny/services/management/types" location="interfaces/UserGroupInterface.wsdl"/>
+   
+   <wsdl:binding name="UserGroupServiceIFBinding" type="types:UserGroupServiceIF">
+      <wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="getAllUserGroups">
+         <wsdl:input name="getAllUserGroupsRequest">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="getAllUserGroupsResponse">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:output>
+		 <wsdl:fault name="CommitFault">
+			<wsdlsoap:fault name="CommitFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="ServiceNotReadyFault">
+			<wsdlsoap:fault name="ServiceNotReadyFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnauthorizedCallerFault">
+			<wsdlsoap:fault name="UnauthorizedCallerFault" use="literal"/>
+		 </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="getUserGroupsForUser">
+         <wsdl:input name="getUserGroupsForUserRequest">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="getUserGroupsForUserResponse">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:output>
+		 <wsdl:fault name="CommitFault">
+			<wsdlsoap:fault name="CommitFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="ServiceNotReadyFault">
+			<wsdlsoap:fault name="ServiceNotReadyFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnauthorizedCallerFault">
+			<wsdlsoap:fault name="UnauthorizedCallerFault" use="literal"/>
+		 </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="getUserGroup">
+         <wsdl:input name="getUserGroupRequest">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="getUserGroupResponse">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:output>
+		 <wsdl:fault name="CommitFault">
+			<wsdlsoap:fault name="CommitFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="ServiceNotReadyFault">
+			<wsdlsoap:fault name="ServiceNotReadyFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnauthorizedCallerFault">
+			<wsdlsoap:fault name="UnauthorizedCallerFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnknownEntryFault">
+			<wsdlsoap:fault name="UnknownEntryFault" use="literal"/>
+		 </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="getUsersInUserGroup">
+         <wsdl:input name="getUsersInUserGroupRequest">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="getUsersInUserGroupResponse">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:output>
+		 <wsdl:fault name="CommitFault">
+			<wsdlsoap:fault name="CommitFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="ServiceNotReadyFault">
+			<wsdlsoap:fault name="ServiceNotReadyFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnauthorizedCallerFault">
+			<wsdlsoap:fault name="UnauthorizedCallerFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnknownEntryFault">
+			<wsdlsoap:fault name="UnknownEntryFault" use="literal"/>
+		 </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="addUsersToUserGroup">
+         <wsdl:input name="addUsersToUserGroupRequest">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="addUsersToUserGroupResponse">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:output>
+		 <wsdl:fault name="CommitFault">
+			<wsdlsoap:fault name="CommitFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="ServiceNotReadyFault">
+			<wsdlsoap:fault name="ServiceNotReadyFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnauthorizedCallerFault">
+			<wsdlsoap:fault name="UnauthorizedCallerFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnknownEntryFault">
+			<wsdlsoap:fault name="UnknownEntryFault" use="literal"/>
+		 </wsdl:fault>		
+      </wsdl:operation>
+      <wsdl:operation name="removeUsersFromUserGroup">
+         <wsdl:input name="removeUsersFromUserGroupRequest">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="removeUsersFromUserGroupResponse">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:output>
+		 <wsdl:fault name="CommitFault">
+			<wsdlsoap:fault name="CommitFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="ServiceNotReadyFault">
+			<wsdlsoap:fault name="ServiceNotReadyFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnauthorizedCallerFault">
+			<wsdlsoap:fault name="UnauthorizedCallerFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnknownEntryFault">
+			<wsdlsoap:fault name="UnknownEntryFault" use="literal"/>
+		 </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="getDefaultAccessAssignments">
+         <wsdl:input name="getDefaultAccessAssignmentsRequest">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="getDefaultAccessAssignmentsResponse">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:output>
+		 <wsdl:fault name="CommitFault">
+			<wsdlsoap:fault name="CommitFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="ServiceNotReadyFault">
+			<wsdlsoap:fault name="ServiceNotReadyFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnauthorizedCallerFault">
+			<wsdlsoap:fault name="UnauthorizedCallerFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnknownEntryFault">
+			<wsdlsoap:fault name="UnknownEntryFault" use="literal"/>
+		 </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="setDefaultAccessAssignments">
+         <wsdl:input name="setDefaultAccessAssignmentsRequest">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="setDefaultAccessAssignmentsResponse">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:output>
+		 <wsdl:fault name="CommitFault">
+			<wsdlsoap:fault name="CommitFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="ServiceNotReadyFault">
+			<wsdlsoap:fault name="ServiceNotReadyFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnauthorizedCallerFault">
+			<wsdlsoap:fault name="UnauthorizedCallerFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnknownEntryFault">
+			<wsdlsoap:fault name="UnknownEntryFault" use="literal"/>
+		 </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="linkExternalGroups">
+         <wsdl:input name="linkExternalGroupsRequest">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="linkExternalGroupsResponse">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:output>
+		 <wsdl:fault name="CommitFault">
+			<wsdlsoap:fault name="CommitFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="ServiceNotReadyFault">
+			<wsdlsoap:fault name="ServiceNotReadyFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnauthorizedCallerFault">
+			<wsdlsoap:fault name="UnauthorizedCallerFault" use="literal"/>
+		 </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="updateGroup">
+         <wsdl:input name="updateGroupRequest">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="updateGroupResponse">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:output>
+		 <wsdl:fault name="CommitFault">
+			<wsdlsoap:fault name="CommitFault" use="literal"/>
+		 </wsdl:fault>
+ 		 <wsdl:fault name="UniqueConstraintViolationFault">
+			<wsdlsoap:fault name="UniqueConstraintViolationFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="ServiceNotReadyFault">
+			<wsdlsoap:fault name="ServiceNotReadyFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnauthorizedCallerFault">
+			<wsdlsoap:fault name="UnauthorizedCallerFault" use="literal"/>
+		 </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="deleteGroup">
+         <wsdl:input name="deleteGroupRequest">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="deleteGroupResponse">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:output>
+		 <wsdl:fault name="CommitFault">
+			<wsdlsoap:fault name="CommitFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="ServiceNotReadyFault">
+			<wsdlsoap:fault name="ServiceNotReadyFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnauthorizedCallerFault">
+			<wsdlsoap:fault name="UnauthorizedCallerFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnknownEntryFault">
+			<wsdlsoap:fault name="UnknownEntryFault" use="literal"/>
+		 </wsdl:fault>		
+      </wsdl:operation>
+      <wsdl:operation name="runUserGroupQuery">
+         <wsdl:input name="runUserGroupQueryRequest">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="runUserGroupQueryResponse">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:output>
+		 <wsdl:fault name="CommitFault">
+			<wsdlsoap:fault name="CommitFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="ServiceNotReadyFault">
+			<wsdlsoap:fault name="ServiceNotReadyFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnauthorizedCallerFault">
+			<wsdlsoap:fault name="UnauthorizedCallerFault" use="literal"/>
+		 </wsdl:fault>
+      </wsdl:operation> 
+      <wsdl:operation name="runExternalUserGroupQuery">
+         <wsdl:input name="runExternalUserGroupQueryRequest">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="runExternalUserGroupQueryResponse">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:output>
+		 <wsdl:fault name="CommitFault">
+			<wsdlsoap:fault name="CommitFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="ServiceNotReadyFault">
+			<wsdlsoap:fault name="ServiceNotReadyFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnauthorizedCallerFault">
+			<wsdlsoap:fault name="UnauthorizedCallerFault" use="literal"/>
+		 </wsdl:fault>
+      </wsdl:operation>
+      <wsdl:operation name="createUserGroup">
+         <wsdl:input name="createUserGroupRequest">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:input>
+         <wsdl:output name="createUserGroupResponse">
+            <wsdlsoap:body namespace="http://bluejungle.com/destiny/services/management" use="literal"/>
+         </wsdl:output>
+ 		 <wsdl:fault name="CommitFault">
+			<wsdlsoap:fault name="CommitFault" use="literal"/>
+		 </wsdl:fault>
+  		 <wsdl:fault name="UniqueConstraintViolationFault">
+			<wsdlsoap:fault name="UniqueConstraintViolationFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="ServiceNotReadyFault">
+			<wsdlsoap:fault name="ServiceNotReadyFault" use="literal"/>
+		 </wsdl:fault>
+		 <wsdl:fault name="UnauthorizedCallerFault">
+			<wsdlsoap:fault name="UnauthorizedCallerFault" use="literal"/>
+		 </wsdl:fault>
+      </wsdl:operation>
+   </wsdl:binding>
+   
+   <wsdl:service name="UserGroupService">
+      <wsdl:port binding="tns:UserGroupServiceIFBinding" name="UserGroupService">
+         <wsdlsoap:address location="http://localhost:8080/dms/services/UserGroupService"/>
+      </wsdl:port>
+   </wsdl:service>
+
+</wsdl:definitions>

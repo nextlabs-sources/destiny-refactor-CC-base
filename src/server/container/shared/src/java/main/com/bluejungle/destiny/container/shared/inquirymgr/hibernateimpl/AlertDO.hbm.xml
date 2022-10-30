@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.inquirymgr.hibernateimpl">
+	<class name="AlertDO" table="ALERT">
+		<!-- Generic persisted properties -->
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<!-- Many Alerts are linked to the same Monitor -->
+		<many-to-one name="monitor" class="MonitorDO" column="monitor_id"
+			not-null="true" />
+
+		<property name="monitorName" column="monitor_name" type="string" not-null="true"/>
+		<property name="monitorUID" column="monitor_uid" type="string" not-null="true"/>
+		<property name="day" column="day_nb" type="long" not-null="true" />
+		<property name="month" column="month_nb" type="long"
+			not-null="true" />
+		<property name="year" column="year_nb" type="integer"
+			not-null="true" />
+		<property name="triggeredAt" type="timestamp" column="triggered_datetime"
+			not-null="true" />
+		<property name="level" column="alert_level" type="string" not-null="true" />
+		<property name="alertMessage" column="alert_message" type="string" />
+		<property name="dismissed" column="dismissed" type="boolean" not-null="true"/>
+		<property name="deleted" column="is_deleted" type="boolean" not-null="true"/>
+		<property name="hiddenByUserId" column="hidden_by_user_id" type="long"/>
+	</class>
+</hibernate-mapping>

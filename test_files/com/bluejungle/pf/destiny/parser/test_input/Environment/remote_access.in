@@ -1,0 +1,55 @@
+policy remote_1
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    WHERE REMOTE_ACCESS > 1
+    DO DENY
+
+policy remote_2
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    WHERE REMOTE_ACCESS > "1"
+    DO DENY
+
+policy remote_3
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    WHERE REMOTE_ACCESS == 0
+    DO DENY
+
+policy remote_4
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    WHERE REMOTE_ACCESS < 1
+    DO DENY
+
+policy remote_1a
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    WHERE environment.REMOTE_ACCESS > 1
+    DO DENY
+
+policy remote_2a
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    WHERE ENVIRONMENT.remote_access > "1"
+    DO DENY
+
+policy remote_3a
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    WHERE environment.remote_access == 0
+    DO DENY
+
+policy remote_4a
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    WHERE ENVIRONMENT.REMOTE_ACCESS < 1
+    DO DENY

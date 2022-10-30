@@ -1,0 +1,163 @@
+<!--$Id: //depot/Destiny/D_Nimbus/release/8.1/main/src/client/appdiscovery/build.xml#1 $-->
+<project name="appdiscovery" default="build">
+    <property name="java.main.src.dir" value="${basedir}/src/java/main"/>
+    <property name="src.etc" value="${basedir}/etc"/>
+    <property name="build.dest" value="${build.root.dir}/client/appdiscovery/classes"/>
+    <property name="doc.dest" value="${build.root.dir}/client/appdiscovery/doc"/>
+    <property name="setup.dir" value="${build.root.dir}/tools/appdiscovery"/>
+    <property name="setup32.dir" value="${setup.dir}/x86"/>
+    <property name="setup64.dir" value="${setup.dir}/x64"/>
+
+  <presetdef name="javac">
+    <javac includeantruntime="false" />
+  </presetdef>
+  
+    <fileset id="destiny.jars" dir="${build.root.dir}">
+        <include name="agent-ipc.jar" />
+        <include name="common-framework.jar" />
+        <include name="ddif-tools.jar" />
+    </fileset>
+  
+<path id="compile.classpath">
+    <pathelement path="${build.dest}" />
+    <pathelement path="${build.root.dir}/agent-ipc.jar" />
+    <pathelement path="${build.root.dir}/common-framework.jar" />
+  </path>
+  
+  <path id="compile.appdiscovery.classpath">
+		<pathelement path="${xlib_jar_dir}/org.eclipse.core.runtime_3.4.0.v20080512.jar" />
+		<pathelement path="${xlib_jar_dir}/org.eclipse.core.commands_3.4.0.I20080509-2000.jar" />
+		<pathelement path="${xlib_jar_dir}/org.eclipse.jface_3.4.2.M20090107-0800.jar" />
+		<pathelement path="${xlib_jar_dir}/org.eclipse.osgi_3.4.3.R34x_v20081215-1030.jar" />
+		<pathelement path="${xlib_jar_dir}/org.eclipse.swt.win32.win32.x86_64_3.4.1.v3452b.jar" />
+		<pathelement path="${xlib_jar_dir}/org.eclipse.swt_3.4.2.v3452b.jar" />
+		<pathelement path="${xlib_jar_dir}/org.eclipse.ui_3.4.2.M20090204-0800.jar" />
+		<pathelement path="${xlib_jar_dir}/org.eclipse.equinox.common_3.4.0.v20080421-2006.jar" />
+
+      <fileset refid="destiny.jars"/>
+      <path refid="compile.classpath" />
+      
+    </path>
+ 
+    <target name="pre-build">
+        <mkdir dir="${build.dest}"/>
+     
+    </target>
+    
+    <target name="clean" unless="compile.notRequired" depends="check-jars">
+        <!-- this is a wholesale deletion of all the class files for client-pf if any
+        of the jars that client-pf depend on have been updated since    
+        client-pf was built -->
+        <delete>
+            <fileset dir="${build.dest}" includes="**/*.class"/>
+        </delete>
+    </target>
+    
+    <target name="check-jars">
+        <uptodate property="compile.notRequired" targetfile="${build.root.dir}/policymanager.jar">
+            <srcfiles refid="destiny.jars"/>
+        </uptodate>
+    </target>
+    
+    <target name="compile" depends="pre-build">
+        <javac srcdir="${java.main.src.dir}" destdir="${build.dest}" debug="${compile.debug}"    
+            verbose="${compile.verbose}"  source="${compile.source}" target="${compile.target}" executable="${compile.executable}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="compile.appdiscovery.classpath"/>
+         
+        </javac>
+      
+    </target>
+
+    <target name="copy-resources" depends="pre-build">
+        <copy todir="${build.dest}/resources/images" overwrite="true">
+            <fileset dir="${basedir}/resources/images">
+            	<include name= "**"/>
+            </fileset>
+        </copy>
+    </target>
+    
+    <target name="jar" depends="compile,copy-resources">
+        <jar destfile="${build.root.dir}/appdiscovery.jar" basedir="${build.dest}" />
+    </target>
+
+    <target name="setup" depends="setup32,setup64">
+    </target>
+
+    <target name="setup64" depends="jar">
+		<mkdir dir="${setup64.dir}"/>
+		<copy file="${build.root.dir}/appdiscovery.jar" todir="${setup64.dir}" overwrite="true"/>
+		<copy file="${build.root.dir}/agent-ipc.jar" todir="${setup64.dir}" overwrite="true"/>
+		<copy file="${build.root.dir}/common-framework.jar" todir="${setup64.dir}" overwrite="true"/>
+		<copy file="${build.root.dir}/ddif-tools.jar" todir="${setup64.dir}" overwrite="true"/>
+		<copy file="${src.etc}/appdiscovery64.cmd" tofile="${setup64.dir}/appdiscovery.cmd" overwrite="true"/>
+		<copy todir="${setup64.dir}" file="${xlib_jar_dir}/org.eclipse.core.runtime_3.4.0.v20080512.jar" />
+		<copy todir="${setup64.dir}" file="${xlib_jar_dir}/org.eclipse.core.commands_3.4.0.I20080509-2000.jar" />
+		<copy todir="${setup64.dir}" file="${xlib_jar_dir}/org.eclipse.jface_3.4.2.M20090107-0800.jar" />
+		<copy todir="${setup64.dir}" file="${xlib_jar_dir}/org.eclipse.osgi_3.4.3.R34x_v20081215-1030.jar" />
+		<copy todir="${setup64.dir}" file="${xlib_jar_dir}/org.eclipse.swt.win32.win32.x86_64_3.4.1.v3452b.jar" />
+		<copy todir="${setup64.dir}" file="${xlib_jar_dir}/org.eclipse.swt_3.4.2.v3452b.jar" />
+		<copy todir="${setup64.dir}" file="${xlib_jar_dir}/org.eclipse.ui_3.4.2.M20090204-0800.jar" />
+		<copy todir="${setup64.dir}" file="${xlib_jar_dir}/org.eclipse.equinox.common_3.4.0.v20080421-2006.jar " />
+		<copy todir="${setup64.dir}" file="${xlib_jar_dir}/commons-logging-1.0.4.jar" />
+		<copy todir="${setup64.dir}" file="${xlib_bin64_dir}/swt-win32-3452.dll"/>
+		<copy todir="${setup64.dir}" file="${xlib_bin64_dir}/IPCJNI.dll"/>
+
+    </target>
+
+    <target name="setup32" depends="jar">
+        <mkdir dir="${setup.dir}"/>
+        <mkdir dir="${setup32.dir}"/>
+        <copy file="${build.root.dir}/appdiscovery.jar" todir="${setup32.dir}" overwrite="true"/>
+        <copy file="${build.root.dir}/agent-ipc.jar" todir="${setup32.dir}" overwrite="true"/>
+        <copy file="${build.root.dir}/common-framework.jar" todir="${setup32.dir}" overwrite="true"/>
+    	<copy file="${build.root.dir}/ddif-tools.jar" todir="${setup32.dir}" overwrite="true"/>
+    	<copy file="${src.etc}/appdiscovery.cmd" todir="${setup32.dir}" overwrite="true"/>
+        <copy todir="${setup32.dir}" file="${xlib_jar_dir}/runtime.jar" />
+        <copy todir="${setup32.dir}" file="${xlib_jar_dir}/osgi.jar" />
+        <copy todir="${setup32.dir}" file="${xlib_jar_dir}/core.jar" />
+        <copy todir="${setup32.dir}" file="${xlib_jar_dir}/resolver.jar" />
+        <copy todir="${setup32.dir}" file="${xlib_jar_dir}/defaultAdaptor.jar" />
+        <copy todir="${setup32.dir}" file="${xlib_jar_dir}/eclipseAdaptor.jar" />
+        <copy todir="${setup32.dir}" file="${xlib_jar_dir}/console.jar" />
+        <copy todir="${setup32.dir}" file="${xlib_jar_dir}/ui.jar" />
+        <copy todir="${setup32.dir}" file="${xlib_jar_dir}/swt.jar" />
+        <copy todir="${setup32.dir}" file="${xlib_jar_dir}/jface.jar" />
+        <copy todir="${setup32.dir}" file="${xlib_jar_dir}/commons-logging-1.0.4.jar" />
+		<copy todir="${setup32.dir}" file="${xlib_bin32_dir}/swt-win32-3064.dll"/>
+		<copy todir="${setup32.dir}" file="${xlib_bin32_dir}/IPCJNI32.dll"/>
+    </target>
+
+
+    <target name="run">
+        <exec dir="${build.root.dir}/appdiscovery/" executable="cmd.exe" failonerror="true">
+            <arg line="/k appdiscovery.bat"/>
+        </exec>    
+    </target>
+    
+    <target name="tests" depends="jar">
+        <junit printsummary="withOutAndErr" showoutput="yes" fork="yes" dir="${build.root.dir}" haltonfailure="false" failureproperty="junit.fail">
+            <formatter type="xml"/>
+            <classpath>
+                <pathelement path="${build.root.dir}/appdiscovery-test.jar" />
+                <path refid="compile.appdiscovery.classpath" />
+            </classpath>
+        </junit>
+    </target>    
+
+    <target name="doc">
+        <mkdir dir="${doc.dest}"/>
+        <javadoc sourcepath="${java.main.src.dir}" destdir="${doc.dest}" linksource="yes"    
+            classpathref="compile.appdiscovery.classpath" source="${compile.source}" >
+            <packageset dir="${java.main.src.dir}" defaultexcludes="yes">
+                <include name="com/bluejungle/appdiscovery/**"/>
+            </packageset>
+            <tag name="requires" description="Requires: " scope="methods"/>
+            <tag name="modifies" description="Modifies: " scope="methods"/>
+            <tag name="effects" description="Effects: " scope="methods"/>
+        </javadoc>
+    </target>    
+
+    <target name="build" depends="setup">
+    </target>
+
+</project>

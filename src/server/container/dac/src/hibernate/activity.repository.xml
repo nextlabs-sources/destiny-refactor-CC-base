@@ -1,0 +1,64 @@
+<!DOCTYPE hibernate-configuration PUBLIC 
+	"-//Hibernate/Hibernate Configuration DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-2.0.dtd">
+
+<hibernate-configuration>
+	<session-factory> 
+		<!--
+			Persisted object class mappings
+		-->
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/ApplicationDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/ArchiveReportPolicyActivityLogCustomAttributeDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/ArchiveReportPolicyActivityLogDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/ArchiveReportPolicyAssistantLogDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/ArchiveReportTrackingActivityLogCustomAttributeDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/ArchiveReportTrackingActivityLogDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/AttributeColumnMappingDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/HostDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/InquiryDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/InquiryActionDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/InquiryObligationDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/InquiryPolicyDecisionDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/InquiryPolicyDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/InquiryResourceDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/InquiryUserDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/PolicyActivityLogCustomAttributeDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/PolicyActivityLogPolicyTagDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/PolicyActivityLogDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/PolicyAssistantLogDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/PolicyDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/ReportDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/storedresults/hibernateimpl/StoredQueryDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/storedresults/hibernateimpl/StoredQueryByIdResultDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/storedresults/hibernateimpl/StoredQuerySummaryResultDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/securesession/hibernate/SecureSessionDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/TrackingActivityLogCustomAttributeDO.hbm.xml"/>		
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/TrackingActivityLogDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/ReporterDataHolderDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/ReportPolicyActivityLogCustomAttributeDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/ReportPolicyActivityLogDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/ReportPolicyAssistantLogDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/ReportTrackingActivityLogCustomAttributeDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/ReportTrackingActivityLogDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/resourcecache/hibernateimpl/ResourceCacheStateDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/UserDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/UserGroupMemberDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/UserGroupDO.hbm.xml"/>
+	
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/MonitorDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/MonitorTagDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/AlertDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/SavedReportDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/ReportActivityLogDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/ReportActivityLogAttributeDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/ArchiveReportActivityLogDO.hbm.xml"/>
+		<mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/hibernateimpl/ArchiveReportActivityLogAttributeDO.hbm.xml"/>
+	
+	
+		<!-- Dynamic instantiation object (non persisted) -->
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/ReportPolicyActivityDetailResultDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/ReportTrackingActivityDetailResultDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/ReportSummaryResultDO.hbm.xml"/>
+		
+	</session-factory>
+</hibernate-configuration>

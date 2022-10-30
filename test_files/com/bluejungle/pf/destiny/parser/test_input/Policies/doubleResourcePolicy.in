@@ -1,0 +1,4 @@
+policy first_policy
+    description "this policy is simple"
+    FOR NAME="/secret/**" and WORD_DOCS ON RENAME TO NOT WORD_DOCS BY *
+    DO DENY

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+					xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+					xmlns:common="http://bluejungle.com/destiny/framework/types"
+					xmlns:types="http://bluejungle.com/destiny/services/log/types" 
+					xmlns:tns="http://bluejungle.com/destiny/services/log" 
+					targetNamespace="http://bluejungle.com/destiny/services/log" 
+					name="LogService">
+
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://bluejungle.com/destiny/services/log" xmlns:types="http://bluejungle.com/destiny/services/log/types">
+			<xsd:import namespace="http://bluejungle.com/destiny/services/log/types" schemaLocation="types/Log.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/framework/types" 
+						schemaLocation="../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicFaults.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="PolicyActivityLogRequest">
+		<wsdl:part name="logs" type="xsd:string"/>
+	</wsdl:message>
+	<wsdl:message name="response">
+		<wsdl:part name="response" type="types:LogStatus"/>
+	</wsdl:message>
+	
+	<wsdl:message name="TrackingLogRequest">
+		<wsdl:part name="logs" type="xsd:string"/>
+	</wsdl:message>
+	
+	<wsdl:message name="ServiceNotReadyFault">
+		<wsdl:part name="ServiceNotReadyFault" type="common:ServiceNotReadyFault"/>
+	</wsdl:message>
+	
+	<wsdl:message name="UnauthorizedCallerFault">
+		<wsdl:part name="UnauthorizedCallerFault" type="common:UnauthorizedCallerFault"/>
+	</wsdl:message>
+					
+	<wsdl:portType name="LogServiceIF">
+		<wsdl:operation name="logPolicyActivity">
+			<wsdl:input message="tns:PolicyActivityLogRequest"/>
+			<wsdl:output message="tns:response"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>			
+		</wsdl:operation>
+		<wsdl:operation name="logTracking">
+			<wsdl:input message="tns:TrackingLogRequest"/>
+			<wsdl:output message="tns:response"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>			
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="LogServiceIFBinding" type="tns:LogServiceIF">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	
+		<wsdl:operation name="logPolicyActivity">
+			<wsdl:input>
+				<soap:body parts="PolicyActivityLogRequest" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="response" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>			
+		</wsdl:operation>
+		
+		<wsdl:operation name="logTracking">
+			<wsdl:input>
+				<soap:body parts="TrackingLogRequest" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="response" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>			
+		</wsdl:operation>		
+		
+	</wsdl:binding>
+	
+	<wsdl:service name="LogService">
+		<wsdl:port name="LogServiceIFPort" binding="tns:LogServiceIFBinding">
+			<soap:address location="http://localhost:8080/dabs/services/LogServiceIFPort"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

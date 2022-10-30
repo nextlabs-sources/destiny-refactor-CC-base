@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+    version="2.4">
+
+    <display-name>EvalService Application</display-name>
+    <description>
+	This is the EvalService app for NextLabs PC
+    </description>
+
+    <servlet>
+        <servlet-name>EvalService</servlet-name>
+        <servlet-class>com.nextlabs.pdpevalservice.endpoints.EvalService</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>EvalService</servlet-name>
+        <url-pattern>/EvalService/*</url-pattern>
+    </servlet-mapping>
+	
+	<filter>
+		<filter-name>AuthFilter</filter-name>
+		<filter-class>
+			com.nextlabs.pdpevalservice.filters.auth.AuthFilter
+		</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>AuthFilter</filter-name>
+		<url-pattern>/EvalService/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>DataTransformationFilter</filter-name>
+		<filter-class>
+			 com.nextlabs.pdpevalservice.filters.transform.DataTransformationFilter
+		</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>DataTransformationFilter</filter-name>
+		<url-pattern>/EvalService/*</url-pattern>
+	</filter-mapping>
+
+    <context-param>
+      <param-name>DEPLOYMENT_MODE</param-name>
+      <param-value>EXTERNAL</param-value>
+      <description>Indicates whether EvalService is deployed as an independent webapp or within Java Policy Controller</description>
+    </context-param>
+
+</web-app>

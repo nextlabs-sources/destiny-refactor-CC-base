@@ -1,0 +1,138 @@
+<xs:schema 	targetNamespace="http://bluejungle.com/destiny/types/report/v1" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:actionTypes="http://bluejungle.com/destiny/types/actions/v1"
+			xmlns:basicTypes="http://bluejungle.com/destiny/types/basic/v1"
+			xmlns:effectTypes="http://bluejungle.com/destiny/types/effects/v1"
+			xmlns:obligationTypes="http://bluejungle.com/destiny/types/obligations/v1"
+			xmlns:resultTypes="http://bluejungle.com/destiny/types/report_result/v1"
+			xmlns:types="http://bluejungle.com/destiny/types/report/v1">
+
+	<xs:complexType name="Report">
+		<xs:sequence>
+			<!-- properties for a saved report -->
+			<xs:element name="id" type="basicTypes:Id" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="shared" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="title" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="owned" type="xs:boolean" minOccurs="1" maxOccurs="1"/>		
+		
+			<!-- properties for a general report -->
+			<xs:element name="beginDate" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="endDate" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="target" type="types:ReportTargetType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="actions" type="actionTypes:ActionList" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="effects" type="effectTypes:EffectList" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="obligations" type="obligationTypes:ObligationList" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="policies" type="basicTypes:StringList" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="resourceNames" type="basicTypes:StringList" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="sortSpec" type="types:ReportSortSpec" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="users" type="basicTypes:StringList" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="summaryType" type="types:ReportSummaryType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="loggingLevel" type="xs:int" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+		
+	<xs:simpleType name="ReportTargetType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ActivityJournal"/>
+			<xs:enumeration value="PolicyEvents"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="ReportSortFieldName">
+		<xs:restriction base="xs:string">
+			<!-- sort field name for saved reports -->
+			<xs:enumeration value="Description"/>
+			<xs:enumeration value="Shared"/>
+			<xs:enumeration value="Title"/>
+		
+			<!-- sort field name for general reports -->
+			<xs:enumeration value="None"/>
+			<xs:enumeration value="Action"/>
+			<xs:enumeration value="Application"/>
+			<xs:enumeration value="Count"/>
+			<xs:enumeration value="Date"/>
+			<xs:enumeration value="FromResource"/>
+			<xs:enumeration value="ToResource"/>
+			<xs:enumeration value="User"/>
+			<xs:enumeration value="Host"/>
+			<xs:enumeration value="Policy"/>
+			<xs:enumeration value="PolicyDecision"/>
+			<xs:enumeration value="LoggingLevel"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="ReportSortSpec">
+		<xs:sequence>
+			<xs:element name="field" type="types:ReportSortFieldName" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="direction" type="basicTypes:SortDirection" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="ReportSummaryType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="None"/>
+			<xs:enumeration value="Policy"/>
+			<xs:enumeration value="Resource"/>
+			<xs:enumeration value="TimeDays"/>
+			<xs:enumeration value="TimeMonths"/>
+			<xs:enumeration value="User"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="ReportVisibilityType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="All"/>
+			<xs:enumeration value="My"/>
+			<xs:enumeration value="Shared"/>
+		</xs:restriction>
+	</xs:simpleType>
+		
+	<xs:complexType name="ReportList">
+		<xs:sequence>
+			<xs:element name="reports" type="types:Report" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="ReportQueryFieldName">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Description"/>
+			<xs:enumeration value="Shared"/>
+			<xs:enumeration value="Title"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="ReportQuerySpec">
+		<xs:sequence>
+			<xs:element name="visibility" type="types:ReportVisibilityType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="searchSpec" type="types:ReportQueryTermList" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="sortSpec" type="types:ReportSortTermList" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ReportQueryTerm">
+		<xs:sequence>
+			<xs:element name="fieldName" type="types:ReportQueryFieldName" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="expression" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ReportQueryTermList">
+		<xs:sequence>
+			<xs:element name="terms" type="types:ReportQueryTerm" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ReportSortTerm">
+		<xs:sequence>
+			<xs:element name="fieldName" type="types:ReportSortFieldName" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="direction" type="basicTypes:SortDirection" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ReportSortTermList">
+		<xs:sequence>
+			<xs:element name="terms" type="types:ReportSortTerm" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>	
+</xs:schema>

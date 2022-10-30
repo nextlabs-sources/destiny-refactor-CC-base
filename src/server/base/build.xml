@@ -1,0 +1,28 @@
+<project name="server-base" default="build">
+	<var name="nlbuildroot" value="${basedir}/../../.." />
+	<property name="common.build.script.dir" value="${nlbuildroot}/build_scripts" />
+	<property file="${basedir}/build.properties" />
+    
+    <import file="${common.build.script.dir}/java_build.xml" />
+    
+    <target name="package" depends="copy_resource, compile">
+        <jar destfile="${build.dir}/server-base.jar">
+            <fileset dir="${build.main.classes.dir}">
+                <exclude name="**/internal/*.class"/>
+            </fileset>
+        </jar>
+        
+        <jar destfile="${build.dir}/server-base-internal.jar">
+            <fileset dir="${build.main.classes.dir}">
+                <include name="**/internal/*.class"/>
+            </fileset>
+        </jar>
+        
+        <!-- FIX ME - jar contains too many classes.  Need to refactor package structure -->
+        <jar destfile="${build.dir}/server-base-test.jar">
+            <fileset dir="${build.test.classes.dir}" />
+        </jar>
+
+        <copy file="${basedir}/resource/main/common.repository.properties" todir="${build.dir}" failonerror="true"/>
+    </target>
+</project>

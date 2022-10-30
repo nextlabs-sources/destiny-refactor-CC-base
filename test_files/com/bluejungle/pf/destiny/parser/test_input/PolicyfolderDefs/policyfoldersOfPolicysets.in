@@ -1,0 +1,11 @@
+folder empty$folder DESCRIPTION "This folder has nothing";
+
+folder single DESCRIPTION "This folder has only one item"
+
+/* Comments are welcome anywhere in the PQL text. */
+folder multiple_in_one_group DESCRIPTION "" // this is another comment
+
+folder multiple_one_by_one
+  DESCRIPTION "This folder has five items"
+
+folder mixture$of$single$and/multiple$with$no/description

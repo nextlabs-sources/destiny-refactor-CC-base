@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<export-file>
+	<version>-1</version>
+
+	<export-entities name="testPolicy">
+		<type>POLICY</type>
+		<pql>testPQL</pql>
+	</export-entities>
+
+	<users>
+		<name>john</name>
+		<login>doe</login>
+		<sid>123abc</sid>
+		<id>42</id>
+	</users>
+</export-file>

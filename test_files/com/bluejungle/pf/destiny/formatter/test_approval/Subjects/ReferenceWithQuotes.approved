@@ -1,0 +1,20 @@
+ID null COMPONENT dragAndDrop = GROUP="hello world"
+
+
+================ Re-parsed PQL =================
+
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "component": 'COMPONENT'
+        IDENTIFIER: 'dragAndDrop'
+        COMPONENT_EXPR: ''
+            RELATION_OP: '='
+                IDENTIFIER: 'GROUP'
+                QUOTED_STRING: 'hello world'

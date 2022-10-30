@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="1.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation=
+                  "http://incubator.apache.org/ivy/schemas/ivy.xsd">
+    <info organisation="nextlabs"
+          module="common-domain"
+		  revision="2.5"/>
+    <configurations>
+	    <conf name="main" visibility="public" />
+		<conf name="test" visibility="private" />
+		<conf name="report" visibility="private" />
+	</configurations>
+	<publications>
+	    <artifact conf="main" name="common-domain" />
+	    <artifact conf="main" name="common-domain-types" />
+	    <artifact conf="main" name="common-domain-test" />
+
+		<artifact conf="report" type="xml" name="test/TEST-com.bluejungle.domain.DomainTestSuite" />
+	</publications>
+	<dependencies>
+	    <!-- Dependencies for main and test -->
+		<dependency org="nextlabs" name="common-framework" rev="latest.integration" conf="main,test->main" />
+		<dependency org="nextlabs" name="server-framework" rev="latest.integration" conf="main,test->main" />
+	</dependencies>
+</ivy-module>

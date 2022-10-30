@@ -1,0 +1,86 @@
+<config>
+        <jars>
+                <jar in="${initial.jar.name}" out="${final.jar.name}"/>
+        </jars>
+        <property name="incremental-obfuscation" value="../../build-scripts/etc/allatori-log.xml"/>
+        <property name="log-file" value="log.xml"/>
+        <keep-names>
+                <!-- Keep serialization information around in general -->
+                <class template="class * instanceof java.io.Serializable">
+                        <field template="static final long serialVersionUID"/>
+                        <method template="void writeObject(java.io.ObjectOutputStream)"/>
+                        <method template="void readObject(java.io.ObjectInputStream)"/>
+                        <method template="java.lang.Object writeReplace()"/>
+                        <method template="java.lang.Object readResolve()"/>
+                </class>
+	         <class template="class com.bluejungle.pf.engine.destiny.IAgentPolicyContainer">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.engine.destiny.AgentPolicyAssembly">
+                       <!-- Required by unit tests -->
+		         <method template="java.util.Calendar getTimestamp()"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.engine.destiny.ISystemUser">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.engine.destiny.IBundleVault">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+                <!-- IBundleVault.BundleInfo -->
+	         <class template="class com.bluejungle.pf.engine.destiny.IBundleVault*">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.engine.destiny.BundleVaultImpl">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.domain.destiny.obligation.ILoggingLevel">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.domain.destiny.resource.AgentResourceManager">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.engine.destiny.DefaultFileResourceHandler">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.destiny.services.ResourcePreview">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.destiny.services.PolicyEditorClient">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.destiny.services.PolicyEditorClient*">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.destiny.services.IPolicyEditorClient">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.destiny.services.IPolicyEditorClient*">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.destiny.services.UNCUtil">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+                </class>
+	         <class template="class com.nextlabs.pf.destiny.importexport.*">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.pf.domain.destiny.serviceprovider.*">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+        </keep-names>
+</config>

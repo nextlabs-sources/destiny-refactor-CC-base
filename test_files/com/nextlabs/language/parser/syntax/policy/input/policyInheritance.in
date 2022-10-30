@@ -1,0 +1,19 @@
+//
+// The base policy
+//
+policy Base:UserPolicy is FileSystemPolicy
+    on true
+    by false or 1 != 2
+    for a.b.c > 5
+do  allow when true
+    deny when x.y.z > 5
+    nothing by default
+on allow do log(a=null)
+on deny do display("Hello")
+
+/*
+ * The derived policy
+ */
+policy DerivedPolicy extends Base:UserPolicy
+do deny when v.w.x > 1.2e-3
+on allow do display("a"),log(1,2,3,"4")

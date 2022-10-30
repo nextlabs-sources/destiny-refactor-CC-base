@@ -1,0 +1,83 @@
+####################################################################################
+# This is the definition file for a default Active Directory enrollment. It assumes 
+# a default Active Directory schema.                                       
+# in most cases, user does not need to change this file unless adding new mapping 
+#################################################################################### 
+
+#----------------------------------------------------------------------------------
+# Options to enroll users or computers
+#----------------------------------------------------------------------------------
+enroll.users                        true
+enroll.contacts			    true
+enroll.computers                    true
+
+#-----------------------------------------------------------------------------------
+# Required attributes, user must provide the following information for AD enrollment
+# 1. entry.attributefor.staticid : provides global unique ID in AD server
+# 2. computer.requirements       : LDAP filter to identify computer type
+# 3. user.requirements           : LDAP filter to identify user type
+# 4. group.requirements          : LDAP filter to identify group type
+# 5. group.attributefor.enumeration : the LDAP attribute for group member
+#-----------------------------------------------------------------------------------
+
+entry.attributefor.staticid         objectGUID
+
+computer.requirements               (dnsHostName=*)
+
+# For special cases of "user.requirements":
+# If there are users without userPrincipalName, please use the filter:
+#    (&(objectClass=User)(!(objectClass=Computer)))
+# If enroll from the top of AD tree, please use the filter
+#    (|(&(objectClass=User)(!(objectClass=Computer)))(objectClass=ForeignSecurityPrincipals))
+
+user.requirements                   (objectClass=person)
+contact.requirements		    (objectClass=contact)
+
+group.requirements                  (objectClass=Group)
+group.attributefor.enumeration      member
+
+#----------------------------------------------------------------------------------
+# Attribute mappings, 
+# user does not want to change left hand side of existing columns
+#----------------------------------------------------------------------------------
+
+#
+# user attribute mappings
+#
+user.string.principalName               cn
+user.string.displayName                 name
+#user.string.firstName                   givenName
+#user.string.lastName                    sn
+#user.string.title                       title
+#user.string.company                     company 
+#user.string.department                  department 
+#user.string.accountName                 SAMAccountName
+#user.string.countryName                 co 
+#user.string.isoCountryCode              c 
+#user.string.countryCode                 CountryCode
+#user.multi-string.mail	                proxyAddresses
+user.cs-string.windowsSid               objectSid
+
+#
+# contact attribute mappings
+#
+contact.string.principalName	 	mail
+contact.string.displayname		name
+contact.string.firstName		firstName	
+contact.string.lastName			sn
+contact.multi-string.mail		proxyAddresses
+
+#
+# computer attribute mappings
+#
+computer.string.dnsName                 dnsHostName
+computer.string.machineName             cn 
+computer.string.os                      OperatingSystem 
+computer.cs-string.windowsSid           objectSid
+
+#-------------------------------------------------------------------------------
+# When EnableADDirChgReplication is true, there are two attributes needed for sync 
+# Active Directory changes, user does not want to change this mapping 
+#------------------------------------------------------------------------------- 
+entry.attributefor.parentid             parentGUID
+entry.attributefor.isdeleted            isDeleted

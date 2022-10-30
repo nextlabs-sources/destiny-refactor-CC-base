@@ -1,0 +1,18 @@
+<!DOCTYPE hibernate-configuration PUBLIC 
+	"-//Hibernate/Hibernate Configuration DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-2.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<!--
+			Persisted object class mappings
+		-->
+		<mapping resource="com/bluejungle/destiny/container/shared/securesession/hibernate/SecureSessionDO.hbm.xml"/>
+		
+		  <!--  custom reports -->  
+        <mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/customapps/hibernateimpl/CustomReportDataDO.hbm.xml"/>
+        <mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/customapps/hibernateimpl/CustomReportFileDO.hbm.xml"/>
+        <mapping resource="com/nextlabs/destiny/container/shared/inquirymgr/customapps/hibernateimpl/CustomReportUIDO.hbm.xml"/>
+        
+	</session-factory>
+</hibernate-configuration>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: //depot/Destiny/D_Nimbus/release/8.1/main/src/server/container/shared/src/wsdl/com/bluejungle/destiny/types/CustomObligationsTypes.xsd#1 $ -->
+<xs:schema targetNamespace="http://bluejungle.com/destiny/types/custom_obligations"
+           xmlns:tns="http://bluejungle.com/destiny/types/custom_obligations"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            
+<!--
+  Type representing custom obligations information that is returned on heartbeats
+ -->
+
+<xs:complexType name="CustomObligationsData">
+  <xs:sequence>
+    <xs:element name="CustomObligation" type="tns:CustomObligation" minOccurs="0" maxOccurs="unbounded"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="CustomObligation">
+  <xs:sequence>
+    <xs:element name="DisplayName" type="xs:string"/>
+    <xs:element name="RunAt" type="xs:string"/>
+    <xs:element name="RunBy" type="xs:string"/>
+    <xs:element name="InvocationString" type="xs:string"/>
+  </xs:sequence>
+</xs:complexType>
+
+</xs:schema>

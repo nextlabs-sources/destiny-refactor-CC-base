@@ -1,0 +1,10 @@
+<Obligation>
+  <DisplayName>Hidden Data Removal</DisplayName>
+  <RunAt>PEP</RunAt>
+  <Name>HDR</Name>
+  <Arguments>
+      <Argument usereditable="true">
+          <Name>Help URL</Name>
+      </Argument>
+  </Arguments>
+</Obligation>

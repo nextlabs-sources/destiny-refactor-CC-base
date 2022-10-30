@@ -1,0 +1,62 @@
+<project name="dem_wsdl_build" default="build">
+	
+	<property name="wsdl.src.dir"      value="${basedir}"/>
+	<property name="build.dest"   value="${build.root.dir}/server/container/dem/WEB-INF/classes"/>
+	<property name="build.gendest" value="${build.root.dir}/server/container/dem/genclasses"/>
+	<property name="services.enrollment.dir" value="com/bluejungle/destiny/services/enrollment"/>
+    <property name="server.src.dir" value="${src.dir}/../.." /> 
+    <property name="policyedit.hib.dir" value="${server.src.dir}/pf/src/hibernate" /> 
+
+	<path id="compile.demwsdl.classpath">
+		<path refid="compile.classpath"/>
+	    <pathelement path="${build.dest}"/>
+	    <pathelement path="${build.gendest}"/>
+	</path>
+    
+    <target name="build">
+    </target>
+	
+	<target name="pre-build">
+		<mkdir dir="${build.dest}"/>
+		<mkdir dir="${build.gendest}"/>
+	</target>
+	
+	<target name="wsdl-compile" description="Compile generated wsdl code">
+		<javac srcdir="${gen.dir}" destdir="${build.gendest}" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+			<classpath refid="compile.classpath"/>
+			<include name="${services.enrollment.dir}/**/*.java"/>
+		</javac>
+	</target>
+	
+	<target name="wsdl-generate" depends="pre-build" description="Generates code from WSDL">
+
+		<!-- Takes care of EnrollmentService -->
+		<wsdl2java url="${wsdl.src.dir}/${services.enrollment.dir}/EnrollmentService.wsdl"
+                           output="${gen.dir}"
+                           deployscope="application"
+                           serverSide="yes"
+                           skeletonDeploy="no"
+                           clientApplication="Management Console"
+                           userAuthRequired="true"
+                           implementationClassName="com.bluejungle.destiny.container.dem.DEMEnrollmentServiceImpl"
+                           noimports="no"
+                           verbose="yes"
+                           testcase="yes"
+                           nowrapped="true"
+                           timeout="-1"
+                           factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+                           trustedCallers="Enrollment">
+        </wsdl2java>		
+		<move file="${gen.dir}/${services.enrollment.dir}/deploy.wsdd" tofile="${gen.dir}/${services.enrollment.dir}/deploy-EnrollmentService.wsdd"/>
+		<move file="${gen.dir}/${services.enrollment.dir}/undeploy.wsdd" tofile="${gen.dir}/${services.enrollment.dir}/undeploy-EnrollmentService.wsdd"/>
+	</target>
+	
+	<target name="wsdl-jar" description="Packages compiled WSDL code">
+		<jar destfile="${build.root.dir}/enrollment-service.jar">
+			<fileset dir="${build.gendest}">
+				<include name="**/*.class"/>
+				<exclude name="**/common/**/*.class"/>
+			</fileset>
+		</jar>		
+	</target>
+</project>

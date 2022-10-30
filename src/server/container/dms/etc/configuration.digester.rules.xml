@@ -1,0 +1,485 @@
+<?xml version="1.0"?>
+
+<!--
+ * Rules definitions to parse Destiny configuration objects from
+ * configuration file.
+-->
+<digester-rules>
+    <pattern value="DestinyConfiguration">
+
+        <!-- Application User Configuration -->
+        <pattern value="ApplicationUserConfiguration">
+            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.ApplicationUserConfigurationDO"/>
+            <call-method-rule pattern="AuthenticationMode" methodname="setAuthenticationMode" paramcount="0" paramtypes="java.lang.String"/>
+
+            <!-- Read the User Repository Configuration -->
+            <pattern value="UserRepositoryConfiguration">
+                <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.UserRepositoryConfigurationDO"/>
+                <call-method-rule pattern="ProviderClassName" methodname="setProviderClassName" paramcount="0" paramtypes="java.lang.String"/>
+
+                <pattern value="Properties">
+                    <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyList"/>
+                    <!-- Read an individual property -->
+                    <pattern value="Property">
+                        <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyDO"/>
+
+                        <call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String"/>
+                        <call-method-rule pattern="Value" methodname="setValue" paramcount="0" paramtypes="java.lang.String"/>
+
+                        <set-next-rule methodname="addProperty"/>
+                    </pattern>
+                    <set-next-rule methodname="setProperties"/>
+                </pattern>
+                <set-next-rule methodname="setUserRepositoryConfiguration"/>
+            </pattern>
+
+            <!-- Read the External Domain Configuration -->
+            <pattern value="ExternalDomainConfiguration">
+                <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.ExternalDomainConfigurationDO"/>
+                <call-method-rule pattern="DomainName" methodname="setDomainName" paramcount="0" paramtypes="java.lang.String"/>
+
+                <!-- Read the Authenticator Configuration -->
+                <pattern value="AuthenticatorConfiguration">
+                    <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.AuthenticatorConfigurationDO"/>
+                    <call-method-rule pattern="AuthenticatorClassName" methodname="setAuthenticatorClassName" paramcount="0" paramtypes="java.lang.String"/>
+
+                    <pattern value="Properties">
+                        <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyList"/>
+                        <!-- Read an individual property -->
+                        <pattern value="Property">
+                            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyDO"/>
+
+                            <call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String"/>
+                            <call-method-rule pattern="Value" methodname="setValue" paramcount="0" paramtypes="java.lang.String"/>
+
+                            <set-next-rule methodname="addProperty"/>
+                        </pattern>
+                        <set-next-rule methodname="setProperties"/>
+                    </pattern>
+
+                    <set-next-rule methodname="setAuthenticatorConfiguration"/>
+                </pattern>
+
+                <!-- Read the User Access Configuration -->
+                <pattern value="UserAccessConfiguration">
+                    <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.UserAccessConfigurationDO"/>
+                    <call-method-rule pattern="UserAccessProviderClassName" methodname="setProviderClassName" paramcount="0" paramtypes="java.lang.String"/>
+
+                    <pattern value="Properties">
+                        <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyList"/>
+                        <!-- Read an individual property -->
+                        <pattern value="Property">
+                            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyDO"/>
+
+                            <call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String"/>
+                            <call-method-rule pattern="Value" methodname="setValue" paramcount="0" paramtypes="java.lang.String"/>
+
+                            <set-next-rule methodname="addProperty"/>
+                        </pattern>
+                        <set-next-rule methodname="setProperties"/>
+                    </pattern>
+
+                    <set-next-rule methodname="setUserAccessConfiguration"/>
+                </pattern>
+
+                <set-next-rule methodname="setExternalDomainConfiguration"/>
+            </pattern>
+
+            <set-next-rule methodname="setApplicationUserConfiguration"/>
+        </pattern>
+        
+        <pattern value="MessageHandlers">
+        	<object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.MessageHandlersConfigurationDO"/>
+
+			<pattern value="MessageHandler">
+				<object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.MessageHandlerConfigurationDO" />
+				<call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String" />
+				<call-method-rule pattern="ClassName" methodname="setClassName" paramcount="0" paramtypes="java.lang.String" />
+				<pattern value="Properties">
+					<object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyList" />
+					<!-- Read an individual property -->
+					<pattern value="Property">
+						<object-create-rule	classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyDO" />
+						<call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String" />
+						<call-method-rule pattern="Value" methodname="setValue"	paramcount="0" paramtypes="java.lang.String" />
+						<set-next-rule methodname="addProperty" />
+					</pattern>
+					<set-next-rule methodname="setProperties" />
+				</pattern>
+				
+				<set-next-rule methodname="addMessageHandlerConfiguration"/>
+			</pattern>
+            
+            <set-next-rule methodname="setMessageHandlersConfiguration"/>
+        </pattern>
+
+        <pattern value="Obligations">
+            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.CustomObligationsConfigurationDO"/>
+            <pattern value="Obligation">
+                <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.CustomObligationConfigurationDO"/>
+                   
+                <call-method-rule pattern="DisplayName" methodname="setDisplayName" paramcount="0" paramtypes="java.lang.String"/>
+                <call-method-rule pattern="RunAt" methodname="setRunAt" paramcount="0" paramtypes="java.lang.String"/>
+                <call-method-rule pattern="RunBy" methodname="setRunBy" paramcount="0" paramtypes="java.lang.String"/>
+                <call-method-rule pattern="ExecPath" methodname="setInvocationString" paramcount="0" paramtypes="java.lang.String"/>
+                <call-method-rule pattern="Name" methodname="setInvocationString" paramcount="0" paramtypes="java.lang.String"/>
+                <pattern value="Arguments">
+                    <pattern value="Argument">
+                        <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.CustomObligationArgumentDO"/>
+                        <set-properties-rule/>
+                        <call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String"/>
+                        <pattern value="Value">
+                            <call-method-rule methodname="addValue" paramcount="2"/>
+                            <call-param-rule paramnumber="0"/>
+                            <call-param-rule paramnumber="1" attrname="default"/>
+                        </pattern>
+                        <set-next-rule methodname="addArgument"/>
+                    </pattern>
+                </pattern>
+                <set-next-rule methodname="addCustomObligation"/>
+            </pattern>
+            <set-next-rule methodname="setCustomObligationsConfiguration"/>
+        </pattern>
+
+        <!-- ActionList Configuration -->
+        <pattern value="ActionList">
+            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.ActionListConfigDO"/>
+
+            <pattern value="Action">
+                <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.ActionConfigDO"/>
+                <call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String"/>
+                <call-method-rule pattern="DisplayName" methodname="setDisplayName" paramcount="0" paramtypes="java.lang.String"/>
+                <call-method-rule pattern="ShortName" methodname="setShortName" paramcount="0" paramtypes="java.lang.String"/>
+                <call-method-rule pattern="Category" methodname="setCategory" paramcount="0" paramtypes="java.lang.String"/>
+                <set-next-rule methodname="addAction"/>
+            </pattern>
+            
+            <set-next-rule methodname="setActionListConfig"/>
+        </pattern>
+
+
+        <!-- Read repository configuration list -->
+        <pattern value="Repositories">
+            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.RepositoryConfigurationList"/>
+
+            <!-- Read individual repository configuration -->
+            <pattern value="Repository">
+                <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.RepositoryConfigurationDO"/>
+
+                <call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String"/>
+                <call-method-rule pattern="ConnectionPoolName" methodname="setConnectionPoolName" paramcount="0" paramtypes="java.lang.String"/>
+
+                <!-- Read the property overrides list -->
+                <pattern value="Properties">
+                    <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyList"/>
+
+                    <!-- Read an individual property override -->
+                    <pattern value="Property">
+                        <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyDO"/>
+
+                        <call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String"/>
+                        <call-method-rule pattern="Value" methodname="setValue" paramcount="0" paramtypes="java.lang.String"/>
+
+                        <set-next-rule methodname="addProperty"/>
+                    </pattern>
+
+                    <set-next-rule methodname="setProperties"/>
+                </pattern>
+
+                <set-next-rule methodname="addRepository"/>
+            </pattern>
+
+            <!-- Read the connection pool configurations -->
+            <pattern value="ConnectionPools">
+                <pattern value="ConnectionPool">
+                    <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.ConnectionPoolConfigurationDO"/>
+
+                    <call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String"/>
+                    <call-method-rule pattern="Username" methodname="setUserName" paramcount="0" paramtypes="java.lang.String"/>
+                    <call-method-rule pattern="Password" methodname="setPassword" paramcount="0" paramtypes="java.lang.String"/>
+                    <call-method-rule pattern="ConnectString" methodname="setJDBCConnectString" paramcount="0" paramtypes="java.lang.String"/>
+                    <call-method-rule pattern="DriverClassName" methodname="setDriverClassName" paramcount="0" paramtypes="java.lang.String"/>
+                    <call-method-rule pattern="MaxPoolSize" methodname="setMaxPoolSize" paramcount="0" paramtypes="java.lang.Integer"/>
+
+                    <!-- Read the property overrides list -->
+                    <pattern value="Properties">
+                        <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyList"/>
+
+                        <!-- Read an individual property override -->
+                        <pattern value="Property">
+                            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyDO"/>
+
+                            <call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String"/>
+                            <call-method-rule pattern="Value" methodname="setValue" paramcount="0" paramtypes="java.lang.String"/>
+
+                            <set-next-rule methodname="addProperty"/>
+                        </pattern>
+
+                        <set-next-rule methodname="setProperties"/>
+                    </pattern>
+
+                    <set-next-rule methodname="addConnectionPool"/>
+                </pattern>
+            </pattern>
+
+            <set-next-rule methodname="setRepositories"/>
+        </pattern>
+
+        <!-- DMS Component Configuration -->
+        <pattern value="DMS">
+            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.DMSComponentConfigurationDO"/>
+
+            <!-- Common DCC Component Configuration -->
+            <call-method-rule pattern="HeartbeatRate" methodname="setHeartbeatInterval" paramcount="0" paramtypes="java.lang.Integer"/>
+
+            <set-next-rule methodname="setDMSConfiguration"/>
+        </pattern>
+
+        <!-- DCSF Component Configuration -->
+        <pattern value="DCSF">
+            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.DCSFComponentConfigurationDO"/>
+
+            <!-- Common DCC Component Configuration -->
+            <call-method-rule pattern="HeartbeatRate" methodname="setHeartbeatInterval" paramcount="0" paramtypes="java.lang.Integer"/>
+
+            <set-next-rule methodname="setDCSFConfiguration"/>
+        </pattern>
+
+        <!-- DPS Component Configuration -->
+        <pattern value="DPS">
+            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.DPSComponentConfigurationDO"/>
+
+            <!-- Common DCC Component Configuration -->
+            <call-method-rule pattern="HeartbeatRate" methodname="setHeartbeatInterval" paramcount="0" paramtypes="java.lang.Integer"/>
+
+            <!-- Additional Configuration for DPS -->
+            <call-method-rule pattern="LifecycleManagerGraceWindow" methodname="setLifecycleManagerGraceWindow" paramcount="0" paramtypes="java.lang.Integer"/>
+            <call-method-rule pattern="DeploymentTime" methodname="setDeploymentTime" paramcount="0" paramtypes="java.lang.String"/>
+
+            <pattern value="CustomAttributes">
+                <pattern value="ResourceAttribute">
+                    <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.ResourceAttributeConfigurationDO"/>
+
+                    <call-method-rule pattern="Group" methodname="setGroupName" paramcount="0" paramtypes="java.lang.String"/>
+                    <call-method-rule pattern="DisplayName" methodname="setDisplayName" paramcount="0" paramtypes="java.lang.String"/>
+                    <call-method-rule pattern="Name" methodname="setPqlName" paramcount="0" paramtypes="java.lang.String"/>
+                    <call-method-rule pattern="Type" methodname="setTypeName" paramcount="0" paramtypes="java.lang.String"/>
+                    <call-method-rule pattern="Attribute" methodname="addAttribute" paramcount="0" paramtypes="java.lang.String"/>
+                    <call-method-rule pattern="Value" methodname="addValue" paramcount="0" paramtypes="java.lang.String"/>
+
+                    <set-next-rule methodname="addCustomResourceAttribute"/>
+                </pattern>
+            </pattern>
+
+            <set-next-rule methodname="setDPSConfiguration"/>
+        </pattern>
+
+        <!-- DAC Component Configuration -->
+        <pattern value="DAC">
+            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.DACComponentConfigurationDO"/>
+
+            <!-- Common DCC Component Configuration -->
+            <call-method-rule pattern="HeartbeatRate" methodname="setHeartbeatInterval" paramcount="0" paramtypes="java.lang.Integer"/>
+
+            <pattern value="ActivityJournalSettingConfiguration">
+                <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.ActivityJournalSettingConfigurationDO"/>
+                
+                <pattern value="SyncOperation">
+                    <call-method-rule pattern="TimeOfDay" methodname="setSyncTimeOfDay" paramcount="0" paramtypes="java.util.Calendar"/>
+                    <call-method-rule pattern="TimeInterval" methodname="setSyncTimeInterval" paramcount="0" paramtypes="java.lang.Long"/>
+                    <call-method-rule pattern="TimeoutInMinutes" methodname="setSyncTimeoutInMinutes" paramcount="0" paramtypes="java.lang.Integer"/>
+                </pattern>
+                
+                <pattern value="IndexesRebuildOperation">
+                    <call-method-rule pattern="TimeOfDay" methodname="setIndexRebuildTimeOfDay" paramcount="0" paramtypes="java.util.Calendar"/>
+                    
+                    <pattern value="DaysOfWeek">
+                        <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.DaysOfWeekDO"/>
+                        <call-method-rule pattern="DayOfWeek" methodname="addDayOfWeek" paramcount="0" paramtypes="com.bluejungle.destiny.server.shared.configuration.type.DayOfWeek"/>
+                        <set-next-rule methodname="setIndexRebuildDaysOfWeek"/>
+                        </pattern>
+                        
+                        <pattern value="DaysOfMonth">
+                            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.DaysOfMonthDO"/>
+                            <call-method-rule pattern="DayOfMonth" methodname="addDayOfMonth" paramcount="0" paramtypes="java.lang.Byte"/>
+                            <set-next-rule methodname="setIndexRebuildDaysOfMonth"/>
+                        </pattern>
+                        
+                    <call-method-rule pattern="AutoRebuildIndexes" methodname="setIndexRebuildAutoRebuildIndexes" paramcount="0" paramtypes="java.lang.Boolean"/>
+                    <call-method-rule pattern="TimeoutInMinutes" methodname="setIndexRebuildTimeoutInMinutes" paramcount="0" paramtypes="java.lang.Integer"/>
+                </pattern>
+                
+                <pattern value="ArchiveOperation">
+                    <call-method-rule pattern="TimeOfDay" methodname="setArchiveTimeOfDay" paramcount="0" paramtypes="java.util.Calendar"/>
+
+                    <pattern value="DaysOfWeek">
+                        <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.DaysOfWeekDO"/>
+                        <call-method-rule pattern="DayOfWeek" methodname="addDayOfWeek" paramcount="0" paramtypes="com.bluejungle.destiny.server.shared.configuration.type.DayOfWeek"/>
+                        <set-next-rule methodname="setArchiveDaysOfWeek"/>
+                        </pattern>
+                        
+                        <pattern value="DaysOfMonth">
+                        <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.DaysOfMonthDO"/>
+                        <call-method-rule pattern="DayOfMonth" methodname="addDayOfMonth" paramcount="0" paramtypes="java.lang.Byte"/>
+                        <set-next-rule methodname="setArchiveDaysOfMonth"/>
+                        </pattern>
+                    
+                    <call-method-rule pattern="DaysOfDataToKeep" methodname="setArchiveDaysOfDataToKeep" paramcount="0" paramtypes="java.lang.Integer"/>
+                    <call-method-rule pattern="AutoArchive" methodname="setArchiveAutoArchive" paramcount="0" paramtypes="java.lang.Boolean"/>
+                    
+                    <call-method-rule pattern="TimeoutInMinutes" methodname="setArchiveTimeoutInMinutes" paramcount="0" paramtypes="java.lang.Integer"/>
+                </pattern>
+                
+                <set-next-rule methodname="setActivityJournalSettingConfiguration"/>
+            </pattern>
+               <pattern value="Properties">
+                    <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyList"/>
+
+                    <!-- Read an individual property override -->
+                    <pattern value="Property">
+                        <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyDO"/>
+
+                        <call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String"/>
+                        <call-method-rule pattern="Value" methodname="setValue" paramcount="0" paramtypes="java.lang.String"/>
+
+                        <set-next-rule methodname="addProperty"/>
+                    </pattern>
+
+                    <set-next-rule methodname="setProperties"/>
+                </pattern>
+		<set-next-rule methodname="setDACConfiguration"/>
+        </pattern>
+
+        <!-- DABS Component Configuration -->
+        <pattern value="DABS">
+            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.DABSComponentConfigurationDO"/>
+
+            <!-- Common DCC Component Configuration -->
+            <call-method-rule pattern="HeartbeatRate" methodname="setHeartbeatInterval" paramcount="0" paramtypes="java.lang.Integer"/>
+
+            <pattern value="TrustedDomainsConfiguration">
+                <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.TrustedDomainsConfigurationDO"/>
+
+                <call-method-rule pattern="MutuallyTrusted" methodname="addMutuallyTrusted" paramcount="0" paramtypes="java.lang.String"/>
+
+                <set-next-rule methodname="setTrustedDomainsConfiguration"/>
+            </pattern>
+            
+            <pattern value="FileSystemLogConfiguration">
+                <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.FileSystemLogConfigurationDO"/>
+                
+                <call-method-rule pattern="ThreadPoolMaximumSize" methodname="setThreadPoolMaximumSize" paramcount="0" paramtypes="java.lang.Integer"/>
+                <call-method-rule pattern="ThreadPoolKeepAliveTime" methodname="setThreadPoolKeepAliveTime" paramcount="0" paramtypes="java.lang.Integer"/>
+                
+                <call-method-rule pattern="LogInsertTaskIdleTime" methodname="setLogInsertTaskIdleTime" paramcount="0" paramtypes="java.lang.Integer"/>
+                
+                <call-method-rule pattern="LogTimeout" methodname="setLogTimeout" paramcount="0" paramtypes="java.lang.Integer"/>
+                
+                <call-method-rule pattern="TimeoutCheckerFrequency" methodname="setTimeoutCheckerFrequency" paramcount="0" paramtypes="java.lang.Integer"/>
+                
+                <call-method-rule pattern="QueueManagerUploadSize" methodname="setQueueManagerUploadSize" paramcount="0" paramtypes="java.lang.Long"/>
+                <call-method-rule pattern="MaxHandleFileSizePerThread" methodname="setMaxHandleFileSizePerThread" paramcount="0" paramtypes="java.lang.Long"/>
+                
+                <set-next-rule methodname="setFileSystemLogConfiguration"/>
+            </pattern>
+            
+            <pattern value="Regexps">
+                <pattern value="Regexp">
+                    <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.RegularExpressionConfigurationDO"/>
+                    <call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String"/>
+                    <call-method-rule pattern="Value" methodname="setValue" paramcount="0" paramtypes="java.lang.String"/>
+                    <set-next-rule methodname="addRegularExpression"/>
+                </pattern>
+            </pattern>
+           
+            
+            <set-next-rule methodname="setDABSConfiguration"/>
+        </pattern>
+
+        <!-- DEM Component Configuration -->
+        <pattern value="DEM">
+            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.DEMComponentConfigurationDO"/>
+
+            <!-- Common DCC Component Configuration -->
+            <call-method-rule pattern="HeartbeatRate" methodname="setHeartbeatInterval" paramcount="0" paramtypes="java.lang.Integer"/>
+
+            <call-method-rule pattern="ReporterCacheRefreshRate" methodname="setReporterCacheRefreshRate" paramcount="0" paramtypes="java.lang.Integer"/>
+            <set-next-rule methodname="setDEMConfiguration"/>
+        </pattern>
+
+        <!-- Management Console Configuration -->
+        <pattern value="ManagementConsole">
+            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.MgmtConsoleComponentConfigurationDO"/>
+
+            <!-- Common DCC Component Configuration -->
+            <call-method-rule pattern="HeartbeatRate" methodname="setHeartbeatInterval" paramcount="0" paramtypes="java.lang.Integer"/>
+
+            <set-next-rule methodname="setMgmtConsoleConfiguration"/>
+        </pattern>
+
+        <!-- Reporter Configuration -->
+        <pattern value="Reporter">
+            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.ReporterComponentConfigurationDO"/>
+
+            <!-- Common DCC Component Configuration -->
+            <call-method-rule pattern="HeartbeatRate" methodname="setHeartbeatInterval" paramcount="0" paramtypes="java.lang.Integer"/>
+
+            <!-- Reporter specified configuration -->
+            <call-method-rule pattern="ShowSharePointReports" methodname="setShowSharePointReports" paramcount="0" paramtypes="java.lang.Integer"/>
+
+            <call-method-rule pattern="ReportGenerationFrequency" methodname="setReportGenerationFrequency" paramcount="0" paramtypes="java.lang.Long"/>
+            
+            <pattern value="Properties">
+               <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyList"/>
+
+               <!-- Read an individual property override -->
+               <pattern value="Property">
+                 <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyDO"/>
+
+                 <call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String"/>
+                 <call-method-rule pattern="Value" methodname="setValue" paramcount="0" paramtypes="java.lang.String"/>
+
+                 <set-next-rule methodname="addProperty"/>
+               </pattern>
+
+               <set-next-rule methodname="setProperties"/>
+            </pattern>
+            <set-next-rule methodname="setReporterConfiguration"/>
+        </pattern>
+        
+        <pattern value="GenericComponents">
+            <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.GenericComponentsConfigurationDO"/>
+
+            <pattern value="GenericComponent">
+                <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.GenericComponentConfigurationDO"/>
+                
+                <set-properties-rule/>
+                
+                <!-- Common DCC Component Configuration -->
+            	<call-method-rule pattern="HeartbeatRate" methodname="setHeartbeatInterval" paramcount="0" paramtypes="java.lang.Integer"/>
+                
+                <!-- Read the property overrides list -->
+                <pattern value="Properties">
+                    <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyList"/>
+
+                    <!-- Read an individual property override -->
+                    <pattern value="Property">
+                        <object-create-rule classname="com.bluejungle.destiny.server.shared.configuration.impl.PropertyDO"/>
+
+                        <call-method-rule pattern="Name" methodname="setName" paramcount="0" paramtypes="java.lang.String"/>
+                        <call-method-rule pattern="Value" methodname="setValue" paramcount="0" paramtypes="java.lang.String"/>
+
+                        <set-next-rule methodname="addProperty"/>
+                    </pattern>
+
+                    <set-next-rule methodname="setProperties"/>
+                </pattern>
+                
+                <set-next-rule methodname="addGenericComponent"/>
+            </pattern>
+            
+            <set-next-rule methodname="setGenericComponentsConfiguration"/>
+        </pattern>
+
+    </pattern>
+</digester-rules>

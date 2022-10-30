@@ -1,0 +1,27 @@
+# This enrollment only enroll group. The group memeber can come from any enrollment
+
+enroll.users                        false
+enroll.contacts                     false
+enroll.computers                    false
+enroll.applications                 false
+enroll.groups                       true
+
+#
+# Required attributes
+#
+entry.attributefor.staticid         objectGUID
+
+
+group.requirements                  (objectClass=Group)
+group.attributefor.enumeration      member
+
+group.isMemberFromAllEnrollment     true
+group.memberAttributeKey            windowsSid
+
+
+#
+# Note: Use full path to refer LDIF file name
+#       Use '/' instead of '\' for file path seperator!
+#
+ldif.filename                       [BUILD_ROOT_DIR]/data.ldif
+

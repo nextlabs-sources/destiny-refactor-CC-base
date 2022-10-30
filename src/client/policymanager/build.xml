@@ -1,0 +1,163 @@
+<!--$Id: //depot/Destiny/D_Nimbus/release/8.1/main/src/client/policymanager/build.xml#1 $-->
+<project name="policymanager" default="setup">
+
+	<var name="nlbuildroot" value="${basedir}/../../.." />
+	<property name="policyauthor.version" value="1.0.0"/>
+    <property name="java.main.src.dir" value="${basedir}/src/java/main"/>
+    <property name="java.test.src.dir" value="${basedir}/src/java/test"/>
+    <property name="build.dest" value="${build.root.dir}/client/policymanager/classes"/>
+    <property name="doc.dest" value="${build.root.dir}/client/policymanager/doc"/>
+    <property name="setup.dir" value="${build.root.dir}/policymanager"/>
+    <property name="plugin.dir" value="${setup.dir}/plugins"/>
+    <property name="policymanagerplugin.dir" value="${plugin.dir}/com.bluejungle.destiny.policymanager_${policyauthor.version}"/>
+    <property name="policyauthordepend.dir" value="${plugin.dir}/com.bluejungle.destiny.policydepend_${policyauthor.version}"/>
+    <property name="eclipse.dir" value="${external.dir}/eclipse/eclipse3.1.2"/>
+    <property name="help.build.dir" value="${build.root.dir}/server/apps/help/" />
+
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	<fileset id="destiny.jars" dir="${build.root.dir}">
+        <include name="common-framework.jar" />
+        <include name="common-pf.jar" />
+        <include name="client-pf.jar" />
+        <include name="common-domain.jar" />
+        <include name="app-framework.jar" />
+        <include name="policy-types.jar" />
+        <include name="common-version.jar" />
+        <include name="common-version-impl.jar" />
+        <include name="version.jar" />
+    </fileset>
+    
+    <path id="compile.agent.classpath">
+        <pathelement path="${xlib_jar_dir}/antlr.jar" />
+        <pathelement path="${eclipse.dir}/plugins/org.eclipse.core.runtime_3.1.2.jar" />
+        <pathelement path="${eclipse.dir}/plugins/org.eclipse.osgi_3.1.2.jar" />
+        <pathelement path="${eclipse.dir}/plugins/org.eclipse.ui_3.1.2.jar" />
+        <pathelement path="${eclipse.dir}/plugins/org.eclipse.swt.win32.win32.x86_3.1.2.jar" />
+        <pathelement path="${eclipse.dir}/plugins/org.eclipse.jface_3.1.1.jar" />
+        <pathelement path="${eclipse.dir}/plugins/org.eclipse.ui.workbench_3.1.2.jar" />
+        <pathelement path="${xlib_jar_dir}/swt-datepicker.jar" />
+        <fileset refid="destiny.jars"/>
+        <path refid="compile.classpath" />
+    </path>
+    
+    <target name="pre-build">
+        <mkdir dir="${build.dest}"/>
+    </target>
+    
+    <target name="clean" unless="compile.notRequired" depends="check-jars">
+        <!-- this is a wholesale deletion of all the class files for client-pf if any
+        of the jars that client-pf depend on have been updated since    
+        client-pf was built -->
+        <delete>
+            <fileset dir="${build.dest}" includes="**/*.class"/>
+            <fileset dir="${build.dest}" includes="**/*.properties"/>
+        </delete>
+    </target>
+    
+    <target name="check-jars">
+        <uptodate property="compile.notRequired" targetfile="${build.root.dir}/policymanager.jar">
+            <srcfiles refid="destiny.jars"/>
+        </uptodate>
+    </target>
+    
+    <target name="compile" depends="pre-build">
+        <javac srcdir="${java.main.src.dir}" destdir="${build.dest}" debug="${compile.debug}"    
+            verbose="${compile.verbose}" excludes="**/services/**"  source="${compile.source}" target="${compile.target}" executable="${compile.executable}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="compile.agent.classpath"/>
+        </javac>
+        <javac srcdir="${java.test.src.dir}" destdir="${build.dest}" debug="${compile.debug}"    
+            verbose="${compile.verbose}" excludes="**/services/**"  source="${compile.source}" target="${compile.target}" executable="${compile.executable}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="compile.agent.classpath"/>
+        </javac>
+    	<copy todir="${build.dest}">
+    		<fileset dir="${java.main.src.dir}">
+    			<include name="**/*.properties"/>
+			</fileset>    				
+    	</copy>
+    </target>
+    
+    <target name="jar" depends="compile">
+        <jar destfile="${build.root.dir}/policymanager.jar" basedir="${build.dest}" />
+    </target>
+
+    <target name="setup">
+        <mkdir dir= "${setup.dir}"/>
+        
+        <mkdir dir= "${policyauthordepend.dir}"/>
+        <copy file = "${xlib_jar_dir}/activation.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${build.root.dir}/common-framework.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${build.root.dir}/crypt.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${build.root.dir}/common-res.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${build.root.dir}/common-pf.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${build.root.dir}/client-pf.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${build.root.dir}/agent-ipc.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${build.root.dir}/policy-types.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${build.root.dir}/policy-services.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${build.root.dir}/common-domain.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${build.root.dir}/common-domain-types.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${build.root.dir}/app-framework.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${build.root.dir}/server-shared-types.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${build.root.dir}/server-shared-services.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${build.root.dir}/client-security-config.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${build.root.dir}/common-framework-types.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${build.root.dir}/common-version.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${build.root.dir}/common-version-impl.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${build.root.dir}/version.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${build.root.dir}/version-types.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${xlib_jar_dir}/axis.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${xlib_jar_dir}/jaxrpc.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+		<copy file = "${xlib_jar_dir}/saaj.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+		<copy file = "${xlib_jar_dir}/commons-discovery-0.2.jar" tofile="${policyauthordepend.dir}/commons-discovery.jar" overwrite="false"/>
+		<copy file = "${xlib_jar_dir}/antlr.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${xlib_jar_dir}/c3p0-0.9.1.2.jar" tofile="${policyauthordepend.dir}/c3p0.jar" overwrite="false"/>
+        <copy file = "${xlib_jar_dir}/castor-0.9.5.4.jar" tofile="${policyauthordepend.dir}/castor.jar" overwrite="false"/>
+        <copy file = "${xlib_jar_dir}/cglib-full-2.0.2.jar" tofile="${policyauthordepend.dir}/cglib-full.jar" overwrite="false"/>
+        <copy file = "${xlib_jar_dir}/commons-cli-1.0.jar" tofile="${policyauthordepend.dir}/commons-cli.jar" overwrite="false"/>
+        <copy file = "${xlib_jar_dir}/commons-collections-2.1.1.jar" tofile="${policyauthordepend.dir}/commons-collections.jar" overwrite="false"/>
+        <copy file = "${xlib_jar_dir}/commons-logging-1.0.4.jar" tofile="${policyauthordepend.dir}/commons-logging.jar" overwrite="false"/>
+        <copy file = "${xlib_jar_dir}/dom4j-1.4.jar" tofile="${policyauthordepend.dir}/dom4j.jar" overwrite="false"/>
+        <copy file = "${xlib_jar_dir}/ehcache-1.1.jar" tofile="${policyauthordepend.dir}/ehcache.jar" overwrite="false"/>
+        <copy file = "${xlib_jar_dir}/odmg-3.0.jar" tofile="${policyauthordepend.dir}/odmg.jar" overwrite="false"/>
+        <copy file = "${xlib_jar_dir}/hibernate2.jar" tofile="${policyauthordepend.dir}/hibernate.jar" overwrite="false"/>
+        <copy file = "${xlib_jar_dir}/itext-2.0.8.jar" tofile="${policyauthordepend.dir}/iText.jar" overwrite="false"/>
+        <copy file = "${xlib_jar_dir}/wsdl4j-1.5.1.jar" tofile="${policyauthordepend.dir}/wsdl4j.jar" overwrite="false"/>
+        <copy file = "${xlib_jar_dir}/xercesImpl.jar" todir="${policyauthordepend.dir}" overwrite="false"/>
+        <copy file = "${xlib_jar_dir}/mail.jar" tofile="${policyauthordepend.dir}/mail.jar" overwrite="false"/>
+    </target>
+
+    <target name="run">
+        <exec dir="${build.root.dir}/policymanager/" executable="cmd.exe" failonerror="true">
+            <arg line="/k policymanager.bat"/>
+        </exec>    
+    </target>
+    
+    <target name="tests" depends="jar">
+        <junit printsummary="withOutAndErr" showoutput="yes" fork="yes" dir="${build.root.dir}" haltonfailure="false" failureproperty="junit.fail">
+            <formatter type="xml"/>
+            <test name="com.bluejungle.destiny.agent.activityjournal.ActivityJournalTestSuite" todir="${log.dir}/tests" />
+            <test name="com.bluejungle.destiny.agent.notification.NotificationTests" todir="${log.dir}/tests" />    
+            <classpath>
+                <pathelement path="${build.root.dir}/agent-test.jar" />
+                <path refid="compile.agent.classpath" />
+            </classpath>
+        </junit>
+    </target>    
+
+    <target name="doc">
+        <mkdir dir="${doc.dest}"/>
+        <javadoc sourcepath="${java.main.src.dir}" destdir="${doc.dest}" linksource="yes"    
+            classpathref="compile.agent.classpath" source="${compile.source}" >
+            <packageset dir="${java.main.src.dir}" defaultexcludes="yes">
+                <include name="com/bluejungle/agent/**"/>
+            </packageset>
+            <tag name="requires" description="Requires: " scope="methods"/>
+            <tag name="modifies" description="Modifies: " scope="methods"/>
+            <tag name="effects" description="Effects: " scope="methods"/>
+        </javadoc>
+    </target>    
+
+    <target name="build" depends="setup">
+    </target>
+
+</project>

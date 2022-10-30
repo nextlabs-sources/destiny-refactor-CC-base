@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+					xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+					xmlns:common="http://bluejungle.com/destiny/framework/types"
+					xmlns:types="http://bluejungle.com/destiny/services/agent/types"
+					xmlns:mgmttypes="http://bluejungle.com/destiny/services/management/types"
+					xmlns:tns="http://bluejungle.com/destiny/services/agent" 
+					targetNamespace="http://bluejungle.com/destiny/services/agent" 
+					name="AgentService">
+
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://bluejungle.com/destiny/services/agent" xmlns:types="http://bluejungle.com/destiny/services/agent/types">
+			<xsd:import namespace="http://bluejungle.com/destiny/services/agent/types" schemaLocation="types/AgentRegistrationData.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/services/agent/types" schemaLocation="types/AgentStartupConfiguration.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/services/agent/types" schemaLocation="types/AgentStartupData.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/services/agent/types" schemaLocation="types/AgentHeartBeatData.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/services/agent/types" schemaLocation="types/AgentUpdates.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/services/agent/types" schemaLocation="types/AgentUpdateAcknowledgementData.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/services/agent/types" schemaLocation="types/AgentProfileStatusData.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/services/agent/types" schemaLocation="types/AgentShutdownData.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/services/agent/types" schemaLocation="types/UserNotification.xsd"/>			
+			<xsd:import namespace="http://bluejungle.com/destiny/services/agent/types" schemaLocation="types/AgentPluginData.xsd"/>			
+			<xsd:import namespace="http://bluejungle.com/destiny/framework/types" schemaLocation="../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicFaults.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="registerAgentRequest">
+		<wsdl:part name="registrationData" type="types:AgentRegistrationData"/>
+	</wsdl:message>
+	<wsdl:message name="registerAgentResponse">
+		<wsdl:part name="startupConfiguration" type="types:AgentStartupConfiguration"/>
+	</wsdl:message>
+
+	<wsdl:message name="unregisterAgentRequest">
+		<wsdl:part name="id" type="common:ID"/>
+	</wsdl:message>
+	<wsdl:message name="unregisterAgentResponse">
+	</wsdl:message>
+		
+	<wsdl:message name="checkUpdatesRequest">
+		<wsdl:part name="id" type="common:ID"/>
+		<wsdl:part name="heartbeat" type="types:AgentHeartbeatData"/>
+	</wsdl:message>
+	<wsdl:message name="checkUpdatesResponse">
+		<wsdl:part name="updates" type="types:AgentUpdates"/>
+	</wsdl:message>
+	
+	<wsdl:message name="acknowledgeUpdatesRequest">
+		<wsdl:part name="id" type="common:ID"/>
+		<wsdl:part name="acknowledgementData" type="types:AgentUpdateAcknowledgementData"/>
+	</wsdl:message>
+	<wsdl:message name="acknowledgeUpdatesResponse">
+	</wsdl:message>
+
+	<wsdl:message name="startupAgentRequest">
+		<wsdl:part name="id" type="common:ID"/>
+		<wsdl:part name="startupData" type="types:AgentStartupData"/>
+	</wsdl:message>
+	<wsdl:message name="startupAgentResponse">
+	</wsdl:message>
+
+	<wsdl:message name="shutdownAgentRequest">
+		<wsdl:part name="id" type="common:ID"/>
+		<wsdl:part name="shutdownData" type="types:AgentShutdownData"/>
+	</wsdl:message>
+	<wsdl:message name="shutdownAgentResponse">
+	</wsdl:message>
+
+	<wsdl:message name="sendUserNotificationsRequest">
+		<wsdl:part name="notifications" type="types:UserNotificationBag"/>
+	</wsdl:message>	
+	<wsdl:message name="sendUserNotificationsResponse">
+	</wsdl:message>
+
+	<wsdl:message name="ServiceNotReadyFault">
+		<wsdl:part name="ServiceNotReadyFault" type="common:ServiceNotReadyFault"/>
+	</wsdl:message>
+	
+	<wsdl:message name="UnauthorizedCallerFault">
+		<wsdl:part name="UnauthorizedCallerFault" type="common:UnauthorizedCallerFault"/>
+	</wsdl:message>
+
+	<wsdl:message name="UnknownEntryFault">
+		<wsdl:part name="UnknownEntryFault" type="common:UnknownEntryFault"/>
+	</wsdl:message>
+	
+	<wsdl:message name="CommitFault">
+		<wsdl:part name="CommitFault" type="common:CommitFault"/>
+	</wsdl:message>
+			
+	<wsdl:portType name="AgentServiceIF">
+		<wsdl:operation name="registerAgent">
+			<wsdl:input message="tns:registerAgentRequest"/>
+			<wsdl:output message="tns:registerAgentResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="unregisterAgent">
+			<wsdl:input message="tns:unregisterAgentRequest"/>
+			<wsdl:output message="tns:unregisterAgentResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+			<wsdl:fault name="CommitFault" message="tns:CommitFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="checkUpdates">
+			<wsdl:input message="tns:checkUpdatesRequest"/>
+			<wsdl:output message="tns:checkUpdatesResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="acknowledgeUpdates">
+			<wsdl:input message="tns:acknowledgeUpdatesRequest"/>
+			<wsdl:output message="tns:acknowledgeUpdatesResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="startupAgent">
+			<wsdl:input message="tns:startupAgentRequest"/>
+			<wsdl:output message="tns:startupAgentResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="shutdownAgent">
+			<wsdl:input message="tns:shutdownAgentRequest"/>
+			<wsdl:output message="tns:shutdownAgentResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="sendUserNotifications">
+			<wsdl:input message="tns:sendUserNotificationsRequest"/>
+			<wsdl:output message="tns:sendUserNotificationsResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="AgentServiceIFBinding" type="tns:AgentServiceIF">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	
+		<wsdl:operation name="registerAgent">
+			<wsdl:input>
+				<soap:body parts="registrationData" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="startupConfiguration" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+
+		<wsdl:operation name="unregisterAgent">
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UknownEntryException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="CommitFault">
+				<soap:fault name="CommitFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+				
+		<wsdl:operation name="checkUpdates">
+			<wsdl:input>
+				<soap:body parts="id heartbeat" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="updates" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>			
+		</wsdl:operation>		
+
+		<wsdl:operation name="acknowledgeUpdates">
+			<wsdl:input>
+				<soap:body parts="id acknowledgementData" use="literal"/>
+			</wsdl:input>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>			
+		</wsdl:operation>		
+		
+		<wsdl:operation name="startupAgent">
+			<wsdl:input>
+				<soap:body parts="id startupData" use="literal"/>
+			</wsdl:input>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>			
+		</wsdl:operation>
+		
+		<wsdl:operation name="shutdownAgent">
+			<wsdl:input>
+				<soap:body parts="id shutdownData" use="literal"/>
+			</wsdl:input>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>			
+		</wsdl:operation>
+		
+		<wsdl:operation name="sendUserNotifications">
+			<wsdl:input>
+				<soap:body parts="notifications" use="literal"/>
+			</wsdl:input>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>			
+		</wsdl:operation>		
+	</wsdl:binding>
+	
+	<wsdl:service name="AgentService">
+		<wsdl:port name="AgentServiceIFPort" binding="tns:AgentServiceIFBinding">
+			<soap:address location="http://localhost:8080/dabs/services/AgentServiceIFPort"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

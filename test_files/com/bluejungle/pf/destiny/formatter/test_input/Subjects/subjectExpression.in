@@ -1,0 +1,1 @@
+principal subj_expr = principal >= "1" and NOT principal >".01" aNd NOT (principal <="100.001" and principal == "me" and principal < "1/1/01" and true and false)

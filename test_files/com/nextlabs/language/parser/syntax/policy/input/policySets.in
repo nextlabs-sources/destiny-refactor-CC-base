@@ -1,0 +1,13 @@
+policy set simple1 of FilePolicyType allow overrides
+
+policy set simple2 of FilePolicyType deny overrides
+
+policy set withUsher of T apply when resource name == "c:/test/**" deny overrides
+
+policy set withBouncer of T ignore when resource name != "c:/test/**" deny overrides
+
+policy set withBouncerAndUser of T ignore when resource type != "doc" apply when resource name == "c:/test/**" deny overrides
+
+policy set withUserAndBouncer of T apply when resource name == "c:/test/**" ignore when resource type != "doc" deny overrides
+
+policy set withMembers of T deny overrides ( a, b, c, id 1, id -5)

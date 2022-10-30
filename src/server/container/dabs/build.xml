@@ -1,0 +1,39 @@
+<project name="dabs" default="build">
+	<property name="src.dir"		value="${basedir}"/>
+	<property name="src.hibernate.dir"   value="${src.dir}/src/hibernate"/>
+	<property name="src.main.dir"   value="${src.dir}/src/java/main"/>
+	<property name="src.test.dir"   value="${src.dir}/src/java/test"/>
+	<property name="src.wsdl.dir"   value="${src.dir}/src/wsdl"/>
+	
+	<target name="build" depends="build-main, build-test"/>
+	
+	<target name="build-main">
+		<ant dir="${src.main.dir}" target="build" inheritrefs="true"/>
+	</target>
+		
+	<target name="build-test">
+		<ant dir="${src.test.dir}" target="build" inheritrefs="true"/>
+	</target>
+		
+	<target name="standalone-tests">
+		<antfetch dir="${src.test.dir}" target="standalone-tests" inheritrefs="true" return="junit.fail"/>
+	</target>
+
+	<target name="tests">
+		<antfetch dir="${src.test.dir}" target="tests" inheritrefs="true" return="junit.fail"/>
+	</target>
+
+	<target name="wsdl-compile">
+		<ant dir="${src.wsdl.dir}" target="wsdl-compile" inheritrefs="true"/>
+	</target>
+	
+	<target name="wsdl-generate">
+		<ant dir="${src.wsdl.dir}" target="wsdl-generate" inheritrefs="true"/>
+	</target>
+
+	<target name="wsdl-jar">
+		<ant dir="${src.wsdl.dir}" target="wsdl-jar" inheritrefs="true"/>
+	</target>
+
+	<target name="doc"/>
+</project>

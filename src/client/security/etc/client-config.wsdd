@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE copyright [
+  <!ENTITY services SYSTEM "file:com/bluejungle/destiny/client/axis/services.include">
+]>
+
+<deployment name="defaultClientConfig"
+            xmlns="http://xml.apache.org/axis/wsdd/"
+            xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+ <handler name="authHandler" type="java:com.bluejungle.destiny.appframework.appsecurity.axis.AuthenticationHandler"/>
+
+ <globalConfiguration>
+   <parameter name="disablePrettyXML" value="true"/>
+   <requestFlow>
+     <handler type="authHandler"/> 	
+   </requestFlow>
+   <responseFlow>
+     <handler type="authHandler"/> 	
+   </responseFlow>
+ </globalConfiguration>
+ <transport name="http" pivot="java:org.apache.axis.transport.http.HTTPSender"/>
+ <transport name="local" pivot="java:org.apache.axis.transport.local.LocalSender"/>
+ <transport name="java" pivot="java:org.apache.axis.transport.java.JavaSender"/>
+ 
+<!-- This was originally done for performance reasons.  This include file would specify a list of service tags:
+	 <service name="SecureSessionService">
+	 </service>
+	 <service name="PolicyEditorIFPort">
+	 </service>
+
+This, believe or not, removed an exception on the Axis client side and, therefore, took out the process of building a stack trace on every request.  
+
+Unfortunately, this led to some faults not being recognized on the client leading the NPE's.  Therefore, for now, I'm taking this out. -->
+<!-- &services; -->
+ 
+</deployment>
+

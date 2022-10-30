@@ -1,0 +1,12 @@
+enroll.users                        true
+enroll.contacts                     false
+enroll.computers                    false
+enroll.applications                 false
+enroll.groups                       false
+
+entry.attributefor.staticid         objectGUID
+
+user.requirements                   (userPrincipalName=*)
+user.string.principalName           userPrincipalName
+user.string.unixId                  objectSid
+user.string.extrastringinfo         extrastringinfo

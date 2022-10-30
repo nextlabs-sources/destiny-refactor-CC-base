@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Request xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" ReturnPolicyIdList="false" CombinedDecision="false">
+   <Attributes xml:id="category1" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
+      <Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">aishwarya</AttributeValue>
+      </Attribute>
+      <Attribute AttributeId="role" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">QA</AttributeValue>
+      </Attribute>
+      <Attribute AttributeId="dept" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dept1</AttributeValue>
+      </Attribute>
+   </Attributes>
+   <Attributes xml:id="category1" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
+      <Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">duan</AttributeValue>
+      </Attribute>
+      <Attribute AttributeId="role" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">QA</AttributeValue>
+      </Attribute>
+      <Attribute AttributeId="dept" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Dept1</AttributeValue>
+      </Attribute>
+   </Attributes>
+   <Attributes xml:id="category1" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+      <Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">OPEN</AttributeValue>
+      </Attribute>
+   </Attributes>
+   <Attributes xml:id="category1" Category="urn:nextlabs:names:evalsvc:1.0:attribute-category:application">
+      <Attribute AttributeId="urn:nextlabs:names:evalsvc:1.0:application:application-id" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">word</AttributeValue>
+      </Attribute>
+   </Attributes>
+   <Attributes xml:id="category1"  Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
+      <Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">c:/foo.txt</AttributeValue>
+      </Attribute>
+      <Attribute AttributeId="urn:nextlabs:names:evalsvc:1.0:resource:resource-type" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">fso</AttributeValue>
+      </Attribute>
+      <Attribute AttributeId="table" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">customer</AttributeValue>
+      </Attribute>
+   </Attributes>
+   <MultiRequests>
+     <RequestReference>
+       <AttributesReference ReferenceId="category1"/>
+       <AttributesReference ReferenceId="category1"/>
+       <AttributesReference ReferenceId="category1"/>
+       <AttributesReference ReferenceId="category1"/>
+     </RequestReference>
+     <RequestReference>
+       <AttributesReference ReferenceId="category1"/>
+       <AttributesReference ReferenceId="category1"/>
+       <AttributesReference ReferenceId="category1"/>
+       <AttributesReference ReferenceId="category1"/>
+     </RequestReference>
+  </MultiRequests>
+</Request>

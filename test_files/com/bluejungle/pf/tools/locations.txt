@@ -1,0 +1,9 @@
+# $Id: //depot/Destiny/D_Nimbus/release/8.1/main/test_files/com/bluejungle/pf/tools/locations.txt#1 $
+# single-line comments only
+
+intranet "10.0.0.0/8"
+
+vpn "192.168.254.0/24"
+
+dod "6.0.0.0/8"
+

@@ -1,0 +1,1 @@
+POLICY EmailToNotContact FOR resource.fso.name = "c:\\emailcontact" ON EMAIL SENT_TO not(user.did=$jed@dubious.com$) BY user.did=$sgoldstein@bluejungle.com$ DO deny BY DEFAULT DO allow ON deny DO emNc_deny ON allow DO emNc_allow

@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.nextlabs.destiny.container.shared.inquirymgr.hibernateimpl">
+	
+	<class name="ReportTrackingActivityLogDO" table="REPORT_TRACKING_ACTIVITY_LOG">
+	
+		<id name="id">
+			<generator class="assigned"/>
+		</id>
+
+		<property name="timestamp" type="timestamp">
+            <column name="time" index="ReportTATimeIdx" not-null="true"/>
+        </property>
+        <property name="month">
+            <column name="month_nb" index="ReportTATimeMonthIdx" not-null="true"/>
+        </property>
+        <property name="day">
+            <column name="day_nb" index="ReportTATimeDayIdx" not-null="true"/>
+        </property>
+        
+		<property name="hostId" column="host_id" not-null="true"/>
+		<property name="hostIPAddress">
+			<column name="host_ip" length="15" not-null="false"/>
+		</property>
+		<property name="hostName">
+			<column name="host_name" not-null="false"/>
+		</property>
+		
+		<property name="userId">
+			<column name="user_id" not-null="true" index="ReportTAUserIdx"/>
+		</property>
+		<property name="userName">
+			<column name="user_name" not-null="false" index="ReportTAUserNameIdx"/>
+		</property>
+		<property name="userSID">
+            <column name="user_sid" not-null="false"/>
+        </property>
+		
+		<property name="applicationId" column="application_id" not-null="true"/>		
+		<property name="applicationName" column="application_name" not-null="false"/>	
+		
+		<property name="action" type="com.bluejungle.domain.action.hibernateimpl.ActionEnumUserType">
+			<column name="action" sql-type="char(2)" length="2" not-null="true" index="ReportTAActionIdx"/>
+		</property>
+		
+		<!-- PADDING SPACE, the line number will match ReportPolicyActivityLogDO.hbm.xml
+		 
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		-->
+		
+		<property name="level" column="log_level" not-null="true" index="ReportTALevelIdx"/>	
+		
+		<component name="fromResourceInfo" class="com.bluejungle.destiny.container.shared.inquirymgr.hibernateimpl.FromResourceInformationDO">
+			<property name="name">
+				<column name="from_resource_name" length="512" index="ReportTaFromResourceNameIdx"/>
+			</property>
+			<property name="size" column="from_resource_size"/>
+			<property name="ownerId" column="from_resource_owner_id" length="128"/>
+			<property name="createdDate" column="from_resource_created_date" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType"/>
+			<property name="modifiedDate" column="from_resource_modified_date" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType"/>
+		</component>
+		<property name="fromResourcePrefix">
+            <column name="from_resource_prefix" length="512" not-null="false"/>
+        </property>
+        <property name="fromResourcePath">
+            <column name="from_resource_path" length="512" not-null="false"/>
+        </property>
+        <property name="fromResourceShortName">
+            <column name="from_resource_short_name" length="512" not-null="false"/>
+        </property>	
+        
+		<component name="toResourceInfo" class="com.bluejungle.destiny.container.shared.inquirymgr.hibernateimpl.ToResourceInformationDO">
+			<property name="name">
+				<column name="to_resource_name" length="512"/>
+			</property>			
+		</component>
+	</class>
+</hibernate-mapping>

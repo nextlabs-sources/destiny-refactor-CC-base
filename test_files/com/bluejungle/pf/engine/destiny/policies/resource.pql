@@ -1,0 +1,1 @@
+RESOURCE testfiles2 = (((FALSE OR resource.name = "c:\\testfolder2\\*") AND TRUE) AND (TRUE AND TRUE))

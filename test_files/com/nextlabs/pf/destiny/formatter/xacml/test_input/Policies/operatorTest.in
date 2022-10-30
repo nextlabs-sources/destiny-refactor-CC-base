@@ -1,0 +1,7 @@
+policy operatorTest
+description "test operators"
+DO ALLOW
+FOR ((resource.fso.a="a" AND resource.fso.b="b") OR NOT (resource.fso.c="c" AND resource.fso.d="d") OR (resource.fso.e="e" AND resource.fso.f="f"))
+ON *
+TO *
+BY *

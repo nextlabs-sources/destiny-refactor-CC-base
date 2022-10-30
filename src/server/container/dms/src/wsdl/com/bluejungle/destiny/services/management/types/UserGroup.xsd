@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		   xmlns:basicTypes="http://bluejungle.com/destiny/framework/types" 
+		   xmlns:types="http://bluejungle.com/destiny/services/management/types" 
+		   xmlns:frameworkTypes="http://bluejungle.com/destiny/framework/types"
+		   targetNamespace="http://bluejungle.com/destiny/services/management/types">
+
+	<xs:import namespace="http://bluejungle.com/destiny/framework/types" schemaLocation="../../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicTypes.xsd"/>
+
+	<xs:import namespace="http://bluejungle.com/destiny/framework/types" 
+			   schemaLocation="../../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/Search.xsd"/>
+			
+	<xs:complexType name="ExternalUserGroup">
+		<xs:sequence>
+			<xs:element name="title" type="xs:string"/>					
+			<xs:element name="externalId" type="xs:base64Binary"/>
+			<xs:element name="domain" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ExternalUserGroupList">
+		<xs:sequence>
+			<xs:element name="externalUserGroup" type="types:ExternalUserGroup" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+   </xs:complexType>
+      
+	<xs:complexType name="UserGroupReduced">
+		<xs:sequence>
+			<xs:element name="Id" type="basicTypes:ID"/>
+			<xs:element name="title" type="xs:string"/>
+			<xs:element name="externalId" minOccurs="0" type="xs:base64Binary"/>
+			<xs:element name="externallyLinked" type="xs:boolean"/>
+			<xs:element name="orphaned" type="xs:boolean"/>
+			<xs:element name="domain" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+   
+   <xs:complexType name="UserGroupReducedList">
+		<xs:sequence>
+			<xs:element name="userGroupReduced" type="types:UserGroupReduced" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+   </xs:complexType>
+   
+   <xs:complexType name="UserGroupDTO">
+		<xs:sequence>
+			<xs:element name="Id" type="basicTypes:ID"/>
+			<xs:element name="title" type="xs:string"/>
+			<xs:element name="description" type="xs:string"/>
+			<xs:element name="externalID" minOccurs="0" type="xs:base64Binary"/>
+			<xs:element name="externallyLinked" type="xs:boolean"/>
+			<xs:element name="qualifiedExternalName" minOccurs="0" type="xs:string"/>
+		</xs:sequence>
+   </xs:complexType>
+   
+   <xs:simpleType name="UserGroupQueryField">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TITLE" />
+		</xs:restriction>
+   </xs:simpleType>
+   
+   <xs:complexType name="UserGroupQueryTerm">
+		<xs:sequence>
+			<xs:element name="queryField" type="types:UserGroupQueryField"/>
+		    <xs:element name="queryOperator" type="frameworkTypes:RelationalOpDTO"/>
+		    <xs:element name="queryValue" type="xs:anyType"/>
+	    </xs:sequence>
+   </xs:complexType>
+
+   <xs:complexType name="UserGroupQueryTermSet">
+		<xs:sequence>
+			<xs:element name="userGroupQueryTerm" type="types:UserGroupQueryTerm" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+   </xs:complexType>
+
+   <xs:complexType name="UserGroupQuerySpec">
+		<xs:sequence>
+			<xs:element name="userGroupQueryTermSet" type="types:UserGroupQueryTermSet" minOccurs="1" maxOccurs="1" />
+			<xs:element name="maxResults" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+   </xs:complexType>
+   
+   <xs:complexType name="UserGroupQueryResults">
+		<xs:sequence>
+			<xs:element name="matchingUserGroups" type="types:UserGroupReducedList"/>
+		</xs:sequence>
+   </xs:complexType>
+
+   <xs:complexType name="ExternalUserGroupQueryResults">
+		<xs:sequence>
+			<xs:element name="matchingExternalUserGroups" type="types:ExternalUserGroupList"/>
+		</xs:sequence>
+   </xs:complexType>
+   
+   <xs:complexType name="UserGroupInfo">
+		<xs:sequence>
+			<xs:element name="title" type="basicTypes:title"/>
+			<xs:element name="description" type="xs:string"/>
+		</xs:sequence>
+   </xs:complexType>
+</xs:schema>

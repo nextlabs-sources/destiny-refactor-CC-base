@@ -1,0 +1,6 @@
+context AnyAttribute0
+    d* date
+
+context AnyAttribute1
+    name* unique string
+,   * multivalued code ("a","b","c")

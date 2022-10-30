@@ -1,0 +1,6 @@
+context Enumerated0
+    enum0 code ("a", "b", "c")
+
+context Enumerated1 extends Enumerated0
+    enum1 code ("d", "e", "f")
+,   enum2 code ("g", "hh", "iii")

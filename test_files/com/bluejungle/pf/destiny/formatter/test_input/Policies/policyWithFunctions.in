@@ -1,0 +1,4 @@
+policy with_a_function
+        FOR * ON * BY *
+        WHERE call_function("s", "f", 3, "a string", resource.fso.name) = "purple"
+        DO DENY

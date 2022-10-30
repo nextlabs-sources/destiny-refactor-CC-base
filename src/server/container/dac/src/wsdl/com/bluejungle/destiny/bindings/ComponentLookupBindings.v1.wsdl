@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+					xmlns:interfaces="http://bluejungle.com/destiny/interfaces/report/v1" 
+					targetNamespace="http://bluejungle.com/destiny/bindings/report/v1">
+
+	<wsdl:import 	namespace="http://bluejungle.com/destiny/interfaces/report/v1" 
+					location="../interfaces/ComponentLookupInterfaces.v1.wsdl"/>
+	
+	<wsdl:binding name="ComponentLookupIFBinding" type="interfaces:componentLookupIF">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+		<wsdl:operation name="getActions">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="actions" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="AccessDeniedFault">
+				<soap:fault name="AccessDeniedFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getHosts">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="querySpec" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="hosts" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="AccessDeniedFault">
+				<soap:fault name="AccessDeniedFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getPolicies">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="querySpec" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="policies" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="AccessDeniedFault">
+				<soap:fault name="AccessDeniedFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+
+		<!-- tempoarily bringing down this public API -->
+		<!--
+		<wsdl:operation name="getResourceClasses">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="querySpec" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="resourceClasses" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="AccessDeniedFault">
+				<soap:fault name="AccessDeniedFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		-->
+		
+		<wsdl:operation name="getUsers">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="querySpec" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="users" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="AccessDeniedFault">
+				<soap:fault name="AccessDeniedFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+
+		<wsdl:operation name="getUserClasses">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="querySpec" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="userClasses" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="AccessDeniedFault">
+				<soap:fault name="AccessDeniedFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>				
+	</wsdl:binding>
+</wsdl:definitions>

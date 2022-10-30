@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema  targetNamespace="http://bluejungle.com/destiny/types/basic/v1" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:tns="http://bluejungle.com/destiny/types/basic/v1">
+
+    <!-- An Object Identifier - -->
+	<xs:simpleType name="Id">
+        <xs:restriction base="xs:integer"> 
+            <xs:maxinclusive value="9223372036854775807"/> <!-- FIXME Currently the same as type "long".  Revisit when ID's in system are clarified -->
+            <xs:mininclusive value="-9223372036854775808"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- 
+        A Human Readable Identifier without spaces
+    -->
+    <xs:simpleType name="Name">
+        <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="128"/>
+            <xs:pattern value="{^#x20}*"/>
+        </xs:restriction>    
+    </xs:simpleType>
+	
+    <!-- 
+        A Human Friendly Title
+    -->
+	<xs:simpleType name="Title">
+        <xs:restriction base="xs:token"> 
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
+        
+	<xs:complexType name="TimeIntervalDTO">
+		<xs:sequence>
+			<xs:element name="time" type="xs:unsignedShort" minoccurs="1"/>
+			<xs:element name="time-unit" type="tns:TimeUnits" 
+				default="seconds"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="TimeUnits">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="days"/>
+			<xs:enumeration value="hours"/>
+			<xs:enumeration value="minutes"/>
+			<xs:enumeration value="seconds"/>
+			<xs:enumeration value="milliseconds"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="Threshold">
+		<xs:sequence>
+			<xs:element name="limit" type="xs:unsignedShort"/>
+			<xs:element name="timeInterval" type="tns:TimeIntervalDTO"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="Properties">
+	  <xs:sequence>
+	    <xs:element name="property" type="tns:Property" minOccurs="0" maxOccurs="unbounded" />
+	  </xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="Property">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="values" type="tns:PropertyValues" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PropertyValues">
+		<xs:sequence>
+			<xs:element name="value" type="xs:string" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="SortDirection">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Ascending"/>
+			<xs:enumeration value="Descending"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="StringList">
+		<xs:sequence>
+			<xs:element name="values" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

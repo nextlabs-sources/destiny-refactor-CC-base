@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+					xmlns:interfaces="http://bluejungle.com/destiny/interfaces/report/v1" 
+					targetNamespace="http://bluejungle.com/destiny/bindings/report/v1">
+
+	<wsdl:import 	namespace="http://bluejungle.com/destiny/interfaces/report/v1" 
+					location="../interfaces/ReportLibraryInterface.v1.wsdl"/>
+	
+	<wsdl:binding name="ReportLibraryIFBinding" type="interfaces:reportLibraryIF">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+		<wsdl:operation name="insertReport">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="newReport" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="reportResponse" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="AccessDeniedFault">
+				<soap:fault name="AccessDeniedFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="PersistenceFault">
+				<soap:fault name="PersistenceFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UniqueConstraintViolationFault">
+				<soap:fault name="UniqueConstraintViolationFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="deleteReport">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="report" use="literal"/>
+			</wsdl:input>
+			<wsdl:output/>
+			<wsdl:fault name="AccessDeniedFault">
+				<soap:fault name="AccessDeniedFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="PersistenceFault">
+				<soap:fault name="PersistenceFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getReportById">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="reportId" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="savedReport" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="AccessDeniedFault">
+				<soap:fault name="AccessDeniedFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getReports">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="querySpec" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="reports" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="AccessDeniedFault">
+				<soap:fault name="AccessDeniedFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+
+		<wsdl:operation name="updateReport">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="report" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="updateResult" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="AccessDeniedFault">
+				<soap:fault name="AccessDeniedFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="PersistenceFault">
+				<soap:fault name="PersistenceFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UniqueConstraintViolationFault">
+				<soap:fault name="UniqueConstraintViolationFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+</wsdl:definitions>

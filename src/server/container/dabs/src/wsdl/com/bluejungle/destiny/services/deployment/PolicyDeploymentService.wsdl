@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+					xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+					xmlns:common="http://bluejungle.com/destiny/framework/types" 
+					xmlns:types="http://bluejungle.com/destiny/services/deployment/types" 
+					xmlns:tns="http://bluejungle.com/destiny/services/deployment" 
+					targetNamespace="http://bluejungle.com/destiny/services/deployment" 
+					name="PolicyDeploymentService">
+
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://bluejungle.com/destiny/services/agent" xmlns:types="http://bluejungle.com/destiny/services/deployment/types">
+			<xsd:import namespace="http://bluejungle.com/destiny/services/deployment/types" schemaLocation="types/policyDeploy.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/framework/types" 
+						schemaLocation="../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicFaults.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="invalidatePolicyRequest">
+	</wsdl:message>
+
+	<wsdl:message name="invalidatePolicyResponse">
+		<wsdl:part name="invalidateStatus" type="xsd:string"/>
+	</wsdl:message>
+	
+	<wsdl:message name="pushPolicyRequest">
+		<wsdl:part name="pushList" type="types:PolicyPushList"/>
+	</wsdl:message>
+	<wsdl:message name="pushPolicyResponse">
+		<wsdl:part name="pushStatus" type="xsd:string"/>
+	</wsdl:message>
+	
+	<wsdl:message name="ServiceNotReadyFault">
+		<wsdl:part name="ServiceNotReadyFault" type="common:ServiceNotReadyFault"/>
+	</wsdl:message>
+	
+	<wsdl:message name="UnauthorizedCallerFault">
+		<wsdl:part name="UnauthorizedCallerFault" type="common:UnauthorizedCallerFault"/>
+	</wsdl:message>
+	
+		
+	<wsdl:portType name="PolicyDeploymentServiceIF">
+		<wsdl:operation name="invalidatePolicy">
+			<wsdl:input message="tns:invalidatePolicyRequest"/>
+			<wsdl:output message="tns:invalidatePolicyResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>			
+		</wsdl:operation>
+
+		<wsdl:operation name="pushPolicy">
+			<wsdl:input message="tns:pushPolicyRequest"/>
+			<wsdl:output message="tns:pushPolicyResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>			
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="PolicyDeploymentServiceIFBinding" type="tns:PolicyDeploymentServiceIF">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	
+		<wsdl:operation name="invalidatePolicy">
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="invalidateStatus" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>			
+		</wsdl:operation>
+		
+		<wsdl:operation name="pushPolicy">
+			<wsdl:input>
+				<soap:body parts="pushList" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="pushStatus" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>		
+	</wsdl:binding>
+	
+	<wsdl:service name="PolicyDeploymentService">
+		<wsdl:port name="PolicyDeploymentServiceIFPort" binding="tns:PolicyDeploymentServiceIFBinding">
+			<soap:address location="http://localhost:8080/dabs/services/PolicyDeploymentServiceIFPort"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

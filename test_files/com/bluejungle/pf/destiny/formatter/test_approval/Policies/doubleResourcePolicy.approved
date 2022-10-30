@@ -1,0 +1,48 @@
+ID null POLICY first_policy
+    DESCRIPTION "this policy is simple"
+    FOR (resource.fso.name = "/secret/**" AND GROUP="WORD_DOCS")
+    ON RENAME
+    TO NOT (GROUP="WORD_DOCS")
+    BY TRUE
+    DO deny
+
+
+================ Re-parsed PQL =================
+
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "policy": 'POLICY'
+        IDENTIFIER: 'first_policy'
+        "description": 'this policy is simple'
+        TARGET: ''
+            FROM: ''
+                RESOURCE_EXPR: ''
+                    "and": ''
+                        RELATION_OP: '='
+                            DOT_EXPRESSION: ''
+                                IDENTIFIER: 'resource'
+                                IDENTIFIER: 'fso'
+                                IDENTIFIER: 'name'
+                            QUOTED_STRING: '/secret/**'
+                        RELATION_OP: '='
+                            IDENTIFIER: 'GROUP'
+                            QUOTED_STRING: 'WORD_DOCS'
+            ACTION_EXPR: ''
+                IDENTIFIER: 'RENAME'
+            "to": ''
+                RESOURCE_EXPR: ''
+                    "not": 'NOT'
+                        RELATION_OP: '='
+                            IDENTIFIER: 'GROUP'
+                            QUOTED_STRING: 'WORD_DOCS'
+            SUBJECT_EXPR: ''
+                "true": 'TRUE'
+        EFFECT_CLAUSE: 'DO'
+            EFFECT_TYPE: 'deny'

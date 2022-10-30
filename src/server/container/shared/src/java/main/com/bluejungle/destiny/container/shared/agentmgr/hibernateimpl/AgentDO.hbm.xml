@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.agentmgr.hibernateimpl">
+	
+	<class name="AgentDO" table="AGENT">
+		<!-- Generic persisted properties -->
+		<id name="id">
+			<generator class="native"/>
+		</id>
+
+		<!-- Object-specific properties -->
+		<property name="host" >
+			<column name="host" length="128" not-null="true" unique-key="uniqueAgentHostType"/>
+		</property>
+		<property name="type" type="com.bluejungle.destiny.container.shared.agentmgr.hibernateimpl.AgentTypeUserType">
+			<column name="type" not-null="true" unique-key="uniqueAgentHostType"/>
+		</property>
+		<property name="registered" type="boolean" not-null="true"/>
+		<property name="pushPortInternal" column="pushPort" type="java.lang.Integer"/>
+		<property name="isPushReady" type="boolean" not-null="true"/>
+		<property name="lastHeartbeat" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType"/>
+		<property name="version" column="version" type="com.bluejungle.framework.datastore.hibernate.usertypes.VersionUserType" not-null="true" />
+
+		<component name="policyAssemblyStatus" update="true" access="field" class="AgentPolicyAssemblyStatus">
+            <property name="lastAcknowledgedDeploymentBundleTimestamp" column="DEPLOYMENT_BUNDLE_TS" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType" not-null="false"/>
+		</component>
+
+		<component name="profileStatus" update="true" access="field" class="AgentProfileStatus">
+            <property name="lastAcknowledgedAgentProfileTimestamp" column="AGENT_PROFILE_TS" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType" not-null="false"/>
+            <property name="lastAcknowledgedAgentProfileName" column="AGENT_PROFILE_NAME" type="string" not-null="false"/>
+            <property name="lastAcknowledgedCommProfileTimestamp" column="COMM_PROFILE_TS" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType" not-null="false"/>
+            <property name="lastAcknowledgedCommProfileName" column="COMM_PROFILE_NAME" type="string" not-null="false"/>
+		</component>
+
+		<!-- Communication profile -->
+		<many-to-one
+				class="com.bluejungle.destiny.container.shared.profilemgr.hibernateimpl.CommProfileDO" 
+				name="commProfile">
+			<column name="COMM_PROFILE_ID" not-null="true" index="AgentCommProfileId"/>
+		</many-to-one>
+
+		<!-- Agent profile -->		
+		<many-to-one
+				class="com.bluejungle.destiny.container.shared.profilemgr.hibernateimpl.AgentProfileDO" 
+				column="AGENT_PROFILE_ID"
+				not-null="true"
+				name="agentProfile"/>
+	
+		<!-- Agent registrations -->	
+		<set name="registrations"
+			 inverse="true"
+			 cascade="all-delete-orphan"
+			 lazy="false">
+			<key column="agent_id"/>
+			<one-to-many class="AgentRegistrationDO"/>
+		</set>
+
+<!--	    <list
+			name="loggedInUsers"
+			cascade="all-delete-orphan"
+			table="AGENT_USERS"
+			inverse="true"
+			lazy="false">
+				<key column="AGENT_ID"/>
+				<index column="loginID" type="string"/>
+				<one-to-many class="AgentUserDO"/>
+		</list>
+-->	</class>
+</hibernate-mapping>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export-file>
+    <version>-1</version>
+    <export-entities name="ACTION/Access">
+        <type>COMPONENT</type>
+        <pql>ID 34 STATUS APPROVED CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "ACTION/Access" = (FALSE OR OPEN)</pql>
+    </export-entities>
+    <export-entities name="ACTION/All File Server Actions">
+        <type>COMPONENT</type>
+        <pql>ID 42 STATUS APPROVED CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "ACTION/All File Server Actions" = (OPEN OR RUN OR EDIT OR DELETE OR CHANGE_SECURITY OR CHANGE_ATTRIBUTES OR RENAME)</pql>
+    </export-entities>
+    <export-entities name="ACTION/Edit">
+        <type>COMPONENT</type>
+        <pql>ID 43 STATUS APPROVED CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "ACTION/Edit" = (FALSE OR EDIT)</pql>
+    </export-entities>
+    <export-entities name="ACTION/Modify">
+        <type>COMPONENT</type>
+        <pql>ID 44 STATUS APPROVED CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "ACTION/Modify" = (OPEN OR RUN OR EDIT OR DELETE)</pql>
+    </export-entities>
+</export-file>

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+					xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+					xmlns:common="http://bluejungle.com/destiny/framework/types"
+					xmlns:types="http://bluejungle.com/destiny/services/management/types"
+					xmlns:shared="http://bluejungle.com/destiny/types/shared_folder"
+					xmlns:tns="http://bluejungle.com/destiny/services/management"
+					xmlns:version="http://bluejungle.com/version/types"
+					targetNamespace="http://bluejungle.com/destiny/services/management"
+					name="ComponentService">
+	
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://bluejungle.com/destiny/services/management" 
+					xmlns:types="http://bluejungle.com/destiny/services/management/types">
+			<xsd:import namespace="http://bluejungle.com/destiny/services/management/types" schemaLocation="types/Configuration.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/services/management/types" schemaLocation="types/Registration.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/services/management/types" schemaLocation="types/HeartBeat.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/services/management/types" schemaLocation="types/ComponentDTO.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/services/management/types" schemaLocation="types/MgmtFaults.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/framework/types"
+				schemaLocation="../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicFaults.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/types/shared_folder"
+			    schemaLocation="../../../../../../../../../container/shared/src/wsdl/com/bluejungle/destiny/types/SharedFolderTypes.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/version/types" 
+				schemaLocation="../../../../../../../../../../common/version/src/xsd/com/bluejungle/version/types/Version.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+   
+   <wsdl:message name="ComponentServiceIF_checkUpdatesRequest">
+		<wsdl:part name="heartBeat" type="types:ComponentHeartbeatInfo"/>
+	</wsdl:message>
+	
+	<wsdl:message name="ComponentServiceIF_checkUpdatesResponse">
+		<wsdl:part name="update" type="types:ComponentHeartbeatUpdate"/>
+	</wsdl:message>
+	
+	<wsdl:message name="ComponentServiceIF_registerEventRequest">
+		<wsdl:part name="eventName" type="xsd:string"/>
+		<wsdl:part name="callback" type="xsd:anyURI"/>
+	</wsdl:message>
+  
+	<wsdl:message name="ComponentServiceIF_registerEventResponse">
+	</wsdl:message>
+	
+	<wsdl:message name="ComponentServiceIF_unregisterEventRequest">
+		<wsdl:part name="eventName" type="xsd:string"/>
+		<wsdl:part name="callback" type="xsd:anyURI"/>
+	</wsdl:message>
+	
+	<wsdl:message name="ComponentServiceIF_unregisterEventResponse">
+	</wsdl:message>
+  
+	<wsdl:message name="ComponentServiceIF_registerComponentRequest">
+		<wsdl:part name="regData" type="types:DCCRegistrationInformation"/>
+	</wsdl:message>
+	<wsdl:message name="ComponentServiceIF_registerComponentResponse">
+		<wsdl:part name="regStatus" type="types:DCCRegistrationStatus"/>
+	</wsdl:message>
+   
+	<wsdl:message name="ComponentServiceIF_unregisterComponentRequest">
+		<wsdl:part name="unregInfo" type="types:DCCRegistrationInformation"/>
+	</wsdl:message>
+	
+	<wsdl:message name="ComponentServiceIF_unregisterComponentResponse">
+	</wsdl:message>
+  
+	<wsdl:message name="ComponentServiceIF_getComponentsRequest">
+	</wsdl:message>
+
+	<wsdl:message name="ComponentServiceIF_getComponentsResponse">
+		<wsdl:part name="result" type="types:ComponentList"/>
+	</wsdl:message>
+
+	<wsdl:message name="ComponentServiceIF_getComponentsByTypeRequest">
+		<wsdl:part name="type" type="xsd:string" />
+	</wsdl:message>
+	
+	<wsdl:message name="RegistrationFailedException">
+		<wsdl:part name="RegistrationFailedException" type="types:RegistrationFailedException"/>
+	</wsdl:message>
+
+	<wsdl:message name="ServiceNotReadyFault">
+		<wsdl:part name="ServiceNotReadyFault" type="common:ServiceNotReadyFault"/>
+	</wsdl:message>
+	
+	<wsdl:message name="UnauthorizedCallerFault">
+		<wsdl:part name="UnauthorizedCallerFault" type="common:UnauthorizedCallerFault"/>
+	</wsdl:message>
+	
+
+	<wsdl:portType name="ComponentServiceIF">
+		
+		<wsdl:operation name="checkUpdates">
+			<wsdl:input message="tns:ComponentServiceIF_checkUpdatesRequest"/>
+			<wsdl:output message="tns:ComponentServiceIF_checkUpdatesResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation> 
+		
+		<wsdl:operation name="registerComponent">
+			<wsdl:input message="tns:ComponentServiceIF_registerComponentRequest"/>
+			<wsdl:output message="tns:ComponentServiceIF_registerComponentResponse"/>
+			<wsdl:fault name="RegistrationFailedException" message="tns:RegistrationFailedException"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>  
+		
+		<wsdl:operation name="unregisterComponent">
+			<wsdl:input message="tns:ComponentServiceIF_unregisterComponentRequest"/>
+			<wsdl:output message="tns:ComponentServiceIF_unregisterComponentResponse"/>
+			<wsdl:fault name="RegistrationFailedException" message="tns:RegistrationFailedException"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>  
+
+		<wsdl:operation name="getComponents">
+			<wsdl:input message="tns:ComponentServiceIF_getComponentsRequest"/>
+			<wsdl:output message="tns:ComponentServiceIF_getComponentsResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>  
+
+		<wsdl:operation name="getComponentsByType">
+			<wsdl:input message="tns:ComponentServiceIF_getComponentsByTypeRequest"/>
+			<wsdl:output message="tns:ComponentServiceIF_getComponentsResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation> 
+		
+		<wsdl:operation name="registerEvent">
+			<wsdl:input message="tns:ComponentServiceIF_registerEventRequest"/>
+			<wsdl:output message="tns:ComponentServiceIF_registerEventResponse"/>
+			<wsdl:fault name="RegistrationFailedException" message="tns:RegistrationFailedException"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="unregisterEvent">
+			<wsdl:input message="tns:ComponentServiceIF_unregisterEventRequest"/>
+			<wsdl:output message="tns:ComponentServiceIF_unregisterEventResponse"/>
+			<wsdl:fault name="RegistrationFailedException" message="tns:RegistrationFailedException"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>   
+	</wsdl:portType>
+	
+	<wsdl:binding name="ComponentServiceIFBinding" type="tns:ComponentServiceIF">
+		<wsdl:operation name="checkUpdates">
+			<wsdl:input>
+				<soap:body parts="heartBeat" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="update" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="registerComponent">
+			<wsdl:input>
+				<soap:body parts="regData" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="regStatus" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="RegistrationFailedException">
+				<soap:fault name="RegistrationFailedException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+
+		<wsdl:operation name="unregisterComponent">
+			<wsdl:input>
+				<soap:body parts="compId" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="RegistrationFailedException">
+				<soap:fault name="RegistrationFailedException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+
+		<wsdl:operation name="getComponents">
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="result" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>			
+		</wsdl:operation>
+
+		<wsdl:operation name="getComponentsByType">
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="result" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>			
+		</wsdl:operation>
+		
+		<wsdl:operation name="registerEvent">
+			<wsdl:input>
+				<soap:body parts="eventName callback" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="response" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="RegistrationFailedException">
+				<soap:fault name="RegistrationFailedException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="unregisterEvent">
+			<wsdl:input>
+				<soap:body parts="eventName callback" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="response" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="RegistrationFailedException">
+				<soap:fault name="RegistrationFailedException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	
+		<soap:binding 	transport="http://schemas.xmlsoap.org/soap/http" 
+    					style="rpc"/>
+    </wsdl:binding>
+    
+	<wsdl:service name="ComponentService">
+		<wsdl:port name="ComponentServiceIFPort" binding="tns:ComponentServiceIFBinding">
+			<soap:address location="http://localhost:8080/dms/services/ComponentServiceIFPort"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

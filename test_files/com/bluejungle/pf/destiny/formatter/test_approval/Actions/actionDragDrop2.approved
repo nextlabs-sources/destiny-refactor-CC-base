@@ -1,0 +1,27 @@
+ID null STATUS EMPTY COMPONENT DragNDrop = (GROUP="Read" OR action.name = "Read" OR READ)
+
+
+================ Re-parsed PQL =================
+
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'EMPTY'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "component": 'COMPONENT'
+        IDENTIFIER: 'DragNDrop'
+        COMPONENT_EXPR: ''
+            "or": ''
+                RELATION_OP: '='
+                    IDENTIFIER: 'GROUP'
+                    QUOTED_STRING: 'Read'
+                RELATION_OP: '='
+                    DOT_EXPRESSION: ''
+                        IDENTIFIER: 'action'
+                        IDENTIFIER: 'name'
+                    QUOTED_STRING: 'Read'
+                IDENTIFIER: 'READ'

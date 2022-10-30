@@ -1,0 +1,29 @@
+policy complex
+    RULE
+      DESCRIPTION "This description belongs to the first rule"
+      FOR * ON * BY *
+      DESCRIPTION "another description - syntax allows for it :-)";
+      WHERE CURRENT_TIME != "01/02/03 00:00:00";
+      WHERE CURRENT_TIME >= "01/02/03 00:00:00"
+      WHERE CURRENT_TIME <= "01/02/03 00:00:00";
+      WHERE CURRENT_TIME > "01/02/03 00:00:00";
+      WHERE CURRENT_TIME < "01/02/03 00:00:00"
+      WHERE CURRENT_TIME == "01/02/03 00:00:00"
+      WHERE CURRENT_TIME = "01/02/03 00:00:00"
+      DO DENY
+      DESCRIPTION "yet another description";
+      DESCRIPTION "I can have as many descriptions as I see fit (the compiler will reject most of them :-)";
+      ON LOCAL DENY DO something
+      ON ALLOW DO LOG "Yes!" of_course;
+      BY DEFAULT DO CONFIRM "Are you sure?"
+      BY DEFAULT DO CONFIRM "Are you really sure?"
+      DESCRIPTION "It's OK to have a description at the end..."
+      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; // and lots of semicolons after it
+    RULE
+      DESCRIPTION "This description belongs to the second rule";
+      FOR * ON * BY * // an all-inclusive target
+      DO DENY
+    RULE
+      DESCRIPTION "This description belongs to the third rule";
+      FOR * ON * BY * // an all-inclusive target
+      DO DENY

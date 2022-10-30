@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IFSMulti", "IFSMulti.vcproj", "{2F31D9B6-53BE-4165-998E-98C793ED529A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{2F31D9B6-53BE-4165-998E-98C793ED529A}.Debug.ActiveCfg = Debug|Win32
+		{2F31D9B6-53BE-4165-998E-98C793ED529A}.Debug.Build.0 = Debug|Win32
+		{2F31D9B6-53BE-4165-998E-98C793ED529A}.Release.ActiveCfg = Release|Win32
+		{2F31D9B6-53BE-4165-998E-98C793ED529A}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

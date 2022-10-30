@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.storedresults.hibernateimpl">
+	
+	<class name="StoredQueryByIdResultDO" table="STORED_QUERY_BY_ID_RESULTS">
+        
+		<!-- Generic persisted properties -->
+		<id type="long">
+        	<generator class="native">
+				<param name="sequence">stored_results_sequence</param>
+			</generator>
+		</id>
+		
+		<!-- Stored Query related to this result -->
+		<many-to-one name="query" 
+					 class="StoredQueryDO">
+			 <column name="stored_query_id" index="ResultsByIdStoredQueryIndex" not-null="true"/>
+		 </many-to-one>
+
+		<!-- id of the result record -->					 
+		<property name="resultId" not-null="true"/>
+	</class>
+</hibernate-mapping>

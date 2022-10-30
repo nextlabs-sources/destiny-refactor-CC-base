@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+					xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+					xmlns:action="http://bluejungle.com/destiny/types/actions/v1"
+					xmlns:result="http://bluejungle.com/destiny/types/report_result/v1"
+					xmlns:basic="http://bluejungle.com/destiny/types/basic/v1"
+					xmlns:faults="http://bluejungle.com/destiny/types/basic_faults/v1"
+					xmlns:host="http://bluejungle.com/destiny/types/hosts/v1"
+					xmlns:obligation="http://bluejungle.com/destiny/types/obligations/v1"
+					xmlns:policy="http://bluejungle.com/destiny/types/policies/v1"
+					xmlns:resource="http://bluejungle.com/destiny/types/resources/v1"
+					xmlns:types="http://bluejungle.com/destiny/types/report/v1" 
+					xmlns:user="http://bluejungle.com/destiny/types/users/v1"
+					xmlns:tns="http://bluejungle.com/destiny/interfaces/report/v1" 
+					targetNamespace="http://bluejungle.com/destiny/interfaces/report/v1">
+
+	<wsdl:types>
+		<xs:schema targetNamespace="http://bluejungle.com/destiny/services/report/v1">
+			<xs:import namespace="http://bluejungle.com/destiny/types/actions/v1" schemaLocation="../types/ActionTypes.v1.xsd"/>
+			<xs:import namespace="http://bluejungle.com/destiny/types/basic_faults/v1" schemaLocation="../types/BasicFaults.v1.xsd"/>
+			<xs:import namespace="http://bluejungle.com/destiny/types/basic/v1" schemaLocation="../types/BasicTypes.v1.xsd"/>
+			<xs:import namespace="http://bluejungle.com/destiny/types/hosts/v1" schemaLocation="../types/HostTypes.v1.xsd"/>
+			<xs:import namespace="http://bluejungle.com/destiny/types/obligations/v1" schemaLocation="../types/ObligationTypes.v1.xsd"/>
+			<xs:import namespace="http://bluejungle.com/destiny/types/policies/v1" schemaLocation="../types/PolicyTypes.v1.xsd"/>
+			<xs:import namespace="http://bluejungle.com/destiny/types/report/v1" schemaLocation="../types/ReportTypes.v1.xsd"/>
+			<xs:import namespace="http://bluejungle.com/destiny/types/report_result/v1" schemaLocation="../types/ReportResultTypes.v1.xsd"/>
+			<xs:import namespace="http://bluejungle.com/destiny/types/resources/v1" schemaLocation="../types/ResourceTypes.v1.xsd"/>
+			<xs:import namespace="http://bluejungle.com/destiny/types/users/v1" schemaLocation="../types/UserTypes.v1.xsd"/>
+		</xs:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="getActionsRequest"/>
+
+	<wsdl:message name="getActionsResponse">
+		<wsdl:part name="actions" type="action:ActionList"/>
+	</wsdl:message>
+
+	<wsdl:message name="getHostsRequest">
+			<wsdl:part name="querySpec" type="host:HostQuerySpec"/>
+	</wsdl:message>
+	
+	<wsdl:message name="getHostsResponse">
+		<wsdl:part name="hosts" type="host:HostList"/>
+	</wsdl:message>
+			
+	<wsdl:message name="getPoliciesRequest">
+		<wsdl:part name="querySpec" type="policy:PolicyQuerySpec"/>
+	</wsdl:message>
+	
+	<wsdl:message name="getPoliciesResponse">
+		<wsdl:part name="policies" type="policy:PolicyList"/>
+	</wsdl:message>
+
+	<wsdl:message name="getResourceClassesRequest">
+		<wsdl:part name="querySpec" type="resource:ResourceClassQuerySpec"/>
+	</wsdl:message>
+
+	<wsdl:message name="getResourceClassesResponse">
+		<wsdl:part name="resourceClasses" type="resource:ResourceClassList"/>
+	</wsdl:message>
+
+	<wsdl:message name="getUsersRequest">
+		<wsdl:part name="querySpec" type="user:UserQuerySpec"/>
+	</wsdl:message>
+	
+	<wsdl:message name="getUsersResponse">
+		<wsdl:part name="users" type="user:UserList"/>
+	</wsdl:message>
+
+	<wsdl:message name="getUserClassesRequest">
+		<wsdl:part name="querySpec" type="user:UserClassQuerySpec"/>
+	</wsdl:message>
+	
+	<wsdl:message name="getUserClassesResponse">
+		<wsdl:part name="userClasses" type="user:UserClassList"/>
+	</wsdl:message>
+					
+	<!-- Fault messages -->
+	<wsdl:message name="AccessDeniedFault">
+		<wsdl:part name="AccessDeniedFault" type="faults:AccessDeniedFault"/>
+	</wsdl:message>
+	<wsdl:message name="ServiceNotReadyFault">
+		<wsdl:part name="ServiceNotReadyFault" type="faults:ServiceNotReadyFault"/>
+	</wsdl:message>
+	<wsdl:message name="UnknownEntryFault">
+		<wsdl:part name="UnknownEntryFault" type="faults:UnknownEntryFault"/>
+	</wsdl:message>
+	
+	<wsdl:portType name="componentLookupIF">		
+		<!-- Returns the list of actions -->
+		<wsdl:operation name="getActions">
+			<wsdl:input message="tns:getActionsRequest"/>
+			<wsdl:output message="tns:getActionsResponse"/>
+			<wsdl:fault name="AccessDeniedFault" message="tns:AccessDeniedFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+		</wsdl:operation>
+		
+		<!-- Returns the list of hosts -->
+		<wsdl:operation name="getHosts">
+			<wsdl:input message="tns:getHostsRequest"/>
+			<wsdl:output message="tns:getHostsResponse"/>
+			<wsdl:fault name="AccessDeniedFault" message="tns:AccessDeniedFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+		</wsdl:operation>
+
+		<!-- Returns the list of policies -->
+		<wsdl:operation name="getPolicies">
+			<wsdl:input message="tns:getPoliciesRequest"/>
+			<wsdl:output message="tns:getPoliciesResponse"/>
+			<wsdl:fault name="AccessDeniedFault" message="tns:AccessDeniedFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>		
+		</wsdl:operation>
+						
+		<!-- Returns the list of resource classes -->
+		<!-- Tempoarily bringing down this API -->
+		<!--
+		<wsdl:operation name="getResourceClasses">
+			<wsdl:input message="tns:getResourceClassesRequest"/>
+			<wsdl:output message="tns:getResourceClassesResponse"/>
+			<wsdl:fault name="AccessDeniedFault" message="tns:AccessDeniedFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+		</wsdl:operation>
+		-->
+		
+		<!-- Returns the list of users -->
+		<wsdl:operation name="getUsers">
+			<wsdl:input message="tns:getUsersRequest"/>
+			<wsdl:output message="tns:getUsersResponse"/>
+			<wsdl:fault name="AccessDeniedFault" message="tns:AccessDeniedFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+		</wsdl:operation>
+
+		<!-- Returns the list of user classes -->
+		<wsdl:operation name="getUserClasses">
+			<wsdl:input message="tns:getUserClassesRequest"/>
+			<wsdl:output message="tns:getUserClassesResponse"/>
+			<wsdl:fault name="AccessDeniedFault" message="tns:AccessDeniedFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+		</wsdl:operation>
+	</wsdl:portType>
+</wsdl:definitions>

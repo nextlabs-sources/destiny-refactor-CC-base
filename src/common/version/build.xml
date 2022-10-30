@@ -1,0 +1,95 @@
+<project name="common-version" basedir="." default="build" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<var name="nlbuildroot" value="${basedir}/../../.." />
+	<property name="common.build.script.dir" value="${nlbuildroot}/build_scripts" />
+	
+	<!-- Load build properties -->
+  <property file="${basedir}/build.properties" />
+
+  <!-- Import required common build files -->
+  <import file="${common.build.script.dir}/java_build.xml" />
+  <import file="${common.build.script.dir}/wsdl_build.xml" />
+
+  <target name="init" depends="java_build.init, wsdl_build.init" />
+
+  <target name="pre_compile" depends="resolve" unless="wsdl_build_uptodate">
+    <mkdir dir="${src.gen.dir}" />
+	<wsdl2java url="${src.wsdl.dir}/empty.wsdl"
+               output="${src.gen.dir}"
+               deployscope="application"
+               serverSide="no"
+               skeletonDeploy="no"
+               implementationClassName="com.bluejungle.destiny.common.framework.EmptyService"
+               noimports="no"
+               verbose="yes"
+               testcase="no"
+               nowrapped="true"
+               factory="com.bluejungle.destiny.wsgen.EmptyWSDLTypeGenerator" 
+			   all="true"
+			   timeout="-1"
+			   wrapArrays="true">
+	</wsdl2java>
+  </target>  
+
+  <target name="compile" depends="wsdl_build.compile, java_build.compile" />
+
+  <target name="package" depends="copy_resource, compile">
+    <jar destfile="${build.dir}/version-types.jar">
+      <fileset dir="${build.gen.classes.dir}" />
+    </jar>
+
+	<!--  The following could be one jar if we didn't have a need to split it up for dealing with classes in the Tomcat shared lib folder -->
+    <jar destfile="${build.dir}/common-version.jar" >
+      <fileset dir="${build.main.classes.dir}">
+	    <include name="com/bluejungle/version/IVersion.class" />
+	  </fileset>
+	</jar> 
+
+    <jar destfile="${build.dir}/common-version-impl.jar" >
+      <fileset dir="${build.main.classes.dir}" >
+	    <exclude name="com/bluejungle/version/IVersion.class" />	  
+	  </fileset>
+	</jar> 
+  </target>
+
+<!--
+
+	<target name="package-version">
+		
+
+		<if name="version.auto.increment">
+			<p4edit change="${p4.change}" view="//depot/main/Destiny/main/src/etc/README.txt"/>
+			<exec dir="${src.etc.dir}" executable="cmd.exe"> 
+				<arg line="/c Echo Compliant Enterprise v${major.version}.${minor.version} (${build.number}) > README.txt"/>
+			</exec>
+		</if>
+	
+	</target>
+	
+
+    	<jar destfile="${build.root.dir}/common-version-tests.jar" basedir="${build.test.dest}" />
+
+    	<jar destfile="${build.root.dir}/version-test.jar" basedir="${etc.test.dest}" />
+
+	
+    <target name="tests" depends="jar">
+        <junit fork="yes" forkmode="once" printsummary="withOutAndErr" showoutput="yes" haltonfailure="${junit.haltonfailure}" failureproperty="junit.fail">
+            <formatter type="xml"/>
+            <sysproperty key="src.root.dir" value="${nlbuildroot}" />        	
+        	<sysproperty key="java.util.logging.config.file" value="${logging.properties}" />        	
+            <test name="com.bluejungle.version.VersionDefaultImplTest" todir="${log.dir}/tests" />
+        	<test name="com.bluejungle.versionfactory.VersionFactoryTest" todir="${log.dir}/tests" />
+            <classpath>
+                <pathelement path="${build.root.dir}/common-version.jar" />
+                <pathelement path="${build.root.dir}/common-framework.jar" />
+            	<pathelement path="${build.root.dir}/common-version-tests.jar" />
+            	<pathelement path="${build.root.dir}/version-test.jar" />
+				<pathelement path="${build.test.dest}" />
+            </classpath>
+        </junit>
+    </target>
+
+
+-->
+
+</project>

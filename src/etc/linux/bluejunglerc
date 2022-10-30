@@ -1,0 +1,20 @@
+# Linux environment setup for Blue Jungle
+
+# Perforce enviornment variables
+setenv P4PORT moorea.bluejungle.com:1666
+setenv P4USER $USER
+setenv P4PASSWD 123blue!
+# Ant environment variables
+setenv ANT_HOME /usr/local/ant-1.6.5
+setenv JAVA_HOME /usr/java/j2sdk1.4.2_11
+
+
+# Path for Ant, Java, and Eclipse
+set path = (/usr/local/eclipse ${ANT_HOME}/bin ${JAVA_HOME}/bin $path)
+
+# shorthand alias 
+alias setclient   'setenv P4CLIENT \!*; echo "\033]0;\!*\007"'
+alias setplatform 'source ${HOME}/.bjsetplatformrc'
+alias setroot     'setenv BJROOT \!*'
+
+

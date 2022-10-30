@@ -1,0 +1,8 @@
+policy multiResource
+    DO DENY
+    FOR
+        NAME != "foo.txt" and NAME = "bar.doc"
+    OR  TYPE != "PERL" and TYPE == "JAVA"
+    OR  DIRECTORY != "FOO" and DIRECTORY = "BAR"
+    OR  SIZE = 100 AND SIZE == 100 AND SIZE < 1000 AND SIZE > 10 AND SIZE <= 100 and SIZE >= 100
+    ON  * BY *

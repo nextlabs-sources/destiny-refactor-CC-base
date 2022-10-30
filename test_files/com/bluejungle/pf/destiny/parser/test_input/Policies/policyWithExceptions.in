@@ -1,0 +1,7 @@
+policy policy_with_exceptions
+        description "A simple policy with two exceptions"
+        FOR *
+        ON *
+        BY *
+        SUBPOLICY allow_overrides "folder/policy1", "folder/subfolder/policy2"
+        DO DENY

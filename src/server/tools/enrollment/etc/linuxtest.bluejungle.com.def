@@ -1,0 +1,32 @@
+# a default linux LDIF enrollment definition file 
+
+enroll.users                        true
+enroll.contacts               	    false
+enroll.computers                    true
+
+#
+# Required attributes
+#
+entry.attributefor.staticid         objectGUID
+
+computer.requirements               objectClass=Computer
+user.requirements                   objectClass=User
+contact.requirements                objectClass=Contact
+
+group.requirements                  objectclass=Group
+group.attributefor.enumeration      member
+
+structure.requirements				objectClass=*
+
+#
+# Attribute mappings
+#
+user.string.principalName           cn
+user.string.lastName                sn
+user.multi-string.mail		    proxyAddresses
+user.string.unixId                  objectSID
+
+computer.string.dnsName             cn
+computer.string.unixId              objectSID
+
+ldif.filename                       [BUILD_ROOT_DIR]/seed_data/bluejungle.com.destiny.ldif

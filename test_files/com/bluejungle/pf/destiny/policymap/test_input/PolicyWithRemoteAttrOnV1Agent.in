@@ -1,0 +1,2 @@
+DESKTOP 1.9.9.9.9
+id 0 POLICY TestPolicy FOR * ON * BY * WHERE (environment.remote_access=1 AND environment.remote_address="127.0.0.1") DO deny ON deny DO Log

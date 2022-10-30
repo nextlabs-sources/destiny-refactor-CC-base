@@ -1,0 +1,1 @@
+principal spamware = (application.name=="iSpam" OR application.group="spamWorld")

@@ -1,0 +1,2 @@
+POLICY EmailToContact FOR resource.fso.name = "c:\\emailcontact" ON EMAIL SENT_TO user.did=$jed@dubious.com$ BY user.did=$sergey@bluejungle.com$ DO deny BY DEFAULT DO allow ON deny DO emc_deny ON allow DO emc_allow
+

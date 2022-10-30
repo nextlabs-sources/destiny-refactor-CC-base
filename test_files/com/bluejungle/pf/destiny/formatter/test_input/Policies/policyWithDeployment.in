@@ -1,0 +1,36 @@
+policy deploy_everywhere
+for *
+on *
+by *
+do allow
+deployed to * with agent.type = desktop, * with agent.type = file_server or 
+	host.name = "foofoo" or host.name = "bobo" and host.speed > 65 with agent.type=desktop
+
+policy deploy_somewhere
+for *
+on *
+by *
+do allow
+deployed to agent.id = 2345
+
+
+policy deploy_somewhere_else
+for *
+on *
+by *
+do allow
+deployed to agent.type = file_server
+
+policy deploy_true
+for *
+on *
+by *
+do allow
+deployed to true
+
+policy deploy_false
+for *
+on *
+by *
+do allow
+deployed to false

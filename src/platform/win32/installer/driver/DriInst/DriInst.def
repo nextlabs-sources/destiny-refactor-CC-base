@@ -1,0 +1,7 @@
+LIBRARY	DriInst
+
+EXPORTS
+	InstallDriver
+	RemoveDriver
+	StartDriver
+	StopDriver

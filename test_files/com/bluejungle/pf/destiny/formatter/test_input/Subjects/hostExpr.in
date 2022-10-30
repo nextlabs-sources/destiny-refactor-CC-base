@@ -1,0 +1,1 @@
+principal secret_host = PRINCIPAL.host.name = "secret" OR host.name == "TOP-SECRET" or host.inet_address = "1.2.3.4/24" or host.location = "roswell"

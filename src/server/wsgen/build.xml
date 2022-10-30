@@ -1,0 +1,60 @@
+<project name="wsgen" default="build">
+	<property name="src.dir"    value="${basedir}"/>
+	<property name="build.dest"   value="${build.tasks.dir}/wsgen/"/>
+	<property name="doc.dest"   value="${build.tasks.dir}/wsgen/doc"/>
+	
+	<target name="pre-build">
+		<mkdir dir="${wsdd.template.dir}"/>
+		<mkdir dir="${build.dest}"/>
+	</target>
+		
+	<target name="doc">
+		<mkdir dir="${doc.dest}"/>
+    	<javadoc sourcepath="${src.dir}" destdir="${doc.dest}" linksource="yes" 
+    		classpathref="compile.classpath" source="${compile.source}" >
+    		<packageset dir="${src.dir}" defaultexcludes="yes">
+    			<include name="com/bluejungle/destiny/wsgen/**"/>
+    		</packageset>
+    	</javadoc>
+    </target>
+
+	<target name="clean">
+		<delete dir="${build.tasks.dir}" verbose="true"/>
+	</target>
+	
+	<target name="compile" depends="pre-build">
+            <javac srcdir="${src.dir}" destdir="${build.dest}" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+                <classpath refid="compile.classpath"/>
+            </javac>
+	</target>
+			
+	<target name="jar" depends="compile">
+		<jar destfile="${build.tasks.dir}/wsgen-ant.jar" basedir="${build.dest}">
+			<fileset dir="${build.dest}">
+				<include name="com.bluejungle.destiny.wsgen.SecureWsdl2javaAntTask"/>
+			</fileset>
+		</jar>
+		<jar destfile="${build.tasks.dir}/wsgen.jar" basedir="${build.dest}">
+			<fileset dir="${build.dest}">
+				<exclude name="com.bluejungle.destiny.wsgen.SecureWsdl2javaAntTask"/>
+				<include name="*.class"/>
+			</fileset>
+		</jar>
+	</target>
+	
+	<target name="tests">
+		<junit printsummary="withOutAndErr" showoutput="yes" haltonfailure="false" failureproperty="junit.fail">
+			<formatter type="xml"/>
+            <test name="com.bluejungle.destiny.wsgen.tests.SecureWSDL2JavaTestSuite" todir="${log.dir}/tests"/>
+            <classpath>
+            	<pathelement path="${src.root.dir}/etc/junit"/>
+            	<pathelement path="${build.dest}"/>
+            	<pathelement path="${build.tasks.dir}/wsgen.jar"/>
+            	<path refid="compile.classpath"/>
+            </classpath>
+		</junit>
+	</target>
+
+	<target name="build" depends="compile, jar">
+	</target>	
+</project>

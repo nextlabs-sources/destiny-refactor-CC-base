@@ -1,0 +1,3 @@
+Main-Class: com.bluejungle.framework.crypt.Encryptor
+Class-Path: ../common/lib/common-framework.jar
+

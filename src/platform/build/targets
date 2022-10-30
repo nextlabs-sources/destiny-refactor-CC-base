@@ -1,0 +1,9 @@
+brain
+agent/IPC/IPCJNI
+agent/controlmodule
+agent/Proxy
+agent/AgentController
+utils/compCollector
+utils/smbDirMapping
+utils/elfModifier
+agent/pep/samba

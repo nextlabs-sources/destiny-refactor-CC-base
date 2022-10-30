@@ -1,0 +1,124 @@
+############################################################
+#  	Default Logging Configuration File
+#
+# You can use a different file by specifying a filename
+# with the java.util.logging.config.file system property.  
+# For example java -Djava.util.logging.config.file=myfile
+############################################################
+
+############################################################
+#  	Global properties
+############################################################
+
+# "handlers" specifies a comma separated list of log Handler 
+# classes.  These handlers will be installed during VM startup.
+# Note that these classes must be on the system classpath.
+# By default we only configure a ConsoleHandler, which will only
+# show messages at the INFO and above levels.
+#handlers= java.util.logging.ConsoleHandler
+
+handlers= java.util.logging.FileHandler, java.util.logging.ConsoleHandler, 1enrollment.java.util.logging.FileHandler, 2audit.java.util.logging.FileHandler, 3console.java.util.logging.FileHandler, 4cas.java.util.logging.FileHandler
+
+# To also add the FileHandler, use the following line instead.
+.handlers= java.util.logging.FileHandler, java.util.logging.ConsoleHandler
+
+# Default global logging level.
+# This specifies which kinds of events are logged across
+# all loggers.  For any given facility this global level
+# can be overriden by a facility specific level
+# Note that the ConsoleHandler also has a separate level
+# setting to limit messages printed to the console.
+.level= WARNING
+
+############################################################
+# Handler specific properties.
+# Describes specific configuration info for Handlers.
+############################################################
+
+# default file output is in user's home directory.
+java.util.logging.FileHandler.pattern = ${catalina.base}/../logs/DCC.%g.log
+java.util.logging.FileHandler.limit = 500000
+java.util.logging.FileHandler.count = 10
+java.util.logging.FileHandler.formatter = java.util.logging.SimpleFormatter
+
+1enrollment.java.util.logging.FileHandler.level = ALL
+1enrollment.java.util.logging.FileHandler.pattern = ${catalina.base}/../logs/enrollment.%g.log
+1enrollment.java.util.logging.FileHandler.limit = 500000
+1enrollment.java.util.logging.FileHandler.count = 10
+1enrollment.java.util.logging.FileHandler.formatter = java.util.logging.SimpleFormatter
+
+2audit.java.util.logging.FileHandler.level = ALL
+2audit.java.util.logging.FileHandler.pattern = ${catalina.base}/../logs/audit.%g.log
+2audit.java.util.logging.FileHandler.limit = 500000
+2audit.java.util.logging.FileHandler.count = 10
+2audit.java.util.logging.FileHandler.formatter = java.util.logging.SimpleFormatter
+
+3console.java.util.logging.FileHandler.pattern = ${catalina.base}/../logs/console.%g.log
+3console.java.util.logging.FileHandler.limit = 500000
+3console.java.util.logging.FileHandler.count = 10
+3console.java.util.logging.FileHandler.formatter = java.util.logging.SimpleFormatter
+
+4cas.java.util.logging.FileHandler.pattern = ${catalina.base}/../logs/cas.%g.log
+4cas.java.util.logging.FileHandler.limit = 500000
+4cas.java.util.logging.FileHandler.count = 10
+4cas.java.util.logging.FileHandler.formatter = java.util.logging.SimpleFormatter
+
+# Limit the message that are printed on the console to INFO and above.
+java.util.logging.ConsoleHandler.level = WARNING
+java.util.logging.ConsoleHandler.formatter = java.util.logging.SimpleFormatter
+
+# for OPL only user. CRUD/import audit logs, comment this line if audit log is not required
+com.bluejungle.destiny.mgmtconsole.usersandroles.users.defaultimpl.level = INFO
+
+# for OPN/SAAS only. user CRUD/import audit logs, uncomment this line if audit log is not required
+# com.nextlabs.destiny.console.controllers.ApplicationUserController = WARNING
+
+############################################################
+# Facility specific properties.
+# Provides extra control for each logger.
+############################################################
+net.sf.hibernate.impl.SessionImpl.level = SEVERE
+com.bluejungle.level = WARNING
+
+# for console
+org.springframework.handlers = 3console.java.util.logging.FileHandler
+org.springframework.level = WARNING
+com.mchange.handlers = 3console.java.util.logging.FileHandler
+com.mchange.level = ERROR
+com.nextlabs.destiny.console.handlers = 3console.java.util.logging.FileHandler
+com.nextlabs.destiny.console.level = INFO
+
+# for cas
+org.jasig.handlers = 4cas.java.util.logging.FileHandler
+org.jasig.level = WARNING
+
+# for enrollment
+com.bluejungle.destiny.container.shared.dictionary.enrollment.handlers = 1enrollment.java.util.logging.FileHandler
+com.bluejungle.destiny.container.dem.DEMEnrollmentServiceImpl.handlers = 1enrollment.java.util.logging.FileHandler
+com.bluejungle.dictionary.EnrollmentSession.handlers = 1enrollment.java.util.logging.FileHandler
+
+com.bluejungle.destiny.container.shared.dictionary.enrollment.level = ALL
+com.bluejungle.destiny.container.shared.dictionary.enrollment.enroller.util.RfcFilterEvaluator.level = INFO
+
+
+# for policy audit
+com.nextlabs.audit.AuthenticationRequestFlowHandler.handlers = 2audit.java.util.logging.FileHandler
+com.nextlabs.audit.AuthenticationRequestFlowHandler.level = INFO
+
+### Log entries for log upload use case. Helpful in debugging. Steps involved are
+### a. Uploaded logs written to log queue
+### b. Saving these logs to db (P_A_Log table)
+### c. Saving these logs to db (R_P_A_Log table)
+### Next three sections are meant to debug these discrete steps in log persistence
+
+## THIS IS FOR THE LOGGING OF DATA TO THE LOG QUEUE (FILES) 
+#com.nextlabs.destiny.container.dabs.components.log.filesystemimpl.handlers = 2audit.java.util.logging.FileHandler
+#com.nextlabs.destiny.container.dabs.components.log.filesystemimpl.level = ALL
+
+## THIS IS FOR WRITING TO THE P_A_LOGS
+#com.nextlabs.destiny.bindings.log.v2.handlers = 2audit.java.util.logging.FileHandler
+#com.nextlabs.destiny.bindings.log.v2.level = ALL
+
+## THIS IS FOR WRITING TO THE R_P_A_LOGS
+#com.nextlabs.destiny.container.dac.datasync.sync.handlers = 2audit.java.util.logging.FileHandler
+#com.nextlabs.destiny.container.dac.datasync.sync.level = ALL

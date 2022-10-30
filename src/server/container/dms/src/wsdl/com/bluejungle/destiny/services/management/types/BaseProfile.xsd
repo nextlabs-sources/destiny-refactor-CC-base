@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:types="http://bluejungle.com/destiny/services/management/types" 
+			targetNamespace="http://bluejungle.com/destiny/services/management/types" 
+			xmlns:basicTypes="http://bluejungle.com/destiny/framework/types">
+    
+    <xs:import namespace="http://bluejungle.com/destiny/framework/types" schemaLocation="../../../../../../../../../../../../src/common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicTypes.xsd"/>
+
+	<xs:complexType name="BaseProfileInfo" abstract="true">
+		<xs:annotation>
+			<xs:docomentation>
+				Base Element for a Profile Info.  A Profile Info contains all elements of a Profile that are provided upon profile creation.
+				Specific profile (Agent, User, Communication) will extend
+			</xs:docomentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="basicTypes:name" />  
+		</xs:sequence>				
+	</xs:complexType>
+    
+    
+	<xs:complexType name="BaseProfileDTOList" abstract="true">
+		<xs:annotation>
+			<xs:docomentation>
+				Base Element for a Profile List.  Specific profile (Agent, User, Communication) will extend
+			</xs:docomentation>
+		</xs:annotation>
+	</xs:complexType>
+	
+	<xs:complexType name="BaseProfileDTO" abstract="true">
+		<xs:annotation>
+			<xs:docomentation>
+				Base Element for a Profile DTO.  Specific profile (Agent, User, Communication) will extend
+			</xs:docomentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="id" type="xs:long"/>
+			<xs:element name="name" type="basicTypes:name" />
+			<xs:element name="defaultProfile" type="xs:boolean" />  
+			<xs:element name="createdDate" type="xs:dateTime"/>
+		    <xs:element name="modifiedDate" type="xs:dateTime"/>
+		</xs:sequence>				
+	</xs:complexType>
+    
+</xs:schema>

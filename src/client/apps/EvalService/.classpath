@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="var" path="BASE_FOLDER/EvalService/lib/servlet/servlet-api.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="var" path="BASE_FOLDER/EvalService/lib/httpclient/httpclient-4.2.5.jar"/>
+	<classpathentry kind="var" path="BASE_FOLDER/EvalService/lib/httpclient/httpcore-4.2.4.jar"/>
+	<classpathentry kind="var" path="BASE_FOLDER/EvalService/lib/httpclient/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="var" path="BASE_FOLDER/EvalService/lib/gson/gson-2.2.4.jar"/>
+	<classpathentry kind="var" path="BASE_FOLDER/EvalService/lib/javapc/agent-controlmanager.jar"/>
+	<classpathentry kind="var" path="BASE_FOLDER/EvalService/lib/javapc/common-pf.jar"/>
+	<classpathentry kind="var" path="BASE_FOLDER/EvalService/lib/commons/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="var" path="BASE_FOLDER/EvalService/lib/junit/junit-4.11.jar"/>
+	<classpathentry kind="var" path="BASE_FOLDER/EvalService/lib/junit/hamcrest-core-1.3.jar"/>
+	<classpathentry kind="var" path="BASE_FOLDER/EvalService/lib/nljavasdk/nlJavaSDK2.jar"/>
+	<classpathentry kind="var" path="BASE_FOLDER/EvalService/build/EvalService_xmlbeans.jar"/>
+	<classpathentry kind="var" path="BASE_FOLDER/EvalService/lib/xmlbeans/xbean.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

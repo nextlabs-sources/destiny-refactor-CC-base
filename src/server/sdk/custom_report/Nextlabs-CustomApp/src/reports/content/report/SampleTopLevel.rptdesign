@@ -1,0 +1,1358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.20" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 2.5.1.v20090903 Build &lt;2.5.1.v20090917-1447></property>
+    <property name="units">in</property>
+    <property name="comments">Copyright (c) 2007 &lt;&lt;Your Company Name here>></property>
+    <html-property name="description">Creates a blank report with no predefined content.</html-property>
+    <method name="initialize"><![CDATA[// INTIALIZE THE LOGGER WITH A FILE BASED LOGGER
+var count=0;
+
+    importPackage(Packages.java.util.logging);
+    importPackage(Packages.logging);
+    
+    var fileHandler = new FileHandler("javascript.log", false);
+    
+    var rootLogger = Logger.getLogger("");
+    rootLogger.addHandler(fileHandler);
+    
+
+    function log ( str ){
+        Logger.getAnonymousLogger().info(str);
+    }
+    
+    reportContext.setPersistentGlobalVariable("log", log);
+    log("Initialize");]]></method>
+    <text-property name="displayName">Blank Report</text-property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">auto layout</property>
+    <parameters>
+        <scalar-parameter name="EventLevel" id="164">
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">3</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="concealValue">false</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="BeginDate" id="191">
+            <property name="valueType">static</property>
+            <property name="isRequired">true</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">2010-04-01</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="EndDate" id="192">
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">2010-04-08</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="Title" id="197">
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <script-data-source name="Activity_DataSource" id="199">
+            <method name="open"><![CDATA[var count = 0;]]></method>
+        </script-data-source>
+    </data-sources>
+    <data-sets>
+        <script-data-set name="TopUsers" id="200">
+            <list-property name="resultSetHints">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">Dimension</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">ResultCount</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">Resource</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">Dimension</property>
+                    <property name="alias">Dimension</property>
+                    <text-property name="displayName">Dimension</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">ResultCount</property>
+                    <property name="alias">ResultCount</property>
+                    <text-property name="displayName">ResultCount</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Resource</property>
+                    <text-property name="displayName">Resource</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">Dimension</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">ResultCount</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">Resource</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Activity_DataSource</property>
+            <method name="open"><![CDATA[mgr = new Packages.com.nextlabs.report.datagen.ReportDataManagerFactory.getReportDataManager();
+var count=0;
+var qryStr = null;
+ 
+var databaseType = mgr.getDatabaseType();
+if (databaseType == com.nextlabs.report.datagen.IReportDataManager.DB_TYPE_MS_SQL) {
+    qryStr = "SELECT TOP 10 palog.user_name AS Dimension, count(*) AS ResultCount " +
+                        " FROM policy_log_v1 AS palog WHERE timestamp >= " +
+                        mgr.convertToTimestamp(params["BeginDate"]) + " AND timestamp <= " + mgr.convertToTimestamp(params["EndDate"]) + 
+                        " AND palog.policy_decision = 'A' AND palog.log_level = 3 " +
+                        " GROUP BY palog.user_name ORDER BY ResultCount DESC"
+} else if ( databaseType == com.nextlabs.report.datagen.IReportDataManager.DB_TYPE_ORACLE) {
+    qryStr =  "SELECT palog.user_name Dimension, count(*)  ResultCount " +
+                        " FROM policy_log_v1 palog WHERE timestamp >= " +
+                        mgr.convertToTimestamp(params["BeginDate"]) + " AND timestamp <= " + mgr.convertToTimestamp(params["EndDate"]) + 
+                        " AND palog.policy_decision = 'A' AND palog.log_level = 3 " +
+                        " AND ROWNUM <= 10 GROUP BY palog.user_name ORDER BY ResultCount DESC"
+} else {
+    qryStr = "SELECT palog.user_name as Dimension, count(*) as ResultCount " +
+                        " FROM policy_log_v1 palog WHERE timestamp >= " +
+                        mgr.convertToTimestamp(params["BeginDate"]) + " AND timestamp <= " + mgr.convertToTimestamp(params["EndDate"]) + 
+                        " AND palog.policy_decision = 'A' AND palog.log_level = 3 " +
+                        " GROUP BY palog.user_name ORDER BY ResultCount DESC LIMIT 10"
+}
+ log(" QUERY STRING_________________" + qryStr);
+data = mgr.runQuery(qryStr);
+]]></method>
+            <method name="fetch"><![CDATA[if(count < data.size()){
+
+	row["Dimension"] = data.get(count, 0);
+	row["ResultCount"] = data.get(count, 1);
+	if (row["Dimension"].lastIndexOf("/", row["Dimension"].length) > 0) {
+		row["Resource"] = row["Dimension"].substring(
+							row["Dimension"].lastIndexOf("/", row["Dimension"].length)+1,
+						    row["Dimension"].length);
+	} else {
+		row["Resource"] = row["Dimension"]
+	}
+	++count;
+	return true;
+}
+
+return false;
+]]></method>
+        </script-data-set>
+    </data-sets>
+    <styles>
+        <style name="crosstab" id="4">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="PageTitle" id="188">
+            <property name="fontFamily">"Verdana"</property>
+            <property name="fontSize">medium</property>
+            <property name="fontWeight">bold</property>
+            <property name="color">#004699</property>
+            <property name="textUnderline">none</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="orientation">landscape</property>
+            <property name="topMargin">1in</property>
+            <property name="leftMargin">0.5in</property>
+            <property name="bottomMargin">1in</property>
+            <property name="rightMargin">0.5in</property>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <data id="198">
+            <property name="fontFamily">"Verdana"</property>
+            <property name="fontSize">large</property>
+            <property name="textAlign">center</property>
+            <property name="allowExport">false</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">Title</property>
+                    <expression name="expression">params["Title"]</expression>
+                </structure>
+            </list-property>
+            <property name="resultSetColumn">Title</property>
+        </data>
+        <extended-item extensionName="Chart" name="Chart" id="179">
+            <xml-property name="xmlRepresentation"><![CDATA[<model:ChartWithoutAxes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:attribute="http://www.birt.eclipse.org/ChartModelAttribute" xmlns:layout="http://www.birt.eclipse.org/ChartModelLayout" xmlns:model="http://www.birt.eclipse.org/ChartModel" xmlns:type="http://www.birt.eclipse.org/ChartModelType">
+  <Version>2.5.1</Version>
+  <Type>Pie Chart</Type>
+  <SubType>Standard</SubType>
+  <Description>
+    <Value></Value>
+    <Font>
+      <Alignment/>
+    </Font>
+  </Description>
+  <Block>
+    <Children xsi:type="layout:TitleBlock">
+      <Bounds>
+        <Left>0.0</Left>
+        <Top>0.0</Top>
+        <Width>0.0</Width>
+        <Height>0.0</Height>
+      </Bounds>
+      <Insets>
+        <Top>3.0</Top>
+        <Left>3.0</Left>
+        <Bottom>3.0</Bottom>
+        <Right>3.0</Right>
+      </Insets>
+      <Row>-1</Row>
+      <Column>-1</Column>
+      <Rowspan>-1</Rowspan>
+      <Columnspan>-1</Columnspan>
+      <Outline>
+        <Style>Solid</Style>
+        <Thickness>1</Thickness>
+        <Color>
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>0</Green>
+          <Blue>0</Blue>
+        </Color>
+        <Visible>false</Visible>
+      </Outline>
+      <Visible>true</Visible>
+      <Label>
+        <Caption>
+          <Value>Top Resources</Value>
+          <Font>
+            <Name>Verdana</Name>
+            <Size>10.0</Size>
+            <Bold>true</Bold>
+            <Alignment>
+              <horizontalAlignment>Center</horizontalAlignment>
+              <verticalAlignment>Center</verticalAlignment>
+            </Alignment>
+          </Font>
+        </Caption>
+        <Background xsi:type="attribute:ColorDefinition">
+          <Transparency>0</Transparency>
+          <Red>255</Red>
+          <Green>255</Green>
+          <Blue>255</Blue>
+        </Background>
+        <Outline>
+          <Style>Solid</Style>
+          <Thickness>1</Thickness>
+          <Color>
+            <Transparency>255</Transparency>
+            <Red>0</Red>
+            <Green>0</Green>
+            <Blue>0</Blue>
+          </Color>
+        </Outline>
+        <Insets>
+          <Top>0.0</Top>
+          <Left>2.0</Left>
+          <Bottom>0.0</Bottom>
+          <Right>3.0</Right>
+        </Insets>
+        <Visible>true</Visible>
+      </Label>
+    </Children>
+    <Children xsi:type="layout:Plot">
+      <Bounds>
+        <Left>0.0</Left>
+        <Top>0.0</Top>
+        <Width>0.0</Width>
+        <Height>0.0</Height>
+      </Bounds>
+      <Anchor>North</Anchor>
+      <Stretch>Both</Stretch>
+      <Insets>
+        <Top>3.0</Top>
+        <Left>3.0</Left>
+        <Bottom>3.0</Bottom>
+        <Right>3.0</Right>
+      </Insets>
+      <Row>-1</Row>
+      <Column>-1</Column>
+      <Rowspan>-1</Rowspan>
+      <Columnspan>-1</Columnspan>
+      <Outline>
+        <Style>Solid</Style>
+        <Thickness>1</Thickness>
+        <Color>
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>0</Green>
+          <Blue>0</Blue>
+        </Color>
+        <Visible>false</Visible>
+      </Outline>
+      <Visible>true</Visible>
+      <WidthHint>-1.0</WidthHint>
+      <HeightHint>-1.0</HeightHint>
+      <HorizontalSpacing>5</HorizontalSpacing>
+      <VerticalSpacing>5</VerticalSpacing>
+      <ClientArea>
+        <Background xsi:type="attribute:ColorDefinition">
+          <Transparency>0</Transparency>
+          <Red>255</Red>
+          <Green>255</Green>
+          <Blue>255</Blue>
+        </Background>
+        <Outline>
+          <Style>Solid</Style>
+          <Thickness>1</Thickness>
+          <Color>
+            <Transparency>255</Transparency>
+            <Red>254</Red>
+            <Green>254</Green>
+            <Blue>254</Blue>
+          </Color>
+          <Visible>true</Visible>
+        </Outline>
+        <ShadowColor>
+          <Transparency>255</Transparency>
+          <Red>254</Red>
+          <Green>254</Green>
+          <Blue>254</Blue>
+        </ShadowColor>
+        <Insets>
+          <Top>0.0</Top>
+          <Left>0.0</Left>
+          <Bottom>0.0</Bottom>
+          <Right>0.0</Right>
+        </Insets>
+      </ClientArea>
+    </Children>
+    <Children xsi:type="layout:Legend">
+      <Bounds>
+        <Left>0.0</Left>
+        <Top>0.0</Top>
+        <Width>0.0</Width>
+        <Height>0.0</Height>
+      </Bounds>
+      <Anchor>East</Anchor>
+      <Insets>
+        <Top>3.0</Top>
+        <Left>3.0</Left>
+        <Bottom>3.0</Bottom>
+        <Right>3.0</Right>
+      </Insets>
+      <Row>-1</Row>
+      <Column>-1</Column>
+      <Rowspan>-1</Rowspan>
+      <Columnspan>-1</Columnspan>
+      <Outline>
+        <Style>Solid</Style>
+        <Thickness>1</Thickness>
+        <Color>
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>0</Green>
+          <Blue>0</Blue>
+        </Color>
+        <Visible>false</Visible>
+      </Outline>
+      <Visible>false</Visible>
+      <ClientArea>
+        <Outline>
+          <Style>Solid</Style>
+          <Thickness>0</Thickness>
+          <Color>
+            <Transparency>255</Transparency>
+            <Red>0</Red>
+            <Green>0</Green>
+            <Blue>0</Blue>
+          </Color>
+          <Visible>false</Visible>
+        </Outline>
+        <Insets>
+          <Top>2.0</Top>
+          <Left>2.0</Left>
+          <Bottom>2.0</Bottom>
+          <Right>2.0</Right>
+        </Insets>
+      </ClientArea>
+      <Text>
+        <Value></Value>
+        <Font>
+          <Name>Verdana</Name>
+          <Size>5.0</Size>
+          <Bold>true</Bold>
+          <Alignment/>
+        </Font>
+      </Text>
+      <Orientation>Vertical</Orientation>
+      <Direction>Top_Bottom</Direction>
+      <Separator>
+        <Style>Solid</Style>
+        <Thickness>1</Thickness>
+        <Color>
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>0</Green>
+          <Blue>0</Blue>
+        </Color>
+        <Visible>false</Visible>
+      </Separator>
+      <Position>Right</Position>
+      <ItemType>Categories</ItemType>
+      <Title>
+        <Caption>
+          <Value></Value>
+          <Font>
+            <Alignment/>
+          </Font>
+        </Caption>
+        <Background xsi:type="attribute:ColorDefinition">
+          <Transparency>0</Transparency>
+          <Red>255</Red>
+          <Green>255</Green>
+          <Blue>255</Blue>
+        </Background>
+        <Outline>
+          <Style>Solid</Style>
+          <Thickness>1</Thickness>
+          <Color>
+            <Transparency>255</Transparency>
+            <Red>0</Red>
+            <Green>0</Green>
+            <Blue>0</Blue>
+          </Color>
+          <Visible>false</Visible>
+        </Outline>
+        <Insets>
+          <Top>0.0</Top>
+          <Left>2.0</Left>
+          <Bottom>0.0</Bottom>
+          <Right>3.0</Right>
+        </Insets>
+        <Visible>false</Visible>
+      </Title>
+      <TitlePosition>Above</TitlePosition>
+    </Children>
+    <Bounds>
+      <Left>0.0</Left>
+      <Top>0.0</Top>
+      <Width>420.0</Width>
+      <Height>311.25000000240004</Height>
+    </Bounds>
+    <Insets>
+      <Top>3.0</Top>
+      <Left>3.0</Left>
+      <Bottom>3.0</Bottom>
+      <Right>3.0</Right>
+    </Insets>
+    <Row>-1</Row>
+    <Column>-1</Column>
+    <Rowspan>-1</Rowspan>
+    <Columnspan>-1</Columnspan>
+    <Outline>
+      <Style>Solid</Style>
+      <Thickness>1</Thickness>
+      <Color>
+        <Transparency>255</Transparency>
+        <Red>0</Red>
+        <Green>70</Green>
+        <Blue>153</Blue>
+      </Color>
+      <Visible>false</Visible>
+    </Outline>
+    <Visible>true</Visible>
+  </Block>
+  <Dimension>Two_Dimensional_With_Depth</Dimension>
+  <Units>Points</Units>
+  <SeriesThickness>10.0</SeriesThickness>
+  <GridColumnCount>1</GridColumnCount>
+  <ExtendedProperties>
+    <Name>enable.area.alt</Name>
+    <Value>false</Value>
+  </ExtendedProperties>
+  <SampleData>
+    <BaseSampleData>
+      <DataSetRepresentation>'A','B','C'</DataSetRepresentation>
+    </BaseSampleData>
+    <OrthogonalSampleData>
+      <DataSetRepresentation>5.0,4.0,12.0</DataSetRepresentation>
+      <SeriesDefinitionIndex>0</SeriesDefinitionIndex>
+    </OrthogonalSampleData>
+  </SampleData>
+  <Interactivity>
+    <Enable>true</Enable>
+    <LegendBehavior>HighlightSerie</LegendBehavior>
+  </Interactivity>
+  <EmptyMessage>
+    <Caption>
+      <Value></Value>
+      <Font>
+        <Alignment/>
+      </Font>
+    </Caption>
+    <Background xsi:type="attribute:ColorDefinition">
+      <Transparency>0</Transparency>
+      <Red>255</Red>
+      <Green>255</Green>
+      <Blue>255</Blue>
+    </Background>
+    <Outline>
+      <Style>Solid</Style>
+      <Thickness>1</Thickness>
+      <Color>
+        <Transparency>255</Transparency>
+        <Red>0</Red>
+        <Green>0</Green>
+        <Blue>0</Blue>
+      </Color>
+    </Outline>
+    <Insets>
+      <Top>0.0</Top>
+      <Left>2.0</Left>
+      <Bottom>0.0</Bottom>
+      <Right>3.0</Right>
+    </Insets>
+    <Visible>false</Visible>
+  </EmptyMessage>
+  <SeriesDefinitions>
+    <Query>
+      <Definition></Definition>
+    </Query>
+    <SeriesPalette>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>80</Red>
+        <Green>166</Green>
+        <Blue>218</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>242</Red>
+        <Green>88</Green>
+        <Blue>106</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>232</Red>
+        <Green>172</Green>
+        <Blue>57</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>128</Red>
+        <Green>255</Green>
+        <Blue>128</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>64</Red>
+        <Green>128</Green>
+        <Blue>128</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>128</Red>
+        <Green>128</Green>
+        <Blue>192</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>170</Red>
+        <Green>85</Green>
+        <Blue>85</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>128</Red>
+        <Green>128</Green>
+        <Blue>0</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>192</Red>
+        <Green>192</Green>
+        <Blue>192</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>255</Red>
+        <Green>255</Green>
+        <Blue>128</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>128</Red>
+        <Green>192</Green>
+        <Blue>128</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>7</Red>
+        <Green>146</Green>
+        <Blue>94</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>0</Red>
+        <Green>128</Green>
+        <Blue>255</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>255</Red>
+        <Green>128</Green>
+        <Blue>192</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>0</Red>
+        <Green>255</Green>
+        <Blue>255</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>255</Red>
+        <Green>128</Green>
+        <Blue>128</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>0</Red>
+        <Green>128</Green>
+        <Blue>192</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>128</Red>
+        <Green>128</Green>
+        <Blue>192</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>255</Red>
+        <Green>0</Green>
+        <Blue>255</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>128</Red>
+        <Green>64</Green>
+        <Blue>64</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>255</Red>
+        <Green>128</Green>
+        <Blue>64</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>80</Red>
+        <Green>240</Green>
+        <Blue>120</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>0</Red>
+        <Green>64</Green>
+        <Blue>128</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>128</Red>
+        <Green>0</Green>
+        <Blue>64</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>255</Red>
+        <Green>0</Green>
+        <Blue>128</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>128</Red>
+        <Green>128</Green>
+        <Blue>64</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>128</Red>
+        <Green>128</Green>
+        <Blue>128</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>255</Red>
+        <Green>128</Green>
+        <Blue>255</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>0</Red>
+        <Green>64</Green>
+        <Blue>0</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>0</Red>
+        <Green>0</Green>
+        <Blue>0</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>255</Red>
+        <Green>255</Green>
+        <Blue>255</Blue>
+      </Entries>
+      <Entries xsi:type="attribute:ColorDefinition">
+        <Transparency>255</Transparency>
+        <Red>255</Red>
+        <Green>128</Green>
+        <Blue>0</Blue>
+      </Entries>
+    </SeriesPalette>
+    <SeriesDefinitions>
+      <Query>
+        <Definition></Definition>
+      </Query>
+      <SeriesPalette>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>80</Red>
+          <Green>166</Green>
+          <Blue>218</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>242</Red>
+          <Green>88</Green>
+          <Blue>106</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>232</Red>
+          <Green>172</Green>
+          <Blue>57</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>128</Red>
+          <Green>255</Green>
+          <Blue>128</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>64</Red>
+          <Green>128</Green>
+          <Blue>128</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>128</Red>
+          <Green>128</Green>
+          <Blue>192</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>170</Red>
+          <Green>85</Green>
+          <Blue>85</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>128</Red>
+          <Green>128</Green>
+          <Blue>0</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>192</Red>
+          <Green>192</Green>
+          <Blue>192</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>255</Red>
+          <Green>255</Green>
+          <Blue>128</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>128</Red>
+          <Green>192</Green>
+          <Blue>128</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>7</Red>
+          <Green>146</Green>
+          <Blue>94</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>128</Green>
+          <Blue>255</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>255</Red>
+          <Green>128</Green>
+          <Blue>192</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>255</Green>
+          <Blue>255</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>255</Red>
+          <Green>128</Green>
+          <Blue>128</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>128</Green>
+          <Blue>192</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>128</Red>
+          <Green>128</Green>
+          <Blue>192</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>255</Red>
+          <Green>0</Green>
+          <Blue>255</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>128</Red>
+          <Green>64</Green>
+          <Blue>64</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>255</Red>
+          <Green>128</Green>
+          <Blue>64</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>80</Red>
+          <Green>240</Green>
+          <Blue>120</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>64</Green>
+          <Blue>128</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>128</Red>
+          <Green>0</Green>
+          <Blue>64</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>255</Red>
+          <Green>0</Green>
+          <Blue>128</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>128</Red>
+          <Green>128</Green>
+          <Blue>64</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>128</Red>
+          <Green>128</Green>
+          <Blue>128</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>255</Red>
+          <Green>128</Green>
+          <Blue>255</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>64</Green>
+          <Blue>0</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>0</Green>
+          <Blue>0</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>255</Red>
+          <Green>255</Green>
+          <Blue>255</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>255</Red>
+          <Green>128</Green>
+          <Blue>0</Blue>
+        </Entries>
+      </SeriesPalette>
+      <Series xsi:type="type:PieSeries">
+        <Visible>true</Visible>
+        <Label>
+          <Caption>
+            <Value></Value>
+            <Font>
+              <Name>Arial</Name>
+              <Size>7.0</Size>
+              <Bold>true</Bold>
+              <Alignment/>
+              <Rotation>0.0</Rotation>
+            </Font>
+          </Caption>
+          <Background xsi:type="attribute:ColorDefinition">
+            <Transparency>0</Transparency>
+            <Red>255</Red>
+            <Green>255</Green>
+            <Blue>255</Blue>
+          </Background>
+          <Outline>
+            <Style>Solid</Style>
+            <Thickness>1</Thickness>
+            <Color>
+              <Transparency>255</Transparency>
+              <Red>0</Red>
+              <Green>0</Green>
+              <Blue>0</Blue>
+            </Color>
+            <Visible>false</Visible>
+          </Outline>
+          <Insets>
+            <Top>0.0</Top>
+            <Left>2.0</Left>
+            <Bottom>0.0</Bottom>
+            <Right>3.0</Right>
+          </Insets>
+          <Visible>true</Visible>
+        </Label>
+        <DataDefinition>
+          <Definition>row[&quot;ResultCount&quot;]</Definition>
+          <Grouping>
+            <GroupType>Text</GroupType>
+            <AggregateExpression>Sum</AggregateExpression>
+          </Grouping>
+        </DataDefinition>
+        <SeriesIdentifier></SeriesIdentifier>
+        <DataPoint>
+          <Components>
+            <Type>Base_Value</Type>
+          </Components>
+          <Prefix></Prefix>
+          <Separator>, </Separator>
+        </DataPoint>
+        <LabelPosition>Outside</LabelPosition>
+        <Stacked>false</Stacked>
+        <Triggers>
+          <Condition>onmouseover</Condition>
+          <Action>
+            <Type>Highlight</Type>
+            <Value xsi:type="attribute:SeriesValue">
+              <Name></Name>
+            </Value>
+          </Action>
+        </Triggers>
+        <Triggers>
+          <Condition>onclick</Condition>
+          <Action>
+            <Type>URL_Redirect</Type>
+            <Value xsi:type="attribute:MultiURLValues">
+              <URLValues>
+                <Label>
+                  <Caption>
+                    <Value>Hyperlink</Value>
+                    <Font>
+                      <Alignment/>
+                    </Font>
+                  </Caption>
+                  <Background xsi:type="attribute:ColorDefinition">
+                    <Transparency>0</Transparency>
+                    <Red>255</Red>
+                    <Green>255</Green>
+                    <Blue>255</Blue>
+                  </Background>
+                  <Outline>
+                    <Style>Solid</Style>
+                    <Thickness>1</Thickness>
+                    <Color>
+                      <Transparency>255</Transparency>
+                      <Red>0</Red>
+                      <Green>0</Green>
+                      <Blue>0</Blue>
+                    </Color>
+                  </Outline>
+                  <Insets>
+                    <Top>0.0</Top>
+                    <Left>2.0</Left>
+                    <Bottom>0.0</Bottom>
+                    <Right>3.0</Right>
+                  </Insets>
+                  <Visible>true</Visible>
+                </Label>
+                <BaseUrl>&lt;structure name=&quot;action&quot;>
+    &lt;property name=&quot;linkType&quot;>drill-through&lt;/property>
+    &lt;property name=&quot;reportName&quot;>SampleBottomLevel.rptdesign&lt;/property>
+    &lt;property name=&quot;targetWindow&quot;>_blank&lt;/property>
+    &lt;property name=&quot;targetFileType&quot;>report-design&lt;/property>
+    &lt;list-property name=&quot;paramBindings&quot;>
+        &lt;structure>
+            &lt;property name=&quot;paramName&quot;>UserName&lt;/property>
+        &lt;/structure>
+        &lt;structure>
+            &lt;property name=&quot;paramName&quot;>Action&lt;/property>
+        &lt;/structure>
+        &lt;structure>
+            &lt;property name=&quot;paramName&quot;>Resource&lt;/property>
+        &lt;/structure>
+        &lt;structure>
+            &lt;property name=&quot;paramName&quot;>Policy&lt;/property>
+        &lt;/structure>
+        &lt;structure>
+            &lt;property name=&quot;paramName&quot;>Enforcement&lt;/property>
+        &lt;/structure>
+        &lt;structure>
+            &lt;property name=&quot;paramName&quot;>EventLevel&lt;/property>
+            &lt;expression name=&quot;expression&quot;>params[&quot;EventLevel&quot;].value&lt;/expression>
+        &lt;/structure>
+        &lt;structure>
+            &lt;property name=&quot;paramName&quot;>Host&lt;/property>
+        &lt;/structure>
+        &lt;structure>
+            &lt;property name=&quot;paramName&quot;>BeginDate&lt;/property>
+            &lt;expression name=&quot;expression&quot;>params[&quot;BeginDate&quot;]&lt;/expression>
+        &lt;/structure>
+        &lt;structure>
+            &lt;property name=&quot;paramName&quot;>EndDate&lt;/property>
+            &lt;expression name=&quot;expression&quot;>params[&quot;EndDate&quot;]&lt;/expression>
+        &lt;/structure>
+        &lt;structure>
+            &lt;property name=&quot;paramName&quot;>TimeDimension&lt;/property>
+            &lt;expression name=&quot;expression&quot;>&quot;&quot;&lt;/expression>
+        &lt;/structure>
+        &lt;structure>
+            &lt;property name=&quot;paramName&quot;>Title&lt;/property>
+            &lt;expression name=&quot;expression&quot;>params[&quot;Title&quot;]&lt;/expression>
+        &lt;/structure>
+    &lt;/list-property>
+&lt;/structure>
+</BaseUrl>
+                <BaseParameterName></BaseParameterName>
+                <ValueParameterName></ValueParameterName>
+                <SeriesParameterName></SeriesParameterName>
+              </URLValues>
+              <PropertiesMap>
+                <Key>Menu</Key>
+                <Value>zIndex:99999;position:absolute;backgroundColor:#FAFFF8;width:auto;height:auto;border:1px solid #333333;filter:progid:DXImageTransform.Microsoft.Shadow(Color:#333333,Direction=120,strength=5)</Value>
+              </PropertiesMap>
+              <PropertiesMap>
+                <Key>OnMouseOut</Key>
+                <Value>backgroundColor:#FAFFF8;color:#000000</Value>
+              </PropertiesMap>
+              <PropertiesMap>
+                <Key>OnMouseOver</Key>
+                <Value>backgroundColor:#245DDB;color:#FFFFFF</Value>
+              </PropertiesMap>
+              <PropertiesMap>
+                <Key>MenuItem</Key>
+                <Value>height:auto;color:Black;verticalAlign:middle;fontSize:10pt;paddingLeft:10px;paddingRight:10px;paddingTop:2px;paddingBottom:2px</Value>
+              </PropertiesMap>
+            </Value>
+          </Action>
+        </Triggers>
+        <Translucent>false</Translucent>
+        <Explosion>0</Explosion>
+        <ExplosionExpression></ExplosionExpression>
+        <Title>
+          <Caption>
+            <Value></Value>
+            <Font>
+              <Size>16.0</Size>
+              <Bold>true</Bold>
+              <Alignment/>
+            </Font>
+          </Caption>
+          <Background xsi:type="attribute:ColorDefinition">
+            <Transparency>0</Transparency>
+            <Red>255</Red>
+            <Green>255</Green>
+            <Blue>255</Blue>
+          </Background>
+          <Outline>
+            <Style>Solid</Style>
+            <Thickness>1</Thickness>
+            <Color>
+              <Transparency>255</Transparency>
+              <Red>0</Red>
+              <Green>0</Green>
+              <Blue>0</Blue>
+            </Color>
+          </Outline>
+          <Insets>
+            <Top>0.0</Top>
+            <Left>2.0</Left>
+            <Bottom>0.0</Bottom>
+            <Right>3.0</Right>
+          </Insets>
+          <Visible>true</Visible>
+        </Title>
+        <TitlePosition>Below</TitlePosition>
+        <LeaderLineAttributes>
+          <Style>Solid</Style>
+          <Thickness>1</Thickness>
+          <Color>
+            <Transparency>255</Transparency>
+            <Red>0</Red>
+            <Green>0</Green>
+            <Blue>0</Blue>
+          </Color>
+          <Visible>true</Visible>
+        </LeaderLineAttributes>
+        <LeaderLineStyle>Stretch_To_Side</LeaderLineStyle>
+        <LeaderLineLength>1.0</LeaderLineLength>
+        <Ratio>0.7</Ratio>
+      </Series>
+      <Grouping>
+        <Enabled>false</Enabled>
+        <GroupingInterval>2.0</GroupingInterval>
+        <GroupType>Text</GroupType>
+        <AggregateExpression>Sum</AggregateExpression>
+      </Grouping>
+      <Sorting>Ascending</Sorting>
+    </SeriesDefinitions>
+    <Series>
+      <Visible>true</Visible>
+      <Label>
+        <Caption>
+          <Value></Value>
+          <Font>
+            <Alignment/>
+          </Font>
+        </Caption>
+        <Background xsi:type="attribute:ColorDefinition">
+          <Transparency>0</Transparency>
+          <Red>255</Red>
+          <Green>255</Green>
+          <Blue>255</Blue>
+        </Background>
+        <Outline>
+          <Style>Solid</Style>
+          <Thickness>1</Thickness>
+          <Color>
+            <Transparency>255</Transparency>
+            <Red>0</Red>
+            <Green>0</Green>
+            <Blue>0</Blue>
+          </Color>
+          <Visible>false</Visible>
+        </Outline>
+        <Insets>
+          <Top>0.0</Top>
+          <Left>2.0</Left>
+          <Bottom>0.0</Bottom>
+          <Right>3.0</Right>
+        </Insets>
+        <Visible>false</Visible>
+      </Label>
+      <DataDefinition>
+        <Definition>row[&quot;Resource&quot;]</Definition>
+      </DataDefinition>
+      <SeriesIdentifier></SeriesIdentifier>
+      <DataPoint>
+        <Components>
+          <Type>Orthogonal_Value</Type>
+        </Components>
+        <Separator>, </Separator>
+      </DataPoint>
+      <LabelPosition>Outside</LabelPosition>
+      <Stacked>false</Stacked>
+    </Series>
+    <Grouping>
+      <Enabled>false</Enabled>
+      <GroupingInterval>2.0</GroupingInterval>
+      <GroupType>Text</GroupType>
+      <AggregateExpression>Sum</AggregateExpression>
+    </Grouping>
+  </SeriesDefinitions>
+  <MinSlicePercent>false</MinSlicePercent>
+</model:ChartWithoutAxes>
+]]></xml-property>
+            <property name="outputFormat">SVG</property>
+            <structure name="action">
+                <property name="targetWindow">_blank</property>
+                <property name="linkType">drill-through</property>
+                <property name="targetFileType">report-design</property>
+                <property name="reportName">SampleBottomLevel.rptdesign</property>
+                <list-property name="paramBindings">
+                    <structure>
+                        <property name="paramName">UserName</property>
+                    </structure>
+                    <structure>
+                        <property name="paramName">Action</property>
+                    </structure>
+                    <structure>
+                        <property name="paramName">Resource</property>
+                    </structure>
+                    <structure>
+                        <property name="paramName">Policy</property>
+                    </structure>
+                    <structure>
+                        <property name="paramName">Enforcement</property>
+                    </structure>
+                    <structure>
+                        <property name="paramName">EventLevel</property>
+                        <expression name="expression">params["EventLevel"].value</expression>
+                    </structure>
+                    <structure>
+                        <property name="paramName">Host</property>
+                    </structure>
+                    <structure>
+                        <property name="paramName">BeginDate</property>
+                        <expression name="expression">params["BeginDate"]</expression>
+                    </structure>
+                    <structure>
+                        <property name="paramName">EndDate</property>
+                        <expression name="expression">params["EndDate"]</expression>
+                    </structure>
+                    <structure>
+                        <property name="paramName">TimeDimension</property>
+                        <expression name="expression">""</expression>
+                    </structure>
+                    <structure>
+                        <property name="paramName">Title</property>
+                        <expression name="expression">params["Title"]</expression>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="inheritColumns">true</property>
+            <property name="marginTop">0pt</property>
+            <property name="dataSet">TopUsers</property>
+            <property name="height">4.3229166667in</property>
+            <property name="width">700px</property>
+            <list-property name="visibility">
+                <structure>
+                    <property name="format">all</property>
+                    <expression name="valueExpr" type="javascript">count &lt; 1</expression>
+                </structure>
+            </list-property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">Dimension</property>
+                    <expression name="expression">dataSetRow["Dimension"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ResultCount</property>
+                    <expression name="expression">dataSetRow["ResultCount"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">Resource</property>
+                    <expression name="expression">dataSetRow["Resource"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <property name="style">crosstab-cell</property>
+        </extended-item>
+        <label name="EmptyResultSetMsg" id="307">
+            <property name="fontFamily">"Verdana"</property>
+            <property name="fontSize">small</property>
+            <property name="fontWeight">bold</property>
+            <list-property name="visibility">
+                <structure>
+                    <property name="format">all</property>
+                    <expression name="valueExpr" type="javascript">count > 0</expression>
+                </structure>
+            </list-property>
+            <text-property name="text">This report did not generate any data with the specified parameters. 
+
+Please modify the parameters and run the report again. </text-property>
+        </label>
+    </body>
+</report>

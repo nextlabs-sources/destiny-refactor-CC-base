@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+					xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+					xmlns:common="http://bluejungle.com/destiny/framework/types"
+					xmlns:types="http://bluejungle.com/destiny/services/management/types" 
+					xmlns:tns="http://bluejungle.com/destiny/services/management" 
+					targetNamespace="http://bluejungle.com/destiny/services/management" 
+					name="PolicyDeploymentService">
+					
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://bluejungle.com/destiny/services/management" 
+					xmlns:types="http://bluejungle.com/destiny/services/management/types">
+			<xsd:import namespace="http://bluejungle.com/destiny/services/management/types" 
+						schemaLocation="types/PolicyDeployment.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/framework/types" 
+						schemaLocation="../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicFaults.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+
+	<wsdl:message name="PolicyDeploymentServiceIF_deployRequest">
+		<wsdl:part name="deployInfo" type="types:DeploymentInfo"/>
+	</wsdl:message>
+	
+	<wsdl:message name="ServiceNotReadyFault">
+		<wsdl:part name="ServiceNotReadyFault" type="common:ServiceNotReadyFault"/>
+	</wsdl:message>
+	
+	<wsdl:message name="UnauthorizedCallerFault">
+		<wsdl:part name="UnauthorizedCallerFault" type="common:UnauthorizedCallerFault"/>
+	</wsdl:message>
+	
+	<wsdl:message name="PolicyDeploymentServiceIF_deployResponse"/>
+
+	<wsdl:portType name="PolicyDeploymentServiceIF">
+		<wsdl:operation name="deploy">
+			<wsdl:input message="tns:PolicyDeploymentServiceIF_deployRequest"/>
+			<wsdl:output message="tns:PolicyDeploymentServiceIF_deployResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation> 
+	</wsdl:portType>
+	
+	<wsdl:binding name="PolicyDeploymentServiceIFBinding" type="tns:PolicyDeploymentServiceIF">
+		<soap:binding 	style="rpc" 
+						transport="http://schemas.xmlsoap.org/soap/http"/>
+		
+		<wsdl:operation name="deploy">
+			<wsdl:input>
+				<soap:body parts="deployInfo" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>	
+	</wsdl:binding>
+	
+	<wsdl:service name="PolicyDeploymentService">
+		<wsdl:port name="PolicyDeploymentServiceIFPort" binding="tns:PolicyDeploymentServiceIFBinding">
+			<soap:address location="http://localhost:8080/dms/services/PolicyDeploymentServiceIFPort"/>
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

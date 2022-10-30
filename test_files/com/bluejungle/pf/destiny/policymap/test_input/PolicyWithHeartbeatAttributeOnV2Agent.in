@@ -1,0 +1,2 @@
+DESKTOP 2.0.0.0.0
+id 0 POLICY TestPolicy FOR * ON * BY * WHERE (environment.time_since_last_heartbeat > 100) DO deny ON deny DO Log

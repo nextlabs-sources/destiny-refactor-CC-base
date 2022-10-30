@@ -1,0 +1,6 @@
+policy type BasePolicy
+    required FileAction as ON
+uses Environment
+
+policy type DerivedPolicy extends BasePolicy
+    required User as BY

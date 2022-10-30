@@ -1,0 +1,14 @@
+POLICY testpolicy2
+
+    ATTRIBUTE USAGE
+
+    FOR (TRUE AND (FALSE OR resource.GROUP="testfiles2"))
+
+    ON (TRUE AND (FALSE OR action.GROUP="readAction"))
+
+    TO (TRUE AND TRUE)
+
+    BY ((TRUE AND TRUE) AND (TRUE AND TRUE) AND (TRUE AND TRUE))
+
+    DO deny
+

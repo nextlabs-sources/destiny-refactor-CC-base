@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+					xmlns:interfaces="http://bluejungle.com/destiny/interfaces/user_preferences/v1" 
+					targetNamespace="http://bluejungle.com/destiny/bindings/user_preferences/v1">
+
+	<wsdl:import 	namespace="http://bluejungle.com/destiny/interfaces/user_preferences/v1" 
+					location="../interfaces/UserPreferencesInterfaces.v1.wsdl"/>
+	
+	<wsdl:binding name="UserPreferencesIFBinding" type="interfaces:userPreferencesIF">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="changePassword">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="changePasswordRequest" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="changePasswordResponse" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="InvalidPasswordFault">
+				<soap:fault name="InvalidPasswordFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="AccessDeniedFault">
+				<soap:fault name="AccessDeniedFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+</wsdl:definitions>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PolicySet xmlns="urn:oasis:names:tc:xacml:1.0:policy"
+           PolicySetId="Exported NextLabs Policies"
+           PolicyCombiningAlgId="urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:deny-overrides">
+  <PolicySet xmlns="urn:oasis:names:tc:xacml:1.0:policy"
+             PolicySetId="urn:nextlabs:allowconditions"
+             PolicyCombiningAlgId="urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:permit-overrides">
+    <Policy
+        xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17
+                            http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+        PolicyId="urn:nextlabs:allowconditions"
+        Version="1.0"
+        RuleCombiningAlgId="identifier:rule-combining-algorithm:deny-overrides">
+      <Target>
+        <!-- start FROM RESOURCE -->
+        <AnyOf>
+          <AllOf>
+            <Match MatchId="urn:nextlabs:builtin:string-equal">
+              <AttributeDesignator MustBePresent="true"
+                                   Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                   AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+                                   DataType="http://www.w3.org/2001/XMLSchema#string"/>
+              <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">*.txt</AttributeValue>
+            </Match>
+          </AllOf>
+        </AnyOf>
+        <!-- end FROM RESOURCE -->
+      </Target>
+      <Rule Effect="Permit" RuleId="allowconditions">
+        <Condition FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+          <!-- start WHERE -->
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-less-than">
+            <AttributeDesignator MustBePresent="true"
+                                 Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                 AttributeId="TIME_SINCE_LAST_HEARTBEAT"
+                                 DataType="http://www.w3.org/2001/XMLSchema#integer"/>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#integer">20</AttributeValue>
+          </Apply>
+          <!-- end WHERE -->
+        </Condition>
+      </Rule>
+      <AssociatedAdvice>
+        <AdviceExpression AdviceId="urn:nextlabs:log" AppliesTo="Permit">
+        </AdviceExpression>
+        <AdviceExpression AdviceId="urn:nextlabs:log" AppliesTo="Deny">
+        </AdviceExpression>
+      </AssociatedAdvice>
+    </Policy>
+    <Policy
+        xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17
+                            http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+        PolicyId="urn:nextlabs:allowconditions-Inverted-Subject"
+        Version="1.0"
+        RuleCombiningAlgId="identifier:rule-combining-algorithm:deny-overrides">
+      <Target>
+        <!-- start FROM RESOURCE -->
+        <AnyOf>
+          <AllOf>
+            <Match MatchId="urn:nextlabs:builtin:string-equal">
+              <AttributeDesignator MustBePresent="true"
+                                   Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                   AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+                                   DataType="http://www.w3.org/2001/XMLSchema#string"/>
+              <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">*.txt</AttributeValue>
+            </Match>
+          </AllOf>
+        </AnyOf>
+        <!-- end FROM RESOURCE -->
+        <!-- start SUBJECT -->
+        <AnyOf>
+          <AllOf>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#boolean">false</AttributeValue>
+          </AllOf>
+        </AnyOf>
+        <!-- end SUBJECT -->
+      </Target>
+      <Rule Effect="Deny" RuleId="allowconditions-Inverted-Subject">
+        <Condition FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+          <!-- start TO SUBJECT -->
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#boolean">false</AttributeValue>
+          <!-- end TO SUBJECT -->
+          <!-- start WHERE -->
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-less-than">
+            <AttributeDesignator MustBePresent="true"
+                                 Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                 AttributeId="TIME_SINCE_LAST_HEARTBEAT"
+                                 DataType="http://www.w3.org/2001/XMLSchema#integer"/>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#integer">20</AttributeValue>
+          </Apply>
+          <!-- end WHERE -->
+        </Condition>
+      </Rule>
+      <AssociatedAdvice>
+        <AdviceExpression AdviceId="urn:nextlabs:log" AppliesTo="Permit">
+        </AdviceExpression>
+        <AdviceExpression AdviceId="urn:nextlabs:log" AppliesTo="Deny">
+        </AdviceExpression>
+      </AssociatedAdvice>
+    </Policy>
+    <Policy
+        xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17
+                            http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+        PolicyId="urn:nextlabs:allowconditions-Inverted-Conditions"
+        Version="1.0"
+        RuleCombiningAlgId="identifier:rule-combining-algorithm:deny-overrides">
+      <Target>
+        <!-- start FROM RESOURCE -->
+        <AnyOf>
+          <AllOf>
+            <Match MatchId="urn:nextlabs:builtin:string-equal">
+              <AttributeDesignator MustBePresent="true"
+                                   Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                   AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+                                   DataType="http://www.w3.org/2001/XMLSchema#string"/>
+              <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">*.txt</AttributeValue>
+            </Match>
+          </AllOf>
+        </AnyOf>
+        <!-- end FROM RESOURCE -->
+      </Target>
+      <Rule Effect="Deny" RuleId="allowconditions-Inverted-Conditions">
+        <Condition FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+          <!-- start WHERE -->
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not">
+            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-less-than">
+              <AttributeDesignator MustBePresent="true"
+                                   Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                   AttributeId="TIME_SINCE_LAST_HEARTBEAT"
+                                   DataType="http://www.w3.org/2001/XMLSchema#integer"/>
+              <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#integer">20</AttributeValue>
+            </Apply>
+          </Apply>
+          <!-- end WHERE -->
+        </Condition>
+      </Rule>
+      <AssociatedAdvice>
+        <AdviceExpression AdviceId="urn:nextlabs:log" AppliesTo="Permit">
+        </AdviceExpression>
+        <AdviceExpression AdviceId="urn:nextlabs:log" AppliesTo="Deny">
+        </AdviceExpression>
+      </AssociatedAdvice>
+    </Policy>
+  </PolicySet>
+<PolicySet>

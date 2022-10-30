@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.applicationusers.repository.hibernateimpl">
+
+	<class name="BaseAccessGroupDO"  table="ACCESS_GROUP">
+
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		<discriminator column="GROUP_TYPE" type="string"/>
+	
+        <property name="title" type="string" >
+        	<column name="title" not-null="true" length="128" unique-key="nameAndDomainIndex"/>
+        </property>
+        
+        <property name="description" length="1024" type="string"/>
+        <property name="applicableAccessControl" column="default_acl" type="text" not-null="true" />
+        <many-to-one name="accessDomain" class="AccessDomainDO" cascade="none" update="false">
+        	<column name="DOMAIN_ID" not-null="true" unique-key="nameAndDomainIndex" />
+        </many-to-one>
+           		
+        <set name="members" table="APP_USER_GROUP_MEMBERSHIP" cascade="none">
+            <key column="access_group_id"/>
+            <many-to-many column="application_user_id" class="BaseApplicationUserDO"/>
+        </set>
+
+		<subclass name="LinkedAccessGroupDO" discriminator-value="linked">
+        	<property name="externalId" type="binary"/>			
+		</subclass>
+		
+		<subclass name="InternalAccessGroupDO" discriminator-value="internal">		
+		</subclass>
+	</class>
+
+</hibernate-mapping>

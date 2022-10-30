@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.policydeploymentmgr.hibernateimpl">
+	
+	<class name="TargetAgentDO" table="TARGET_AGENT">
+
+		<!-- Generic persisted properties -->
+		<id name="id">
+			<generator class="native"/>
+		</id>
+
+		<!-- Object-specific properties -->
+		<property name="statusId" type="long" not-null="true"/>
+
+		<!-- Each agent target is related to an existing agent -->
+		<many-to-one name="agent" 
+					 column="agent_id" 
+					 class="com.bluejungle.destiny.container.shared.agentmgr.hibernateimpl.AgentDO" 
+					 not-null="true">
+		 </many-to-one>
+		
+		<!-- Each agent target is related to a host target in the deployment request-->
+		<many-to-one name="host" 
+					 column="host_id" 
+					 class="TargetHostDO" 
+					 not-null="true">
+		 </many-to-one>
+		 
+		 <!-- Each agent target is has one component that will be process the push -->
+		<many-to-one name="processor" 
+					 class="AgentProcessorDO">
+			 <column name="processor_id" index="TargetAgentProcessorId"/>
+		 </many-to-one>
+	</class>
+</hibernate-mapping>

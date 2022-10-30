@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping package="com.bluejungle.dictionary">
+    <class name="EnumerationMember" table="DICT_ENUM_MEMBERS" dynamic-update="false">
+        <id name="id" column="ID" access="field">
+            <generator class="native"/>
+        </id>
+
+        <version name="version" column="VERSION" access="field"/>
+
+        <property name="groupId" access="field" type="long" not-null="true">
+            <column name="GROUP_ID" not-null="true" unique-key="UniqueLinkEnumMem" index="ENUM_MEMB_GROUPID_IDX"/>
+        </property>
+
+        <property name="memberId" access="field" type="long" not-null="true">
+            <column name="MEMBER_ID" not-null="true" unique-key="UniqueLinkEnumMem" index="ENUM_MEMB_MEMBID_IDX" />
+        </property>
+
+        <property name="elementTypeId" column="ELEMENT_TYPE_ID" access="field" type="long" not-null="true"/>
+
+        <property name="enrollmentId" column="ENROLLMENT_ID" access="field" type="long" not-null="true"/>
+
+        <property name="timeRelation" access="field" type="com.bluejungle.framework.datastore.hibernate.usertypes.TimeRelationUserType">
+            <column name="ACTIVE_FROM" not-null="true" unique-key="UniqueLinkEnumMem"/>
+            <column name="ACTIVE_TO" not-null="true" unique-key="UniqueLinkEnumMem"/>
+        </property>
+    </class>
+</hibernate-mapping>

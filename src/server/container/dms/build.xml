@@ -1,0 +1,667 @@
+<project name="DMS" default="build">
+
+	<var name="nlbuildroot" value="${basedir}/../../../.." />
+	<property name="src.dir"                 value="${basedir}"/>
+    <property name="src.main.dir"            value="${src.dir}/src/java/main"/>
+    <property name="src.test.dir"            value="${src.dir}/src/java/test"/>
+    <property name="src.wsdl.dir"            value="${src.dir}/src/wsdl"/>
+    <property name="build.main.dest"         value="${build.root.dir}/server/container/dms/WEB-INF/classes"/>
+    <property name="build.test.dest"         value="${build.root.dir}/server/container/dms/WEB-INF/testclasses"/>
+    <property name="doc.dest"                value="${build.root.dir}/server/container/dms/doc"/>
+    <property name="build.gendest"           value="${build.root.dir}/server/container/dms/genclasses"/>
+    <property name="build.common.gendest"    value="${build.root.dir}/server/container/dcsf/genclasses"/>
+    <property name="build.webapp"            value="${build.root.dir}/server/container/dms"/>
+    <property name="build.webinf"            value="${build.webapp}/WEB-INF"/>
+    <property name="build.weblib"            value="${build.webapp}/WEB-INF/lib"/>
+    <property name="build.webconf"           value="${build.webapp}/WEB-INF/conf"/>
+    <property name="services.management.dir" value="com/bluejungle/destiny/services/management"/>
+    <property name="services.version.dir"    value="com/bluejungle/version"/>
+    <property name="services.secure.dir"     value="com/bluejungle/destiny/services/secure_session"/>
+    <property name="services.userpreferences.dir" value="com/bluejungle/destiny/services/user_preferences"/>
+    <property name="dms.src.dir"             value="com/bluejungle/destiny/container/dms"/>
+    <property name="dms.etc.dir"             value="${src.dir}/etc"/>
+    <property name="server.base.dir"         value="${src.root.dir}/server/base"/>
+    <property name="server.pf.dir"           value="${src.root.dir}/server/pf"/>
+    <property name="config.dest"             value="${run.dir}/server/configuration"/>
+    <property name="base.etc.dir"            value="${nlbuildroot}/src/server/base/etc"/>
+
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	<path id="compile.dms.classpath">
+        <path refid="compile.classpath"/>
+        <pathelement path="${build.root.dir}/agent-manager.jar"/>
+        <pathelement path="${build.root.dir}/agent-types.jar"/>
+        <pathelement path="${build.root.dir}/common-domain.jar"/>
+        <pathelement path="${build.root.dir}/common-framework-test.jar"/>
+        <pathelement path="${build.root.dir}/common-framework-types.jar"/>
+        <pathelement path="${build.root.dir}/common-framework.jar"/>
+        <pathelement path="${build.root.dir}/common-pf.jar"/>
+        <pathelement path="${build.root.dir}/common-version-impl.jar"/>
+        <pathelement path="${build.root.dir}/common-version.jar"/>
+        <pathelement path="${build.root.dir}/configurationFileParser.jar"/>
+        <pathelement path="${build.root.dir}/crypt.jar"/>
+        <pathelement path="${build.root.dir}/dabs-agent-services.jar"/>
+        <pathelement path="${build.root.dir}/dcsf-services.jar"/>
+        <pathelement path="${build.root.dir}/dcsf-types.jar"/>
+        <pathelement path="${build.root.dir}/dms-components.jar"/>
+        <pathelement path="${build.root.dir}/inquiry-manager-shared.jar"/>
+        <pathelement path="${build.root.dir}/policy-deploy-manager.jar"/>
+        <pathelement path="${build.root.dir}/policy-types.jar"/>
+        <pathelement path="${build.root.dir}/profile-manager.jar"/>
+        <pathelement path="${build.root.dir}/secure-session.jar"/>
+        <pathelement path="${build.root.dir}/server-base.jar"/>
+        <pathelement path="${build.root.dir}/server-datasource.jar"/>
+        <pathelement path="${build.root.dir}/server-dcsf-test.jar"/>
+        <pathelement path="${build.root.dir}/server-dcsf.jar"/>
+        <pathelement path="${build.root.dir}/server-framework.jar"/>
+        <pathelement path="${build.root.dir}/server-pf-tests.jar"/>
+        <pathelement path="${build.root.dir}/server-pf.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-applicationusers.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-customapps.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-services-impl.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-services.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-sharedfolder.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-tests.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-types.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-utils.jar"/>
+
+        <pathelement path="${build.root.dir}/server-dictionary.jar"/>
+        <pathelement path="${build.root.dir}/common-dictionary.jar"/>
+
+        <!-- Required for destiny configuration parsing -->
+        <pathelement path="${xlib_jar_dir}/commons-digester.jar"/>
+        <pathelement path="${xlib_jar_dir}/commons-logging.jar"/>
+        <pathelement path="${xlib_jar_dir}/commons-beanutils.jar"/>
+        <pathelement path="${xlib_jar_dir}/commons-collections.jar"/>
+        <pathelement path="${xlib_jar_dir}/xercesImpl.jar"/>
+        <pathelement path="${xlib_jar_dir}/resolver.jar"/>
+        <pathelement path="${xlib_jar_dir}/xml-apis.jar"/>
+        <pathelement path="${xlib_jar_dir}/xmlParserAPIs.jar"/>
+        <pathelement path="${build.main.dest}"/>
+        <pathelement path="${build.gendest}"/>
+        <pathelement path="${xlib_jar_dir}/licensemanager_public.jar"/>
+        <pathelement path="${xlib_jar_dir}/commons-lang-2.6.jar"/>
+        <pathelement path="${xlib_jar_dir}/ldap.jar"/>
+    </path>
+
+    <path id="compile.wsdl.classpath">
+        <path refid="compile.classpath"/>
+        <pathelement path="${build.common.gendest}"/>
+    </path>
+
+    <target name="pre-build">
+        <mkdir dir="${build.main.dest}"/>
+        <mkdir dir="${build.test.dest}"/>
+        <mkdir dir="${build.gendest}"/>
+        <mkdir dir="${gen.dir}/${services.management.dir}/"/>
+    </target>
+
+    <target name="doc">
+        <mkdir dir="${doc.dest}"/>
+        <javadoc sourcepath="${src.main.dir}" destdir="${doc.dest}" linksource="yes"
+            classpathref="compile.dms.classpath" source="${compile.source}" >
+            <packageset dir="${src.main.dir}" defaultexcludes="yes">
+                <include name="com/bluejungle/destiny/container/dms/**"/>
+            </packageset>
+        </javadoc>
+    </target>
+
+
+    <target name="setup-webapp" depends="pre-build">
+        <!-- Configuration files -->
+        <copy file="${dms.etc.dir}/configuration-template.xml" todir="${config.dest}" failonerror="true"/>
+        <copy file="${dms.etc.dir}/configuration.digester.rules.xml" todir="${config.dest}" failonerror="true"/>
+        <copy file="${nlbuildroot}/src/server/container/dms/src/wsdl/com/bluejungle/destiny/services/management/types/Configuration.xsd" todir="${config.dest}"/>
+        <copy file="${config.dest}/configuration-template.xml" tofile="${config.dest}/configuration.xml" failonerror="true"/>
+
+        <!-- Replaces values in the template file -->
+        <replace file="${config.dest}/configuration.xml" token="[DMS_HOST]" value="${env.HOSTNAME}"/>
+        <replace file="${config.dest}/configuration.xml" token="[OPENLDAP_PORT]" value="389"/>
+        <replace file="${config.dest}/configuration.xml" token="[OPENLDAP_PASSWORD]" value="514e4f7160517c4e7c4f1371026e4a3f02674465"/>
+        <replace file="${config.dest}/configuration.xml" token="[DOMAIN_CONTROLLER]" value="linuxad01.linuxtest.bluejungle.com"/>
+        <replace file="${config.dest}/configuration.xml" token="[DOMAIN_NAME]" value="LINUXTEST.BLUEJUNGLE.COM"/>
+        <replace file="${config.dest}/configuration.xml" token="[DOMAIN_CONTROLLER_DIRECTORY_PORT]" value="389"/>
+        <replace file="${config.dest}/configuration.xml" token="[WINDOWS_USERS_ROOT_DN]" value="OU=Presidents,DC=linuxtest,DC=bluejungle,DC=com"/>
+        <replace file="${config.dest}/configuration.xml" token="[WINDOWS_USERS_LOGIN_DN]" value="CN=Administrator,CN=Users,DC=linuxtest,DC=bluejungle,DC=com"/>
+        <replace file="${config.dest}/configuration.xml" token="[WINDOWS_USERS_PASSWORD]" value="76553f42477667550c3f2042274b1e6b03665a7b"/>
+        <replace file="${config.dest}/configuration.xml" token="[SMTP_SERVER_HOST]" value="mail.bluejungle.com"/>
+        <replace file="${config.dest}/configuration.xml" token="[SMTP_SERVER_PORT]" value="25"/>
+        <replace file="${config.dest}/configuration.xml" token="[SMTP_SERVER_USERNAME]" value="YOUR LOGIN"/>
+        <replace file="${config.dest}/configuration.xml" token="[SMTP_SERVER_PASSWORD]" value="ENCRYPTED PASSWORD"/>
+        <replace file="${config.dest}/configuration.xml" token="[SMTP_FROM_ADDRESS]" value="${user.name}@nextlabs.com"/>
+        <replace file="${config.dest}/configuration.xml" token="[SMTP_TO_ADDRESSES]" value="${user.name}@nextlabs.com"/>
+        
+
+        <replace file="${config.dest}/configuration.xml" token="[MGMT_DATABASE_DIALECT]" value="${db.management.hibernate.dialect}"/>
+        <replace file="${config.dest}/configuration.xml" token="[MGMT_DATABASE_DRIVER]" value="${db.management.driver}"/>
+        <replace file="${config.dest}/configuration.xml" token="[MGMT_DATABASE_USERNAME]" value="${db.management.username}"/>
+        <replace file="${config.dest}/configuration.xml" token="[MGMT_DATABASE_PASSWORD]" value="${db.management.password.encrypted}"/>
+        <replace file="${config.dest}/configuration.xml" token="[MGMT_DATABASE_CONNECTSTRING]" value="${db.management.url}"/>
+
+        <replace file="${config.dest}/configuration.xml" token="[ACTIVITY_DATABASE_DIALECT]" value="${db.activity.hibernate.dialect}"/>
+        <replace file="${config.dest}/configuration.xml" token="[ACTIVITY_DATABASE_DRIVER]" value="${db.activity.driver}"/>
+        <replace file="${config.dest}/configuration.xml" token="[ACTIVITY_DATABASE_USERNAME]" value="${db.activity.username}"/>
+        <replace file="${config.dest}/configuration.xml" token="[ACTIVITY_DATABASE_PASSWORD]" value="${db.activity.password.encrypted}"/>
+        <replace file="${config.dest}/configuration.xml" token="[ACTIVITY_DATABASE_CONNECTSTRING]" value="${db.activity.url}"/>
+
+        <replace file="${config.dest}/configuration.xml" token="[PF_DATABASE_DIALECT]" value="${db.pf.hibernate.dialect}"/>
+        <replace file="${config.dest}/configuration.xml" token="[PF_DATABASE_DRIVER]" value="${db.pf.driver}"/>
+        <replace file="${config.dest}/configuration.xml" token="[PF_DATABASE_USERNAME]" value="${db.pf.username}"/>
+        <replace file="${config.dest}/configuration.xml" token="[PF_DATABASE_PASSWORD]" value="${db.pf.password.encrypted}"/>
+        <replace file="${config.dest}/configuration.xml" token="[PF_DATABASE_CONNECTSTRING]" value="${db.pf.url}"/>
+
+        <replace file="${config.dest}/configuration.xml" token="[DICT_DATABASE_DIALECT]" value="${db.dictionary.hibernate.dialect}"/>
+        <replace file="${config.dest}/configuration.xml" token="[DICT_DATABASE_DRIVER]" value="${db.dictionary.driver}"/>
+        <replace file="${config.dest}/configuration.xml" token="[DICT_DATABASE_USERNAME]" value="${db.dictionary.username}"/>
+        <replace file="${config.dest}/configuration.xml" token="[DICT_DATABASE_PASSWORD]" value="${db.dictionary.password.encrypted}"/>
+        <replace file="${config.dest}/configuration.xml" token="[DICT_DATABASE_CONNECTSTRING]" value="${db.dictionary.url}"/>
+
+        <replace file="${config.dest}/configuration.xml" token="[KM_DATABASE_DIALECT]" value="${db.keymanagement.hibernate.dialect}"/>
+        <replace file="${config.dest}/configuration.xml" token="[KM_DATABASE_DRIVER]" value="${db.keymanagement.driver}"/>
+        <replace file="${config.dest}/configuration.xml" token="[KM_DATABASE_USERNAME]" value="${db.keymanagement.username}"/>
+        <replace file="${config.dest}/configuration.xml" token="[KM_DATABASE_PASSWORD]" value="${db.keymanagement.password.encrypted}"/>
+        <replace file="${config.dest}/configuration.xml" token="[KM_DATABASE_CONNECTSTRING]" value="${db.keymanagement.url}"/>
+		
+		<replace file="${config.dest}/configuration.xml" token="[KM_KEYSTORE_PASSWORD]" value="${keymanagement.keystore.password.encryted}"/>
+
+        <replace file="${config.dest}/configuration.xml" token="[OPENLDAP_PASSWORD]" value="514e4f7160517c4e7c4f1371026e4a3f02674465"/>
+        <replace file="${config.dest}/configuration.xml" token="[AUTH_MODE]" value="Hybrid"/>
+        <replace file="${config.dest}/configuration.xml" token="!--[EXTERNAL_DOMAIN_SWITCH_BEGIN]-->" value="!-- External Domain Configuration -->"/>
+        <replace file="${config.dest}/configuration.xml" token="!--[EXTERNAL_DOMAIN_SWITCH_END]-->" value="!-- End of External Domain Configuration -->"/>
+
+        <mkdir dir="${build.weblib}"/>
+        <mkdir dir="${build.root.dir}/work"/>
+        <mkdir dir="${build.root.dir}/webapps"/>
+        <copy todir="${build.weblib}" failonerror="true" flatten="true">
+            <fileset dir="${build.root.dir}">
+                <include name="agent-manager.jar"/>
+                <include name="agent-types.jar"/>
+                <include name="common-dictionary.jar"/>
+                <include name="common-domain.jar"/>
+                <include name="common-domain-types.jar"/>
+                <include name="common-framework.jar"/>
+                <include name="common-framework-types.jar"/>
+                <include name="common-pf.jar"/>
+                <include name="common-version-impl.jar"/>
+                <include name="configurationFileParser.jar"/>
+                <include name="crypt.jar"/>
+                <include name="dcsf-services.jar"/>
+                <include name="dcsf-types.jar"/>
+                <include name="deployment-types.jar"/>
+                <include name="dms-services.jar"/>
+                <include name="inquiry-manager-shared.jar"/>
+                <include name="log-types.jar"/>
+                <include name="management-types.jar"/>
+                <include name="messages.jar"/>
+                <include name="policy-deploy-manager.jar"/>
+                <include name="policy-services.jar"/>
+                <include name="policy-types.jar"/>
+                <include name="profile-manager.jar"/>
+                <include name="server-axis-security.jar"/>
+                <include name="server-datasource.jar"/>
+                <include name="server-dcsf.jar"/>
+                <include name="server-dictionary.jar"/>
+                <include name="server-framework.jar"/>
+                <include name="server-pf.jar"/>
+                <include name="secure-session.jar"/>
+                <include name="server-shared-applicationusers.jar"/>
+                <include name="server-shared-customapps.jar"/>
+                <include name="server-shared-enumerations.jar"/>
+                <include name="server-shared-services.jar"/>
+                <include name="server-shared-services-impl.jar"/>
+                <include name="server-shared-sharedfolder.jar"/>
+                <include name="server-shared-utils.jar"/>
+                <include name="server-shared-types.jar"/>
+                <include name="version.jar"/>
+                <include name="version-types.jar"/>
+            </fileset>
+            <fileset refid="axis.jars"/>
+            <fileset refid="xerces.jars"/>
+            <path>
+                <!-- Copy the mail jar -->
+                <pathelement path="${xlib_jar_dir}/mail.jar"/>
+
+                <!-- Copy the JLDAP jar -->
+                <pathelement path="${xlib_jar_dir}/ldap.jar"/>
+
+                <!-- Copy the EHCACHE jar -->
+                <pathelement path="${xlib_jar_dir}/ehcache-1.1.jar"/>
+            
+                <!-- For destiny configuration file parsing -->
+                <pathelement path="${xlib_jar_dir}/commons-digester.jar"/>
+                <pathelement path="${xlib_jar_dir}/commons-beanutils.jar"/>
+                <pathelement path="${xlib_jar_dir}/xercesImpl.jar"/>
+                <pathelement path="${xlib_jar_dir}/xml-apis.jar"/>
+                <pathelement path="${xlib_jar_dir}/resolver.jar"/>
+                <pathelement path="${xlib_jar_dir}/xmlParserAPIs.jar"/>
+                <!-- PQL parsing -->
+                <pathelement path="${xlib_jar_dir}/antlr.jar"/>
+
+                <!-- For License Functionality -->
+                <pathelement path="${xlib_jar_dir}/jakarta-regexp-1.2.jar"/>
+                <pathelement path="${xlib_jar_dir}/bcprov-jdk14-128.jar"/>
+
+                <!-- For Md5 Digests -->
+                <pathelement path="${xlib_jar_dir}/commons-codec-1.8.jar"/>
+            </path>
+        </copy>
+
+
+        <copy file="${src.dir}/etc/web.xml" todir="${build.webinf}"/>
+        <copy file="${src.dir}/etc/index.html" todir="${build.webapp}"/>
+        <copy file="${wsdd.template.dir}/server-config.wsdd" todir="${build.webinf}" verbose="true" failonerror="true"/>
+
+
+        <!-- Install agent service -->
+        <java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+            <arg value="server"/>
+            <arg value="${gen.dir}/${services.management.dir}/deploy-AgentService.wsdd"/>
+            <classpath refid="compile.dms.classpath"/>
+        </java>
+
+        <!-- Install component service -->
+        <java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+            <arg value="server"/>
+            <arg value="${gen.dir}/${services.management.dir}/deploy-ComponentService.wsdd"/>
+            <classpath refid="compile.dms.classpath"/>
+        </java>
+
+        <!-- Install profile service -->
+        <java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+            <arg value="server"/>
+            <arg value="${gen.dir}/${services.management.dir}/deploy-ProfileService.wsdd"/>
+            <classpath refid="compile.dms.classpath"/>
+        </java>
+
+        <!-- Install secure session service -->
+        <java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+            <arg value="server"/>
+            <arg value="${gen.dir}/secureService/dms/${services.secure.dir}/v1/deploy-SecureSessionService.wsdd"/>
+            <classpath refid="compile.dms.classpath"/>
+        </java>
+
+        <!-- Install userRole service -->
+        <java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+            <arg value="server"/>
+            <arg value="${gen.dir}/${services.management.dir}/deploy-UserRoleService.wsdd"/>
+            <classpath refid="compile.dms.classpath"/>
+        </java>
+
+        <!-- Install usergroup service -->
+        <java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+            <arg value="server"/>
+            <arg value="${gen.dir}/${services.management.dir}/deploy-UserGroupService.wsdd"/>
+            <classpath refid="compile.dms.classpath"/>
+        </java>
+
+       <!-- Added User Preferences Service to Server WSDD -->
+        <java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+            <arg value="server"/>
+            <arg value="${gen.dir}/secureService/dms/${services.userpreferences.dir}/v1/deploy-UserPreferencesService.wsdd"/>
+            <classpath refid="compile.dms.classpath"/>
+        </java>
+    </target>
+
+    <target name="wsdl-generate" depends="pre-build" description="Generates code from WSDL">
+        <!-- Takes care of UserGroupService -->
+        <wsdl2java url="${src.wsdl.dir}/${services.management.dir}/UserGroupService.wsdl"
+                    output="${gen.dir}"
+                    deployscope="application"
+                    serverSide="yes"
+                    skeletonDeploy="no"
+                    implementationClassName="com.bluejungle.destiny.container.dms.DMSUserGroupServiceImpl"
+                    noimports="no"
+                    verbose="yes"
+                    testcase="yes"
+                    nowrapped="true"
+                    factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+                    trustedCallers="DCC"
+                    timeout="-1"
+                    userAuthRequired="false">
+        </wsdl2java>
+        <move file="${gen.dir}/${services.management.dir}/deploy.wsdd" tofile="${gen.dir}/${services.management.dir}/deploy-UserGroupService.wsdd"/>
+        <move file="${gen.dir}/${services.management.dir}/undeploy.wsdd" tofile="${gen.dir}/${services.management.dir}/undeploy-UserGroupService.wsdd"/>
+
+        <!-- Takes care of AgentService -->
+        <wsdl2java url="${src.wsdl.dir}/${services.management.dir}/AgentService.wsdl"
+                    output="${gen.dir}"
+                    deployscope="application"
+                    serverSide="yes"
+                    skeletonDeploy="no"
+                    implementationClassName="com.bluejungle.destiny.container.dms.DMSAgentServiceImpl"
+                    noimports="no"
+                    verbose="yes"
+                    testcase="yes"
+                    nowrapped="true"
+                    timeout="-1"
+                    factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+                    trustedCallers="DCC"
+                    userAuthRequired="false">
+        </wsdl2java>
+        <move file="${gen.dir}/${services.management.dir}/deploy.wsdd" tofile="${gen.dir}/${services.management.dir}/deploy-AgentService.wsdd"/>
+        <move file="${gen.dir}/${services.management.dir}/undeploy.wsdd" tofile="${gen.dir}/${services.management.dir}/undeploy-AgentService.wsdd"/>
+
+        <!-- Takes care of ComponentService -->
+        <wsdl2java url="${src.wsdl.dir}/${services.management.dir}/ComponentService.wsdl"
+                    all="true"
+                    output="${gen.dir}"
+                    deployscope="application"
+                    serverSide="yes"
+                    skeletonDeploy="no"
+                    implementationClassName="com.bluejungle.destiny.container.dms.DMSComponentServiceImpl"
+                    noimports="no"
+                    verbose="yes"
+                    testcase="yes"
+                    nowrapped="true"
+                    factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+                    trustedCallers="DCC"
+                    timeout="-1"
+                    userAuthRequired="false">
+        </wsdl2java>
+        <move file="${gen.dir}/${services.management.dir}/deploy.wsdd" tofile="${gen.dir}/${services.management.dir}/deploy-ComponentService.wsdd"/>
+        <move file="${gen.dir}/${services.management.dir}/undeploy.wsdd" tofile="${gen.dir}/${services.management.dir}/undeploy-ComponentService.wsdd"/>
+
+        <!-- Takes care of ProfileService -->
+        <wsdl2java url="${src.wsdl.dir}/${services.management.dir}/ProfileService.wsdl"
+                    output="${gen.dir}"
+                    deployscope="application"
+                    serverSide="yes"
+                    skeletonDeploy="no"
+                    implementationClassName="com.bluejungle.destiny.container.dms.DMSProfileServiceImpl"
+                    noimports="no"
+                    verbose="yes"
+                    testcase="yes"
+                    nowrapped="true"
+                    factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+                    trustedCallers="DCC"
+                    timeout="-1"
+                    userAuthRequired="false">
+        </wsdl2java>
+        <move file="${gen.dir}/${services.management.dir}/deploy.wsdd" tofile="${gen.dir}/${services.management.dir}/deploy-ProfileService.wsdd"/>
+        <move file="${gen.dir}/${services.management.dir}/undeploy.wsdd" tofile="${gen.dir}/${services.management.dir}/undeploy-ProfileService.wsdd"/>
+
+        <!-- Takes care of ApplicationService -->
+        <wsdl2java url="${src.wsdl.dir}/${services.management.dir}/ApplicationService.wsdl"
+                    output="${gen.dir}"
+                    deployscope="application"
+                    serverSide="yes"
+                    skeletonDeploy="no"
+                    implementationClassName="com.bluejungle.destiny.container.dms.DMSApplicationServiceImpl"
+                    noimports="no"
+                    verbose="yes"
+                    testcase="yes"
+                    nowrapped="true"
+                    timeout="-1"
+                    factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+                    trustedCallers="DCC"
+                    userAuthRequired="false">
+        </wsdl2java>
+        <move file="${gen.dir}/${services.management.dir}/deploy.wsdd" tofile="${gen.dir}/${services.management.dir}/deploy-ApplicationService.wsdd"/>
+        <move file="${gen.dir}/${services.management.dir}/undeploy.wsdd" tofile="${gen.dir}/${services.management.dir}/undeploy-ApplicationService.wsdd"/>
+
+
+        <!-- Takes care of PolicyDeploymentService -->
+        <wsdl2java url="${src.wsdl.dir}/${services.management.dir}/PolicyDeploymentService.wsdl"
+                    output="${gen.dir}"
+                    deployscope="application"
+                    serverSide="yes"
+                    skeletonDeploy="no"
+                    implementationClassName="com.bluejungle.destiny.container.dms.DMSPolicyDeploymentServiceImpl"
+                    noimports="no"
+                    verbose="yes"
+                    testcase="yes"
+                    nowrapped="true"
+                    factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+                    trustedCallers="DCC"
+                    timeout="-1"
+                    userAuthRequired="false">
+        </wsdl2java>
+        <move file="${gen.dir}/${services.management.dir}/deploy.wsdd" tofile="${gen.dir}/${services.management.dir}/deploy-PolicyDeploymentService.wsdd"/>
+        <move file="${gen.dir}/${services.management.dir}/undeploy.wsdd" tofile="${gen.dir}/${services.management.dir}/undeploy-PolicyDeploymentService.wsdd"/>
+
+        <!-- Takes care of UserRoleService -->
+        <wsdl2java url="${src.wsdl.dir}/${services.management.dir}/UserRoleService.wsdl"
+                    output="${gen.dir}"
+                    deployscope="application"
+                    serverSide="yes"
+                    skeletonDeploy="no"
+                    implementationClassName="com.bluejungle.destiny.container.dms.DMSUserRoleServiceImpl"
+                    noimports="no"
+                    verbose="yes"
+                    testcase="yes"
+                    nowrapped="true"
+                    factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+                    trustedCallers="DCC"
+                    timeout="-1"
+                    userAuthRequired="false">
+        </wsdl2java>
+        <move file="${gen.dir}/${services.management.dir}/deploy.wsdd" tofile="${gen.dir}/${services.management.dir}/deploy-UserRoleService.wsdd"/>
+        <move file="${gen.dir}/${services.management.dir}/undeploy.wsdd" tofile="${gen.dir}/${services.management.dir}/undeploy-UserRoleService.wsdd"/>
+
+    </target>
+
+    <target name="wsdl-compile" description="Compile generated WSDL code">
+        <javac srcdir="${gen.dir}/${services.management.dir}" destdir="${build.gendest}" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="compile.wsdl.classpath"/>
+            <sourcepath>
+              <pathelement path="${gen.dir}/${services.management.dir}"/>
+              <pathelement path="${gen.dir}"/>
+            </sourcepath>
+            <include name="**/*.java"/>
+        </javac>
+
+    </target>
+
+    <target name="wsdl-jar" description="Packages compiled WSDL code">
+        <jar destfile="${build.root.dir}/dms-services.jar">
+            <fileset dir="${build.gendest}">
+                <include name="${services.management.dir}/*.class"/>
+            </fileset>
+        </jar>
+        <jar destfile="${build.root.dir}/management-types.jar">
+            <fileset dir="${build.gendest}">
+                <include name="${services.management.dir}/types/*.class"/>
+            </fileset>
+        </jar>
+        <!-- This is hardcoded for now, need to deal with this later -->
+        <jar destfile="${build.root.dir}/version-types.jar">
+            <fileset dir="${build.gendest}">
+                <include name="${services.version.dir}/types/*.class"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="compile">
+        <javac srcdir="${src.main.dir}" destdir="${build.main.dest}" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="compile.dms.classpath"/>
+        </javac>
+        <!-- Copy all the hibernate mapping files into the build directory as well-->
+        <copy todir="${build.main.dest}/${dms.src.dir}">
+            <fileset dir="${src.main.dir}/${dms.src.dir}">
+                <include name="**/*.hbm.xml"/>
+            </fileset>
+        </copy>
+        <javac srcdir="${src.test.dir}" destdir="${build.test.dest}" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="compile.dms.classpath"/>
+        </javac>
+    </target>
+
+    <target name="build" depends="compile, jar, setup-webapp, setup-datasources, setup-war">
+    </target>
+
+    <target name="jar" description="creates a jar of all the DMS components">
+
+         <jar destfile="${build.root.dir}/dms-components.jar">
+             <fileset dir="${build.main.dest}"/>
+         </jar>
+    </target>
+
+    <target name="setup-datasources">
+        <copy toDir="${build.weblib}">
+            <fileset refid="hibernate.lib"/>
+        </copy>
+        <copy file="${xlib_jar_dir}/hibernate2.jar" todir="${build.weblib}"/>
+
+        <!-- Copy datasource information -->
+        <copy file="${src.dir}/etc/activity.repository.xml" todir="${build.webconf}" failonerror="true"/>
+        <copy file="${src.dir}/etc/management.repository.xml" todir="${build.webconf}" failonerror="true"/>
+        <copy file="${src.dir}/etc/policyframework.repository.xml" todir="${build.webconf}" failonerror="true"/>
+        <copy file="${src.dir}/etc/dictionary.repository.xml" todir="${build.webconf}" failonerror="true"/>
+        <copy file="${server.base.dir}/resource/main/common.repository.properties" todir="${build.webconf}" failonerror="true"/>
+    </target>
+
+    <target name="setup-war">
+        <war destfile="${war.dir}/dms.war" basedir="${build.webapp}" webxml="${build.webinf}/web.xml" excludes="genclasses/**/*.*, testclasses/**/*.*"/>
+    </target>
+
+    <target name="setup-tests">
+        <!-- This setup is for running JUnit tests for the Configuration Mgr.
+             It needs to be cleaned up when we have a cleaner way of testing it.-->
+        <mkdir dir="${config.dest}/test"/>
+        <copy todir="${config.dest}/test">
+            <fileset dir="${dms.etc.dir}/test/">
+                <include name="*.xml"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="run-tests-ui" depends="setup-tests">
+        <java fork="yes" classname="junit.swingui.TestRunner" dir="${build.main.dest}"
+            taskname="junit" failonerror="true">
+            <sysproperty key="build.root.dir" value="${build.root.dir}" />
+            <arg value="com.bluejungle.destiny.container.dms.DMSTestSuite"/>
+            <classpath>
+                <path refid="compile.dms.classpath"/>
+
+                <pathelement path="${src.root.dir}/etc/junit"/>
+                <pathelement path="${build.main.dest}"/>
+                <pathelement path="${build.test.dest}"/>
+                <pathelement path="${xlib_jar_dir}/dom4j-1.4.jar"/>
+                <pathelement path="${xlib_jar_dir}/cglib-full-2.0.2.jar"/>
+                <pathelement path="${xlib_jar_dir}/odmg-3.0.jar"/>
+                <pathelement path="${xlib_jar_dir}/jta.jar"/>
+                <pathelement path="${xlib_jar_dir}/postgresql-9.2-1002.jdbc4.jar"/>
+                <pathelement path="${oracle.jdbc}"/>
+                <pathelement path="${xlib_jar_dir}/db2jcc.jar"/>
+                <pathelement path="${xlib_jar_dir}/db2jcc_license_cu.jar"/>
+                <pathelement path="${xlib_jar_dir}/sqljdbc4.jar"/>
+                <pathelement path="${xlib_jar_dir}/jtds-1.2.2.jar"/>
+                <pathelement path="${xlib_jar_dir}/antlr.jar"/>
+                <pathelement path="${build.root.dir}/common-domain-types.jar"/>
+                <pathelement path="${build.root.dir}/common-domain.jar"/>
+                <pathelement path="${build.root.dir}/dms-services.jar"/>
+                <pathelement path="${build.root.dir}/inquiry-manager-shared.jar"/>
+                <pathelement path="${build.root.dir}/management-types.jar"/>
+                <pathelement path="${build.root.dir}/server-shared-customapps.jar"/>
+                <pathelement path="${build.root.dir}/server-shared-enumerations.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="tests" depends="setup-tests">
+        <junit printsummary="withOutAndErr" showoutput="yes" haltonfailure="${junit.haltonfailure}" failureproperty="junit.fail" fork="true">
+            <sysproperty key="src.root.dir" value="${src.root.dir}"/>
+            <sysproperty key="build.root.dir" value="${build.root.dir}" />
+            <formatter type="xml"/>
+            <test name="com.bluejungle.destiny.container.dms.DMSTestSuite" todir="${log.dir}/tests"/>
+            <classpath>
+                <path refid="compile.dms.classpath"/>
+
+                <pathelement path="${build.main.dest}"/>
+                <pathelement path="${build.test.dest}"/>
+                <pathelement path="${xlib_jar_dir}/dom4j-1.4.jar"/>
+                <pathelement path="${xlib_jar_dir}/cglib-full-2.0.2.jar"/>
+                <pathelement path="${xlib_jar_dir}/odmg-3.0.jar"/>
+                <pathelement path="${xlib_jar_dir}/jta.jar"/>
+                <pathelement path="${xlib_jar_dir}/postgresql-9.2-1002.jdbc4.jar"/>
+                <pathelement path="${oracle.jdbc}"/>
+                <pathelement path="${xlib_jar_dir}/db2jcc.jar"/>
+                <pathelement path="${xlib_jar_dir}/db2jcc_license_cu.jar"/>
+                <pathelement path="${xlib_jar_dir}/sqljdbc4.jar"/>
+                <pathelement path="${xlib_jar_dir}/jtds-1.2.2.jar"/>
+                <pathelement path="${xlib_jar_dir}/antlr.jar"/>
+                <pathelement path="${build.root.dir}/dms-services.jar"/>
+                <pathelement path="${build.root.dir}/management-types.jar"/>
+                <pathelement path="${build.root.dir}/common-domain-types.jar"/>
+                <pathelement path="${build.root.dir}/common-domain.jar"/>
+                <pathelement path="${build.root.dir}/inquiry-manager-shared.jar"/>
+                <pathelement path="${build.root.dir}/server-shared-customapps.jar"/>
+                <pathelement path="${build.root.dir}/server-shared-enumerations.jar"/>
+            </classpath>
+        </junit>
+    </target>
+
+    <target name="standalone-tests" depends="setup-tests">
+        <junit printsummary="withOutAndErr" showoutput="yes" haltonfailure="${junit.haltonfailure}" failureproperty="junit.fail" fork="true">
+            <sysproperty key="build.root.dir" value="${build.root.dir}" />
+            <formatter type="xml"/>
+            <test name="com.bluejungle.destiny.container.dms.components.StandaloneDMSComponentTests" todir="${log.dir}/tests"/>
+            <classpath>
+                <path refid="compile.classpath"/>
+                <pathelement path="${build.root.dir}/inquiry-manager-shared.jar"/>
+                <pathelement path="${build.root.dir}/server-shared-customapps.jar"/>
+                <pathelement path="${build.root.dir}/agent-manager.jar"/>
+                <pathelement path="${build.root.dir}/agent-types.jar"/>
+                <pathelement path="${build.root.dir}/common-domain.jar"/>
+                <pathelement path="${build.root.dir}/common-framework-test.jar"/>
+                <pathelement path="${build.root.dir}/common-framework.jar"/>
+                <pathelement path="${build.root.dir}/common-pf.jar"/>
+                <pathelement path="${build.root.dir}/common-version-impl.jar"/>
+                <pathelement path="${build.root.dir}/common-version.jar"/>
+                <pathelement path="${build.root.dir}/configurationFileParser.jar"/>
+                <pathelement path="${build.root.dir}/crypt.jar"/>
+                <pathelement path="${build.root.dir}/dabs-agent-services.jar"/>
+                <pathelement path="${build.root.dir}/dcsf-services.jar"/>
+                <pathelement path="${build.root.dir}/dcsf-types.jar"/>
+                <pathelement path="${build.root.dir}/policy-deploy-manager.jar"/>
+                <pathelement path="${build.root.dir}/policy-types.jar"/>
+                <pathelement path="${build.root.dir}/profile-manager.jar"/>
+                <pathelement path="${build.root.dir}/secure-session.jar"/>
+                <pathelement path="${build.root.dir}/server-base.jar"/>
+                <pathelement path="${build.root.dir}/server-datasource.jar"/>
+                <pathelement path="${build.root.dir}/server-dcsf-test.jar"/>
+                <pathelement path="${build.root.dir}/server-dcsf.jar"/>
+                <pathelement path="${build.root.dir}/server-framework.jar"/>
+                <pathelement path="${build.root.dir}/server-pf.jar"/>
+                <pathelement path="${build.root.dir}/server-shared-applicationusers.jar"/>
+                <pathelement path="${build.root.dir}/server-shared-services-impl.jar"/>
+                <pathelement path="${build.root.dir}/server-shared-services.jar"/>
+                <pathelement path="${build.root.dir}/server-shared-sharedfolder.jar"/>
+                <pathelement path="${build.root.dir}/server-shared-tests.jar"/>
+                <pathelement path="${build.root.dir}/server-shared-types.jar"/>
+
+                <!-- Required for destiny configuration parsing -->
+                <pathelement path="${xlib_jar_dir}/commons-digester.jar"/>
+                <pathelement path="${xlib_jar_dir}/commons-logging.jar"/>
+                <pathelement path="${xlib_jar_dir}/commons-beanutils.jar"/>
+                <pathelement path="${xlib_jar_dir}/commons-collections.jar"/>
+                <pathelement path="${xlib_jar_dir}/xercesImpl.jar"/>
+                <pathelement path="${xlib_jar_dir}/resolver.jar"/>
+                <pathelement path="${xlib_jar_dir}/xml-apis.jar"/>
+                <pathelement path="${xlib_jar_dir}/xmlParserAPIs.jar"/>
+                <pathelement path="${build.main.dest}"/>
+                <pathelement path="${build.gendest}"/>
+
+                <pathelement path="${xlib_jar_dir}/dom4j-1.4.jar"/>
+                <pathelement path="${xlib_jar_dir}/odmg-3.0.jar"/>
+                <pathelement path="${xlib_jar_dir}/cglib-full-2.0.2.jar"/>
+                <pathelement path="${xlib_jar_dir}/jta.jar"/>
+                <pathelement path="${xlib_jar_dir}/postgresql-9.2-1002.jdbc4.jar"/>
+                <pathelement path="${oracle.jdbc}"/>
+                <pathelement path="${xlib_jar_dir}/db2jcc.jar"/>
+                <pathelement path="${xlib_jar_dir}/db2jcc_license_cu.jar"/>
+                <pathelement path="${xlib_jar_dir}/sqljdbc4.jar"/>
+                <pathelement path="${xlib_jar_dir}/jtds-1.2.2.jar"/>
+                <pathelement path="${build.root.dir}/management-types.jar"/>
+                <pathelement path="${build.root.dir}/dms-services.jar"/>
+                <pathelement path="${build.root.dir}/server-shared-enumerations.jar"/>
+                <pathelement path="${build.root.dir}/messages.jar"/>
+                <pathelement path="${xlib_jar_dir}/jakarta-regexp-1.2.jar"/>
+                <pathelement path="${xlib_jar_dir}/bcprov-jdk14-128.jar"/>
+                <pathelement path="${build.test.dest}"/>
+                <pathelement path="${xlib_jar_dir}/antlr.jar"/>
+            </classpath>
+        </junit>
+    </target>
+
+</project>

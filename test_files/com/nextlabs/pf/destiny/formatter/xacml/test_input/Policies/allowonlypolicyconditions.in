@@ -1,0 +1,9 @@
+policy "allowconditions"
+FOR resource.fso.name = "*.txt"
+ON *
+BY *
+DO allow
+WHERE environment.time_since_last_heartbeat<20
+BY DEFAULT DO deny
+ON deny DO log
+ON allow DO log

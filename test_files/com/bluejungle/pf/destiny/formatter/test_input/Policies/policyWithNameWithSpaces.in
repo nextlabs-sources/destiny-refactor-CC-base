@@ -1,0 +1,4 @@
+policy "Policy with Subjects"
+    DO DENY
+    FOR * ON * BY
+    ALL_USERS OR ALL_HOSTS OR ALL_APPLICATIONS OR ALL_SUBJECTS

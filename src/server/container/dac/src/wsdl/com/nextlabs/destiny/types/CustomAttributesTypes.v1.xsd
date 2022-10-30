@@ -1,0 +1,18 @@
+<xs:schema 	targetNamespace="http://nextlabs.com/destiny/types/custom_attr/v1" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema"         
+			xmlns:types="http://nextlabs.com/destiny/types/custom_attr/v1"
+			xmlns:basicTypes="http://bluejungle.com/destiny/types/basic/v1">
+	
+	<xs:complexType name="CustomAttribute">
+   		<xs:sequence>
+			<xs:element name="key" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      		<xs:element name="value" type="xs:string" minOccurs="0" maxOccurs="1"/>
+   		</xs:sequence>
+	</xs:complexType>}
+
+	<xs:complexType name="CustomAttributeList">
+   		<xs:sequence>
+			<xs:element name="customAttributes" type="types:CustomAttribute" minOccurs="0" maxOccurs="unbounded"/>
+   		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

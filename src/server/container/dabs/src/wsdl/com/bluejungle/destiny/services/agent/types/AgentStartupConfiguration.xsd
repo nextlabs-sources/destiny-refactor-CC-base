@@ -1,0 +1,32 @@
+<xs:schema 	targetNamespace="http://bluejungle.com/destiny/services/agent/types" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:types="http://bluejungle.com/destiny/services/agent/types"
+			xmlns:policyTypes="http://bluejungle.com/destiny/services/policy/types"
+			xmlns:mgmttypes="http://bluejungle.com/destiny/services/management/types"
+			xmlns:common="http://bluejungle.com/destiny/framework/types">
+
+	<xs:import namespace="http://bluejungle.com/destiny/services/management/types" 
+			   schemaLocation="../../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicTypes.xsd"/>
+
+	<xs:import namespace="http://bluejungle.com/destiny/services/management/types" 
+			   schemaLocation="../../../../../../../../../dms/src/wsdl/com/bluejungle/destiny/services/management/types/CommProfile.xsd"/>
+
+	<xs:import namespace="http://bluejungle.com/destiny/services/management/types" 
+			   schemaLocation="../../../../../../../../../dms/src/wsdl/com/bluejungle/destiny/services/management/types/AgentProfile.xsd"/>
+
+	<xs:complexType name="AgentStartupConfiguration">
+		<xs:sequence>
+			<xs:element name="id" type="common:ID" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="commProfile"	type="mgmttypes:CommProfileDTO" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="agentProfile"	type="mgmttypes:AgentProfileDTO" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="registrationId" type="common:ID" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="AgentStartupAttachments">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AgentKeyStore"/>
+			<xs:enumeration value="AgentTrustStore"/>
+		</xs:restriction>
+	</xs:simpleType>	
+</xs:schema>

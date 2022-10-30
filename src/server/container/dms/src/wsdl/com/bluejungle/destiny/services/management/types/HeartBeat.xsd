@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://bluejungle.com/destiny/services/management/types" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:types="http://bluejungle.com/destiny/services/management/types"
+	xmlns:shared="http://bluejungle.com/destiny/types/shared_folder">
+
+	<xs:include schemaLocation="Configuration.xsd"/>
+	<xs:include schemaLocation="Registration.xsd"/>
+	
+	<xs:import namespace="http://bluejungle.com/destiny/types/shared_folder"
+			   schemaLocation="../../../../../../../../../shared/src/wsdl/com/bluejungle/destiny/types/SharedFolderTypes.xsd"/>
+
+	<!-- This is a cookie that is sent to a component after receiving a heartbeat -->	
+	<xs:complexType name="Cookie">
+		<xs:sequence>
+			<xs:element name="updateTimestamp" type="xs:long" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!--This is the heartbeat information that a DCC component sends to the DMS with
+		its heartbeat -->
+	<xs:complexType name="ComponentHeartbeatInfo">
+		<xs:sequence>
+			<xs:element name="compName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="compType" type="xs:string" nillable="false"/>
+			<xs:element name="lastReceivedCookie" type="types:Cookie" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="sharedFolderDataCookie" type="shared:SharedFolderDataCookie" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- This is the heartbeat update packet that the DMS returns to a DCC component
+		 after receiving its heartbeat -->
+	<xs:complexType name="ComponentHeartbeatUpdate">
+		<xs:sequence>
+			<xs:element name="cookie" type="types:Cookie" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="configurationUpdate" type="types:DCCConfiguration" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="eventRegistrations" type="types:EventRegistrationInfo" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="sharedFolderData" type="shared:SharedFolderData" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- This type represents event registration information -->	
+	<xs:complexType name="EventRegistrationInfo">
+		<xs:sequence>
+			<xs:element name="eventName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="callbackURL" type="xs:anyURI" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="active" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

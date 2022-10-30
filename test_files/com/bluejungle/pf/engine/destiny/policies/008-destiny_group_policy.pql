@@ -1,0 +1,5 @@
+policy destiny_group_policy
+for owner_destiny_test
+on *
+by *
+do deny

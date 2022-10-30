@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping package="com.bluejungle.dictionary">
+    <class name="UpdateRecord" table="DICT_UPDATES" dynamic-update="false">
+        <id name="id" column="ID" access="field">
+            <generator class="native"/>
+        </id>
+        <version name="version" column="VERSION" access="field"/>
+
+        <many-to-one name="enrollment" class="Enrollment" column="enrollment_id" outer-join="true" access="field" not-null="true"/>
+
+        <property name="startTime" column="start_time" access="field" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="true" />
+
+        <property name="endTime" column="end_time" access="field" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="true" />
+
+        <property name="successful" column="is_successful" access="field" type="yes_no" not-null="true" />
+
+        <property name="errorMessage" column="err_msg" length="1024" access="field" type="string" not-null="false" />
+
+        <property name="timeRelation" access="field" type="com.bluejungle.framework.datastore.hibernate.usertypes.TimeRelationUserType">
+            <column name="ACTIVE_FROM" not-null="true"/>
+            <column name="ACTIVE_TO" not-null="true"/>
+        </property>
+
+    </class>
+</hibernate-mapping>

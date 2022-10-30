@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://bluejungle.com/destiny/interfaces/inquiry_alert/v1"
+				  xmlns:tns="http://bluejungle.com/destiny/interfaces/inquiry_alert/v1"
+				  xmlns:inquiryAlertTypes="http://bluejungle.com/destiny/types/inquiry_alert/v1"
+				  xmlns:inquiryAlertLogTypes="http://bluejungle.com/destiny/types/inquiry_alert_log/v1"
+				  xmlns:basicTypes="http://bluejungle.com/destiny/types/basic/v1" 
+				  xmlns:xs="http://www.w3.org/1999/XMLSchema" 
+				  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"> 
+				  
+   <wsdl:types>
+	   <schema targetNamespace="http://bluejungle.com/destiny/services/inquiry_alert/v1" xmlns="http://www.w3.org/2001/XMLSchema">
+		 <xs:import namespace="http://bluejungle.com/destiny/types/inquiry_alert/v1" schemaLocation="../types/InquiryAlertTypes.v1.xsd"/>
+		 <xs:import namespace="http://bluejungle.com/destiny/types/inquiry_alert_log/v1" schemaLocation="../types/InquiryAlertLogTypes.v1.xsd"/>
+	     <xs:import namespace="http://bluejungle.com/destiny/types/basic/v1" schemaLocation="../types/BasicTypes.v1.xsd"/>
+      </schema>
+   </wsdl:types>
+
+   <wsdl:message name="getInquiryAlertsRequest">
+     </wsdl:message>
+   <wsdl:message name="getInquiryAlertsResponse">
+     <wsdl:part name="getInquiryAlertsReturn" type="inquiryAlertTypes:InquiryAlertDTOList"/>
+   </wsdl:message>
+
+   <wsdl:message name="getInquiryAlertByIdRequest">
+	  <wsdl:part name="inquiryAlertId" type="xs:integer"/> 
+   </wsdl:message>
+   <wsdl:message name="getInquiryAlertByIdResponse">
+      <wsdl:part name="getInquiryAlertByIdReturn" type="inquiryAlertTypes:InquiryAlertDTO"/>
+   </wsdl:message>
+
+   <wsdl:message name="createInquiryAlertRequest">
+      <wsdl:part name="inquiryAlertData" type="inquiryAlertTypes:InquiryAlertData"/>
+   </wsdl:message>
+   <wsdl:message name="createInquiryAlertResponse">
+      <wsdl:part name="createInquiryAlertReturn" type="inquiryAlertTypes:InquiryAlertDTO"/>
+   </wsdl:message>
+
+   <wsdl:message name="updateInquiryAlertRequest">
+      <wsdl:part name="inquiryAlertToUpdate" type="inquiryAlertTypes:InquiryAlertDTO"/>
+   </wsdl:message>
+   <wsdl:message name="updateInquiryAlertResponse">
+   </wsdl:message>
+   
+   <wsdl:message name="deleteInquiryAlertByIdRequest">
+      <wsdl:part name="inquiryAlertId" type="xs:integer"/>
+   </wsdl:message>
+   <wsdl:message name="deleteInquiryAlertByIdResponse">
+   </wsdl:message>
+
+   <wsdl:message name="getInquiryAlertLogEntriesRequest">
+   </wsdl:message>
+   <wsdl:message name="getInquiryAlertLogEntriesResponse">
+      <wsdl:part name="getInquiryAlertLogEntriesReturn" type="inquiryAlertLogTypes:InquiryAlertLogEntryList"/>
+   </wsdl:message>
+      
+   <wsdl:portType name="InquiryAlertServiceIF">
+
+	  <!-- Create an Inquiry Alert -->
+      <wsdl:operation name="createInquiryAlert">
+         <wsdl:input message="tns:createInquiryAlertRequest" name="createInquiryAlertRequest"/>
+         <wsdl:output message="tns:createInquiryAlertResponse" name="createInquiryAlertResponse"/>
+      </wsdl:operation>
+
+	<!-- Retrieve the Inquiry Alerts for the current user -->
+      <wsdl:operation name="getInquiryAlerts">
+         <wsdl:input message="tns:getInquiryAlertsRequest" name="getInquiryAlertsRequest"/>
+         <wsdl:output message="tns:getInquiryAlertsResponse" name="getInquiryAlertsResponse"/>
+      </wsdl:operation>
+
+	   <!-- Retrieve an Inquiry Alert by Id -->
+      <wsdl:operation name="getInquiryAlertById">
+         <wsdl:input message="tns:getInquiryAlertByIdRequest" name="getInquiryAlertByIdRequest"/>
+         <wsdl:output message="tns:getInquiryAlertByIdResponse" name="getInquiryAlertByIdResponse"/>
+      </wsdl:operation>
+
+	<!-- Delete an Inquiry Alert by Id -->
+      <wsdl:operation name="deleteInquiryAlertById">
+         <wsdl:input message="tns:deleteInquiryAlertByIdRequest" name="deleteInquiryAlertByIdRequest"/>
+         <wsdl:output message="tns:deleteInquiryAlertByIdResponse" name="deleteInquiryAlertByIdResponse"/>
+      </wsdl:operation>
+
+	<!-- Update an Inquiry Alert by Id -->
+      <wsdl:operation name="updateInquiryAlert">
+         <wsdl:input message="tns:updateInquiryAlertRequest" name="updateInquiryAlertRequest"/>
+         <wsdl:output message="tns:updateInquiryAlertResponse" name="updateInquiryAlertResponse"/>
+      </wsdl:operation>
+   
+   	<!-- Retrieve the Inquiry Alerts Log Entries for the current user -->
+      <wsdl:operation name="getInquiryAlertLogEntries">
+         <wsdl:input message="tns:getInquiryAlertLogEntriesRequest" name="getInquiryAlertLogEntriesRequest"/>
+         <wsdl:output message="tns:getInquiryAlertLogEntriesResponse" name="getInquiryAlertLogEntriesResponse"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   
+</wsdl:definitions>

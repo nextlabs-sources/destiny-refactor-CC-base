@@ -1,0 +1,35 @@
+<xs:schema 	targetNamespace="http://bluejungle.com/destiny/services/agent/types" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:types="http://bluejungle.com/destiny/services/agent/types"
+			xmlns:policyTypes="http://bluejungle.com/destiny/services/policy/types"
+			xmlns:mgmttypes="http://bluejungle.com/destiny/services/management/types"
+			xmlns:sharedTypes="http://bluejungle.com/destiny/types/shared_folder"
+			xmlns:customOblTypes="http://bluejungle.com/destiny/types/custom_obligations">
+
+	<xs:import namespace="http://bluejungle.com/destiny/services/management/types" 
+			   schemaLocation="../../../../../../../../../dms/src/wsdl/com/bluejungle/destiny/services/management/types/CommProfile.xsd"/>
+
+	<xs:import namespace="http://bluejungle.com/destiny/services/management/types" 
+			   schemaLocation="../../../../../../../../../dms/src/wsdl/com/bluejungle/destiny/services/management/types/AgentProfile.xsd"/>
+
+	<xs:import namespace="http://bluejungle.com/destiny/services/policy/types" 
+			   schemaLocation="../../../../../../../../../dps/src/wsdl/main/com/bluejungle/pf/destiny/services/types/PolicyTypes.xsd"/>
+
+	<xs:import namespace="http://bluejungle.com/destiny/types/shared_folder"
+			   schemaLocation="../../../../../../../../../shared/src/wsdl/com/bluejungle/destiny/types/SharedFolderTypes.xsd"/>
+
+	<xs:import namespace="http://bluejungle.com/destiny/types/custom_obligations"
+			   schemaLocation="../../../../../../../../../shared/src/wsdl/com/bluejungle/destiny/types/CustomObligationsTypes.xsd"/>
+
+	<xs:complexType name="AgentUpdates">
+		<xs:sequence>
+			<xs:element name="commProfile" type="mgmttypes:CommProfileDTO" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="agentProfile" type="mgmttypes:AgentProfileDTO" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="policyDeploymentBundle" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="serverBusy" type="xs:boolean" default="false" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="sharedFolderData" type="sharedTypes:SharedFolderData" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="customObligationsData" type="customOblTypes:CustomObligationsData" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="pluginData" type="types:AgentPluginData" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

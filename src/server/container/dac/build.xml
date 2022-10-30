@@ -1,0 +1,369 @@
+<project name="DAC" default="build">
+
+    <var name="nlbuildroot" value="${basedir}/../../../.." />
+    <property name="src.dir"      value="${basedir}/src"/>
+    <property name="java.main.src.dir"      value="${src.dir}/java/main"/>
+    <property name="java.test.src.dir"      value="${src.dir}/java/test"/>
+    <property name="hibernate.src.dir"      value="${src.dir}/hibernate"/>
+    <property name="etc.src.dir"      value="${src.dir}/etc"/>
+    <property name="jsp.src.dir"      value="${src.dir}/jsp"/>
+    <property name="wsdl.src.dir"      value="${src.dir}/wsdl"/>
+    <property name="build.webapp" value="${build.root.dir}/server/container/dac"/>
+    <property name="build.webinf" value="${build.webapp}/WEB-INF"/>
+    <property name="build.dest"   value="${build.webinf}/classes"/>
+    <property name="build.test.dest"   value="${build.webinf}/testclasses"/>
+    <property name="build.gendest" value="${build.root.dir}/server/container/dac/genclasses"/>
+    <property name="build.weblib" value="${build.webinf}/lib"/>
+    <property name="build.webconf" value="${build.webapp}/WEB-INF/conf"/>
+    <property name="doc.dest"     value="${build.root.dir}/server/container/dac/doc"/>
+    <property name="server.base.dir" value="${src.root.dir}/server/base/"/>
+    <property name="servicesbase.dir" value="com/bluejungle/destiny/"/>
+    <property name="servicesbase.nextlabs.dir" value="com/nextlabs/destiny/"/>
+    <property name="build.reporter.classes.dir" value="${build.root.dir}/server/apps/inquiryCenter/WEB-INF/classes/" />
+
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	<path id="compile.dac.classpath">
+        <path refid="compile.classpath"/>
+    	<pathelement path="${build.root.dir}/common-dictionary.jar"/>
+    	<pathelement path="${build.root.dir}/common-domain.jar"/>
+    	<pathelement path="${build.root.dir}/common-framework.jar"/>
+    	<pathelement path="${build.root.dir}/common-pf.jar"/>
+    	<pathelement path="${build.root.dir}/dabs-components.jar"/>
+    	<pathelement path="${build.root.dir}/dac-types.jar"/>
+    	<pathelement path="${build.root.dir}/db-init-tools.jar"/>
+    	<pathelement path="${build.root.dir}/dcsf-types.jar"/>
+    	<pathelement path="${build.root.dir}/inquiry-manager-shared.jar"/>
+    	<pathelement path="${build.root.dir}/management-types.jar"/>
+    	<pathelement path="${build.root.dir}/random.jar"/>
+    	<pathelement path="${build.root.dir}/secure-session.jar"/>
+    	<pathelement path="${build.root.dir}/server-base.jar"/>
+    	<pathelement path="${build.root.dir}/server-datasource.jar"/>
+    	<pathelement path="${build.root.dir}/server-dcsf.jar"/>
+    	<pathelement path="${build.root.dir}/server-dictionary.jar"/>
+    	<pathelement path="${build.root.dir}/server-framework.jar"/>
+    	<pathelement path="${build.root.dir}/server-pf.jar"/>
+    	<pathelement path="${build.root.dir}/server-shared-applicationusers.jar"/>
+    	<pathelement path="${build.root.dir}/server-shared-enumerations.jar"/>
+    	<pathelement path="${build.root.dir}/server-shared-pf.jar"/>
+    	<pathelement path="${build.root.dir}/server-shared-services-impl.jar"/>
+    	<pathelement path="${build.root.dir}/server-shared-services.jar"/>
+    	<pathelement path="${build.root.dir}/server-shared-types.jar"/>
+    	<pathelement path="${build.root.dir}/server-shared-utils.jar"/>
+    	<pathelement path="${build.root.dir}/storedResults-shared.jar"/>
+        <pathelement path="${xlib_jar_dir}/postgresql-9.2-1002.jdbc4.jar"/>
+        <pathelement path="${oracle.jdbc}"/>
+        <pathelement path="${xlib_jar_dir}/db2jcc.jar"/>
+        <pathelement path="${xlib_jar_dir}/db2jcc_license_cu.jar"/>
+        <pathelement path="${xlib_jar_dir}/sqljdbc4.jar"/>
+        <pathelement path="${xlib_jar_dir}/jtds-1.2.2.jar"/>
+        <pathelement path="${build.dest}"/>
+        <pathelement path="${build.gendest}"/>
+        <pathelement path="${xlib_jar_dir}/ehcache-1.1.jar"/>
+    </path>
+
+    <path id="compile.dac.test.classpath">
+        <path refid="compile.dac.classpath"/>
+        <pathelement path="${build.root.dir}/app-framework.jar"/>
+        <pathelement path="${build.root.dir}/app-framework-test.jar"/>
+        <pathelement path="${build.root.dir}/common-ind.jar"/>
+        <pathelement path="${build.root.dir}/common-framework-test.jar"/>
+        <pathelement path="${build.root.dir}/dabs-components.jar"/>
+        <pathelement path="${build.root.dir}/random.jar"/>
+        <pathelement path="${build.root.dir}/server-dcsf-test.jar"/>
+        <pathelement path="${build.root.dir}/server-pf-tests.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-tests.jar"/>
+        <pathelement path="${build.root.dir}/web-framework-test.jar"/>
+        <pathelement path="${build.root.dir}/webframework.jar"/>
+        <pathelement path="${build.test.dest}"/>
+        <pathelement path="${xlib_jar_dir}/commons-collections-3.2.jar"/>
+        <pathelement path="${xlib_jar_dir}/ldap.jar"/>
+        <pathelement path="${xlib_jar_dir}/jsf-api.jar"/>
+        <pathelement path="${xlib_jar_dir}/junit-4.3.jar"/>
+        <pathelement path="${xlib_jar_dir}/dom4j-1.4.jar"/>
+        <pathelement path="${xlib_jar_dir}/odmg-3.0.jar"/>
+        <pathelement path="${xlib_jar_dir}/cglib-full-2.0.2.jar"/>
+        <pathelement path="${xlib_jar_dir}/jta.jar"/>
+        <pathelement path="${xlib_jar_dir}/mockobjects-core-0.09.jar"/>
+        <pathelement path="${xlib_jar_dir}/mockobjects-jdk1.4-j2ee1.3-0.09.jar"/>
+    </path>
+
+    <target name="build" depends="compile, setup-webapp, jar, setup-war">
+    </target>
+
+    <target name="compile" depends="pre-build">
+        <javac srcdir="${java.main.src.dir}" destdir="${build.dest}" excludes="**/*Alert*.java" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="compile.dac.classpath"/>
+        </javac>
+        <javac srcdir="${java.test.src.dir}" destdir="${build.test.dest}" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <!-- FIXME unit test is writen in Junit 4 -->
+            <exclude name = "com/nextlabs/destiny/container/dac/datasync/DataSync*" />
+            
+            <classpath refid="compile.dac.test.classpath"/>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="${build.root.dir}/dac-classes.jar">
+            <fileset dir="${build.dest}">
+                <include name="**/security/**/*.class"/>
+                <include name="**/security/**/*.hbm.xml"/>
+            </fileset>
+        </jar>
+        <jar destfile="${build.root.dir}/dac-test-classes.jar">
+            <fileset dir="${build.test.dest}"/>
+        </jar>
+        <jar destfile="${build.root.dir}/dac-dataSync.jar">
+            <fileset dir="${build.dest}">
+                <include name="com/nextlabs/destiny/container/dac/datasync/**"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="pre-build">
+        <mkdir dir="${build.dest}"/>
+        <mkdir dir="${build.test.dest}"/>
+        <mkdir dir="${build.gendest}"/>
+    </target>
+
+    <target name="setup-datasources">
+        <mkdir dir="${build.weblib}"/>
+        <copy toDir="${build.weblib}" failonerror="true">
+            <fileset refid="hibernate.lib"/>
+        </copy>
+        <copy file="${xlib_jar_dir}/hibernate2.jar" todir="${build.weblib}" failonerror="true"/>
+
+        <!-- Copy datasource information -->
+        <copy file="${server.base.dir}/resource/main/common.repository.properties" todir="${build.webconf}" failonerror="true"/>
+        <copy file="${hibernate.src.dir}/management.repository.xml" todir="${build.webconf}" failonerror="true"/>
+        <copy file="${hibernate.src.dir}/activity.repository.xml" todir="${build.webconf}" failonerror="true"/>
+        <copy file="${hibernate.src.dir}/policyframework.repository.xml" todir="${build.webconf}" failonerror="true"/>
+        <copy file="${hibernate.src.dir}/dictionary.repository.xml" todir="${build.webconf}" failonerror="true"/>
+        <copy todir="${build.dest}" failonerror="true">
+            <fileset dir="${hibernate.src.dir}">
+                <include name="**/*"/>
+                <exclude name="*" />
+             </fileset>
+        </copy>
+    </target>
+
+    <target name="setup-webapp" depends="setup-datasources">
+        <mkdir dir="${build.root.dir}/work"/>
+        <mkdir dir="${build.root.dir}/webapps"/>
+        <copy todir="${build.weblib}" failonerror="true">
+            <fileset dir="${build.root.dir}">
+            	<include name="agent-types.jar"/>
+            	<include name="common-dictionary.jar"/>
+            	<include name="common-domain-types.jar"/>
+            	<include name="common-domain.jar"/>
+            	<include name="common-framework-types.jar"/>
+            	<include name="common-framework.jar"/>
+            	<include name="common-ind.jar"/>
+            	<include name="common-pf.jar"/>
+            	<include name="common-version-impl.jar"/>
+            	<include name="crypt.jar"/>
+            	<include name="dac-services.jar"/>
+            	<include name="dac-types.jar"/>
+            	<include name="db-init-tools.jar"/>
+            	<include name="dcsf-types.jar"/>
+            	<include name="deployment-types.jar"/>
+            	<include name="inquiry-manager-shared.jar"/>
+            	<include name="log-types.jar"/>
+            	<include name="management-types.jar"/>
+            	<include name="messages.jar"/>
+            	<include name="policy-types.jar"/>
+            	<include name="secure-session.jar"/>
+            	<include name="server-axis-security.jar"/>
+            	<include name="server-datasource.jar"/>
+            	<include name="server-dcsf.jar"/>
+            	<include name="server-dictionary.jar"/>
+            	<include name="server-framework.jar"/>
+            	<include name="server-pf.jar"/>
+            	<include name="server-shared-applicationusers.jar"/>
+            	<include name="server-shared-pf.jar"/>
+            	<include name="server-shared-services-impl.jar"/>
+            	<include name="server-shared-services.jar"/>
+            	<include name="server-shared-types.jar"/>
+            	<include name="server-shared-utils.jar"/>
+            	<include name="storedResults-shared.jar"/>
+            	<include name="version.jar"/>
+            </fileset>
+            <fileset refid="axis.jars"/>
+            <fileset refid="xerces.jars"/>
+        </copy>
+
+        <copy file="${xlib_jar_dir}/mail.jar" todir="${build.weblib}" failonerror="true"/>
+        <copy file="${xlib_jar_dir}/activation.jar" todir="${build.weblib}" failonerror="true"/>
+
+        <copy file="${xlib_jar_dir}/antlr.jar" todir="${build.weblib}" failonerror="true"/>
+
+        <copy file="${xlib_jar_dir}/ldap.jar" todir="${build.weblib}" failonerror="true"/>
+
+        <!-- Copy the EHCACHE jar -->
+        <copy file="${xlib_jar_dir}/ehcache-1.1.jar" todir="${build.weblib}" failonerror="true"/>
+        
+        <!-- For Md5 Digests -->
+        <copy file="${xlib_jar_dir}/commons-codec-1.8.jar" todir="${build.weblib}" failonerror="true"/>
+
+        <copy file="${etc.src.dir}/web.xml" todir="${build.webinf}" failonerror="true"/>
+        <copy file="${etc.src.dir}/index.html" todir="${build.webapp}" failonerror="true"/>
+        <copy file="${etc.src.dir}/ehcache.xml" todir="${build.dest}" failonerror="true"/>
+
+        <!-- Copy empty axis config file -->
+        <copy file="${wsdd.template.dir}/server-config.wsdd" todir="${build.webinf}" failonerror="true"/>
+
+        <!-- Added Inquiry Alert Service to Server WSDD -->
+        <!-- <java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+            <arg value="server"/>
+            <arg value="${public.gen.dir}/${servicesbase.dir}/services/inquiry_alert/v1/deploy-InquiryAlertService.wsdd"/>
+            <classpath refid="compile.dac.classpath"/>
+        </java> -->
+
+        <!-- Added Report Service to Server WSDD -->
+        <java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+            <arg value="server"/>
+            <arg value="${public.gen.dir}/${servicesbase.dir}/services/report/v1/deploy-ReportService.wsdd"/>
+            <classpath refid="compile.dac.classpath"/>
+        </java>
+
+        <!-- Added Secure Session Service to Server WSDD -->
+        <java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+            <arg value="server"/>
+            <arg value="${public.gen.dir}/secureService/dac/${servicesbase.dir}/services/secure_session/v1/deploy-SecureSessionService.wsdd"/>
+            <classpath refid="compile.dac.classpath"/>
+        </java>
+
+        <!-- Added User Preferences Service to Server WSDD -->
+        <java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+            <arg value="server"/>
+            <arg value="${public.gen.dir}/secureService/dac/${servicesbase.dir}/services/user_preferences/v1/deploy-UserPreferencesService.wsdd"/>
+            <classpath refid="compile.dac.classpath"/>
+        </java>
+    </target>
+
+    <target name="setup-war">
+         <war destfile="${war.dir}/dac.war" basedir="${build.webapp}" webxml="${build.webinf}/web.xml" excludes="genclasses/**/*.*, WEB-INF/testclasses/**/*.*"/>
+    </target>
+
+    <target name="test-standalone" description="Runs the standalone test suite">
+        <junit printsummary="withOutAndErr" showoutput="yes" haltonfailure="${junit.haltonfailure}" failureproperty="junit.fail" fork="true">
+            <formatter type="xml"/>
+            <sysproperty key="build.root.dir" value="${build.root.dir}" />
+            <test name="com.bluejungle.destiny.container.dac.DACComponentsTestSuite" todir="${log.dir}/tests"/>
+            <classpath>
+                <path refid="compile.dac.test.classpath"/>
+                <pathelement path="${build.root.dir}/crypt.jar"/>
+                <pathelement path="${xlib_jar_dir}/antlr.jar"/>
+                <pathelement path="${xlib_jar_dir}/commons-digester.jar"/>
+                <pathelement path="${xlib_jar_dir}/commons-beanutils.jar"/>
+            </classpath>
+        </junit>
+    </target>
+
+    <target name="tests" description="Runs the test suite with servers enabled">
+        <!-- Most other junit tests are forked.  This one isn't because it leads to a corrupt XML junit report.  The reason others are forked, is due to the excessive memory utilization and eventually OutOfMemoryError that occurs in the initial VM in which ANT runs.  Changing just this one to not fork does not have a large effect on the memory problem -->
+        <!--
+        <junit printsummary="withOutAndErr" showoutput="yes" haltonfailure="${junit.haltonfailure}" failureproperty="junit.fail" fork="false">
+            <formatter type="xml"/>
+            <sysproperty key="build.root.dir" value="${build.root.dir}" />
+            <test name="com.bluejungle.destiny.bindings.report.v1.ReportServiceTestSuite" todir="${log.dir}/tests"/>
+            <classpath>
+                <path refid="compile.dac.test.classpath"/>
+                <pathelement path="${build.root.dir}/client-security-config.jar"/>
+                <pathelement path="${build.root.dir}/crypt.jar"/>
+                <pathelement path="${build.reporter.classes.dir}"/>
+                <pathelement path="${xlib_jar_dir}/commons-digester.jar"/>
+                <pathelement path="${xlib_jar_dir}/commons-beanutils.jar"/>
+            </classpath>
+        </junit>
+        -->
+    </target>
+
+    <target name="wsdl-generate">
+        <!-- Takes care of the inquiry alert service -->
+    <!--    <wsdl2java url="${wsdl.src.dir}/${servicesbase.dir}/services/InquiryAlertService.v1.wsdl"
+                    output="${public.gen.dir}"
+                    deployscope="application"
+                    serverSide="yes"
+                    skeletonDeploy="no"
+                    implementationClassName="com.bluejungle.destiny.container.dac.InquiryAlertServiceV1Impl"
+                    noimports="no"
+                    verbose="yes"
+                    testcase="yes"
+                    nowrapped="true"
+                    factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+                    trustedCallers="DCC App"
+                    userAuthRequired="true">          --><!-- FIX ME - Should be APPS -->
+<!--            <mapping namespace="http://bluejungle.com/destiny/services/inquiry_alert/v1"
+                     package="com.bluejungle.destiny.services.inquiry_alert.v1" />
+            <mapping namespace="http://bluejungle.com/destiny/bindings/inquiry_alert/v1"
+                     package="com.bluejungle.destiny.bindings.inquiry_alert.v1" />
+            <mapping namespace="http://bluejungle.com/destiny/interfaces/inquiry_alert/v1"
+                     package="com.bluejungle.destiny.interfaces.inquiry_alert.v1" />
+            <mapping namespace="http://bluejungle.com/destiny/types/inquiry_alert/v1"
+                     package="com.bluejungle.destiny.types.inquiry_alert.v1" />
+            <mapping namespace="http://bluejungle.com/destiny/types/inquiry_alert_log/v1"
+                     package="com.bluejungle.destiny.types.inquiry_alert_log.v1" />
+            <mapping namespace="http://bluejungle.com/destiny/types/messaging/v1"
+                     package="com.bluejungle.destiny.types.messaging.v1" />
+            <mapping namespace="http://bluejungle.com/destiny/types/basic/v1"
+                     package="com.bluejungle.destiny.types.basic.v1" />
+        </wsdl2java>
+        <move file="${public.gen.dir}/${servicesbase.dir}/services/inquiry_alert/v1/deploy.wsdd" tofile="${public.gen.dir}/${servicesbase.dir}/services/inquiry_alert/v1/deploy-InquiryAlertService.wsdd"/>
+        <move file="${public.gen.dir}/${servicesbase.dir}/services/inquiry_alert/v1/undeploy.wsdd" tofile="${public.gen.dir}/${servicesbase.dir}/services/inquiry_alert/v1/undeploy-InquiryAlertService.wsdd"/>  -->
+
+        <!-- Takes care of the Report service -->
+        <wsdl2java  url="${wsdl.src.dir}/${servicesbase.dir}/services/ReportService.v1.wsdl"
+                    output="${public.gen.dir}"
+                    deployscope="application"
+                    serverSide="yes"
+                    skeletonDeploy="no"
+                    noimports="no"
+                    verbose="yes"
+                    testcase="yes"
+                    nowrapped="true"
+                    factory="com.bluejungle.destiny.wsgen.SecureServiceGenerator"
+                    trustedCallers="DCC APP"
+                    userAuthRequired="true"
+					timeout="-1"
+                    clientApplication="Inquiry Center">
+            <mapping namespace="http://bluejungle.com/destiny/services/report/v1"
+                     package="com.bluejungle.destiny.services.report.v1" />
+            <mapping namespace="http://bluejungle.com/destiny/bindings/report/v1"
+                     package="com.bluejungle.destiny.bindings.report.v1" />
+            <mapping namespace="http://bluejungle.com/destiny/interfaces/report/v1"
+                     package="com.bluejungle.destiny.interfaces.report.v1" />
+            <mapping namespace="http://bluejungle.com/destiny/types/report/v1"
+                     package="com.bluejungle.destiny.types.report.v1" />
+            <mapping namespace="http://bluejungle.com/destiny/types/basic/v1"
+                     package="com.bluejungle.destiny.types.basic.v1" />
+        </wsdl2java>
+        <move file="${public.gen.dir}/${servicesbase.dir}/services/report/v1/deploy.wsdd" tofile="${public.gen.dir}/${servicesbase.dir}/services/report/v1/deploy-ReportService.wsdd"/>
+        <move file="${public.gen.dir}/${servicesbase.dir}/services/report/v1/undeploy.wsdd" tofile="${public.gen.dir}/${servicesbase.dir}/services/report/v1/undeploy-ReportService.wsdd"/>
+
+    </target>
+
+    <target name="wsdl-compile" depends="pre-build">  <!-- FIX ME - Pre-build does more than it needs to here -->
+        <javac srcdir="${public.gen.dir}/" destdir="${build.gendest}" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="compile.classpath"/>
+            <include name="com/**/*.java"/>
+        </javac>
+    </target>
+
+    <target name="wsdl-jar">
+        <jar destfile="${build.root.dir}/dac-services.jar">
+            <fileset dir="${build.gendest}">
+                <include name="${servicesbase.dir}/services/**/*.class"/>
+                <include name="${servicesbase.dir}/bindings/**/*.class"/>
+                <include name="${servicesbase.dir}/interfaces/**/*.class"/>
+                <exclude name="${servicesbase.dir}/services/**/*TestCase.class"/>
+            </fileset>
+        </jar>
+        <jar destfile="${build.root.dir}/dac-types.jar">
+            <fileset dir="${build.gendest}">
+                <include name="${servicesbase.dir}/types/**/*.class"/>
+                <include name="${servicesbase.nextlabs.dir}/types/**/*.class"/>
+            </fileset>
+        </jar>
+    </target>
+</project>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.inquirymgr.hibernateimpl">
+	
+	<class name="InquiryActionDO" table="INQUIRY_ACTIONS">
+		<!-- Generic persisted properties -->
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		
+		<property name="actionType" type="com.bluejungle.domain.action.hibernateimpl.ActionEnumUserType">
+			<column name="action" sql-type="char(2)" length="2" not-null="true"/>
+		</property>
+
+		<!-- Many actions are linked to the same inquiry definition -->		
+		<many-to-one name="inquiry" 
+					 class="InquiryDO" 
+					 column="inquiry_id"
+					 not-null="true"/>
+	</class>
+</hibernate-mapping>

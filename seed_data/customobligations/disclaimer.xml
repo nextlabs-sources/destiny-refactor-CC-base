@@ -1,0 +1,11 @@
+<Obligation>
+    <DisplayName>Attach Disclaimer</DisplayName>
+    <RunAt>PEP</RunAt>
+    <Name>CE::Disclaimer</Name>
+    <Arguments>
+        <Argument usereditable="true">
+            <Name>Disclaimer Message</Name>
+        </Argument> 
+    </Arguments>
+</Obligation>
+

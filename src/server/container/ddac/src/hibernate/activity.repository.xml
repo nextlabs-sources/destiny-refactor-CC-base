@@ -1,0 +1,12 @@
+<!DOCTYPE hibernate-configuration PUBLIC 
+	"-//Hibernate/Hibernate Configuration DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-2.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<!--
+			Persisted object class mappings
+		-->
+		<mapping resource="com/bluejungle/destiny/container/dabs/components/log/hibernateimpl/PolicyActivityLogEntry.hbm.xml"/>
+	</session-factory>
+</hibernate-configuration>

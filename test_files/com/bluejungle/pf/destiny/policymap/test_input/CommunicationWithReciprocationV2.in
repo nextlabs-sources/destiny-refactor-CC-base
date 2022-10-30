@@ -1,0 +1,2 @@
+DESKTOP 2.0
+id 0 POLICY CommunicationWithReciprocation FOR * ON * SENT_TO user.name="s*" BY user.name="j*" DO deny

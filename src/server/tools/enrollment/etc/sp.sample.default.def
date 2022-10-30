@@ -1,0 +1,8 @@
+####################################################################################
+# This is the definition file for a default share point enrollment. It assumes 
+# a default Active Directory schema.                                       
+# in most cases, user does not need to change this file unless adding new mapping 
+#################################################################################### 
+
+PortalType   SharePoint
+

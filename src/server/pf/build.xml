@@ -1,0 +1,236 @@
+<project name="serverPF" default="build" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<var name="nlbuildroot" value="${basedir}/../../.." />
+	<property name="common.build.script.dir" value="${nlbuildroot}/build_scripts" />
+
+	<!-- Load build properties -->
+	<property name="src.dir" value="${basedir}" />
+    <property name="java.main.src.dir" value="${basedir}/src/java/main" />
+    <property name="java.test.src.dir" value="${basedir}/src/java/test" />
+    <property name="hibernate.main.src.dir" value="${basedir}/src/hibernate/main" />
+    <property name="hibernate.properties" value="${basedir}/etc/policy.repository.properties" />
+    <property name="schema.dest" value="${build.root.dir}/server/pf/schema" />
+    <property name="build.dest" value="${build.root.dir}/server/pf/classes" />
+    <property name="build.test.dest" value="${build.root.dir}/server/pf/testclasses" />
+    <property name="build.webapp" value="${build.root.dir}/server/policy" />
+    <property name="build.weblib" value="${build.webapp}/WEB-INF/lib" />
+    <property name="services.policy.dir" value="com/bluejungle/destiny/services/policy" />
+    <property name="doc.dest" value="${build.root.dir}/server/pf/doc" />
+    <property name="importer.dest" value="${build.root.dir}/tools/locationimporter" />
+    <property name="genappldif.dest" value="${build.root.dir}/tools/genappldif" />
+    <property name="obfuscation.config.file" location="config.xml" />
+    <property name="initial.jar.name" location="${build.root.dir}/orig-server-pf.jar" />
+    <property name="final.jar.name" location="${build.root.dir}/server-pf.jar" />
+
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	<target name="pre-build">
+        <mkdir dir="${build.dest}" />
+        <mkdir dir="${build.test.dest}" />
+        <mkdir dir="${schema.dest}" />
+    </target>
+
+    <fileset id="destiny.jars" dir="${build.root.dir}">
+        <include name="db-init-tools.jar"/>
+        <include name="agent-ipc.jar" />
+        <include name="common-pf.jar" />
+        <include name="common-domain.jar"/>
+        <include name="common-framework.jar" />
+        <include name="common-framework-test.jar" />
+        <include name="server-framework.jar" />
+        <include name="server-datasource.jar" />
+        <include name="policy-types.jar" />
+        <include name="dcsf-types.jar" />
+        <include name="server-dcsf.jar"/>
+        <include name="server-base.jar"/>
+        <include name="server-dcsf-test.jar"/>
+        <include name="management-types.jar"/>
+        <include name="ddif-tools.jar"/>
+        <include name="common-dictionary.jar"/>
+        <include name="server-dictionary.jar"/>
+        <include name="common-version.jar"/>
+        <include name="common-version-impl.jar"/>
+    </fileset>
+
+    <path id="this.compile.classpath">
+        <path refid="compile.classpath" />
+        <pathelement location="${xlib_jar_dir}/antlr.jar" />
+        <pathelement location="${xlib_jar_dir}/ehcache-1.1.jar"/>
+        <fileset refid="hibernate.lib" />
+        <fileset refid="destiny.jars" />
+    </path>
+	
+    <path id="this.compile.test.classpath">
+        <path refid="this.compile.classpath" />
+        <pathelement path="${build.dest}" />
+        <path location="${build.root.dir}/common-pf-test.jar" />
+        <path location="${xlib_jar_dir}/filecomp.jar" />
+        <path location="${build.root.dir}/client-pf.jar" />
+        <path location="${xlib_jar_dir}/junit-4.3.jar" />
+    </path>
+	
+    <target name="copy-hibernate" depends="pre-build">
+        <copy todir="${build.dest}" failonerror="false">
+            <fileset dir="${hibernate.main.src.dir}">
+                <include name="**/*.hbm.xml" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="depend">
+        <depend srcDir="${java.main.src.dir};${java.test.src.dir}" destDir="${build.dest}" cache="${build.root.dir}/server/pf/depcache">
+            <classpath>
+                <fileset refid="destiny.jars"/>
+            </classpath>
+        </depend>
+    </target>
+
+    <target name="compile" depends="pre-build,depend">
+        <javac srcdir="${java.main.src.dir}" destdir="${build.dest}" debug="${compile.debug}" verbose="${compile.verbose}" includes="com/bluejungle/pf/**" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="this.compile.classpath" />
+        </javac>
+        <javac srcdir="${java.test.src.dir}" destdir="${build.test.dest}" debug="${compile.debug}" verbose="${compile.verbose}" includes="com/bluejungle/pf/**" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="this.compile.test.classpath" />
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile,copy-hibernate">
+        <jar destfile="${initial.jar.name}" basedir="${build.dest}" excludes="com/bluejungle/destiny/services/common/types/**, com/bluejungle/destiny/services/policy/**" />
+        <if>
+          <equals arg1="${build.without.obfuscation}" arg2="yes"/>
+          <then>
+            <copy file="${initial.jar.name}" tofile="${final.jar.name}" overwrite="true"/>
+          </then>
+          <else>
+            <allatori config="${obfuscation.config.file}" />
+          </else>
+        </if>
+        <jar destfile="${build.root.dir}/server-pf-tests.jar" basedir="${build.test.dest}" />
+        <jar destfile="${build.root.dir}/location-importer.jar" manifest="etc/importLocation-manifest.txt"/>
+        <jar destfile="${build.root.dir}/genappldif.jar" manifest="etc/genappldif-manifest.txt"/>
+    </target>
+
+    <target name="doc">
+        <mkdir dir="${doc.dest}" />
+        <javadoc sourcepath="${java.main.src.dir}" destdir="${doc.dest}" linksource="yes" classpathref="this.compile.classpath" source="${compile.source}" >
+            <packageset dir="${java.main.src.dir}" defaultexcludes="yes">
+                <include name="com/bluejungle/pf/**" />
+            </packageset>
+            <tag name="requires" description="Requires: " scope="methods" />
+            <tag name="modifies" description="Modifies: " scope="methods" />
+            <tag name="effects" description="Effects: " scope="methods" />
+        </javadoc>
+    </target>
+
+    <target name="run-tests-ui">
+        <java fork="yes" classname="junit.swingui.TestRunner" dir="${build.dest}" taskname="junit" failonerror="true">
+            <arg value="com.bluejungle.pf.destiny.policymap.PolicyDeploymentImplTest" />
+            <arg value="com.bluejungle.pf.destiny.policymap.TestMapBuilder" />
+            <arg value="com.bluejungle.pf.destiny.lifecycle.TestEntityLifecycle" />
+            <arg value="com.bluejungle.pf.tools.TestLocationImporter" />
+            <arg value="com.bluejungle.pf.tools.TestPqlSeedDataTask" />
+            <classpath>
+                <pathelement path="${src.root.dir}/etc/junit" />
+                <pathelement path="${final.jar.name}" />
+                <pathelement path="${build.root.dir}/crypt.jar" />
+                <pathelement path="${xlib_jar_dir}/postgresql-9.2-1002.jdbc4.jar" />
+                <pathelement path="${oracle.jdbc}"/>
+                <pathelement path="${xlib_jar_dir}/db2jcc.jar"/>
+                <pathelement path="${xlib_jar_dir}/db2jcc_license_cu.jar"/>
+                <pathelement path="${xlib_jar_dir}/sqljdbc4.jar"/>
+                <pathelement path="${xlib_jar_dir}/jtds-1.2.2.jar"/>
+                <path refid="this.compile.test.classpath" />
+            </classpath>
+        </java>
+    </target>
+
+
+    <target name="package-location-importer" depends="jar">
+        <mkdir dir="${importer.dest}"/>
+        <mkdir dir="${genappldif.dest}"/>
+        <copy todir="${importer.dest}">
+            <fileset dir="${build.root.dir}">
+                <include name="location-importer.jar"/>
+            </fileset>
+        </copy>
+        <copy todir="${genappldif.dest}">
+            <fileset dir="${build.root.dir}">
+                <include name="genappldif.jar"/>
+            </fileset>
+        </copy>
+        <copy todir="${build.root.dir}/tools/" file="etc/importLocations.bat"/>
+		<copy todir="${build.root.dir}/tools/" file="etc/importLocations.sh"/>
+		
+        <copy todir="${build.root.dir}/tools/" file="etc/genappldif.bat"/>
+		<copy todir="${build.root.dir}/tools/" file="etc/genappldif.sh"/>
+    </target>
+
+    <target name="package-batch-deployer" depends="jar">
+        <jar destfile="${build.root.dir}/batchdeployer.jar" filesetmanifest="merge">
+            <zipgroupfileset refid="destiny.jars"/>
+            <zipgroupfileset dir="${build.root.dir}">
+                <include name="server-pf-tests.jar"/>
+            </zipgroupfileset>
+            <zipgroupfileset file="${final.jar.name}"/>
+            <zipgroupfileset refid="hibernate.lib"/>
+            <zipgroupfileset file="${xlib_jar_dir}/commons-logging-1.0.4.jar"/>
+            <zipgroupfileset file="${xlib_jar_dir}/hibernate2.jar"/>
+            <zipgroupfileset file="${xlib_jar_dir}/postgresql-9.2-1002.jdbc4.jar"/>
+            <zipgroupfileset file="${oracle.jdbc}"/>
+            <zipgroupfileset file="${xlib_jar_dir}/db2jcc.jar"/>
+            <zipgroupfileset file="${xlib_jar_dir}/db2jcc_license_cu.jar"/>
+            <zipgroupfileset file="${xlib_jar_dir}/sqljdbc4.jar"/>
+            <zipgroupfileset file="${xlib_jar_dir}/jtds-1.2.2.jar"/>
+            <zipgroupfileset file="${xlib_jar_dir}/antlr.jar"/>
+            <zipgroupfileset file="${xlib_jar_dir}/mail.jar"/>
+        </jar>
+    </target>
+
+    <target name="tests">
+        <junit fork="yes" forkmode="once" maxmemory="256m" printsummary="withOutAndErr" showoutput="yes" haltonfailure="${junit.haltonfailure}" failureproperty="junit.fail">
+            <jvmarg value="-Djava.library.path=${external.dir}/destiny-dll"/>
+            <formatter type="xml" />
+            <sysproperty key="src.root.dir" value="${nlbuildroot}" />
+            <sysproperty key="build.root.dir" value="${build.root.dir}" />
+            <sysproperty key="external.dir" value="${external.dir}" />
+            <sysproperty key="hibernate.show_sql" value="false" />
+            <sysproperty key="java.util.logging.manager" value="org.apache.juli.ClassLoaderLogManager" />
+            <sysproperty key="java.util.logging.config.file" value="${logging.properties}" />
+            <test name="com.bluejungle.pf.destiny.policymap.PolicyDeploymentImplTest" todir="${log.dir}/tests" />
+            <test name="com.bluejungle.pf.destiny.policymap.TestMapBuilder" todir="${log.dir}/tests" />
+            <test name="com.bluejungle.pf.destiny.lifecycle.TestEntityLifecycle" todir="${log.dir}/tests" />
+            <test name="com.bluejungle.pf.destiny.policymap.TestSTRLog" todir="${log.dir}/tests" />
+            <test name="com.bluejungle.pf.tools.TestLocationImporter" todir="${log.dir}/tests" />
+            <test name="com.bluejungle.pf.tools.TestPqlSeedDataTask" todir="${log.dir}/tests" />
+            <classpath>
+                <pathelement path="${final.jar.name}" />
+                <pathelement path="${xlib_jar_dir}/postgresql-9.2-1002.jdbc4.jar" />
+                <pathelement path="${oracle.jdbc}" />
+                <pathelement path="${xlib_jar_dir}/db2jcc.jar"/>
+                <pathelement path="${xlib_jar_dir}/db2jcc_license_cu.jar"/>
+                <pathelement path="${xlib_jar_dir}/sqljdbc4.jar"/>
+                <pathelement path="${xlib_jar_dir}/jtds-1.2.2.jar"/>
+                <pathelement path="${xlib_jar_dir}/commons-cli-1.0.jar" />
+                <path refid="this.compile.test.classpath" />
+                <path location="${build.root.dir}/common-pf-test.jar" />
+                <path location="${build.root.dir}/crypt.jar" />
+                <path location="${build.root.dir}/server-pf-tests.jar" />
+                <path location="${build.root.dir}/agent-manager.jar" />
+                <path location="${build.root.dir}/profile-manager.jar" />
+                <path location="${build.root.dir}/policy-deploy-manager.jar" />
+                <path location="${build.root.dir}/agent-manager.jar" />
+                <path location="${build.root.dir}/profile-manager.jar" />
+                <path location="${build.root.dir}/policy-deploy-manager.jar" />
+                <path location="${build.root.dir}/common-version.jar" />
+                <path location="${xlib_jar_dir}/ehcache-1.1.jar"/>
+                <pathelement path="${xlib_jar_dir}/commons-digester.jar"/>
+                <pathelement path="${xlib_jar_dir}/commons-beanutils.jar"/>
+            	<path location="${xlib_jar_dir}/tomcat-juli.jar" />
+            </classpath>
+        </junit>
+    </target>
+
+    <target name="build" depends="jar">
+    </target>
+
+</project>

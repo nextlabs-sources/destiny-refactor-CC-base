@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Request xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" ReturnPolicyIdList="false" CombinedDecision="false">
+   <Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" xml:id="action1">
+      <Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">OPEN</AttributeValue>
+      </Attribute>
+   </Attributes>
+   <Attributes Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" xml:id="user2">
+      <Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">S-1-5-21-2686955786-3010013143-2770737529-5173</AttributeValue>
+      </Attribute>
+      <Attribute AttributeId="email" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">aishwarya@nextlabs.com</AttributeValue>
+      </Attribute>
+      <Attribute AttributeId="name" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Aishwarya</AttributeValue>
+      </Attribute>
+   </Attributes>
+   <Attributes Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" xml:id="user1">
+      <Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">S-1-5-21-2686955786-3010013143-2770737529-5172</AttributeValue>
+      </Attribute>
+      <Attribute AttributeId="email" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">shiqiang.duan@nextlabs.com</AttributeValue>
+      </Attribute>
+      <Attribute AttributeId="name" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Duan</AttributeValue>
+      </Attribute>
+   </Attributes>
+   <Attributes Category="urn:nextlabs:names:evalsvc:1.0:attribute-category:host" xml:id="host1">
+      <Attribute AttributeId="urn:nextlabs:names:evalsvc:1.0:host:inet_address" IncludeInResult="false">
+         <AttributeValue DataType="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress">10.63.0.1</AttributeValue>
+      </Attribute>
+   </Attributes>
+   <Attributes Category="urn:nextlabs:names:evalsvc:1.0:attribute-category:application" xml:id="application1">
+      <Attribute AttributeId="urn:nextlabs:names:evalsvc:1.0:application:application-id" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">word</AttributeValue>
+      </Attribute>
+   </Attributes>
+   <Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" xml:id="resource2">
+      <Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Document2.doc</AttributeValue>
+      </Attribute>
+      <Attribute AttributeId="urn:nextlabs:names:evalsvc:1.0:resource:resource-type" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">fso</AttributeValue>
+      </Attribute>
+      <Attribute AttributeId="urn:nextlabs:names:evalsvc:1.0:resource:resource-dimension" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">from</AttributeValue>
+      </Attribute>
+      <Attribute AttributeId="table" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">customer</AttributeValue>
+      </Attribute>
+   </Attributes>
+   <Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" xml:id="resource1">
+      <Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Document1.doc</AttributeValue>
+      </Attribute>
+      <Attribute AttributeId="urn:nextlabs:names:evalsvc:1.0:resource:resource-type" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">fso</AttributeValue>
+      </Attribute>
+      <Attribute AttributeId="urn:nextlabs:names:evalsvc:1.0:resource:resource-dimension" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">from</AttributeValue>
+      </Attribute>
+      <Attribute AttributeId="table" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">employee</AttributeValue>
+      </Attribute>
+   </Attributes>
+   <Attributes Category="urn:oasis:names:tc:xacml:1.0:subject-category:recipient-subject" xml:id="additionalData1">
+      <Attribute AttributeId="urn:nextlabs:names:evalsvc:1.0:recipient:email" IncludeInResult="false">
+         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">nobody@nextlabs.com</AttributeValue>
+      </Attribute>
+   </Attributes>
+   <MultiRequests>
+      <RequestReference>
+         <AttributesReference ReferenceId="action1"/>
+         <AttributesReference ReferenceId="host1"/>
+         <AttributesReference ReferenceId="user1"/>
+         <AttributesReference ReferenceId="application1"/>
+         <AttributesReference ReferenceId="resource1"/>
+         <AttributesReference ReferenceId="additionalData1"/>
+      </RequestReference>
+      <RequestReference>
+         <AttributesReference ReferenceId="action1"/>
+         <AttributesReference ReferenceId="host1"/>
+         <AttributesReference ReferenceId="user2"/>
+         <AttributesReference ReferenceId="application1"/>
+         <AttributesReference ReferenceId="resource2"/>
+         <AttributesReference ReferenceId="additionalData1"/>
+      </RequestReference>
+   </MultiRequests>
+</Request>

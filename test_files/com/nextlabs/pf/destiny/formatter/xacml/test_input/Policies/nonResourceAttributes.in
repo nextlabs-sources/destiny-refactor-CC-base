@@ -1,0 +1,10 @@
+policy resourceAttributes
+description "test various resource attributes"
+DO ALLOW
+FOR *
+ON *
+TO *
+BY user.name="Ringo Starr" OR application.url="http://www.thebeatles.com" OR host.name="fabfour"
+WHERE ENVIRONMENT.REMOTE_ACCESS=1 AND CURRENT_TIME.IDENTITY>"Nov 20, 1982 12:00:00 PM" AND ENVIRONMENT.TIME_SINCE_LAST_HEARTBEAT<300
+
+

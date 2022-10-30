@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: //depot/Destiny/D_Nimbus/release/8.1/main/src/common/pf/src/xsd/com/bluejungle/pf/destiny/services/types/PolicyTypes.xsd#1 $ -->
+<xs:schema  targetNamespace="http://bluejungle.com/destiny/services/policy/types"
+            xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            xmlns:types="http://bluejungle.com/destiny/services/policy/types"
+            xmlns:frameworkTypes="http://bluejungle.com/destiny/framework/types">
+
+    <xs:import namespace="http://bluejungle.com/destiny/framework/types"
+            schemaLocation="BasicTypes.xsd"/>
+
+    <xs:import namespace="http://bluejungle.com/destiny/framework/types"
+               schemaLocation="Search.xsd"/>
+
+    <xs:complexType name="SubjectDTO">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="id" type="frameworkTypes:ID" minOccurs="1" maxOccrus="1"/>
+            <xs:element name="uid" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="uniqueName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="type" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SubjectDTOList">
+        <xs:sequence>
+           <xs:element name="subjects" type="types:SubjectDTO" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+	<xs:complexType name="SystemUser">
+		<xs:sequence>
+			<xs:element name="userSubjectType" type="xs:string" minOccurs="1"/>
+			<xs:element name="systemId" type="xs:string" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+    <xs:complexType name="DeploymentRequest">
+        <xs:attribute name="agentHost" type="xs:string" use="required"/>
+        <xs:attribute name="agentType" type="types:AgentTypeEnum" use="required"/>
+        <xs:attribute name="timestamp" type="xs:dateTime" use="optional"/>
+		<xs:sequence>
+            <xs:choice>
+                <xs:element name="policyUsers" type="types:SystemUser" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="userSubjectTypes" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:choice>
+            <xs:element name="agentCapabilities" type="types:AgentCapability" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="AgentTypeEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="DESKTOP"/>
+            <xs:enumeration value="FILE_SERVER"/>
+            <xs:enumeration value="PORTAL"/>
+            <xs:enumeration value="ACTIVE_DIRECTORY"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="AgentCapability">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="FILESYSTEM"/>
+            <xs:enumeration value="PORTAL"/>
+            <xs:enumeration value="EMAIL"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="Role">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Policy_Analyst"/>
+            <xs:enumeration value="Policy_Administrator"/>
+            <xs:enumeration value="System_Administrator"/>
+            <xs:enumeration value="Business_Analyst"/>
+            <xs:enumeration value="Report_Administrator"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="Component">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Policy"/>
+            <xs:enumeration value="Portal"/>
+            <xs:enumeration value="Desktop"/>
+            <xs:enumeration value="Application"/>
+            <xs:enumeration value="Resource"/>
+            <xs:enumeration value="Action"/>
+            <xs:enumeration value="User"/>
+            <xs:enumeration value="Location"/>
+            <xs:enumeration value="Device"/>
+            <xs:enumeration value="SAP"/>
+            <xs:enumeration value="Enovia"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="Access">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ADMIN"/>
+            <xs:enumeration value="READ"/>
+            <xs:enumeration value="WRITE"/>
+            <xs:enumeration value="DELETE"/>
+            <xs:enumeration value="APPROVE"/>
+            <xs:enumeration value="DEPLOY"/>
+            <xs:enumeration value="RENAME"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="AccessList">
+        <xs:sequence>
+            <xs:element name="access" type="types:Access" minOccurs="0" maxOccurs="6"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DefaultAccessAssignment">
+        <xs:sequence>
+            <xs:element name="princiapl" type="types:Principal"/>
+            <xs:element name="defaultAccess" type="types:AccessList"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DefaultAccessAssignmentList">
+        <xs:sequence>
+            <xs:element name="defaultAccessAssignment" type="types:DefaultAccessAssignment" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="DMSUserData">
+        <xs:attribute name="name" type="xs:string" use="optional"/>
+        <xs:sequence>
+            <xs:element name="roles" type="types:Role" minOccurs="0" maxOccurs="3"/>
+        </xs:sequence>
+        <xs:attribute name="defaultRole" type="types:Role" minOccurs="1" maxOccurs="1"/>
+    </xs:complexType>
+
+    <xs:complexType name="DMSExternalUserQueryResultsDTO">
+        <xs:sequence>
+            <xs:element name="matchingAgents" type="types:SubjectDTOList" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DMSRoleData">
+        <xs:sequence>
+           <xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="allApps" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="allowApps" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="components" type="types:Component" minOccurs="0" maxOccurs="4"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:simpleType name="PrincipalType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="USER"/>
+            <xs:enumeration value="USER_GROUP"/>
+        </xs:restriction>
+   </xs:simpleType>
+
+   <xs:complexType name="Principal">
+        <xs:sequence>
+            <xs:element name="ID" type="frameworkTypes:ID"/>
+            <xs:element name="displayName" type="xs:string"/>
+            <xs:element name="type" type="types:PrincipalType"/>
+        </xs:sequence>
+   </xs:complexType>
+
+    <xs:complexType name="DMSRoleDataList">
+        <xs:sequence>
+           <xs:element name="rolesdata" type="types:DMSRoleData" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

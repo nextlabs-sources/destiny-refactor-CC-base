@@ -1,0 +1,28 @@
+ID null COMPONENT spamware = (application.dynamic_attribute = "123" OR application."attribute in quotes" = "456")
+
+
+================ Re-parsed PQL =================
+
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "component": 'COMPONENT'
+        IDENTIFIER: 'spamware'
+        COMPONENT_EXPR: ''
+            "or": ''
+                RELATION_OP: '='
+                    DOT_EXPRESSION: ''
+                        IDENTIFIER: 'application'
+                        IDENTIFIER: 'dynamic_attribute'
+                    QUOTED_STRING: '123'
+                RELATION_OP: '='
+                    DOT_EXPRESSION: ''
+                        IDENTIFIER: 'application'
+                        IDENTIFIER: 'attribute in quotes'
+                    QUOTED_STRING: '456'

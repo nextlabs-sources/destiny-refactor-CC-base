@@ -1,0 +1,33 @@
+<project name="client-common" default="build">
+	<property name="java.main.src.dir" value="${basedir}/src/java/main"/>
+	<property name="build.dest" value="${build.root.dir}/client/common/classes"/>
+	<property name="doc.dest" value="${build.root.dir}/client/common/doc"/>
+		
+	<path id="compile.client.common.classpath">
+        <pathelement location="${build.root.dir}/common-framework.jar"/>
+		<path refid="compile.classpath" />
+	</path>
+	
+	<target name="pre-build">
+		<mkdir dir="${build.dest}"/>
+	</target>
+	
+	<target name="clean">
+		<delete>
+			<fileset dir="${build.dest}" includes="**/*.class"/>
+		</delete>
+	</target>
+	
+	<target name="compile" depends="pre-build">
+		<javac srcdir="${java.main.src.dir}" destdir="${build.dest}" debug="${compile.debug}" verbose="${compile.verbose}"  source="${compile.source}" target="${compile.target}" executable="${compile.executable}" bootclasspath="${compile.bootclasspath}">
+			<classpath refid="compile.client.common.classpath"/>
+		</javac>
+	</target>
+	
+	<target name="jar" depends="compile">
+		<jar destfile="${build.root.dir}/client-common.jar" basedir="${build.dest}"/>
+	</target>
+
+	<target name="build" depends="jar">
+	</target>	
+</project>

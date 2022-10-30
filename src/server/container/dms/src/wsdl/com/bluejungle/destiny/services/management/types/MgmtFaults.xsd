@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema  targetNamespace="http://bluejungle.com/destiny/services/management/types" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:types="http://bluejungle.com/destiny/services/management/types">
+
+	<!-- Add any Management Service specific faults here -->
+	<xs:complexType name="RegistrationFailedException">
+		<xs:sequence>
+			<xs:element name="errorMessages" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

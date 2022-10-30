@@ -1,0 +1,10 @@
+POLICY policywithobligations
+    ATTRIBUTE USAGE
+    FOR (TRUE AND (FALSE OR TRUE))
+    ON (TRUE AND (FALSE OR TRUE))
+    TO (TRUE AND TRUE)
+    BY ((TRUE AND (FALSE OR TRUE)) AND (TRUE AND TRUE) AND (TRUE AND TRUE))
+    DO deny
+    ON deny DO log, notify "email1@company.com" "Message1"
+    ON allow DO notify "email2@company.com" "Message2",log
+    ON dontcare DO log,notify "email3@company.com" "Message3"

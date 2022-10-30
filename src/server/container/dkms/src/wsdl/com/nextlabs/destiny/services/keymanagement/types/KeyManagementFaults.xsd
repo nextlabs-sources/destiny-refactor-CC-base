@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://nextlabs.com/destiny/services/keymanagement/types" 
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+			xmlns:common="http://nextlabs.com/destiny/framework/types"
+			xmlns:tns="http://nextlabs.com/destiny/services/keymanagement/types">
+
+	<xsd:import
+			namespace="http://bluejungle.com/destiny/framework/types" 
+			schemaLocation="../../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicTypes.xsd"/>
+	
+	<xsd:import
+			namespace="http://bluejungle.com/destiny/framework/types" 
+			schemaLocation="../../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicFaults.xsd"/>
+			
+	<xsd:complexType name="KeyManagementFault">
+		<xsd:sequence>
+			<xsd:element name="msg" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="true"/>
+		</xsd:sequence> 
+	</xsd:complexType>
+</xsd:schema>

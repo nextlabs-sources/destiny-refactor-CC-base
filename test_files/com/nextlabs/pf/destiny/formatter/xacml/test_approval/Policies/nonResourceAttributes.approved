@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PolicySet xmlns="urn:oasis:names:tc:xacml:1.0:policy"
+           PolicySetId="Exported NextLabs Policies"
+           PolicyCombiningAlgId="urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:deny-overrides">
+  <Policy
+      xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17
+                          http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+      PolicyId="urn:nextlabs:resourceAttributes"
+      Version="1.0"
+      RuleCombiningAlgId="identifier:rule-combining-algorithm:deny-overrides">
+    <Target>
+      <!-- start SUBJECT -->
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:nextlabs:builtin:string-equal">
+            <AttributeDesignator MustBePresent="true"
+                                 Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                                 AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
+                                 DataType="http://www.w3.org/2001/XMLSchema#string"/>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Ringo Starr</AttributeValue>
+          </Match>
+        </AllOf>
+        <AllOf>
+          <Match MatchId="urn:nextlabs:builtin:string-equal">
+            <AttributeDesignator MustBePresent="true"
+                                 Category="urn:nextlabs:subject-category:application-subject"
+                                 AttributeId="url"
+                                 DataType="http://www.w3.org/2001/XMLSchema#string"/>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">http://www.thebeatles.com</AttributeValue>
+          </Match>
+        </AllOf>
+        <AllOf>
+          <Match MatchId="urn:nextlabs:builtin:string-equal">
+            <AttributeDesignator MustBePresent="true"
+                                 Category="urn:nextlabs:subject-category:host-subject"
+                                 AttributeId="name"
+                                 DataType="http://www.w3.org/2001/XMLSchema#string"/>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">fabfour</AttributeValue>
+          </Match>
+        </AllOf>
+      </AnyOf>
+      <!-- end SUBJECT -->
+    </Target>
+    <Rule Effect="Permit" RuleId="resourceAttributes">
+      <Description>test various resource attributes</Description>
+      <Condition FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <!-- start WHERE -->
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-equal">
+            <AttributeDesignator MustBePresent="true"
+                                 Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                 AttributeId="REMOTE_ACCESS"
+                                 DataType="http://www.w3.org/2001/XMLSchema#integer"/>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#integer">1</AttributeValue>
+          </Apply>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than">
+            <AttributeDesignator MustBePresent="true"
+                                 Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                 AttributeId="identity"
+                                 DataType="http://www.w3.org/2001/XMLSchema#dateTime"/>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#dateTime">Nov 20, 1982 12:00:00 PM</AttributeValue>
+          </Apply>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-less-than">
+            <AttributeDesignator MustBePresent="true"
+                                 Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                                 AttributeId="TIME_SINCE_LAST_HEARTBEAT"
+                                 DataType="http://www.w3.org/2001/XMLSchema#integer"/>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#integer">300</AttributeValue>
+          </Apply>
+        </Apply>
+        <!-- end WHERE -->
+      </Condition>
+    </Rule>
+    <AssociatedAdvice>
+    </AssociatedAdvice>
+  </Policy>
+<PolicySet>

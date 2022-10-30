@@ -1,0 +1,171 @@
+<!--$Id: //depot/Destiny/D_Nimbus/release/8.1/main/src/client/pf/build.xml#1 $-->
+<project name="client-pf" default="build">
+
+	<var name="nlbuildroot" value="${basedir}/../../.." />
+	<property name="java.main.src.dir"   value="${basedir}/src/java/main"/>
+    <property name="java.test.src.dir"   value="${basedir}/src/java/test"/>
+    <property name="build.dest"          value="${build.root.dir}/client/pf/classes"/>
+    <property name="build.test.dest"     value="${build.root.dir}/client/pf/testclasses"/>
+    <property name="doc.dest"            value="${build.root.dir}/client/pf/doc"/>
+    <property name="build.metainf"       value="${build.dest}/META-INF"/>
+    <property name="build.root.security" value="${build.root.dir}/security"/>
+    <property name="build.security"      value="${build.dest}/security"/>
+    <property name="obfuscation.config.file" location="config.xml" />
+
+    <property name="initial.jar.name" location="${build.root.dir}/orig-client-pf.jar" />
+    <property name="final.jar.name" location="${build.root.dir}/client-pf.jar" />
+
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	<fileset id="destiny.jars" dir="${build.root.dir}">
+        <include name="common-pf.jar"/>
+        <include name="policy-types.jar"/>
+        <include name="policy-services.jar"/>
+        <include name="common-framework.jar"/>
+        <include name="common-framework-types.jar"/>
+        <include name="common-domain.jar"/>
+        <include name="server-framework.jar"/>
+        <include name="server-datasource.jar"/>
+        <include name="log-types.jar"/>
+		<include name="crypt.jar" />
+        <include name="agent-common.jar"/>
+        <include name="agent-ipc.jar"/>
+        <include name="app-framework.jar"/>
+        <include name="server-shared-types.jar"/>
+    </fileset>
+
+    <path id="this.compile.classpath">
+        <path refid="compile.classpath"/>
+        <pathelement location="${xlib_jar_dir}/ehcache-1.1.jar"/>
+        <pathelement location="${xlib_jar_dir}/antlr.jar"/>
+        <pathelement location="${xlib_jar_dir}/commons-collections-3.2.jar"/>
+	<pathelement location="${xlib_jar_dir}/castor-0.9.5.4.jar"/>
+	<pathelement location="${xlib_jar_dir}/dnsjava.jar"/>
+        <fileset refid="destiny.jars"/>
+    </path>
+
+    <path id="this.compile.test.classpath">
+        <path refid="this.compile.classpath"/>
+        <pathelement location="${build.root.dir}/server-pf-tests.jar" />
+        <pathelement location="${build.root.dir}/common-pf-test.jar" />
+    </path>
+
+    <target name="pre-build">
+        <mkdir dir="${build.dest}"/>
+		<mkdir dir="${build.test.dest}"/>
+    </target>
+
+    <target name="depend">
+        <depend srcDir="${java.main.src.dir};${java.test.src.dir}" destDir="${build.dest}" cache="${build.root.dir}/client/pf/depcache">
+            <classpath>
+                <fileset refid="destiny.jars"/>
+            </classpath>
+        </depend>
+    </target>
+
+    <target name="compile" depends="pre-build, depend">
+        <javac srcdir="${java.main.src.dir}" destdir="${build.dest}" debug="${compile.debug}"
+            verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="this.compile.classpath"/>
+        </javac>
+        <javac srcdir="${java.test.src.dir}" destdir="${build.test.dest}" debug="${compile.debug}"
+            verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath>
+              <path refid="this.compile.test.classpath"/>
+              <pathelement path="${build.dest}" />
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <copy file="etc/com.bluejungle.destiny.appsecurity.axis.SecureSessionVault" todir="${build.metainf}/services"/>
+        <copy file="${build.root.dir}/policyAuthor-keystore.jks" todir="${build.security}"/>
+        <jar destfile="${initial.jar.name}">
+        	<fileset dir="${java.main.src.dir}" includes="com/nextlabs/pf/destiny/importexport/mapping/mapping.xml"/>
+        	<fileset dir="${build.dest}"/>
+        </jar>
+        <if>
+          <equals arg1="${build.without.obfuscation}" arg2="yes"/>
+          <then>
+            <copy file="${initial.jar.name}" tofile="${final.jar.name}" overwrite="true"/>
+          </then>
+          <else>
+            <allatori config="${obfuscation.config.file}" />
+          </else>
+        </if>
+        <jar destfile="${build.root.dir}/client-pf-tests.jar" basedir="${build.test.dest}" />
+    </target>
+
+    <target name="run-tests-ui" depends="jar">
+        <java fork="yes" classname="junit.swingui.TestRunner" dir="${build.dest}" taskname="junit" failonerror="true">
+            <arg value="com.bluejungle.pf.domain.destiny.obligation.TestAgentObligations" />
+            <arg value="com.bluejungle.pf.engine.destiny.AgentSuite" />
+            <classpath>
+                <pathelement path="${src.root.dir}/etc/junit" />
+                <pathelement path="${final.jar.name}" />
+                <pathelement path="${build.root.dir}/common-pf-test.jar" />
+                <pathelement path="${build.root.dir}/server-pf-tests.jar" />
+                <path refid="this.compile.classpath" />
+                <pathelement path="${build.test.dest}" />
+            </classpath>
+        </java>
+    </target>
+    
+    <target name="tests" depends="jar">
+        <junit fork="yes" forkmode="once" printsummary="withOutAndErr" showoutput="yes" haltonfailure="${junit.haltonfailure}" failureproperty="junit.fail">
+            <jvmarg value="-Djava.library.path=${external.dir}/destiny-dll"/>
+            <formatter type="xml"/>
+            <sysproperty key="src.root.dir" value="${nlbuildroot}" />            
+            <sysproperty key="build.root.dir" value="${build.root.dir}" />            
+            <sysproperty key="external.dir" value="${external.dir}" />            
+            <sysproperty key="java.util.logging.config.file" value="${logging.properties}" />            
+            <test name="com.bluejungle.pf.domain.destiny.resource.TestResourceSpecSizeCond" todir="${log.dir}/tests" />            
+            <test name="com.bluejungle.pf.destiny.services.UNCUtilTest" todir="${log.dir}/tests" />            
+            <test name="com.bluejungle.pf.engine.destiny.AgentSuite" todir="${log.dir}/tests" />
+            <classpath>
+                <pathelement path="${final.jar.name}" />
+                <pathelement path="${build.test.dest}" />
+                <pathelement path="${build.root.dir}/common-pf-test.jar" />
+                <pathelement path="${build.root.dir}/server-pf-tests.jar" />
+                <pathelement path="${build.root.dir}/common-version-impl.jar" />
+                <pathelement path="${build.root.dir}/common-version.jar" />
+                <path refid="this.compile.classpath" />
+            </classpath>
+        </junit>
+    </target>
+
+    <target name="doc">
+        <mkdir dir="${doc.dest}"/>
+        <javadoc sourcepath="${java.main.src.dir}" destdir="${doc.dest}" linksource="yes"
+            classpathref="this.compile.classpath" source="${compile.source}" >
+            <packageset dir="${java.main.src.dir}" defaultexcludes="yes">
+                <include name="com/bluejungle/pf/**"/>
+            </packageset>
+            <tag name="requires" description="Requires: " scope="methods"/>
+            <tag name="modifies" description="Modifies: " scope="methods"/>
+            <tag name="effects" description="Effects: " scope="methods"/>
+        </javadoc>
+    </target>
+
+    <target name="build" depends="jar">
+    </target>
+
+	<target name="build-push-deployment-client" depends="jar" description="creates a jar of PushDeploymentClient">
+ 		<javac srcdir="${java.test.src.dir}" 
+ 			destdir="${build.test.dest}" 
+ 			debug="${compile.debug}" 
+ 			verbose="${compile.verbose}"
+ 			includes="com/bluejungle/pf/destiny/services/PushDeploymentClient.java">
+			<classpath refid="this.compile.classpath"/>
+        </javac>
+ 		<jar destfile="${build.root.dir}/pushDeploymentClient.jar"
+	 		basedir="${build.test.dest}"
+			includes="com/bluejungle/pf/destiny/services/PushDeploymentClient.class"
+			manifest="etc/pushDeploymentClient-manifest.txt"
+ 		/>
+	 	<zip destfile="${build.root.dir}/pushDeploymentClient.zip">
+    		<fileset dir="${build.root.dir}" includes="pushDeploymentClient.jar"/>
+    		<zipfileset dir="${build.root.dir}/policymanager/plugins/com.bluejungle.destiny.policydepend_1.0.0" includes="*.jar" prefix="lib"/>
+  		</zip>	
+	</target>	
+</project>

@@ -1,0 +1,7 @@
+policy misdirected_email_policy
+for resource.name="misdirected*.txt" AND resource.client_id != null
+on email
+sent_to user.client_id != null AND user.client_id != resource.client_id
+by *
+do allow
+on allow do misdirected

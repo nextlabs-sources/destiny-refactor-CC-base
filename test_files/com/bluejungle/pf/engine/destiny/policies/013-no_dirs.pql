@@ -1,0 +1,6 @@
+POLICY TestDirOpenIsAlwaysOK
+    DESCRIPTION "c:\\windows is a directory; opening it should work, anything else should fail."
+    FOR resource.name = "C:\\WINDOWS"
+    ON *
+    BY *
+    DO DENY

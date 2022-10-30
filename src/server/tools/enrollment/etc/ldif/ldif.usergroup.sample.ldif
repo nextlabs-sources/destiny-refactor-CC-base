@@ -1,0 +1,9 @@
+
+dn: cn=group1,ou=ldifgroup,DC=nextlabs,DC=com
+objectGUID: 90001
+objectClass: Group
+cn: group1
+member:: AQUAAAAAAAUVAAAA9jvRJ0qHtrTC4jk+DBQAAA==
+member:: AQUAAAAAAAUVAAAA9jvRJ0qHtrTC4jk+kgQAAA==
+member:: AQUAAAAAAAUVAAAA9jvRJ0qHtrTC4jk+qA0AAA==
+

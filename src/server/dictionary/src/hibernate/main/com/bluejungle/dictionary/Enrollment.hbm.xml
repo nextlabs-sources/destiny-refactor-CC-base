@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping package="com.bluejungle.dictionary">
+    <class name="Enrollment" table="DICT_ENROLLMENTS" dynamic-update="false">
+        <id name="id" column="ID" access="field">
+            <generator class="native"/>
+        </id>
+        <version name="version" column="VERSION" access="field"/>
+
+        <property name="domainName" access="field" type="string">
+            <column name="domain_name" length="128" not-null="true" unique-key="UniqueEnrollmentName"/>
+        </property>
+
+        <property name="enrollmentType" access="field" type="string">
+            <column name="enrollment_type" length="128" not-null="false"/>
+        </property>
+
+        <map name="properties" lazy="false" inverse="true" access="field" cascade="all-delete-orphan">
+            <key column="enrollment_id"/>
+            <index column="name" type="string"/>
+            <one-to-many class="EnrollmentProperty"/>
+        </map>
+
+        <map name="externalMappings" lazy="false" inverse="true" access="property" cascade="all-delete-orphan">
+            <key column="enrollment_id"/>
+            <index-many-to-many column="field" class="ElementField"/>
+            <one-to-many class="ExternalFieldMapping"/>
+        </map>
+
+        <property name="isRecurring" access="field" type="boolean">
+            <column name="isRecurring" not-null="false"/>
+        </property>
+
+        <property name="isActive" access="field" type="boolean">
+            <column name="isActive" not-null="false"/>
+        </property>
+
+    </class>
+</hibernate-mapping>

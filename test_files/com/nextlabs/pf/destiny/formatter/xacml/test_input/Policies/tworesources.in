@@ -1,0 +1,9 @@
+policy two_resources
+    description "Policy with two resources"
+    DO ALLOW
+    FOR resource.fso.name="*.pdf"
+    ON COPY
+    TO NOT (resource.fso.name="[mydesktop]")
+    BY *
+    ON DENY DO LOG 
+    ON ALLOW DO LOG

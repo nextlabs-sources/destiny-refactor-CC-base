@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping
+	package="com.bluejungle.destiny.container.shared.inquirymgr.hibernateimpl">
+	<class name="MonitorDO" table="MONITOR">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name" column="name" type="string" index="monitorNameIndx" />
+		<property name="description">
+			<column name="description" length="2000" />
+		</property>
+		<map name="tags" inverse="true" cascade="all-delete-orphan" table="MONITOR_TAGS">
+			<key column="monitor_id" />
+			<index column="name" type="string" />
+			<one-to-many
+				class="com.bluejungle.destiny.container.shared.inquirymgr.hibernateimpl.MonitorTagDO" />
+		</map>
+		<property name="criteriaJSON">
+			<column name="criteria_json" length="4000" not-null="false" />
+		</property>
+		<property name="alertMessage">
+			<column name="alert_message" length="1500" />
+		</property>
+		<property name="emailAddress" column="email_address" type="string" />
+		<property name="autoDismiss" column="auto_dismiss" type="boolean" />
+		<property name="sendEmail" column="email_admin" type="boolean" />
+		<property name="active" column="is_active" type="boolean"
+			not-null="true" />
+		<property name="createdAt" column="created_datetime" type="timestamp" />
+		<property name="lastUpdatedAt" column="updated_datetime"
+			type="timestamp" />
+		<property name="deleted" column="is_deleted" type="boolean" />
+		<property name="monitorUID" column="uuid" type="string" />
+		<property name="archived" column="is_archived" type="boolean" />
+
+		<property name="sharedMode">
+			<column name="shared_mode" length="45" not-null="true" />
+		</property>
+		<property name="ownerId" column="owner_id" type="long"
+			not-null="true" />
+		<property name="pqlData">
+			<column name="pql_data" length="4000" not-null="false" />
+		</property>
+	</class>
+</hibernate-mapping>

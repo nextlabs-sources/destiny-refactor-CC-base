@@ -1,0 +1,198 @@
+<?xml version="1.0"?>
+
+<DestinyConfiguration xmlns="http://bluejungle.com/destiny/services/management/types">
+    <!-- 
+        Application User component configuration
+    -->
+    <ApplicationUserConfiguration>
+        <AuthenticationMode>Local</AuthenticationMode>
+        <UserRepositoryConfiguration>
+            <ProviderClassName>com.bluejungle.destiny.container.shared.applicationusers.repository.openldapimpl.OpenLDAPUserRepositoryImpl</ProviderClassName>
+            <Properties>
+                <Property>
+                    <Name>server.name</Name>
+                    <Value>dx2000-safdar.bluejungle.com</Value>
+                </Property>
+                <Property>
+                    <Name>server.port</Name>
+                    <Value>389</Value>
+                </Property>
+            </Properties>
+        </UserRepositoryConfiguration>
+    </ApplicationUserConfiguration>
+
+    <MessageHandlers>
+    </MessageHandlers>
+
+    <DMS>
+        <HeartbeatRate>60</HeartbeatRate>
+    </DMS>
+
+    <DCSF>
+        <HeartbeatRate>60</HeartbeatRate>
+    </DCSF>
+
+    <DABS>
+        <HeartbeatRate>60</HeartbeatRate>
+        <TrustedDomainsConfiguration/>
+        <FileSystemLogConfiguration/>
+    </DABS>
+
+    <DPS>
+        <HeartbeatRate></HeartbeatRate>    <!-- Problem here -->
+    </DPS>
+
+    <DAC>
+        <HeartbeatRate>abc</HeartbeatRate>     <!-- Problem here -->
+        <ActivityJournalSettingConfiguration>
+			<SyncOperation>
+				<!-- Sync time can be either TimeInterval or TimeOfDay -->
+				
+				<!-- sync time interval in minutes -->
+				<TimeInterval>15</TimeInterval>
+				
+				<!-- sync time interval as TimeOfDay -->
+				<!-- The time must be in 24 hours format, such as 23:00 (without second)
+				    or 23:00:00 (with second) -->
+				<!--  <TimeOfDay>23:30</TimeOfDay> -->
+				
+				<!-- Maximum running time of sync operation: duration in minutes.
+        			For large data sets, once the operation reaches this duration,
+        			it commits the current data sync and stops. Any remaining data
+        			is synched during the next operation -->
+				<TimeoutInMinutes>120</TimeoutInMinutes>
+			</SyncOperation>
+			<IndexesRebuildOperation>
+				<!-- index rebuild TimeOfDay -->
+				<TimeOfDay>23:00</TimeOfDay>
+				
+				<!--  DaysOfWeek can be more than once a week -->
+				<!--  Possible formats are MON or MONDAY. And the values have to uppercase. -->
+				<DaysOfWeek>
+					<DayOfWeek>TUE</DayOfWeek>
+					<DayOfWeek>THURSDAY</DayOfWeek>
+					<DayOfWeek>SAT</DayOfWeek>
+				</DaysOfWeek>
+				
+				<!--  true if indexes will be rebuild at the scheduled time -->
+				<AutoRebuildIndexes>true</AutoRebuildIndexes>
+				
+				<TimeoutInMinutes>120</TimeoutInMinutes>
+			</IndexesRebuildOperation>
+			<ArchiveOperation>
+				<!-- archive TimeOfDay -->
+				<TimeOfDay>01:30</TimeOfDay>
+				
+				<!--  DaysOfMonth can be more than once a month -->
+				<!--  If the month doesn't have those day, it will be the end of the month
+						such as April 31st will be April 30th.
+				-->
+				<!--
+				<DaysOfMonth>
+					<DayOfMonth>15</DayOfMonth>
+					<DayOfMonth>31</DayOfMonth>
+				</DaysOfMonth>
+				-->
+				
+				<DaysOfDataToKeep>30</DaysOfDataToKeep>
+				
+				<!--  true if archive will be executed at the scheduled time -->
+				<AutoArchive>true</AutoArchive>
+				
+				<TimeoutInMinutes>180</TimeoutInMinutes>
+			</ArchiveOperation>
+		</ActivityJournalSettingConfiguration>
+    </DAC>
+
+    <DEM>
+        <HeartbeatRate>60</HeartbeatRate>
+    </DEM>
+    
+    <ManagementConsole>
+        <HeartbeatRate>65</HeartbeatRate>    
+    </ManagementConsole>
+
+    <Reporter>
+        <HeartbeatRate>60</HeartbeatRate>    
+    </Reporter>
+
+    <!--
+        Repository & Connection Pool configuration
+    -->
+    <Repositories>
+        <Repository>
+            <Name>management.repository</Name>
+            <ConnectionPoolName>management.connection.pool</ConnectionPoolName>
+            <Properties>
+                <Property>
+                    <Name>hibernate.dialect</Name>
+                    <Value>net.sf.hibernate.dialect.PostgreSQLDialect</Value>
+                </Property>
+            </Properties>
+        </Repository>
+        <Repository>
+            <Name>activity.repository</Name>
+            <ConnectionPoolName>activity.connection.pool</ConnectionPoolName>
+            <Properties>
+                <Property>
+                    <Name>hibernate.dialect</Name>
+                    <Value>net.sf.hibernate.dialect.PostgreSQLDialect</Value>
+                </Property>
+            </Properties>
+        </Repository>
+        <Repository>
+            <Name>policyframework.repository</Name>
+            <ConnectionPoolName>policyframework.connection.pool</ConnectionPoolName>
+            <Properties>
+                <Property>
+                    <Name>hibernate.dialect</Name>
+                    <Value>net.sf.hibernate.dialect.PostgreSQLDialect</Value>
+                </Property>
+            </Properties>
+        </Repository>
+        <Repository>
+            <Name>dictionary.repository</Name>
+            <ConnectionPoolName>dictionary.connection.pool</ConnectionPoolName>
+            <Properties>
+                <Property>
+                    <Name>hibernate.dialect</Name>
+                    <Value>[DICT_DATABASE_DIALECT]</Value>
+                </Property>
+            </Properties>
+        </Repository>
+        <ConnectionPools>
+            <ConnectionPool>
+                <Name>policyframework.connection.pool</Name>
+                <Username>root</Username>
+                <Password>514e4f7160517c4e7c4f1371026e4a3f02674465</Password>
+                <ConnectString>jdbc:postgresql://DX2000-SAFDAR:5432/pf</ConnectString>
+                <DriverClassName>org.postgresql.Driver</DriverClassName>
+                <MaxPoolSize>30</MaxPoolSize>
+            </ConnectionPool>
+            <ConnectionPool>
+                <Name>dictionary.connection.pool</Name>
+                <Username>root</Username>
+                <Password>514e4f7160517c4e7c4f1371026e4a3f02674465</Password>
+                <ConnectString>jdbc:postgresql://DX2000-SAFDAR:5432/dictionary</ConnectString>
+                <DriverClassName>org.postgresql.Driver</DriverClassName>
+                <MaxPoolSize>30</MaxPoolSize>
+            </ConnectionPool>
+            <ConnectionPool>
+                <Name>activity.connection.pool</Name>
+                <Username>root</Username>
+                <Password>514e4f7160517c4e7c4f1371026e4a3f02674465</Password>
+                <ConnectString>jdbc:postgresql://DX2000-SAFDAR:5432/activity</ConnectString>
+                <DriverClassName>org.postgresql.Driver</DriverClassName>
+                <MaxPoolSize>30</MaxPoolSize>
+            </ConnectionPool>
+            <ConnectionPool>
+                <Name>management.connection.pool</Name>
+                <Username>root</Username>
+                <Password>514e4f7160517c4e7c4f1371026e4a3f02674465</Password>
+                <ConnectString>jdbc:postgresql://DX2000-SAFDAR:5432/management</ConnectString>
+                <DriverClassName>org.postgresql.Driver</DriverClassName>
+                <MaxPoolSize>30</MaxPoolSize>
+            </ConnectionPool>
+        </ConnectionPools>
+    </Repositories>
+</DestinyConfiguration>

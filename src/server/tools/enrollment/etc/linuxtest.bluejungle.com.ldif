@@ -1,0 +1,183 @@
+# LDIF
+# LDVPv3
+
+dn: dc=linuxtest,dc=bluejungle,dc=com
+objectclass: top
+cn: linuxtest
+objectGUID: linuxtest
+
+dn: cn=ctlam,dc=linuxtest,dc=bluejungle,dc=com
+objectclass: user
+cn: ctlam
+objectGUID: 100050
+objectSID: 100050
+
+dn: cn=Help Desk,dc=linuxtest,dc=bluejungle,dc=com
+objectclass: group 
+cn: Help Desk
+sn: Desk
+objectGUID: 500
+objectSID: 500
+
+dn: ou=hosts,dc=linuxtest,dc=bluejungle,dc=com
+objectclass: top
+cn: linux_hosts
+objectGUID: linux_hosts
+
+dn: cn=linux_file_server,ou=hosts,dc=linuxtest,dc=bluejungle,dc=com
+objectclass: computer 
+cn: linux_file_server
+objectSID: linux_file_server 
+objectGUID: linux_file_server
+
+dn: ou=ldapusers,dc=linuxtest,dc=bluejungle,dc=com
+objectclass: top
+cn: ldapusers
+objectGUID: ldapusers
+
+dn: uid=ldapuser1,ou=ldapusers,dc=linuxtest,dc=bluejungle,dc=com
+objectclass: user
+cn: ldapuser1
+sn: ldapuser1
+objectGUID: 10000
+objectSID: 10000
+proxyAddresses: smtp:ldapuser1@linuxtest.bluejungle.com
+
+dn: uid=ldapuser2,ou=ldapusers,dc=linuxtest,dc=bluejungle,dc=com
+objectclass: user
+cn: ldapuser2
+sn: ldapuser2
+objectGUID: 10001
+objectSID: 10001
+proxyAddresses: smtp:ldapuser2@linuxtest.bluejungle.com
+
+dn: uid=ldapuser3,ou=ldapusers,dc=linuxtest,dc=bluejungle,dc=com
+objectclass: user
+cn: ldapuser3
+sn: ldapuser3
+objectGUID: 10002
+objectSID: 10002
+proxyAddresses: smtp:ldapuser3@linuxtest.bluejungle.com
+
+dn: uid=ldapuser4,ou=ldapusers,dc=linuxtest,dc=bluejungle,dc=com
+objectclass: user
+cn: ldapuser4
+sn: ldapuser4
+objectGUID: 10003
+objectSID: 10003
+proxyAddresses: smtp:ldapuser4@linuxtest.bluejungle.com
+
+dn: cn=Network Crash Dump user,dc=linuxtest,dc=bluejungle,dc=com
+objectclass: user
+cn: Network Crash Dump user
+sn: user
+objectGUID: 34
+objectSID: 34
+
+dn: cn=root,dc=linuxtest,dc=bluejungle,dc=com
+objectclass: user
+cn: root
+objectGUID: 0
+objectSID: 0
+
+dn: cn=test1,dc=linuxtest,dc=bluejungle,dc=com
+objectclass: user
+cn: test1
+objectGUID: 501
+objectSID: 501
+
+dn: cn=test2,dc=linuxtest,dc=bluejungle,dc=com
+objectclass: user
+cn: test2
+objectGUID: 502
+objectSID: 502
+
+dn: cn=test3,dc=linuxtest,dc=bluejungle,dc=com
+objectclass: user
+cn: test3
+objectGUID: 503
+objectSID: 503
+
+dn: cn=test4,dc=linuxtest,dc=bluejungle,dc=com
+objectclass: user
+cn: test4
+objectGUID: 504
+objectSID: 504
+
+dn: ou=groups,dc=linuxtest,dc=bluejungle,dc=com
+objectclass: top
+cn: linuxgroups
+objectGUID: linuxgroups
+
+dn: cn=Domain Admins,ou=groups,dc=linuxtest,dc=bluejungle,dc=com
+objectClass: group
+cn: Domain Admins
+objectGUID: BJID_GROUPID512
+objectSID: BJID_GROUPID512
+member: cn=root,dc=linuxtest,dc=bluejungle,dc=com
+
+dn: cn=Domain Users,ou=groups,dc=linuxtest,dc=bluejungle,dc=com
+objectClass: group
+cn: Domain Users
+objectGUID: BJID_GROUPID513
+objectSID: BJID_GROUPID513
+member: uid=ldapuser1,ou=ldapusers,dc=linuxtest,dc=bluejungle,dc=com
+member: uid=ldapuser2,ou=ldapusers,dc=linuxtest,dc=bluejungle,dc=com
+member: uid=ldapuser3,ou=ldapusers,dc=linuxtest,dc=bluejungle,dc=com
+member: uid=ldapuser4,ou=ldapusers,dc=linuxtest,dc=bluejungle,dc=com
+
+dn: cn=Guests,ou=groups,dc=linuxtest,dc=bluejungle,dc=com
+objectClass: group
+cn: Guests
+objectGUID: BJID_GROUPID546
+objectSID: BJID_GROUPID546
+
+dn: cn=adm,dc=linuxtest,dc=bluejungle,dc=com
+objectClass: group
+cn: adm
+objectGUID: BJID_GROUPID4
+objectSID: BJID_GROUPID4
+member: cn=root,dc=linuxtest,dc=bluejungle,dc=com
+
+dn: cn=bin,dc=linuxtest,dc=bluejungle,dc=com
+objectClass: group
+cn: bin
+objectGUID: BJID_GROUPID1
+objectSID: BJID_GROUPID1
+member: cn=root,dc=linuxtest,dc=bluejungle,dc=com
+
+dn: cn=daemon,dc=linuxtest,dc=bluejungle,dc=com
+objectClass: group
+cn: daemon
+objectGUID: BJID_GROUPID2
+objectSID: BJID_GROUPID2
+member: cn=root,dc=linuxtest,dc=bluejungle,dc=com
+
+dn: cn=disk,dc=linuxtest,dc=bluejungle,dc=com
+objectClass: group
+cn: disk
+objectGUID: BJID_GROUPID6
+objectSID: BJID_GROUPID6
+member: cn=root,dc=linuxtest,dc=bluejungle,dc=com
+
+dn: group=root,dc=linuxtest,dc=bluejungle,dc=com
+objectClass: group
+cn: root
+objectGUID: BJID_GROUPID0
+objectSID: BJID_GROUPID0
+member: cn=root,dc=linuxtest,dc=bluejungle,dc=com
+
+dn: cn=sys,dc=linuxtest,dc=bluejungle,dc=com
+objectClass: group
+cn: sys
+objectGUID: BJID_GROUPID3
+objectSID: BJID_GROUPID3
+member: cn=root,dc=linuxtest,dc=bluejungle,dc=com
+
+dn: cn=wheel,dc=linuxtest,dc=bluejungle,dc=com
+objectClass: group
+cn: wheel
+objectGUID: BJID_GROUPID10
+objectSID: BJID_GROUPID10
+member: cn=root,dc=linuxtest,dc=bluejungle,dc=com
+

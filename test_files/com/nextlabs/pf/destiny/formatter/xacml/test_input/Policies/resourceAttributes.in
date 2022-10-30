@@ -1,0 +1,7 @@
+policy resourceAttributes
+description "test various resource attributes"
+DO ALLOW
+FOR resource.fso.name="*.txt" AND resource.fso.size=100 AND resource.fso.custom_attr="custom value"
+ON *
+TO *
+BY *

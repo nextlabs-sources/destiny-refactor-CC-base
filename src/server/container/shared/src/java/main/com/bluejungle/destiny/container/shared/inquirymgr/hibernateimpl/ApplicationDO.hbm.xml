@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.inquirymgr.hibernateimpl">
+	
+	<class name="ApplicationDO" table="CACHED_APPLICATION">
+		<id name="id">
+			<generator class="native">
+				<param name="sequence">cached_table_sequence</param>
+			</generator>		
+		</id>
+
+		<property name="originalId" column="original_id" type="long" not-null="true" unique="false" index="application_id_index"/> 
+		<property name="name" length="128" not-null="true" unique="false"/>		
+		<property name="timeRelation" type="com.bluejungle.framework.datastore.hibernate.usertypes.TimeRelationUserType" not-null="true" unique="false" update="true" insert="true">
+		  <column name="active_from"/> 
+		  <column name="active_to"/> 
+		</property>
+	</class>
+</hibernate-mapping>

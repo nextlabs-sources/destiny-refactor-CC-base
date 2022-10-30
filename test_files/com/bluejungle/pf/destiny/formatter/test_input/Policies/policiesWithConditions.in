@@ -1,0 +1,19 @@
+policy identical_with_condition1
+    FOR * ON * BY *
+    WHERE CURRENT_TIME.DATE > 12345678
+    DO DENY
+
+policy identical_with_condition2
+    FOR * ON * BY *
+    WHERE CURRENT_TIME.day_in_month > 12345678
+    DO DENY
+
+policy identical_with_condition1a
+    FOR * ON * BY *
+    WHERE environment.CURRENT_TIME.DATE > 12345678
+    DO DENY
+
+policy identical_with_condition2a
+    FOR * ON * BY *
+    WHERE ENVIRONMENT.CURRENT_TIME.day_in_month > 12345678
+    DO DENY

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.nextlabs.destiny.container.shared.inquirymgr.hibernateimpl">
+	<class name="SavedReportDO" table="SAVED_REPORTS">
+		<!-- Generic persisted properties -->
+		<id name="id" column="id">
+			<generator class="native">
+				<param name="sequence">SAVED_RPT_SEQUENCE</param>
+			</generator>
+		</id>
+
+		<property name="title" column="title" type="string" not-null="true" index="saveReportNameIdx" />
+		<property name="description">
+		   <column name="description" length="2000"/>
+		</property>
+		<property name="sharedMode">
+		   <column name="shared_mode" length="45" not-null="true"/>
+		</property>
+		<property name="ownerId" column="owner_id" type="long"
+			not-null="true" />
+		<property name="criteriaJSON">
+		   <column name="criteria_json" length="4000" not-null="false"/>
+		</property>
+		<property name="pqlData">
+		   <column name="pql_data" length="4000" not-null="false"/>
+		</property>
+		<property name="createdDate" type="timestamp" column="created_date"
+			not-null="true" />
+		<property name="lastUpdatedDate" type="timestamp" column="last_updated_date" />
+		<property name="deleted" column="is_deleted" type="boolean"
+			not-null="true" />
+		<property name="inDashboard" column="is_in_dashboard" type="boolean"
+			not-null="true" />
+	</class>
+</hibernate-mapping>

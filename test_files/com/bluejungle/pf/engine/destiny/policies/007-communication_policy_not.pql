@@ -1,0 +1,7 @@
+POLICY CommunicationPolicyNot
+    FOR resource.name = "c:\\communication_policy_not"
+    ON EMAIL
+    SENT_TO not(USER.FIRSTNAME="j*")
+    BY not(host.name="*savaii*")
+    DO DENY
+    ON DENY DO policyNOT

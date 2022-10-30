@@ -1,0 +1,17 @@
+<xs:schema 	targetNamespace="http://bluejungle.com/destiny/types/effects/v1" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:types="http://bluejungle.com/destiny/types/effects/v1">
+
+	<xs:simpleType name="EffectType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="allow"/>
+			<xs:enumeration value="deny"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="EffectList">
+		<xs:sequence>
+			<xs:element name="values" type="types:EffectType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

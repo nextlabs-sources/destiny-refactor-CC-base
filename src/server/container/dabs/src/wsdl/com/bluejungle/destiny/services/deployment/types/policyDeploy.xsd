@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 	targetNamespace="http://bluejungle.com/destiny/services/deployment/types" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:types="http://bluejungle.com/destiny/services/deployment/types">
+
+	<xs:complexType name="PolicyPushList">
+		<xs:sequence>
+			<xs:element name="pushId" type="xs:long" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="pushInfo" type="types:PolicyPushInfo" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PolicyPushInfo">
+		<xs:sequence>
+			<xs:element name="hostName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="portNb" type="xs:unsignedShort" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

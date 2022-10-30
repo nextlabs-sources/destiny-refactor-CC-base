@@ -1,0 +1,15 @@
+<!DOCTYPE hibernate-configuration PUBLIC 
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-2.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!--
+            Persisted object class mappings
+        -->
+        <mapping resource="com/bluejungle/pf/destiny/lifecycle/DevelopmentEntity.hbm.xml"/>
+        <mapping resource="com/bluejungle/pf/destiny/lifecycle/DeploymentEntity.hbm.xml"/>
+        <mapping resource="com/bluejungle/pf/destiny/lifecycle/DeploymentRecord.hbm.xml"/>
+        <mapping resource="com/bluejungle/pf/destiny/policymap/STRLog.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

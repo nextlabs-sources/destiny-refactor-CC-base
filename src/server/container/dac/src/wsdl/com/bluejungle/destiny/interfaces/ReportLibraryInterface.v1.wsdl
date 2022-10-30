@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+					xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+					xmlns:action="http://bluejungle.com/destiny/types/actions/v1"
+					xmlns:result="http://bluejungle.com/destiny/types/report_result/v1"
+					xmlns:basic="http://bluejungle.com/destiny/types/basic/v1"
+					xmlns:effect="http://bluejungle.com/destiny/types/effects/v1"
+					xmlns:faults="http://bluejungle.com/destiny/types/basic_faults/v1"
+					xmlns:obligation="http://bluejungle.com/destiny/types/obligations/v1"
+					xmlns:policy="http://bluejungle.com/destiny/types/policies/v1"
+					xmlns:resource="http://bluejungle.com/destiny/types/resources/v1"
+					xmlns:types="http://bluejungle.com/destiny/types/report/v1" 
+					xmlns:user="http://bluejungle.com/destiny/types/users/v1"
+					xmlns:tns="http://bluejungle.com/destiny/interfaces/report/v1" 
+					targetNamespace="http://bluejungle.com/destiny/interfaces/report/v1">
+
+	<wsdl:types>
+		<xs:schema targetNamespace="http://bluejungle.com/destiny/services/report/v1">
+			<xs:import namespace="http://bluejungle.com/destiny/types/actions/v1" schemaLocation="../types/ActionTypes.v1.xsd"/>
+			<xs:import namespace="http://bluejungle.com/destiny/types/basic_faults/v1" schemaLocation="../types/BasicFaults.v1.xsd"/>
+			<xs:import namespace="http://bluejungle.com/destiny/types/basic/v1" schemaLocation="../types/BasicTypes.v1.xsd"/>
+			<xs:import namespace="http://bluejungle.com/destiny/types/effects/v1" schemaLocation="../types/EffectTypes.v1.xsd"/>
+			<xs:import namespace="http://bluejungle.com/destiny/types/obligations/v1" schemaLocation="../types/ObligationTypes.v1.xsd"/>
+			<xs:import namespace="http://bluejungle.com/destiny/types/policies/v1" schemaLocation="../types/PolicyTypes.v1.xsd"/>
+			<xs:import namespace="http://bluejungle.com/destiny/types/report/v1" schemaLocation="../types/ReportTypes.v1.xsd"/>
+			<xs:import namespace="http://bluejungle.com/destiny/types/report_result/v1" schemaLocation="../types/ReportResultTypes.v1.xsd"/>
+			<xs:import namespace="http://bluejungle.com/destiny/types/resources/v1" schemaLocation="../types/ResourceTypes.v1.xsd"/>
+			<xs:import namespace="http://bluejungle.com/destiny/types/users/v1" schemaLocation="../types/UserTypes.v1.xsd"/>
+		</xs:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="insertReportRequest">
+		<wsdl:part name="newReport" type="types:Report"/>
+	</wsdl:message>
+	
+	<wsdl:message name="insertReportResponse">
+		<wsdl:part name="reportResponse" type="types:Report"/>
+	</wsdl:message>
+
+	<wsdl:message name="deleteReportRequest">
+		<wsdl:part name="reportId" type="basic:Id"/>
+	</wsdl:message>
+	
+	<wsdl:message name="deleteReportResponse"/>
+	
+	<wsdl:message name="getReportByIdRequest">
+		<wsdl:part name="reportId" type="basic:Id"/>
+	</wsdl:message>
+
+	<wsdl:message name="getReportByIdResponse">
+		<wsdl:part name="savedReport" type="types:Report"/>
+	</wsdl:message>
+	
+	<wsdl:message name="getReportsRequest">
+		<wsdl:part name="querySpec" type="types:ReportQuerySpec"/>
+	</wsdl:message>
+
+	<wsdl:message name="getReportsResponse">
+		<wsdl:part name="savedReports" type="types:ReportList"/>
+	</wsdl:message>
+				
+	<wsdl:message name="updateReportRequest">
+		<wsdl:part name="report" type="types:Report"/>
+	</wsdl:message>
+
+	<wsdl:message name="updateReportResponse">
+		<wsdl:part name="updatedResult" type="types:Report"/>
+	</wsdl:message>
+					
+	<!-- Fault messages -->
+	<wsdl:message name="AccessDeniedFault">
+		<wsdl:part name="AccessDeniedFault" type="faults:AccessDeniedFault"/>
+	</wsdl:message>
+	<wsdl:message name="ServiceNotReadyFault">
+		<wsdl:part name="ServiceNotReadyFault" type="faults:ServiceNotReadyFault"/>
+	</wsdl:message>
+	<wsdl:message name="PersistenceFault">
+		<wsdl:part name="PersistenceFault" type="faults:PersistenceFault"/>
+	</wsdl:message>
+	<wsdl:message name="UnknownEntryFault">
+		<wsdl:part name="UnknownEntryFault" type="faults:UnknownEntryFault"/>
+	</wsdl:message>
+	<wsdl:message name="UniqueConstraintViolationFault">
+		<wsdl:part name="UniqueConstraintViolationFault" type="faults:UniqueConstraintViolationFault"/>
+	</wsdl:message>
+	
+	<wsdl:portType name="reportLibraryIF">
+		<!-- Creates a new report -->
+		<wsdl:operation name="insertReport">
+			<wsdl:input message="tns:insertReportRequest"/>
+			<wsdl:output message="tns:insertReportResponse"/>
+			<wsdl:fault name="AccessDeniedFault" message="tns:AccessDeniedFault"/>
+			<wsdl:fault name="PersistenceFault" message="tns:PersistenceFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UniqueConstraintViolationFault" message="tns:UniqueConstraintViolationFault"/>
+		</wsdl:operation>
+	
+		<!-- Deletes an existing report -->
+		<wsdl:operation name="deleteReport">
+			<wsdl:input message="tns:deleteReportRequest"/>
+			<wsdl:output message="tns:deleteReportResponse"/>
+			<wsdl:fault name="AccessDeniedFault" message="tns:AccessDeniedFault"/>
+			<wsdl:fault name="PersistenceFault" message="tns:PersistenceFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+		</wsdl:operation>
+		
+		<!-- Returns a report by id. The report has to be visible to the user -->
+		<wsdl:operation name="getReportById">
+			<wsdl:input message="tns:getReportByIdRequest"/>
+			<wsdl:output message="tns:getReportByIdResponse"/>
+			<wsdl:fault name="AccessDeniedFault" message="tns:AccessDeniedFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+		</wsdl:operation>
+		
+		<!-- Returns the list of reports visible to the user -->
+		<wsdl:operation name="getReports">
+			<wsdl:input message="tns:getReportsRequest"/>
+			<wsdl:output message="tns:getReportsResponse"/>
+			<wsdl:fault name="AccessDeniedFault" message="tns:AccessDeniedFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+		</wsdl:operation>
+		
+		<!-- Updates an existing report -->		
+		<wsdl:operation name="updateReport">
+			<wsdl:input message="tns:updateReportRequest"/>
+			<wsdl:output message="tns:updateReportResponse"/>
+			<wsdl:fault name="AccessDeniedFault" message="tns:AccessDeniedFault"/>
+			<wsdl:fault name="PersistenceFault" message="tns:PersistenceFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+			<wsdl:fault name="UniqueConstraintViolationFault" message="tns:UniqueConstraintViolationFault"/>
+		</wsdl:operation>
+	</wsdl:portType>
+</wsdl:definitions>

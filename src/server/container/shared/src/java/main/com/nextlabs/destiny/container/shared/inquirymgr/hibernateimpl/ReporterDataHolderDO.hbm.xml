@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.nextlabs.destiny.container.shared.inquirymgr.hibernateimpl">
+		
+	<class name="ReporterDataHolderDO" table="REPORT_INTERNAL">
+		<id name="property" column="property" type="string" length="256">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="value">
+			<column name="value" not-null="true" length="1024"/>
+		</property>
+	</class>
+</hibernate-mapping>

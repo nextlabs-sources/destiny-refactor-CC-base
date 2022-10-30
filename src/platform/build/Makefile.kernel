@@ -1,0 +1,31 @@
+# Master makefile for kernel module
+# This kernel master file basically makes another "Makefile"
+# from the Makefile.inc and the kernel makefile template
+# for the kernel source tree to compile the module
+# by Dominic Lam
+
+# Optional Arguments : BUILDTYPE = [debug | release]
+#                    : KVERSION  = version of the kernel
+
+
+# Phony target to make sure they will get built
+.PHONY: clean
+.PHONY: all
+
+# Rule for making the module
+
+all: Makefile
+	make -f Makefile BUILDTYPE=$(BUILDTYPE) KVERSION=$(KVERSION) all
+
+# Rule for cleaning up
+clean: Makefile
+	$(MAKE) -f Makefile BUILDTYPE=$(BUILDTYPE) KVERSION=$(KVERSION) clean
+	rm -f Makefile
+
+# Rule for generating the Makefile 
+Makefile: Makefile.inc
+	cp Makefile.inc Makefile
+	chmod a+w Makefile
+	cat $(PLATFORMDIR)/build/linuxkernel.Makefile.template >> Makefile
+
+

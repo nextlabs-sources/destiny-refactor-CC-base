@@ -1,0 +1,8 @@
+policy policy_with_functions
+    description "Policy with functions"
+    DO ALLOW
+    FOR * ON * TO * BY *
+    WHERE call_function("a", "b", 3, "a string", resource.fso.name) = "purple" AND
+          call_function("c", "d", 3, "a string", resource.fso.name) = 4
+    ON DENY DO LOG "Access denied", DONOTLOG
+    ON ALLOW DO LOG "Access granted", DONOTLOG

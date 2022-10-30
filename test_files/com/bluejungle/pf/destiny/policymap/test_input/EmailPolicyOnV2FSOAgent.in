@@ -1,0 +1,3 @@
+FILE_SERVER 2
+id 0 POLICY TestPolicy FOR * ON * SENT_TO * BY * DO deny
+

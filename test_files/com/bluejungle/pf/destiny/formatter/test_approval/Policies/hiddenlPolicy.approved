@@ -1,0 +1,67 @@
+ID 123 STATUS EMPTY HIDDEN POLICY first_policy_v2
+    DESCRIPTION "this policy is also trivial"
+    ATTRIBUTE ACCESS
+    ATTRIBUTE GOVERNANCE
+    ATTRIBUTE USAGE
+    SEVERITY 123456789
+    FOR TRUE
+    ON TRUE
+    TO TRUE
+    BY TRUE
+    DO allow
+    ON allow DO log, DONOTLOG
+    ON deny DO log, DONOTLOG
+
+
+================ Re-parsed PQL =================
+
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: '123'
+        "status": 'EMPTY'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+        "hidden": 'HIDDEN'
+    "policy": 'POLICY'
+        IDENTIFIER: 'first_policy_v2'
+        "description": 'this policy is also trivial'
+        "attribute": 'ATTRIBUTE'
+            IDENTIFIER: 'ACCESS'
+        "attribute": 'ATTRIBUTE'
+            IDENTIFIER: 'GOVERNANCE'
+        "attribute": 'ATTRIBUTE'
+            IDENTIFIER: 'USAGE'
+        "severity": 'SEVERITY'
+            UNSIGNED: '123456789'
+        TARGET: ''
+            FROM: ''
+                RESOURCE_EXPR: ''
+                    "true": 'TRUE'
+            ACTION_EXPR: ''
+                "true": 'TRUE'
+            "to": ''
+                RESOURCE_EXPR: ''
+                    "true": 'TRUE'
+            SUBJECT_EXPR: ''
+                "true": 'TRUE'
+        EFFECT_CLAUSE: 'DO'
+            EFFECT_TYPE: 'allow'
+        OBLIGATION_CLAUSE: ''
+            "on": 'ON'
+                EFFECT_TYPE: 'allow'
+            OBLIGATION: ''
+                "log": 'log'
+            OBLIGATION: ''
+                CUSTOM_OBLIGATION: ''
+                    IDENTIFIER: 'DONOTLOG'
+        OBLIGATION_CLAUSE: ''
+            "on": 'ON'
+                EFFECT_TYPE: 'deny'
+            OBLIGATION: ''
+                "log": 'log'
+            OBLIGATION: ''
+                CUSTOM_OBLIGATION: ''
+                    IDENTIFIER: 'DONOTLOG'

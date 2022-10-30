@@ -1,0 +1,28 @@
+ID null COMPONENT with_groups1 = (user.ldapgroup = "ldap1" OR user.ldapgroup = "ldap2")
+
+
+================ Re-parsed PQL =================
+
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "component": 'COMPONENT'
+        IDENTIFIER: 'with_groups1'
+        COMPONENT_EXPR: ''
+            "or": ''
+                RELATION_OP: '='
+                    DOT_EXPRESSION: ''
+                        IDENTIFIER: 'user'
+                        IDENTIFIER: 'ldapgroup'
+                    QUOTED_STRING: 'ldap1'
+                RELATION_OP: '='
+                    DOT_EXPRESSION: ''
+                        IDENTIFIER: 'user'
+                        IDENTIFIER: 'ldapgroup'
+                    QUOTED_STRING: 'ldap2'

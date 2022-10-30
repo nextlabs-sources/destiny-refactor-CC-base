@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PolicySet xmlns="urn:oasis:names:tc:xacml:1.0:policy"
+           PolicySetId="Exported NextLabs Policies"
+           PolicyCombiningAlgId="urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:deny-overrides">
+  <Policy
+      xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17
+                          http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+      PolicyId="urn:nextlabs:policy_with_functions"
+      Version="1.0"
+      RuleCombiningAlgId="identifier:rule-combining-algorithm:deny-overrides">
+    <Target>
+    </Target>
+    <Rule Effect="Permit" RuleId="policy_with_functions">
+      <Description>Policy with functions</Description>
+      <Condition FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <!-- start WHERE -->
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+          <Apply FunctionId="urn:nextlabs:builtin:string-equal">
+            <Apply FunctionId="urn:nextlabs:external-function:a:b">
+              <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#integer">3</AttributeValue>
+              <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">a string</AttributeValue>
+              <AttributeDesignator MustBePresent="true"
+                                   Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                   AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+                                   DataType="http://www.w3.org/2001/XMLSchema#string"/>
+            </Apply>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">purple</AttributeValue>
+          </Apply>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-equal">
+            <Apply FunctionId="urn:nextlabs:external-function:c:d">
+              <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#integer">3</AttributeValue>
+              <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">a string</AttributeValue>
+              <AttributeDesignator MustBePresent="true"
+                                   Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                   AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+                                   DataType="http://www.w3.org/2001/XMLSchema#string"/>
+            </Apply>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#integer">4</AttributeValue>
+          </Apply>
+        </Apply>
+        <!-- end WHERE -->
+      </Condition>
+    </Rule>
+    <AssociatedAdvice>
+      <AdviceExpression AdviceId="urn:nextlabs:log" AppliesTo="Permit">
+      </AdviceExpression>
+      <AdviceExpression AdviceId="urn:nextlabs:DONOTLOG" AppliesTo="Permit">
+      </AdviceExpression>
+      <AdviceExpression AdviceId="urn:nextlabs:log" AppliesTo="Deny">
+      </AdviceExpression>
+      <AdviceExpression AdviceId="urn:nextlabs:DONOTLOG" AppliesTo="Deny">
+      </AdviceExpression>
+    </AssociatedAdvice>
+  </Policy>
+<PolicySet>

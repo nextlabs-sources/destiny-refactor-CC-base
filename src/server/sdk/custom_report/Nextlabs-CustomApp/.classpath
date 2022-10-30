@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="src" path="config"/>
+	<classpathentry kind="lib" path="lib/custom-report-shared.jar"/>
+	<classpathentry kind="lib" path="lib/common-framework.jar"/>
+	<classpathentry kind="lib" path="lib/common-domain.jar"/>
+	<classpathentry kind="lib" path="lib/server-datasource.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate2.jar"/>
+	<classpathentry kind="lib" path="lib/server-framework.jar"/>
+	<classpathentry kind="lib" path="lib/postgresql-8.0-311.jdbc3.jar"/>
+	<classpathentry kind="lib" path="lib/ojdbc6.jar"/>
+	<classpathentry kind="lib" path="lib/sqljdbc4.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

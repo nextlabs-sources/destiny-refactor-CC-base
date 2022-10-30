@@ -1,0 +1,13 @@
+         POLICY Policy1
+
+            ATTRIBUTE USAGE
+
+            FOR (TRUE AND (FALSE OR resource.name = "c:\\financepa\\**"))
+
+            ON (TRUE AND (FALSE OR TRUE))
+
+            TO (TRUE AND TRUE)
+
+            BY ((TRUE AND (FALSE OR user.uid = "S-1-5-21-668023798-3031861066-1043980994-3481")) AND (TRUE AND TRUE) AND (TRUE AND TRUE))
+
+            DO deny

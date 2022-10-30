@@ -1,0 +1,144 @@
+<project basedir="." name="datasync_tool" default="build">
+
+	<var name="nlbuildroot" value="${basedir}/../../../.." />
+	<property name="datasync.src.dir"      value="${basedir}/src/java/main/"/>
+
+	<property name="src.sql.dir"      value="${basedir}/sql"/>
+	<property name="datasync.tool.dir"      value="${build.root.dir}/tools/datasync"/>
+	<property name="build.dest"   value="${build.root.dir}/server/tools/datasync/classes/main"/>
+
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	<tstamp>
+		<format property="datasync.timestamp"  pattern="MM/dd/yyyy hh:mm aa" />
+	</tstamp>
+
+	<path id="datasync.classpath">
+		<fileset dir="${datasync.tool.dir}">
+			<include name="lib/**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<target name="clean">
+		<delete dir="${datasync.tool.dir}" failonerror="false"/>
+		<delete dir="${build.dest}" failonerror="false" />
+		<delete dir="${build.root.dir}/datasync.jar" failonerror="false" />
+	</target>
+
+	<target name="pre-build" depends="clean">
+		<mkdir dir="${build.dest}"/>
+		<mkdir dir="${datasync.tool.dir}"/>
+
+		<!-- copy dependence libraries -->
+		<copy todir="${datasync.tool.dir}/lib/nextlabs" failonerror="true">
+			<fileset dir="${build.root.dir}">
+				<include name="common-domain.jar"/>
+				<include name="common-framework.jar"/>
+				<include name="configurationFileParser.jar"/>
+				<include name="crypt.jar"/>
+				<include name="dac-dataSync.jar"/>
+				<include name="inquiry-manager-shared.jar"/>
+				<include name="db-init-tools.jar"/>
+				<include name="server-base.jar"/>
+				<include name="server-base-internal.jar"/>
+				<include name="server-datasource.jar"/>
+				<include name="server-framework.jar"/>
+				<include name="storedResults-shared.jar"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${datasync.tool.dir}/lib/external" failonerror="true" flatten="true">
+			<path>
+				<pathelement path="${xlib_jar_dir}/antlr.jar" />
+				<pathelement path="${xlib_jar_dir}/axis.jar" />
+				<pathelement path="${xlib_jar_dir}/c3p0-0.9.1.2.jar" />
+				<pathelement path="${xlib_jar_dir}/cglib-full-2.0.2.jar" />
+				<pathelement path="${xlib_jar_dir}/commons-beanutils.jar" />
+				<pathelement path="${xlib_jar_dir}/commons-collections-3.2.jar" />
+				<pathelement path="${xlib_jar_dir}/commons-digester.jar" />
+				<pathelement path="${xlib_jar_dir}/commons-logging-1.0.4.jar" />
+				<pathelement path="${xlib_jar_dir}/db2jcc_license_cu.jar" />
+				<pathelement path="${xlib_jar_dir}/db2jcc.jar" />
+				<pathelement path="${xlib_jar_dir}/dom4j-1.4.jar" />
+				<pathelement path="${xlib_jar_dir}/ehcache-1.1.jar" />
+				<pathelement path="${xlib_jar_dir}/hibernate2.jar" />
+				<pathelement path="${xlib_jar_dir}/jaxrpc.jar" />
+				<pathelement path="${xlib_jar_dir}/ldap.jar" />
+				<pathelement path="${xlib_jar_dir}/jta.jar" />
+				<pathelement path="${xlib_jar_dir}/jtds-1.2.2.jar" />
+				<pathelement path="${xlib_jar_dir}/junit-4.3.jar" />
+				<pathelement path="${xlib_jar_dir}/mail.jar" />
+				<pathelement path="${xlib_jar_dir}/odmg-3.0.jar" />
+				<pathelement path="${oracle.jdbc}" />
+				<pathelement path="${xlib_jar_dir}/postgresql-9.2-1002.jdbc4.jar" />
+				<pathelement path="${xlib_jar_dir}/sqljdbc4.jar" />
+				<pathelement path="${xlib_jar_dir}/xercesImpl.jar" />
+			</path>
+		</copy>
+	</target>
+
+	<target name="compile" depends="pre-build">
+		<javac srcdir="${datasync.src.dir}"
+		       destdir="${build.dest}"
+		       debug="${compile.debug}"
+		       verbose="${compile.verbose}"
+		       		source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}"
+		>
+			<classpath refid="datasync.classpath" />
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile" description="creates a jar file for the tool">
+		<copy file="${basedir}/etc/activity.repository.xml"
+			  todir="${build.dest}/conf/"
+		/>
+
+		<copy file="${src.root.dir}/server/base/resource/main/common.repository.properties"
+			  todir="${build.dest}/conf/"
+		/>
+
+		<manifestclasspath property="datasync.jar.classpath" jarfile="${datasync.tool.dir}/datasync.jar">
+			<classpath refid="datasync.classpath" />
+		</manifestclasspath>
+
+		<jar destfile="${build.root.dir}/datasync.jar">
+			<fileset dir="${build.dest}">
+				<include name="**/*"/>
+			</fileset>
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Class-Path" value="${datasync.jar.classpath}" />
+				<attribute name="Main-Class" value="com.nextlabs.destiny.tools.datasync.DatasyncConsole" />
+				<attribute name="Implementation-Version" value="${datasync.timestamp}"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="build" depends="jar"/>
+
+
+	<target name="setup-tool">
+		<copy todir="${datasync.tool.dir}" failonerror="true">
+			<fileset dir="${basedir}/etc/">
+				<include name="datasync.bat"/>
+				<include name="datasync.sh"/>
+				<include name="logging.properties"/>
+			</fileset>
+		</copy>
+		
+		
+		<copy todir="${datasync.tool.dir}" flatten="true">
+			<resources>
+				<file file="${build.root.dir}/datasync.jar" />
+			</resources>
+		</copy>
+
+		<!-- Setup config/definition files -->
+		<copy todir="${datasync.tool.dir}/sql" failonerror="true" flatten="true">
+			<fileset dir="${src.sql.dir}">
+			     <include name="**/*"/>
+			</fileset>
+		</copy>
+	</target>
+
+</project>

@@ -1,0 +1,3 @@
+PORTAL
+id 0 host testhost = host.windowsSid!="#INVALID#" OR host.unixid!="#INVALID#"// This expands to include all hosts, because we do not enroll computers with #INVALID# SID.
+id 1 POLICY TestPolicy FOR resource.portal.modified_by_ldap_group != "BLUEJUNGLE.COM:Groups:engineering" ON * BY ID 0 DO deny

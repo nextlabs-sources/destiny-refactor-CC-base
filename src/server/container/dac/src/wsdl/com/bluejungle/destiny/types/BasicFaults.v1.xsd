@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema  targetNamespace="http://bluejungle.com/destiny/types/basic_faults/v1" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:types="http://bluejungle.com/destiny/types/basic_faults/v1">
+			
+	<!-- The access to a given resource or object is denied -->
+	<xs:complexType name="AccessDeniedFault"/>
+	<!-- An error occured when persisting data -->
+	<xs:complexType name="PersistenceFault"/>
+	<!-- The web service is not ready to handle requests -->
+	<xs:complexType name="ServiceNotReadyFault"/>
+	<!-- The specified entry does not exist -->
+	<xs:complexType name="UnknownEntryFault"/>
+	<xs:complexType name="UniqueConstraintViolationFault">
+		<xs:sequence>
+			<xs:element name="constrainingField" type="xs:string" minOccurs="1" 
+				maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

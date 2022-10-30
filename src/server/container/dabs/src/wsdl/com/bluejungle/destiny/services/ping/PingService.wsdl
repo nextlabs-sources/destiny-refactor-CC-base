@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+					xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+					xmlns:tns="http://bluejungle.com/destiny/services/ping" 
+					targetNamespace="http://bluejungle.com/destiny/services/ping" 
+					name="PingService">
+	
+	<wsdl:message name="pingRequest">
+		<wsdl:part name="pingData" type="xsd:string"/>
+	</wsdl:message>
+	<wsdl:message name="pingResponse">
+		<wsdl:part name="echoedPingData" type="xsd:string"/>
+	</wsdl:message>
+	
+	<wsdl:portType name="PingServiceIF">
+		<wsdl:operation name="ping">
+			<wsdl:input message="tns:pingRequest"/>
+			<wsdl:output message="tns:pingResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="PingServiceIFBinding" type="tns:PingServiceIF">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	
+		<wsdl:operation name="ping">
+			<wsdl:input>
+				<soap:body parts="pingData" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="echoedPingData" use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+	</wsdl:binding>
+	
+	<wsdl:service name="PingService">
+		<wsdl:port name="PingServiceIFPort" binding="tns:PingServiceIFBinding">
+			<soap:address location="http://localhost:8080/dabs/services/PingServiceIFPort"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

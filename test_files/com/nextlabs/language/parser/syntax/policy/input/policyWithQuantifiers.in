@@ -1,0 +1,6 @@
+policy WithQuantifiers is CommunicationPolicy
+  for any true
+  sent_to all true
+  by false
+  do deny
+  

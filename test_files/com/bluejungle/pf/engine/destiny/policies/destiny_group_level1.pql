@@ -1,0 +1,1 @@
+user destiny_group_level1 = user.displayName = "Bernard Harguindeguy" or user.ldapgroup = "BLUEJUNGLE.COM:Groups:engineering"

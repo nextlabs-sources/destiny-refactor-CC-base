@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:types="http://bluejungle.com/destiny/services/management/types" targetNamespace="http://bluejungle.com/destiny/services/management/types">
+<xs:include schemaLocation="BaseProfile.xsd"/>
+
+	<xs:complexType name="UserProfileInfo">
+		<xs:annotation>
+			<xs:docomentation>
+				User Profile Info.  A Profile Info contains all elements of a Profile that are modifiable (e.g not ID, created date, modified date).
+			</xs:docomentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="types:BaseProfileInfo"/>
+		</xs:complexContent>
+	</xs:complexType>
+    
+	<xs:complexType name="UserProfileDTO">
+		<xs:annotation>
+			<xs:docomentation>
+				User Profile Data Transer Object.
+			</xs:docomentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="types:BaseProfileDTO"/>
+		</xs:complexContent>
+	</xs:complexType>
+	
+    <xs:complexType name="UserProfileDTOList">
+   		<xs:complexContent>
+			<xs:extension base="types:BaseProfileDTOList">
+                <xs:sequence>
+                    <xs:element name="userProfileDTO" type="types:UserProfileDTO" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+	</xs:complexType>
+    
+    <xs:complexType name="UserProfileDTOQueryField">
+		<xs:annotation>
+			<xs:docomentation>
+				Represents an enumeration of fields used to query for a list of User Profiles
+			</xs:docomentation>						
+		</xs:annotation>
+   		<xs:simpleContent>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="id"/>
+				<xs:enumeration value="createdDate"/>
+				<xs:enumeration value="modifiedDate"/>
+				<xs:enumeration value="name"/>
+			</xs:restriction>	
+        </xs:simpleContent>
+	</xs:complexType>
+	
+	<xs:complexType name="UserProfileDTOQueryTerm">
+		<xs:sequence>
+			<xs:element name="userProfileDTOQueryField" type="types:UserProfileDTOQueryField"/>
+			<xs:element name="value" type="xs:anyType"/>				
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UserProfileDTOQueryTermSet">
+		<xs:sequence>
+			<xs:element name="userProfileDTOQueryTerm" type="types:UserProfileDTOQueryTerm" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

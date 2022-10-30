@@ -1,0 +1,13 @@
+Obligation>
+    <DisplayName>Warn User</DisplayName>
+    <RunAt>PEP</RunAt>
+    <Name>CE::Warn</Name>
+    <Arguments>
+        <Argument usereditable="true">
+            <Name>Warn Message</Name>
+        </Argument> 
+        <Argument usereditable="true">
+            <Name>Participant Limit</Name>
+        </Argument> 
+    </Arguments>
+</Obligation>

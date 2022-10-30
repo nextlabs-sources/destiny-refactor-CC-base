@@ -1,0 +1,21 @@
+// There is no top-level production for obligations;
+// these tests define the top-level policy production
+// to exercise the obligations production.
+
+policy a1 FOR * ON * BY * DO DENY
+    ON ALLOW DO LOG "hello"
+
+policy a2 FOR * ON * BY * DO DENY
+    ON ALLOW DO LOG "hello" world
+
+policy a3 FOR * ON * BY * DO DENY
+    ON ALLOW DO DONTLOG
+
+policy a4 FOR * ON * BY * DO DENY
+    ON ALLOW DO NOTIFY "asd@fgh.com" "bad stuff happened"
+
+policy a5 FOR * ON * BY * DO DENY
+    ON ALLOW DO NOTIFY "abc@fgh.com" "good stuff happened" BY EMAIL
+
+policy a6 FOR * ON * BY * DO DENY
+    ON ALLOW DO NOTIFY "xyz@fgh.com, blue@blah.com, joe@shmoe.com, pql@pql.org" "no stuff happened" BY IM

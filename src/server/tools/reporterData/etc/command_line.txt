@@ -1,0 +1,3 @@
+java -cp c:\builds\destiny\batchdeployer.jar com.bluejungle.pf.utils.BatchDeployer -password 123blue! -host localhost -port 5432 -file c:\builds\destiny\resource.pql
+
+java -jar c:\builds\destiny\reporterdata\reporterdata.jar -user root -password 123blue! -connect jdbc:postgresql://WIN2K3STD-VM:5432/activity

@@ -1,0 +1,2 @@
+DESKTOP 3.5.0.0.0
+id 0 POLICY TestPolicy FOR * ON QUESTION BY * WHERE * DO deny ON deny DO Log

@@ -1,0 +1,22 @@
+<xs:schema 	targetNamespace="http://bluejungle.com/destiny/services/agent/types" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:types="http://bluejungle.com/destiny/services/agent/types"
+			xmlns:policyTypes="http://bluejungle.com/destiny/services/policy/types"
+			xmlns:mgmttypes="http://bluejungle.com/destiny/services/management/types">
+
+	<xs:import namespace="http://bluejungle.com/destiny/services/management/types" 
+			   schemaLocation="../../../../../../../../../dms/src/wsdl/com/bluejungle/destiny/services/management/types/CommProfile.xsd"/>
+
+	<xs:import namespace="http://bluejungle.com/destiny/services/management/types" 
+			   schemaLocation="../../../../../../../../../dms/src/wsdl/com/bluejungle/destiny/services/management/types/AgentProfile.xsd"/>
+
+	<xs:complexType name="AgentProfileStatusData">
+		<xs:sequence>
+			<xs:element name="lastCommittedAgentProfileName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="lastCommittedAgentProfileTimestamp" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="lastCommittedCommProfileName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="lastCommittedCommProfileTimestamp" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

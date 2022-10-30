@@ -1,0 +1,4 @@
+FILE_SERVER
+id 0 user testuser = user.lastname="keni" or user.firstname="sergey"
+id 1 host testhost = host.windowsSid!="#INVALID#" OR host.unixid!="#INVALID#"// This expands to include all hosts, because we do not enroll computers with #INVALID# SID.
+id 2 POLICY TestPolicy FOR * ON * BY (NOT id 0) AND id 1 DO deny

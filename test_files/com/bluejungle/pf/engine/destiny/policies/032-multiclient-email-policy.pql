@@ -1,0 +1,7 @@
+policy multiclient_email_policy
+for resource.name="multiclient.txt"
+on email
+sent_to user.sent_to_client_count > 1
+by *
+do allow
+on allow do multiclient

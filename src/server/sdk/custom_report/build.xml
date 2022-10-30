@@ -1,0 +1,37 @@
+<project name="custom-report-sdk" default="build"  basedir=".">
+
+	<var name="nlbuildroot" value="${basedir}/../../../.." />
+	<property name="output" value="${build.root.dir}/sdk/custom_report/"/>
+	<property name="dir.name" value="Nextlabs-CustomApp"/>
+
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	<target name="build">
+    	<mkdir dir="${output}" />
+
+        <zip destfile="${output}/Nextlabs-CustomApp.zip">
+        	
+        	<zipfileset dir="${dir.name}" prefix="${dir.name}">
+        		<include name="config/**"/>
+        		<include name="src/**"/>
+        		<include name=".classpath"/>
+        		<include name=".project"/>
+				<include name="build.xml"/>
+    		</zipfileset>
+        	
+        	<zipfileset dir="${build.root.dir}" prefix="${dir.name}/lib">
+        		<include name="common-domain.jar"/>
+        		<include name="common-framework.jar"/>
+        		<include name="custom-report-shared.jar"/>
+        		<include name="server-datasource.jar"/>
+    			<include name="server-framework.jar"/>
+    		</zipfileset>
+        	
+        	<zipfileset file="${xlib_jar_dir}/hibernate2.jar" prefix="${dir.name}/lib" />
+    		<zipfileset file="${xlib_jar_dir}/postgresql-9.2-1002.jdbc4.jar" prefix="${dir.name}/lib" />
+    		<zipfileset file="${oracle.jdbc}" prefix="${dir.name}/lib" />
+    		<zipfileset file="${xlib_jar_dir}/sqljdbc4.jar" prefix="${dir.name}/lib" />
+        </zip>
+    </target>
+	
+</project>

@@ -1,0 +1,30 @@
+<xacml-samlp:XACMLAuthzDecisionQueryType InputContextOnly="true" IssueInstant="2011-10-31T06:44:57.766Z" ReturnContext="false" Version="2.0" xmlns:xacml-samlp="urn:oasis:names:tc:xacml:2.0:profile:saml2.0:v2:schema:protocol">
+    <saml:Issuer SPProvidedID="SPPProvierId" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">https://identity.carbon.wso2.org</saml:Issuer>
+    <xacml-context:Request xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">
+        <xacml-context:Subject SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">
+            <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" DataType="http://www.w3.org/2001/XMLSchema#string">
+                <xacml-context:AttributeValue>admin</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+            <xacml-context:Attribute AttributeId="license" DataType="http://www.w3.org/2001/XMLSchema#string">
+                <xacml-context:AttributeValue>007</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+        </xacml-context:Subject>
+        <xacml-context:Resource xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">
+            <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" DataType="http://www.w3.org/2001/XMLSchema#string">
+                <xacml-context:AttributeValue>http://localhost:8280/services/echo/echoString</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+            <xacml-context:Attribute AttributeId="itar" DataType="http://www.w3.org/2001/XMLSchema#string">
+                <xacml-context:AttributeValue>yes</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+            <xacml-context:Attribute AttributeId="classified" DataType="http://www.w3.org/2001/XMLSchema#string">
+                <xacml-context:AttributeValue>secret</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+        </xacml-context:Resource>
+        <xacml-context:Action xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os">
+            <xacml-context:Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" DataType="http://www.w3.org/2001/XMLSchema#string">
+                <xacml-context:AttributeValue>read</xacml-context:AttributeValue>
+            </xacml-context:Attribute>
+        </xacml-context:Action>
+        <xacml-context:Environment xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os"/>
+    </xacml-context:Request>
+</xacml-samlp:XACMLAuthzDecisionQueryType>

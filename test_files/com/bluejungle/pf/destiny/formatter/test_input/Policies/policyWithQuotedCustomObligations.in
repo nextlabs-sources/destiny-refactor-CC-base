@@ -1,0 +1,5 @@
+policy QuotedCustomObligation
+    FOR * ON * TO * BY *
+    DO ALLOW
+    ON ALLOW DO "C[]U][S()T@#O%$^&M/\\!~~! 6" // unusual name
+    ON DENY DO "~~~!!!~~~###~~~$$$~~~%%%~~~///~~~"("a",66)

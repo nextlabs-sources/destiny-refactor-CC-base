@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<project name="Agent Tools" default="build">
+
+	<var name="nlbuildroot" value="${basedir}/../../../.." />
+	<property name="src.dir"    value="${basedir}/src/java/main"/>
+	<property name="build.dest" value="${build.root.dir}/client/agent/tools/classes"/>
+	<property name="doc.dest" value="${build.root.dir}/client/agent/tools/doc" />
+
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	<path id="compile.classpath">
+		<pathelement path="${build.root.dir}/common-framework.jar" />
+		<pathelement path="${build.root.dir}/common-pf.jar" />	
+		<pathelement path="${build.root.dir}/client-pf.jar" />	
+		<pathelement path="${build.root.dir}/agent-controlmanager.jar" />	
+		<pathelement path="${build.root.dir}/management-types.jar" />	
+		<pathelement path="${xlib_jar_dir}/jargs.jar" />
+	</path>
+	
+	<target name="pre-build">
+		<mkdir dir="${build.dest}"/>
+	</target>
+	
+	<target name="doc">
+		<mkdir dir="${doc.dest}" />
+		<javadoc sourcepath="${src.dir}" destdir="${doc.dest}" linksource="yes" classpathref="compile.classpath" source="${compile.source}" >
+			<packageset dir="${src.dir}" defaultexcludes="yes">
+				<include name="com/bluejungle/destiny/agent/tools/**" />
+				<exclude name="**/tests/**" />
+			</packageset>
+		</javadoc>
+	</target>
+	
+	<target name="compile" depends="pre-build">
+            <javac srcdir="${src.dir}" destdir="${build.dest}" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" includes="com/bluejungle/**" bootclasspath="${compile.bootclasspath}">
+                <classpath refid="compile.classpath" />
+            </javac>
+	</target>		
+	
+	<target name="jar" depends="compile">
+		<jar destfile="${build.root.dir}/agent-tools.jar" basedir="${build.dest}">
+		</jar>
+	</target>
+	
+	<target name="build" depends="jar">
+		<copy todir="${build.root.dir}/agent/lib" file="${build.root.dir}/agent-tools.jar"/>			
+	</target>	
+</project>
+
+

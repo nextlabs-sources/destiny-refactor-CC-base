@@ -1,0 +1,15 @@
+<project default="build">
+
+	<property name="output" value="output/"/>
+	<property name="jar.name" value="report.jar"/>
+
+	<target name="build">
+		<mkdir dir="${output}" />
+		<jar destfile="${output}${jar.name}">
+			<fileset dir="src/reports" />
+			<manifest>
+				<attribute name="Built-By" value="${user.name}"/>
+			</manifest>
+		</jar>
+	</target>
+</project>

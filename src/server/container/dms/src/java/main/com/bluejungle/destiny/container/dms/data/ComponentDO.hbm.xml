@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.dms.data">
+	
+	<class name="ComponentDO" table="COMPONENT">
+
+		<!-- Generic persisted properties -->
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		
+		<!-- Object-specific properties -->
+		<property name="name" type="string" not-null="true" unique="true" length="128"/>
+		<property name="type" type="com.bluejungle.destiny.container.dms.data.DCCComponentEnumUserType">
+			<column name="type" index="ComponentType" not-null="true" length="32"/>
+		</property>
+		<property name="typeDisplayName" type="string" not-null="true" length="128" />
+		<property name="callbackURL" type="string" not-null="true" length="128"/>
+		<property name="componentURL" type="string" not-null="true" length="128"/>
+		<property name="lastHeartbeat" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType"/>
+		<property name="heartbeatRate" type="int" not-null="true"/>		
+		<property name="version" column="version" type="com.bluejungle.framework.datastore.hibernate.usertypes.VersionUserType" not-null="true" />
+	</class>
+</hibernate-mapping>

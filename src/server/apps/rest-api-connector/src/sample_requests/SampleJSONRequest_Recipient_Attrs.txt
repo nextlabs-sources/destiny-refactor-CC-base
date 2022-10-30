@@ -1,0 +1,124 @@
+{
+     "Request": {
+      "ReturnPolicyIdList": "true",
+      "Category": [
+         {
+            "CategoryId": "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
+            "Attribute": [
+               {
+                  "AttributeId": "urn:oasis:names:tc:xacml:1.0:subject:subject-id",
+                  "Value": "Amila",
+                  "IncludeInResult": "false"
+               },
+			   {
+                  "AttributeId": "urn:oasis:names:tc:xacml:1.0:subject:department",
+                  "Value": "ENG",
+                  "IncludeInResult": "false"
+               }
+            ]
+         },
+         {
+            "CategoryId": "urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+            "Attribute": [
+               {
+                  "DataType": "http://www.w3.org/2001/XMLSchema#anyURI",
+                  "AttributeId": "urn:oasis:names:tc:xacml:1.0:resource:resource-id",
+                  "Value": "C:/Temp/Names.txt",
+                  "IncludeInResult": "false"
+               },
+               {
+                  "DataType": "http://www.w3.org/2001/XMLSchema#anyURI",
+                  "AttributeId": "urn:nextlabs:names:evalsvc:1.0:resource:resource-type",
+                  "Value": "fso",
+                  "IncludeInResult": "false"
+               }
+            ]
+         },
+         {
+            "CategoryId": "urn:nextlabs:names:evalsvc:1.0:attribute-category:host",
+            "Attribute": [
+               {
+                  "DataType": "http://www.w3.org/2001/XMLSchema#ipAddress",
+                  "AttributeId": "urn:nextlabs:names:evalsvc:1.0:host:inet_address",
+                  "Value": "10.63.0.131",
+                  "IncludeInResult": "false"
+               },
+			   {
+                  "DataType": "http://www.w3.org/2001/XMLSchema#ipAddress",
+                  "AttributeId": "urn:nextlabs:names:evalsvc:1.0:host:name",
+                  "Value": "BRANI",
+                  "IncludeInResult": "false"
+               }
+            ]
+         },
+         {
+            "CategoryId": "urn:oasis:names:tc:xacml:1.0:subject-category:recipient-subject",
+            "Attribute": [
+               {
+                  "DataType": "http://www.w3.org/2001/XMLSchema#string",
+                  "AttributeId": "urn:nextlabs:names:evalsvc:1.0:recipient:id",
+                  "Value": "ostone",
+                  "IncludeInResult": "false"
+               },
+			   {
+                  "DataType": "http://www.w3.org/2001/XMLSchema#string",
+                  "AttributeId": "urn:nextlabs:names:evalsvc:1.0:recipient:nationality", 
+                  "Value": "US",
+                  "IncludeInResult": "false"
+               },
+			   {
+                  "DataType": "http://www.w3.org/2001/XMLSchema#string",
+                  "AttributeId": "urn:nextlabs:names:evalsvc:1.0:recipient:email",
+                  "Value": "oliver.stone@nextlabs.com",
+                  "IncludeInResult": "false"
+               }
+            ]
+         },
+         {
+            "CategoryId": "urn:oasis:names:tc:xacml:3.0:attribute-category:action",
+            "Attribute": [
+               {
+                  "DataType": "http://www.w3.org/2001/XMLSchema#string",
+                  "AttributeId": "urn:oasis:names:tc:xacml:1.0:action:action-id",
+                  "Value": "EMAIL",
+                  "IncludeInResult": "false"
+               }
+            ]
+         },
+         {
+            "CategoryId": "urn:nextlabs:names:evalsvc:1.0:attribute-category:application",
+            "Attribute": [
+               {
+                  "DataType": "http://www.w3.org/2001/XMLSchema#string",
+                  "AttributeId": "urn:nextlabs:names:evalsvc:1.0:application:application-id",
+                  "Value": "MSExcel",
+                  "IncludeInResult": "false"
+               }
+            ]
+         },
+         {
+            "CategoryId": "urn:oasis:names:tc:xacml:3.0:attribute-category:environment",
+			 "Attribute": [
+               {
+                  "DataType": "http://www.w3.org/2001/XMLSchema#date",
+                  "AttributeId": "urn:oasis:names:tc:xacml:1.0:environment:current-date",
+                  "Value": "2010-01-11",
+                  "IncludeInResult": "false"
+               },
+			   {
+                  "DataType": "http://www.w3.org/2001/XMLSchema#time",
+                  "AttributeId": "urn:oasis:names:tc:xacml:1.0:environment:current-time",
+                  "Value": "13:23:44",
+                  "IncludeInResult": "false"
+               },
+			   {
+                  "DataType": "http://www.w3.org/2001/XMLSchema#dateTime",
+                  "AttributeId": "urn:oasis:names:tc:xacml:1.0:environment:current-dateTime",
+                  "Value": "2010-01-11 13:23:44",
+                  "IncludeInResult": "false"
+               }
+            ]
+         }
+      ]
+   }
+}

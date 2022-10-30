@@ -1,0 +1,215 @@
+<?xml version="1.0"?>
+<!-- ============= build file for ANT v1.x [requires v1.4+] ========= -->
+
+<project name="cli EMMA" default="all" >
+
+	<!-- the default target compiles and runs Main: -->
+	<target name="all" depends="compile, emma, run" />
+
+	<!-- Notes: nlbuildroot must be defined before build-scripts/etc/build.properties and
+		build-scripts/etc/build_external.properties
+	-->
+	<var name="nlbuildroot" value="${basedir}/../../.." />
+	<property name="src.dir" 			value="${basedir}/src/java/main/" />
+	<property name="src.test.dir" 		value="${basedir}/src/java/test/" />
+	<property name="build.project.dir" 	value="${build.root.dir}/common/framework/" />
+	<property name="build.dir" 			value="${build.project.dir}/classes" />
+	<property name="build.test.dir" 	value="${build.project.dir}/testclasses" />
+	<property name="instrumented.dir" 	value="${build.project.dir}/instrumented" />
+	<property name="coverage.dir" 		value="${build.project.dir}/coverage" />
+	<property name="test.name"	 		value="com.nextlabs.shared.tools.TestCliSuite" />
+	
+	<property file="${nlbuildroot}/src/build-scripts/etc/build_external.properties"/>
+
+	<!-- directory that contains emma.jar and emma_ant.jar: -->
+	<property name="emma.dir" value="${external.dir}/emma-2.0.5312/" />
+
+	<!-- path element used by EMMA taskdef below: -->
+	<path id="emma.lib" >
+		<pathelement location="${emma.dir}/lib/emma.jar" />
+		<pathelement location="${emma.dir}/lib/emma_ant.jar" />
+	</path>
+
+	<!-- this loads <emma> and <emmajava> custom tasks: -->
+	<taskdef resource="emma_ant.properties" classpathref="emma.lib" />
+
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+	<target name="clean" description="resets this demo project to a clean state" >
+		<delete dir="${build.dir}" />
+		<delete dir="${instrumented.dir}" />
+		<delete dir="${coverage.dir}" />
+	</target>
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+	<target name="init" >
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.test.dir}" />
+		<mkdir dir="${coverage.dir}" />
+		<path id="run.classpath" >
+			<pathelement location="${build.dir}" />
+		</path>
+	</target>
+
+	<target name="emma" description="turns on EMMA's instrumentation/reporting" >
+		<!-- EMMA instr class output directory (it is important to create
+         this property only when EMMA is enabled:
+    -->
+		<mkdir dir="${instrumented.dir}" />
+
+		<!-- this property, if overriden via -Demma.filter=<list of filter specs>
+         on ANT's command line, will set the coverage filter; by default,
+         all classes found in 'run.classpath' pathref will be instrumented:
+    -->
+		<property name="emma.filter" value="" />
+	</target>
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+	<target name="compile" depends="init" description="compiles the example source code" >
+		<!-- compile using javac [debug="on" ensures richer EMMA reporting]: -->
+		<javac debug="on" srcdir="${src.dir}" destdir="${build.dir}" >
+			<include name="com/nextlabs/shared/tools/**"/>
+		</javac>
+
+		<javac srcdir="${src.test.dir}" 
+			destdir="${build.test.dir}" 
+			includes="com/nextlabs/**"
+			source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}"
+			debug="true">
+			<classpath>
+				<pathelement location="${build.dir}"/>
+				<pathelement location="${xlib_jar_dir}/junit-4.3.jar" />
+			</classpath>
+		</javac>
+
+	</target>
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+	<!-- EMMA ANT tasks are implemented as pseudo-nested tasks: <emma>
+       container task can contain an arbitrary sequence of <instr>,
+       <report>, and <merge>. Both the container tag and each of the nested
+       elements support an optional boolean 'enabled' attribute: setting it
+       to 'false' will no-op the element. This is convenient for
+       sandwhiching normal build tasks between EMMA tasks such that coverage
+       instrumentation and reporting could be enabled on demand.
+  -->
+	<target name="run" depends="init, compile" description="runs the examples" >
+		<!-- Note that EMMA takes regular ANT path elements as instrumentation
+         input, which is exceedingly convenient:
+    -->
+		<emma>
+			<instr instrpathref="run.classpath"
+             destdir="${instrumented.dir}"	       
+             metadatafile="${coverage.dir}/metadata.emma"
+             merge="true"
+      >
+				<!-- note that coverage filters can be set through nested <filter>
+             elements as well: many of EMMA setting are 'mergeable' in the
+             sense that they can be specified multiple times and the result
+             is a union of all such values. Here we are not merging several
+             filters together but merely demonstrating that it is possible:
+        -->
+				<filter value="${emma.filter}" />
+			</instr>
+		</emma>
+
+		<mkdir dir="${build.project.dir}/junit-xml"/>
+		<junit fork="yes" printsummary="true" haltonfailure="yes" >
+			<classpath>
+				<!-- instrumented classes must be first in the classpath: -->
+				<pathelement location="${instrumented.dir}" />
+				<pathelement location="${xlib_jar_dir}/junit-4.3.jar" />
+				<dirset dir="${build.test.dir}" />
+				<path refid="run.classpath" />
+				<!-- the forked JVM must have jact.jar in the classpath: -->
+				<path refid="emma.lib" />
+			</classpath>
+
+			<test name="${test.name}" 
+			todir="${build.project.dir}/junit-xml">
+				<formatter type="xml"/>
+			</test>
+
+			<formatter type="plain"/>
+
+			<jvmarg value="-Demma.coverage.out.file=${coverage.dir}/coverage.emma" />
+			<jvmarg value="-Demma.coverage.out.merge=false" />
+		</junit>
+		
+		
+		<mkdir dir="${build.project.dir}/junit-html"/>
+		<junitreport todir="${build.project.dir}/junit-xml">
+			<fileset dir="${build.project.dir}/junit-xml">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${build.project.dir}/junit-html" />
+		</junitreport>
+
+
+
+
+		<!-- if enabled, generate coverage report(s): -->
+		<emma>
+			<report sourcepath="${src.dir}"
+			        sort="+block,+name,+method,+class"
+			        metrics="method:70,block:80,line:80,class:100"
+			>
+				<!-- collect all EMMA data dumps (metadata and runtime)
+             [this can be done via nested <fileset> fileset elements
+             or <file> elements pointing to a single file]:
+        -->
+				<fileset dir="${coverage.dir}" >
+					<include name="*.emma" />
+				</fileset>
+
+				<!-- for every type of report desired, configure a nested
+             element; various report parameters
+             can be inherited from the parent <report>
+             and individually overridden for each report type:
+        -->
+				<txt outfile="${coverage.dir}/coverage.txt"
+             depth="package"
+             columns="class,method,block,line,name"
+        />
+				<xml outfile="${coverage.dir}/coverage.xml"
+             depth="package"
+        />
+				<html outfile="${coverage.dir}/coverage.html"
+             depth="method"
+             columns="name,class,method,block,line"
+        />
+			</report>
+		</emma>
+	</target>
+
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+	<!-- this target is not explicitly used by the rest of the build: it is a
+       simple demo of how to merge emma output files.  EMMA does not require
+       'typed' files and does not require specific file extentions: any
+       EMMA dump file can contain a mix of metadata and runtime coverage
+       data. <merge> can be used to 'compact' many such files into one for
+       maintenance and to save disk space.
+
+       [note: by default, most targets and command-line utils
+       merge output into existing files, implemented as a file
+       append for speed. 'merge' attribute on those tasks can
+       be used to switch them to file clobber mode.]
+  -->
+	<target name="merge" description="demonstrates dump file merging" >
+		<emma>
+			<merge outfile="${coverage.dir}/session.emma"
+      >
+				<!-- collect all EMMA data dumps (metadata and runtime): -->
+				<fileset dir="${coverage.dir}" >
+					<include name="*.emma" />
+				</fileset>
+			</merge>
+		</emma>
+	</target>
+
+</project>
+<!-- ========= END OF FILE ========================================== -->
+
+
+

@@ -1,0 +1,10 @@
+policy LotsOfCustomObligations
+    description "this policy is also trivial"
+    attribute governance
+    attribute usage
+    attribute access
+    severity 123456789
+    DO ALLOW
+    FOR * ON * TO * BY *
+    ON DENY DO CUSTOM0 // no arguments
+    ON ALLOW DO CUSTOM6( "x", y, "z", 1, 2.3, .4 ) // many arguments

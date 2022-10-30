@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 	targetNamespace="http://bluejungle.com/destiny/services/management/types" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:types="http://bluejungle.com/destiny/services/management/types">
+
+<!-- Base "Data Transfer Object" definition -->
+<xs:complexType name="QueryDTOBase">
+	<xs:sequence>
+		<xs:element name="id" type="xs:long"/>
+	</xs:sequence>
+</xs:complexType>
+
+</xs:schema>

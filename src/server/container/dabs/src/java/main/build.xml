@@ -1,0 +1,249 @@
+<project name="dabs_main_build" default="build">
+
+	<var name="nlbuildroot" value="${basedir}/../../../../../../.." />
+	<property name="main.src.dir"    value="${basedir}"/>
+	<property name="build.dest"      value="${build.root.dir}/server/container/dabs/WEB-INF/classes"/>
+	<property name="build.gendest"   value="${build.root.dir}/server/container/dabs/genclasses"/>
+	<property name="build.webapp"    value="${build.root.dir}/server/container/dabs"/>
+	<property name="build.webinf"    value="${build.webapp}/WEB-INF"/>
+	<property name="build.weblib"    value="${build.webapp}/WEB-INF/lib"/>
+	<property name="build.webconf"   value="${build.webapp}/WEB-INF/conf"/>
+	<property name="dabs.do.dir"     value="com/bluejungle/destiny/container/dabs"/>
+	<property name="server.base.dir" value="${src.root.dir}/server/base/"/>
+	<property name="services.agent.dir"        value="com/bluejungle/destiny/services/agent"/>
+	<property name="services.deployment.dir"   value="com/bluejungle/destiny/services/deployment"/>
+	<property name="services.log.dir"          value="com/bluejungle/destiny/services/log"/>
+	<property name="services.ping.dir"         value="com/bluejungle/destiny/services/ping"/>
+	<property name="nextlabs.services.log.v2.dir" value="com/nextlabs/destiny/services/log/v2"/>
+	<property name="nextlabs.services.log.v3.dir" value="com/nextlabs/destiny/services/log/v3"/>
+	<property name="nextlabs.services.log.v4.dir" value="com/nextlabs/destiny/services/log/v4"/>
+	<property name="nextlabs.services.log.v5.dir" value="com/nextlabs/destiny/services/log/v5"/>
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	<path id="compile.dabs.classpath">
+		<path refid="compile.classpath"/>
+		<pathelement path="${build.root.dir}/agent-manager.jar"/>
+		<pathelement path="${build.root.dir}/app-framework.jar"/>
+		<pathelement path="${build.root.dir}/common-dictionary.jar"/>
+		<pathelement path="${build.root.dir}/common-domain.jar"/>
+		<pathelement path="${build.root.dir}/common-framework.jar"/>
+		<pathelement path="${build.root.dir}/common-pf.jar"/>
+		<pathelement path="${build.root.dir}/common-version-impl.jar"/>
+		<pathelement path="${build.root.dir}/common-version.jar"/>
+		<pathelement path="${build.root.dir}/crypt.jar"/>
+		<pathelement path="${build.root.dir}/dcsf-types.jar"/>
+		<pathelement path="${build.root.dir}/keymanagement-dcc-service.jar"/>
+		<pathelement path="${build.root.dir}/keymanagement-types.jar"/>
+		<pathelement path="${build.root.dir}/management-types.jar"/>
+		<pathelement path="${build.root.dir}/policy-deploy-manager.jar"/>
+		<pathelement path="${build.root.dir}/policy-types.jar"/>
+		<pathelement path="${build.root.dir}/profile-manager.jar"/>
+		<pathelement path="${build.root.dir}/server-base.jar"/>
+		<pathelement path="${build.root.dir}/server-datasource.jar"/>
+		<pathelement path="${build.root.dir}/server-dcsf.jar"/>
+		<pathelement path="${build.root.dir}/server-dictionary.jar"/>
+		<pathelement path="${build.root.dir}/server-framework.jar"/>
+		<pathelement path="${build.root.dir}/server-pf.jar"/>
+		<pathelement path="${build.root.dir}/server-shared-enumerations.jar"/>
+		<pathelement path="${build.root.dir}/server-shared-sharedfolder.jar"/>
+		<pathelement path="${build.root.dir}/server-shared-types.jar"/>
+		<pathelement path="${build.root.dir}/server-shared-utils.jar"/>
+		<pathelement path="${build.dest}"/>
+		<pathelement path="${build.gendest}"/>
+	</path>
+	
+	<target name="pre-build">
+		<mkdir dir="${build.dest}"/>
+		<mkdir dir="${build.gendest}"/>
+		<mkdir dir="${gen.dir}/${services.deployment.dir}/"/>
+		<mkdir dir="${gen.dir}/${services.agent.dir}/"/>
+		<mkdir dir="${gen.dir}/${services.log.dir}/"/>
+	</target>
+	
+	<target name="doc">
+		<mkdir dir="${doc.dest}"/>
+		<javadoc sourcepath="${src.dir}" 
+		         destdir="${doc.dest}" 
+		         linksource="yes" 
+		         classpathref="compile.dabs.classpath" 
+		         source="${compile.source}"
+		>
+			<packageset dir="${src.dir}" defaultexcludes="yes"/>
+		</javadoc>
+	</target>
+	
+	<target name="setup-webapp" depends="pre-build">
+
+		<mkdir dir="${build.weblib}"/>
+		<mkdir dir="${build.root.dir}/work"/>
+		<mkdir dir="${build.root.dir}/webapps"/>
+		<copy todir="${build.weblib}">
+			<fileset dir="${build.root.dir}">
+				<include name="agent-manager.jar"/>
+				<include name="agent-types.jar"/>
+				<include name="app-framework.jar"/>
+				<include name="client-security-config.jar"/>
+				<include name="common-dictionary.jar"/>
+				<include name="common-domain-types.jar"/>
+				<include name="common-domain.jar"/>
+				<include name="common-framework-types.jar"/>
+				<include name="common-framework.jar"/>
+				<include name="common-pf.jar"/>
+				<include name="common-version-impl.jar"/>
+				<include name="crypt.jar"/>
+				<include name="dabs-agent-services.jar"/>
+				<include name="dabs-common-services.jar"/>
+				<include name="dabs-dcc-services.jar"/>
+				<include name="dcsf-types.jar"/>
+				<include name="deployment-types.jar"/>
+				<include name="dms-services.jar"/>
+				<include name="keymanagement-dcc-service.jar"/>
+				<include name="keymanagement-types.jar"/>
+				<include name="log-types.jar"/>
+				<include name="management-types.jar"/>
+				<include name="messages.jar"/>
+				<include name="policy-deploy-manager.jar"/>
+				<include name="policy-types.jar"/>
+				<include name="profile-manager.jar"/>
+				<include name="server-axis-security.jar"/>
+				<include name="server-datasource.jar"/>
+				<include name="server-dcsf.jar"/>
+				<include name="server-dictionary.jar"/>
+				<include name="server-framework.jar"/>
+				<include name="server-pf.jar"/>
+				<include name="server-shared-enumerations.jar"/>
+				<include name="server-shared-sharedfolder.jar"/>
+				<include name="server-shared-services.jar"/>
+				<include name="server-shared-types.jar"/>
+				<include name="server-shared-utils.jar"/>
+				<include name="version-types.jar"/>
+				<include name="version.jar"/>
+			</fileset>
+			<fileset refid="axis.jars"/>
+			<fileset refid="xerces.jars"/>
+		</copy>
+		
+		<copy file="${xlib_jar_dir}/activation.jar" todir="${build.weblib}" failonerror="true"/>	
+		<copy file="${xlib_jar_dir}/mail.jar" todir="${build.weblib}" failonerror="true"/>
+		
+		<!-- Copy the JLDAP jar -->
+		<copy file="${xlib_jar_dir}/ldap.jar" todir="${build.weblib}" failonerror="true"/>
+
+		<!-- Copy the EHCACHE jar -->
+		<copy file="${xlib_jar_dir}/ehcache-1.1.jar" todir="${build.weblib}" failonerror="true"/>
+
+		<!-- Copy the ANTLR jar -->
+		<copy file="${xlib_jar_dir}/antlr.jar" todir="${build.weblib}" failonerror="true"/>
+		
+		<copy file="${src.dir}/etc/web.xml" todir="${build.webinf}" failonerror="true"/>
+		<copy file="${src.dir}/etc/index.html" todir="${build.webapp}" failonerror="true"/>
+		<copy file="${wsdd.template.dir}/server-config.wsdd" todir="${build.webinf}" failonerror="true"/>
+		
+		<java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+			<arg value="server"/>
+			<arg value="${gen.dir}/${services.deployment.dir}/deploy-PolicyDeploymentService.wsdd"/>
+			<classpath refid="compile.dabs.classpath"/>
+		</java>
+
+		<java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+			<arg value="server"/>
+			<arg value="${gen.dir}/${services.deployment.dir}/deploy-AgentDeploymentService.wsdd"/>
+			<classpath refid="compile.dabs.classpath"/>
+		</java>
+
+		<java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+			<arg value="server"/>
+			<arg value="${gen.dir}/${services.agent.dir}/deploy-AgentService.wsdd"/>
+			<classpath refid="compile.dabs.classpath"/>
+		</java>
+
+		<java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+			<arg value="server"/>
+			<arg value="${gen.dir}/${services.log.dir}/deploy-LogService.wsdd"/>
+			<classpath refid="compile.dabs.classpath"/>
+		</java>
+		
+		<java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+			<arg value="server"/>
+			<arg value="${gen.dir}/${nextlabs.services.log.v2.dir}/deploy-LogService.v2.wsdd"/>
+			<classpath refid="compile.dabs.classpath"/>
+		</java>
+
+		<java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+			<arg value="server"/>
+			<arg value="${gen.dir}/${nextlabs.services.log.v3.dir}/deploy-LogService.v3.wsdd"/>
+			<classpath refid="compile.dabs.classpath"/>
+		</java>
+
+		<java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+			<arg value="server"/>
+			<arg value="${gen.dir}/${nextlabs.services.log.v4.dir}/deploy-LogService.v4.wsdd"/>
+			<classpath refid="compile.dabs.classpath"/>
+		</java>
+		
+		<java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+			<arg value="server"/>
+			<arg value="${gen.dir}/${nextlabs.services.log.v5.dir}/deploy-LogService.v5.wsdd"/>
+			<classpath refid="compile.dabs.classpath"/>
+		</java>
+
+		<java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+			<arg value="server"/>
+			<arg value="${gen.dir}/${services.ping.dir}/deploy-PingService.wsdd"/>
+			<classpath refid="compile.dabs.classpath"/>
+		</java>
+		
+	</target>
+	
+	<target name="setup-war" depends="setup-webapp">
+		<war destfile="${war.dir}/dabs.war" 
+		     basedir="${build.webapp}" 
+		     webxml="${build.webinf}/web.xml" 
+		     excludes="genclasses/**/*.*, testclasses/**/*.*"
+		/>
+	</target>
+	
+	<target name="compile">
+		<javac srcdir="${main.src.dir}" 
+		       destdir="${build.dest}" 
+		       debug="${compile.debug}" 
+		       verbose="${compile.verbose}" 
+		       source="${compile.source}"
+		       target="${compile.target}"
+		       bootclasspath="${compile.bootclasspath}"
+		>
+			<classpath refid="compile.dabs.classpath"/>
+		</javac>
+		<!-- Copy all the hibernate mapping files into the build directory as well-->
+		<copy todir="${build.dest}/${dabs.do.dir}" failonerror="true" verbose="true">
+			<fileset dir="${main.src.dir}/${dabs.do.dir}">
+				<include name="**/*.hbm.xml"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="jar" depends="compile">
+		<jar destfile="${build.root.dir}/dabs-components.jar">
+			<fileset dir="${build.dest}">
+				<include name="**/*"/>
+			</fileset>
+		</jar>
+	</target>
+	
+	<target name="build" depends="jar, setup-webapp, setup-datasources, setup-war">
+	</target>
+
+	<target name="setup-datasources">
+		<copy toDir="${build.weblib}" failonerror="true">
+			<fileset refid="hibernate.lib"/>
+		</copy>
+		<copy file="${xlib_jar_dir}/hibernate2.jar" todir="${build.weblib}" failonerror="true"/>
+
+		<!-- Copy datasource information -->
+		<copy file="${src.hibernate.dir}/management.repository.xml" todir="${build.webconf}" failonerror="true"/>
+		<copy file="${src.hibernate.dir}/activity.repository.xml" todir="${build.webconf}" failonerror="true"/>
+		<copy file="${src.hibernate.dir}/policyframework.repository.xml" todir="${build.webconf}" failonerror="true"/>
+		<copy file="${src.hibernate.dir}/dictionary.repository.xml" todir="${build.webconf}" failonerror="true"/>
+		<copy file="${server.base.dir}/resource/main/common.repository.properties" todir="${build.webconf}" failonerror="true"/>
+	</target>
+</project>

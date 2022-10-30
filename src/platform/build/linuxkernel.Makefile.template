@@ -1,0 +1,44 @@
+# Kernel Makefile Template for compiling the kernel module on v2.6
+# To be concatentate with the Makefile.inc to generate the Makefile
+
+OS := $(shell uname -s)
+
+ifeq ($(BUILDTYPE), release)
+  CFLAGS   += -O2
+  DFLAGS   += -D$(OS)
+  DRVDIR    = release_drivers
+else
+  CFLAGS   += -Wall
+  DFLAGS   += -DDEBUG -D$(OS)
+  BUILDTYPE = debug
+  DRVDIR    = drivers
+endif
+
+ifeq ($(KVERSION),) 
+  KDIR   = /usr/src/kernels/2.6.9-34.EL-smp-i686
+else
+  KDIR   = /usr/src/kernels/$(KVERSION)
+endif
+
+INCP = $(addprefix -I, $(INCPATH))
+
+# Weird recursive compile method by the kernel source tree
+
+obj-m := $(KTARGET)
+CFLAGS += $(INCP) $(DFLAGS)
+
+# Rule for building kernel module targets
+all:
+	$(MAKE) -f Makefile -C $(KDIR) M=$(PWD) modules
+	@if [ -n "$(BJROOT)" ] ; then               \
+	  if [ ! -d $(BJROOT)/$(DRVDIR) ] ; then    \
+	    mkdir -p $(BJROOT)/$(DRVDIR) ;          \
+	  fi ;                                      \
+	  cp -f *.ko $(BJROOT)/$(DRVDIR) ;          \
+	fi
+
+# Rule for cleaning up
+clean:
+	$(MAKE) -f Makefile -C $(KDIR) M=$(PWD) clean
+	rm -f Makefile
+

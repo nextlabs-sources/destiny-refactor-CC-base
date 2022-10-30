@@ -1,0 +1,16 @@
+principal h1 = (ALL_HOSTS OR ALL_APPLICATIONS OR * OR "Hello, world!") AND ("Farewell arms" OR ALL_SUBJECTS)
+
+principal s1 =  ALL_HOSTS OR ALL_APPLICATIONS OR * AND ALL_SUBJECTS OR "another useless principal"
+principal s11 = (ALL_HOSTS OR ALL_APPLICATIONS OR * AND ALL_SUBJECTS OR "another useless principal")
+
+principal a1 = * OR *;
+
+principal s2 = (ALL_HOSTS OR (ALL_HOSTS OR (ALL_HOSTS AND (ALL_HOSTS OR ALL_HOSTS))))
+
+principal h2 = PRINCIPAL >= 1 and PRINCIPAL.NAME >.01 aNd PRINCIPAL.GROUP <=100.001 and PRINCIPAL.APPLICATION = "me" and PRINCIPAL.SOMEDATE < "1/1/01"
+
+principal a2 = NOT principal.nname = "the typo is intentional" and PRINCIPAL.sizex>.01
+
+principal a3 = NOT (principal.nname = "the typo is intentional" and PRINCIPAL.sizex>.01)
+
+principal s3 = principal >= 1 and NOT principal >.01 aNd NOT (principal <=100.001 and principal == "me" and principal < "1/1/01")

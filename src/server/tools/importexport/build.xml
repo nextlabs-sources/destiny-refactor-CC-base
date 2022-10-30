@@ -1,0 +1,61 @@
+<project name="tools-importexport-cli" default="build" basedir=".">
+	<property name="src.main.dir"	value="src/java/main"/>
+	<property name="src.etc.dir" 	value="etc"/>
+	<property name="Seed_Data.src.dir"  value="${src.root.dir}/server/tools/Seed_Data"/>
+	<property name="build.dest" 	value="${build.root.dir}/server/tools/importexport/classes"/>
+	<property name="importexport.tool.dir" value="${build.root.dir}/tools/importexport"/>
+	<property name="Seed_Data.tool.dir" value="${build.root.dir}/tools/Seed_Data"/>
+	
+	<path id="compile.importexport.classpath">
+		<path refid="compile.classpath"/>
+		<pathelement path="${build.root.dir}/common-framework.jar"/>
+		<pathelement path="${build.root.dir}/client-pf.jar"/>
+		<pathelement path="${build.root.dir}/common-pf.jar"/>
+		<pathelement path="${build.root.dir}/app-framework.jar"/>
+	</path>
+	
+	<target name="build" depends="jar"/>
+	
+	<target name="compile-main" depends="prepare">
+            <javac srcdir="${src.main.dir}" destdir="${build.dest}" debug="${compile.debug}" 
+                   verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+                <classpath refid="compile.importexport.classpath"/>
+            </javac>
+        </target>
+	
+	<target name="jar" depends="compile-main" description="Creates the tools common jar">
+		<jar destfile="${importexport.tool.dir}/importexport-cli.jar">
+			<fileset dir="${build.dest}">
+				<include name="**/*"/>
+			</fileset>
+		</jar>
+	</target>
+	
+	<target name="prepare">
+		<mkdir dir="${build.dest}"/>
+		<mkdir dir="${importexport.tool.dir}"/>
+		<mkdir dir="${Seed_Data.tool.dir}"/>
+	</target>
+	
+	<!-- Setup the enrollment tool -->
+	<target name="setup-tool" depends="build">
+		<!-- Setup config/definition files -->
+		<copy file="${src.etc.dir}/logging.properties" toDir="${importexport.tool.dir}"/>
+			
+		<!-- Setup windows BAT files -->
+		<copy file="${src.etc.dir}/import.bat" toDir="${importexport.tool.dir}"/>
+		<copy file="${src.etc.dir}/export.bat" toDir="${importexport.tool.dir}"/>
+		<copy file="${src.etc.dir}/createSeedData.bat" toDir="${importexport.tool.dir}"/>
+		
+		<!-- Setup linux shell script files -->
+		<copy file="${src.etc.dir}/import.sh" toDir="${importexport.tool.dir}"/>
+		<copy file="${src.etc.dir}/export.sh" toDir="${importexport.tool.dir}"/>
+		<copy file="${src.etc.dir}/createSeedData.sh" toDir="${importexport.tool.dir}"/>
+		
+		<!-- Copy the Seed Data files-->
+		<copy toDir="${Seed_Data.tool.dir}">
+			<fileset dir="${Seed_Data.src.dir}"/>
+		</copy>
+		
+	</target>	
+</project>

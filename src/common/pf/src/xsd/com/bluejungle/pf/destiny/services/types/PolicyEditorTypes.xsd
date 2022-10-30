@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: //depot/Destiny/D_Nimbus/release/8.1/main/src/common/pf/src/xsd/com/bluejungle/pf/destiny/services/types/PolicyEditorTypes.xsd#1 $ -->
+<xs:schema  targetNamespace="http://bluejungle.com/destiny/services/policy/types"
+            xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            xmlns:types="http://bluejungle.com/destiny/services/policy/types"
+            xmlns:frameworkTypes="http://bluejungle.com/destiny/framework/types">
+
+    <xs:import namespace="http://bluejungle.com/destiny/framework/types"
+            schemaLocation="BasicTypes.xsd"/>
+
+    <xs:import namespace="http://bluejungle.com/destiny/framework/types"
+            schemaLocation="Search.xsd"/>
+
+    <xs:import namespace="http://bluejungle.com/destiny/services/policy/types" 
+            schemaLocation="PolicyTypes.xsd"/>
+
+    <xs:simpleType name="PQL">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+
+    <!--  start listing all enum -->
+
+    <xs:simpleType name="DomainObjectEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ILLEGAL"/>
+            <xs:enumeration value="POLICY"/>
+            <xs:enumeration value="FOLDER"/>
+            <xs:enumeration value="COMPONENT"/>
+            <xs:enumeration value="LOCATION"/>
+            <xs:enumeration value="USER"/>
+            <xs:enumeration value="APPLICATION"/>
+            <xs:enumeration value="HOST"/>
+            <xs:enumeration value="RESOURCE"/>
+            <xs:enumeration value="ACTION"/>
+            <xs:enumeration value="PORTAL"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:complexType name="DomainObjectEnumList">
+        <xs:sequence>
+            <xs:element name="entityType" type="types:DomainObjectEnum" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+
+    <xs:simpleType name="LeafObjectEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="APPLICATION"/>
+            <xs:enumeration value="USER"/>
+            <xs:enumeration value="USER_GROUP"/>
+            <xs:enumeration value="CONTACT"/>
+            <xs:enumeration value="HOST"/>
+            <xs:enumeration value="HOST_GROUP"/>
+            <xs:enumeration value="RESOURCE"/>
+            <xs:enumeration value="ACTION"/>
+            <xs:enumeration value="ACCESSGROUP"/>
+            <xs:enumeration value="APPUSER"/>
+            <xs:enumeration value="FILE_SERVER_AGENT"/>
+            <xs:enumeration value="DESKTOP_AGENT"/>
+            <xs:enumeration value="PORTAL_AGENT"/>
+            <xs:enumeration value="ACTIVE_DIRECTORY_AGENT"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="DomainObjectStateEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NEW"/>
+            <xs:enumeration value="EMPTY"/>
+            <xs:enumeration value="DRAFT"/>
+            <xs:enumeration value="APPROVED"/>
+            <xs:enumeration value="OBSOLETE"/>
+            <xs:enumeration value="DELETED"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="DeploymentActionEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="DEPLOY"/>
+            <xs:enumeration value="UNDEPLOY"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="DeploymentTypeEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PRODUCTION"/>
+            <xs:enumeration value="TESTING"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="ValueTypeEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="string"/>
+            <xs:enumeration value="long"/>
+            <xs:enumeration value="date"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="LockRequestType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="QUERY"/>
+            <xs:enumeration value="LOCK"/>
+            <xs:enumeration value="FORCE"/>
+            <xs:enumeration value="UNLOCK"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="AttributeTypeEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="LONG"/>
+            <xs:enumeration value="STRING"/>
+            <xs:enumeration value="DATE"/>
+            <xs:enumeration value="BOOLEAN"/>
+            <xs:enumeration value="ENUM"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <!--  end listing all enum -->
+    
+    
+    
+    
+    
+    <!--  start all object -->
+
+    <xs:complexType name="ListOfIds">
+        <xs:sequence>
+           <xs:element name="id" type="frameworkTypes:ID" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="StringList">
+        <xs:sequence>
+           <xs:element name="element" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="TimeRelationDTO">
+        <xs:sequence>
+            <xs:element name="from" type="xs:long" />
+            <xs:element name="to" type="xs:long" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="TimeRelationList">
+        <xs:sequence>
+           <xs:element name="records" type="types:TimeRelationDTO" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="DeploymentRecordDTO">
+        <xs:sequence>
+            <xs:element name="id"                       type="frameworkTypes:ID"          minOccurs="0" />
+            <xs:element name="whenRequested"            type="xs:dateTime"                              />
+            <xs:element name="effectiveDate"            type="xs:dateTime"                              />
+            <xs:element name="cancelledDate"            type="xs:dateTime"                minOccurs="0" />
+            <xs:element name="actionType"               type="types:DeploymentActionEnum"               />
+            <xs:element name="deploymentType"           type="types:DeploymentTypeEnum"                 />
+            <xs:element name="numberOfdeployedEntities" type="xs:int"                                   />
+            <xs:element name="hidden"                   type="xs:boolean"                               />
+            <xs:element name="deployer"                 type="xs:long"                    minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DeploymentRecordList">
+        <xs:sequence>
+           <xs:element name="records" type="types:DeploymentRecordDTO" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="DeploymentHistoryDTO">
+        <xs:sequence>
+            <xs:element name="timeRelation"  type="types:TimeRelationDTO"               />
+            <xs:element name="lastModified"  type="xs:dateTime"           minOccurs="0" />
+            <xs:element name="modifier"      type="xs:long"               minOccurs="0" />
+            <xs:element name="submittedTime" type="xs:dateTime"           minOccurs="0" />
+            <xs:element name="submitter"     type="xs:long"               minOccurs="0" />
+            <xs:element name="deployTime"    type="xs:dateTime"           minOccurs="0" />
+            <xs:element name="deployer"      type="xs:long"               minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DeploymentHistoryList">
+        <xs:sequence>
+           <xs:element name="records" type="types:DeploymentHistoryDTO" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="LeafObjectDTO">
+        <xs:sequence>
+            <xs:element name="type"       type="types:LeafObjectEnum"               />
+            <xs:element name="id"         type="frameworkTypes:ID"                  />
+            <xs:element name="name"       type="xs:string"            minOccurs="0" />
+            <xs:element name="uniqueName" type="xs:string"            minOccurs="0" />
+            <xs:element name="uid"        type="xs:string"            minOccurs="0" />
+            <xs:element name="realmName"  type="xs:string"            minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="LeafObjectList">
+        <xs:sequence>
+           <xs:element name="leafs" type="types:LeafObjectDTO" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="LeafObjectSearchSpecDTO">
+        <xs:sequence>
+            <xs:element name="spec"        type="types:PQL"                           />
+            <xs:element name="namespaceId" type="xs:string"             minOccurs="0" />
+            <xs:element name="type"        type="types:LeafObjectEnum"                />
+            <xs:element name="maxResults"  type="xs:nonNegativeInteger"               />
+        </xs:sequence>        
+    </xs:complexType>
+
+
+    <xs:complexType name="AttributeDescriptorDTO">
+        <xs:sequence>
+			<!-- group name is optional, look AttributeDescriptor -->
+			<!-- However, the group name of a custom attribute is required in configuration.xml but not related to this schema -->
+            <xs:element name="group"             type="xs:string"               minOccurs="0" />
+            <xs:element name="displayName"       type="xs:string"               />
+            <xs:element name="pqlName"           type="xs:string"               />
+            <xs:element name="type"              type="types:AttributeTypeEnum" />
+            <xs:element name="isRequired"        type="xs:boolean"              />
+            <xs:element name="contextType"       type="xs:string"               />
+            <xs:element name="contextSubtype"    type="xs:string"               />
+            <xs:element name="operators"         type="xs:string"                    minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="allowedAttributes" type="types:AttributeDescriptorDTO" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="enumeratedValues"  type="xs:string"                    minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="AttributeDescriptorList">
+        <xs:sequence>
+           <xs:element name="elements" type="types:AttributeDescriptorDTO" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+
+    <xs:complexType name="PolicyActionsDescriptorDTO">
+        <xs:sequence>
+            <xs:element name="name"        type="xs:string" />
+            <xs:element name="displayName" type="xs:string" />
+            <xs:element name="category"    type="xs:string" />
+          </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PolicyActionsDescriptorList">
+        <xs:sequence>
+            <xs:element name="elements" type="types:PolicyActionsDescriptorDTO" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+
+    <xs:complexType name="ObligationDescriptorDTO">
+        <xs:sequence>
+            <xs:element name="displayName"  type="xs:string" />
+            <xs:element name="internalName" type="xs:string" />
+            <xs:element name="arguments"    type="types:ObligationArgumentDTO" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ObligationArgumentDTO">
+        <xs:sequence>
+            <xs:element name="displayName"  type="xs:string"  minOccurs="0"                />
+            <!--  FIXME, we don't usually put the default in the web service -->
+            <xs:element name="userEditable" type="xs:boolean" minOccurs="0" default="false"/>
+            <xs:element name="hidden"       type="xs:boolean" minOccurs="0" default="false"/>
+            <xs:element name="values"       type="types:ObligationValueDTO" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="ObligationValueDTO">
+        <xs:sequence>
+            <xs:element name="displayName" type="xs:string"  minOccurs="0"                />
+            <!--  FIXME, we don't usually put the default in the web service -->
+            <xs:element name="default"     type="xs:boolean" minOccurs="0" default="false"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ObligationDescriptorList">
+        <xs:sequence>
+            <xs:element name="elements" type="types:ObligationDescriptorDTO" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="AgentStatusDescriptorDTO">
+        <xs:sequence>
+            <xs:element name="agentId"       type="xs:long"             />
+            <xs:element name="agentHost"     type="xs:string"           />
+            <xs:element name="agentType"     type="types:AgentTypeEnum" />
+            <xs:element name="lastUpdated"   type="xs:dateTime"         />
+            <xs:element name="numPolicies"   type="xs:int"              />
+            <xs:element name="numComponents" type="xs:int"              />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="AgentStatusList">
+        <xs:sequence>
+            <xs:element name="elements" type="types:AgentStatusDescriptorDTO" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+
+    <xs:complexType name="DomainObjectUsageDTO">
+        <xs:sequence>
+            <xs:element name="isReferenced"             type="xs:boolean"               />
+            <xs:element name="hasBeenDeployed"          type="xs:boolean"               />
+            <xs:element name="hasFutureDeployments"     type="xs:boolean"               />
+            <xs:element name="currentlyDeployedVersion" type="xs:long"    minOccurs="0" />
+            <xs:element name="latestDeployedVersion"    type="xs:long"    minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DomainObjectUsageListDTO">
+        <xs:sequence>
+            <xs:element name="usage" type="types:DomainObjectUsageDTO" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+    
+
+    <xs:complexType name="EntityDescriptorDTO">
+        <xs:sequence>
+            <xs:element name="id"                type="frameworkTypes:ID"                         />
+            <xs:element name="name"              type="xs:string"                                 />
+            <xs:element name="type"              type="types:DomainObjectEnum"                    />
+            <!--TODO this doesn't match the db schema the owner can be null in database schema -->
+            <xs:element name="owner"             type="xs:long"                     minOccurs="0" /> 
+            <xs:element name="accesspolicy"      type="xs:string"                                 />
+            <xs:element name="description"       type="xs:string"                   minOccurs="0" />
+            <xs:element name="status"            type="types:DomainObjectStateEnum"               />
+            <xs:element name="version"           type="xs:int"                                    />
+            <xs:element name="timeLastUpdated"   type="xs:dateTime"                               />
+            <xs:element name="timeCreated"       type="xs:dateTime"                               />
+            <xs:element name="timeLastModified"  type="xs:dateTime"                               />
+            <xs:element name="modifier"          type="xs:long"                     minOccurs="0" />
+            <xs:element name="timeLastSubmitted" type="xs:dateTime"                 minOccurs="0" />
+            <xs:element name="submitter"         type="xs:long"                     minOccurs="0" />
+            <xs:element name="hidden"            type="xs:boolean"                                />
+            <xs:element name="accessible"        type="xs:boolean"                                />
+            <xs:element name="withDependencies"  type="xs:boolean"                                />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="EntityDescriptorList">
+        <xs:sequence>
+            <xs:element name="element" type="types:EntityDescriptorDTO" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="EntityDigestDTO">
+        <xs:sequence>
+            <xs:element name="id"                type="frameworkTypes:ID"                         />
+            <xs:element name="name"              type="xs:string"                                 />
+            <xs:element name="type"              type="xs:string"                                 />
+            <!--TODO this doesn't match the db schema the owner can be null in database schema -->
+            <xs:element name="owner"             type="xs:long"                     minOccurs="0" />
+            <xs:element name="ownerName"         type="xs:string"                   minOccurs="0" />
+            <xs:element name="status"            type="types:DomainObjectStateEnum"               />
+            <xs:element name="version"           type="xs:int"                                    />
+            <xs:element name="destinyVersion"    type="xs:int"                                    />
+            <xs:element name="timeLastUpdated"   type="xs:dateTime"                               />
+            <xs:element name="timeLastModified"  type="xs:dateTime"                               />
+            <xs:element name="modifier"          type="xs:long"                     minOccurs="0" />
+            <xs:element name="modifierName"      type="xs:string"                   minOccurs="0" />
+            <xs:element name="timeLastSubmitted" type="xs:dateTime"                 minOccurs="0" />
+            <xs:element name="submitter"         type="xs:long"                     minOccurs="0" />
+            <xs:element name="submitterName"     type="xs:string"                   minOccurs="0" />
+            <xs:element name="accessible"        type="xs:boolean"                                />
+            <xs:element name="withDependencies"  type="xs:boolean"                                />
+            <xs:element name="subPolicy"         type="xs:boolean"                                />
+            <xs:element name="usage"             type="types:DomainObjectUsageDTO"                />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="EntityDigestList">
+        <xs:sequence>
+            <xs:element name="element" type="types:EntityDigestDTO" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    
+    <xs:complexType name="ResourceTreeNode">
+        <xs:sequence>
+            <xs:element name="id"          type="xs:string"  />
+            <xs:element name="url"         type="xs:string"  />
+            <xs:element name="name"        type="xs:string"  />
+            <xs:element name="type"        type="xs:string"  />
+            <xs:element name="hasChildren" type="xs:boolean" />
+            <xs:element name="children"    type="types:ResourceTreeNode" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ResourceTreeNodeList">
+        <xs:sequence>
+           <xs:element name="children" type="types:ResourceTreeNode" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+
+    <xs:simpleType name="ExternalDataSourceType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SHAREPOINT"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:complexType name="ExternalDataSourceConnectionInfo">
+        <xs:sequence>
+            <xs:element name="URL"      type="xs:string" />
+            <xs:element name="userName" type="xs:string" />
+            <xs:element name="passWord" type="xs:string" />
+            <xs:element name="domain"   type="xs:string" />
+            <xs:element name="type"     type="types:ExternalDataSourceType" />
+        </xs:sequence>
+    </xs:complexType>
+    
+
+
+    <!-- Schema conversion types -->
+    <xs:simpleType name="EnrollmentType">
+    	<xs:restriction base="xs:string">
+    		<xs:enumeration
+    			value="com.bluejungle.destiny.container.shared.dictionary.enrollment.enroller.ad.ActiveDirectoryEnroller" />
+    		<xs:enumeration
+    			value="com.bluejungle.destiny.container.shared.dictionary.enrollment.enroller.ldif.LdifEnroller" />
+    		<xs:enumeration
+    			value="com.bluejungle.destiny.container.shared.dictionary.enrollment.enroller.sharepoint.SharePointEnroller" />
+    		<xs:enumeration
+    			value="com.bluejungle.destiny.container.shared.dictionary.enrollment.enroller.text.JavaPropertiesFileEnroller" />
+    		<xs:enumeration 
+    			value="com.bluejungle.destiny.container.shared.dictionary.enrollment.enroller.mdom.MDomainEnroller" />
+    		<xs:enumeration
+    			value="com.bluejungle.destiny.container.shared.dictionary.enrollment.enroller.unknown.UnknownEnroller" />
+    	</xs:restriction>
+    </xs:simpleType>
+
+    <!-- This defines a "realm" - which is a source of enrollment data. This could either be
+        an LDAP server, or could be an LDIF file import of generic customer data.  -->    
+    <xs:complexType name="Realm">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" />
+            <xs:element name="type" type="types:EnrollmentType" nillable="false"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RealmList">
+        <xs:sequence>
+            <xs:element name="realms" type="types:Realm" maxOccurs="unlimited" nillable="false"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    
+    
+    <!-- start others -->
+    
+    <xs:complexType name="ComponentList">
+        <xs:sequence>
+            <xs:element name="components" type="types:Component" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <!-- end others -->
+    
+    
+    
+    <!-- start still using? -->
+        <xs:simpleType name="PolicyEditorRoles">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="CORPORATE"/>
+            <xs:enumeration value="FILESYSTEM"/>
+            <xs:enumeration value="PORTAL"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="PortalResourceTypes">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PORTAL"/>
+            <xs:enumeration value="SITE"/>
+            <xs:enumeration value="PAGE"/>
+            <xs:enumeration value="WEB_PART"/>
+            <xs:enumeration value="LIST"/>
+            <xs:enumeration value="LIST_ITEMS"/>
+            <xs:enumeration value="DOCUMENT"/>
+            <xs:enumeration value="FOLDER"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <!--  end still using? -->
+</xs:schema>

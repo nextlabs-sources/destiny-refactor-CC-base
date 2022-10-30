@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="1.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation=
+                  "http://incubator.apache.org/ivy/schemas/ivy.xsd">
+    <info organisation="nextlabs"
+          module="common-oil"
+		  revision="2.5"/>
+    <configurations>
+	    <conf name="main" visibility="public" />
+		<conf name="test" visibility="private" />
+		<conf name="report" visibility="private" />
+	</configurations>
+	<publications>
+	    <artifact conf="main" name="common-oil" />
+
+	</publications>
+</ivy-module>

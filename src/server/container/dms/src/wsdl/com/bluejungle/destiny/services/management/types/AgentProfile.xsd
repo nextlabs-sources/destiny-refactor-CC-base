@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:types="http://bluejungle.com/destiny/services/management/types" 
+			targetNamespace="http://bluejungle.com/destiny/services/management/types">
+
+	<xs:include schemaLocation="BaseProfile.xsd"/>
+
+	<xs:complexType name="AgentProfileInfo">
+		<xs:annotation>
+			<xs:docomentation>
+				Agent Profile Info.  A Profile Info contains all elements of a Profile that are modifiable (e.g not ID, created date, modified date).
+			</xs:docomentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="types:BaseProfileInfo">
+				<xs:sequence>  
+					<xs:element name="hookAllProc" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="hookSystemProc" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="logViewingEnabled" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="trayIconEnabled" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="hookedApplications" type="types:ApplicationList" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="protectedApplications" type="types:ApplicationList" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="ApplicationProcess">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>  
+			<xs:element name="path" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ApplicationList">
+		<xs:sequence>
+			<xs:element name="application" type="types:ApplicationProcess" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="AgentProfileDTO">
+		<xs:annotation>
+			<xs:docomentation>
+				Agent Profile Data Transer Object.
+			</xs:docomentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="types:BaseProfileDTO">
+				<xs:sequence>
+					<xs:element name="hookAllProc" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="hookSystemProc" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="logViewingEnabled" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="trayIconEnabled" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="hookedApplications" type="types:ApplicationList" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="protectedApplications" type="types:ApplicationList" minOccurs="0" maxOccurs="1"/>		
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+		    
+    <xs:complexType name="AgentProfileDTOList">
+   		<xs:complexContent>
+			<xs:extension base="types:BaseProfileDTOList">
+                <xs:sequence>
+                    <xs:element name="agentProfileDTO" type="types:AgentProfileDTO" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+	</xs:complexType>
+    
+    
+    <xs:complexType name="AgentProfileDTOQueryField">
+		<xs:annotation>
+			<xs:docomentation>
+				Represents an enumeration of fields used to query for a list of Agent Profiles
+			</xs:docomentation>						
+		</xs:annotation>
+   		<xs:simpleContent>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="id"/>
+				<xs:enumeration value="createdDate"/>
+				<xs:enumeration value="modifiedDate"/>
+				<xs:enumeration value="name"/>
+				<xs:enumeration value="logViewingEnabled"/>
+				<xs:enumeration value="trayIconEnabled"/>
+			</xs:restriction>	
+        </xs:simpleContent>
+	</xs:complexType>
+	
+	<xs:complexType name="AgentProfileDTOQueryTerm">
+		<xs:sequence>
+			<xs:element name="agentProfileDTOQueryField" type="types:AgentProfileDTOQueryField"/>
+			<xs:element name="value" type="xs:anyType"/>				
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="AgentProfileDTOQueryTermSet">
+		<xs:sequence>
+			<xs:element name="agentProfileDTOQueryTerm" type="types:AgentProfileDTOQueryTerm" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

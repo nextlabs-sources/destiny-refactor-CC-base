@@ -1,0 +1,85 @@
+<project name="sharepoint_webservice" default="build">
+
+    <property name="src.dir"                 value="${basedir}"/>
+    <property name="wsdl.main.src.dir"       value="${external.dir}/sharepoint-services/wsdl" />
+    <property name="gen.sharepoint.src.dir"  value="${gen.dir}/ind/sharepoint" />
+    <property name="build.dest"              value="${build.root.dir}/server/ind/sharepoint"/>
+    <property name="sharepoint.dir"          value="com/microsoft/schemas/sharepoint/soap"/>
+
+   <path id="compile.ind.classpath">
+        <path refid="compile.classpath"/>
+        <pathelement path="${build.root.dir}/common-domain.jar"/>
+        <pathelement path="${build.root.dir}/common-domain-types.jar"/>
+        <pathelement path="${build.root.dir}/common-framework.jar"/>
+        <pathelement path="${build.root.dir}/common-framework-types.jar"/>
+        <pathelement path="${build.root.dir}/dcsf-types.jar"/>
+        <pathelement path="${build.root.dir}/management-types.jar"/>
+        <pathelement path="${build.root.dir}/server-framework.jar"/>
+        <pathelement path="${build.root.dir}/server-datasource.jar"/>
+        <pathelement path="${build.root.dir}/server-base.jar"/>
+        <pathelement path="${build.root.dir}/server-dcsf.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-enumerations.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-applicationusers.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-pf.jar"/>
+        <pathelement path="${build.root.dir}/server-pf.jar"/>
+        <pathelement path="${build.root.dir}/common-pf.jar"/>
+        <pathelement path="${build.root.dir}/policy-types.jar"/>
+        <pathelement path="${build.root.dir}/policy-services.jar"/>
+        <pathelement path="${build.root.dir}/secure-session.jar"/>
+        <pathelement path="${build.root.dir}/secure-session-types.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-types.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-services.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-services-impl.jar"/>
+        <pathelement path="${build.dest}/wsdl"/>
+        <pathelement path="${build.gendest}"/>
+    </path>
+
+    <target name="pre-build-wsdl">
+        <mkdir dir="${build.dest}/wsdl" />
+        <mkdir dir="${gen.dir}/ind" />
+        <mkdir dir="${gen.dir}/ind/sharepoint"/>        
+    </target>
+
+    <target name="wsdl-generate" depends="pre-build-wsdl" description="Generates code from SiteData.WSDL">
+
+        <wsdl2java url="${wsdl.main.src.dir}/SiteData.WSDL"
+            all="true"
+            output="${gen.sharepoint.src.dir}"
+            skeletonDeploy="no"
+            noimports="no"
+            verbose="yes"
+            testcase="yes"
+            nowrapped="true"
+			timeout="-1"
+            userAuthRequired="false"/>
+
+        <wsdl2java url="${wsdl.main.src.dir}/UserGroup.WSDL"
+            all="true"
+            output="${gen.sharepoint.src.dir}"
+            skeletonDeploy="no"
+            noimports="no"
+            verbose="yes"
+            testcase="yes"
+            nowrapped="true"
+			timeout="-1"
+            userAuthRequired="false"/>
+
+    </target>
+
+    <target name="wsdl-compile" depends="wsdl-generate" description="Compile generated WSDL code">
+        <javac srcdir="${gen.sharepoint.src.dir}" destdir="${build.dest}/wsdl" debug="${compile.debug}" 
+               verbose="${compile.verbose}" includes="${sharepoint.dir}/**" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="compile.ind.classpath"/>
+        </javac>
+    </target>
+
+    <target name="wsdl-jar" depends="wsdl-compile" description="Packages compiled WSDL code">
+        <copy file="${wsdl.main.src.dir}/../client-cfg.wsdd"   todir="${build.dest}/wsdl/${sharepoint.dir}"/> 
+        <jar destfile="${build.root.dir}/sharepoint-services.jar">
+            <fileset dir="${build.dest}/wsdl">
+                <include name="${sharepoint.dir}/**/*.class" />
+                <include name="${sharepoint.dir}/*.wsdd" />
+            </fileset>
+        </jar>
+    </target>
+</project>

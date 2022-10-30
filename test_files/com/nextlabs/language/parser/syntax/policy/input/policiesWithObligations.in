@@ -1,0 +1,6 @@
+policy [Policy with Obligations] is FileSystemPolicy
+    on *
+do  allow
+on allow do log(), display("hello","world")
+on deny do log(level=1,text="log text",user=user)
+on allow do id 123(), id 124(1,"2",3), id 125(a=1,b="2",c=user)

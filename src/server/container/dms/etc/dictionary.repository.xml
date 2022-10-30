@@ -1,0 +1,24 @@
+<!DOCTYPE hibernate-configuration PUBLIC 
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-2.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!--
+            Persisted object class mappings
+        -->
+        <mapping resource="com/bluejungle/dictionary/ElementType.hbm.xml"/>
+        <mapping resource="com/bluejungle/dictionary/ElementField.hbm.xml"/>
+        <mapping resource="com/bluejungle/dictionary/Enrollment.hbm.xml"/>
+        <mapping resource="com/bluejungle/dictionary/EnrollmentProperty.hbm.xml"/>
+        <mapping resource="com/bluejungle/dictionary/ExternalFieldMapping.hbm.xml"/>
+        <mapping resource="com/bluejungle/dictionary/DictionaryElementBase.hbm.xml"/>
+        <mapping resource="com/bluejungle/dictionary/EnumeratedGroup.hbm.xml"/>
+        <mapping resource="com/bluejungle/dictionary/EnumerationMember.hbm.xml"/>
+        <mapping resource="com/bluejungle/dictionary/EnumerationGroupMember.hbm.xml"/>
+        <mapping resource="com/bluejungle/dictionary/EnumerationProvisionalMember.hbm.xml"/>
+        <mapping resource="com/bluejungle/dictionary/StructuralGroup.hbm.xml"/>
+        <mapping resource="com/bluejungle/dictionary/LeafElement.hbm.xml"/>
+        <mapping resource="com/bluejungle/dictionary/UpdateRecord.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

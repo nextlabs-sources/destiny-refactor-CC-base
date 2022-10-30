@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://bluejungle.com/destiny/services/dcsf/types" 
+		   xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		   xmlns:types="http://bluejungle.com/destiny/services/dcsf/types">
+
+	<xs:complexType name="DestinyEvent">
+		<xs:sequence>
+			<xs:element name="eventName" type="xs:string" minoccurs="1" maxoccurs="1"/>
+			<xs:element name="properties" type="types:DestinyEventPropertyList" minoccurs="0" nillable="true"/>			
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="DestinyEventProperty">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="value" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="DestinyEventPropertyList">
+		<xs:sequence>
+			<xs:element name="properties" type="types:DestinyEventProperty" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>	
+</xs:schema> 

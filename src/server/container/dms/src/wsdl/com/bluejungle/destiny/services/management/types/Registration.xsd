@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://bluejungle.com/destiny/services/management/types" 
+		   xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		   xmlns:types="http://bluejungle.com/destiny/services/management/types"
+		   xmlns:version="http://bluejungle.com/version/types">
+
+		<import namespace="http://bluejungle.com/destiny/services/management/types" 
+				schemaLocation="Configuration.xsd"/>
+		<import namespace="http://bluejungle.com/version/types" 
+				schemaLocation="../../../../../../../../../../../common/version/src/xsd/com/bluejungle/version/types/Version.xsd"/>
+
+	<xs:complexType name="ApplicationResourceList">
+        <xs:sequence>
+          <xs:element name="Resources" type="xs:string" nillable="false" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+	<xs:complexType name="DCCRegistrationInformation">
+		<xs:sequence>
+			<xs:element name="componentName" type="xs:string" nillable="false"/>
+			<xs:element name="componentType" type="xs:string" nillable="false"/>
+			<xs:element name="componentTypeDisplayName" type="xs:string" nillable="false"/>
+			<xs:element name="eventListenerURL" type="xs:anyURI" nillable="false"/>
+			<xs:element name="componentURL" type="xs:anyURI" nillable="false"/>
+			<xs:element name="version" type="version:Version" minOccurs="1" nillable="false"/>
+			<xs:element name="applicationResources" type="types:ApplicationResourceList" nillable="false"/>
+			
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="DCCRegistrationInfoList">
+		<xs:sequence>
+			<xs:element name="component" type="types:DCCRegistrationInformation"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="DMSRegistrationOutcome">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Success"/>
+			<xs:enumeration value="Failed"/>
+			<xs:enumeration value="Pending"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="DCCRegistrationStatus">
+		<xs:sequence>
+			<xs:element name="applicationUserConfiguration" type="types:ApplicationUserConfiguration"/>
+			<xs:element name="messageHandlers" type="types:MessageHandlers"/>
+			<xs:element name="customObligationConfiguration" type="types:CustomObligations"/>
+			<xs:element name="actionListConfig" type="types:ActionListConfig"/>
+			<xs:element name="configuration" type="types:DCCConfiguration"/>
+			<xs:element name="repositories" type="types:RepositoryConfigurationList"/>
+			<xs:element name="result" type="types:DMSRegistrationOutcome"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema> 

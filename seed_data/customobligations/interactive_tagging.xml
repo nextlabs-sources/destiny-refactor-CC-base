@@ -1,0 +1,27 @@
+<Obligation>
+    <DisplayName>Interactive File Tagging</DisplayName>
+    <RunAt>PEP</RunAt>
+    <Name>INTERACTIVE_FILE_TAGGING</Name>
+    <Arguments>
+        <Argument>
+            <Name>Tag Name</Name>
+            <Value>$ResourceAttribute.Name</Value>
+        </Argument>
+        <Argument usereditable="false">
+            <Name>Tag Value</Name>
+            <Value>$ResourceAttribute.Values</Value>
+        </Argument>
+        <Argument>
+            <Name>Target</Name>
+            <Value default="true">Source</Value>
+            <Value>Destination</Value>
+        </Argument>
+        <Argument usereditable="true">
+            <Name>Description</Name>
+        </Argument>
+            <Argument usereditable="false">
+            <Name>LogId</Name>
+            <Value default="true">$CELogUid</Value>
+        </Argument>
+    </Arguments>
+</Obligation>

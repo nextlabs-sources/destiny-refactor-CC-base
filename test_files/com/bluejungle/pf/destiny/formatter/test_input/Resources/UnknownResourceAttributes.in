@@ -1,0 +1,4 @@
+COMPONENT  r0  = resource.unknown1.name1 = "abc"
+COMPONENT  r1  = resource.unknown2.created2 = "1/2/2007"
+COMPONENT  r2  = resource.porta.modified = "2/2/2007"
+COMPONENT  r3  = resource.fxo.created_by = "S-1-05-2834"

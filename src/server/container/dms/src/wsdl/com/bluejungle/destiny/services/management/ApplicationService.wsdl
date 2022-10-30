@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Martin Robert Cagan (Blue Jungle Inc) -->
+<wsdl:definitions	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+					xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+					xmlns:common="http://bluejungle.com/destiny/framework/types" 
+					xmlns:types="http://bluejungle.com/destiny/services/management/types" 
+					xmlns:tns="http://bluejungle.com/destiny/services/management" 
+					targetNamespace="http://bluejungle.com/destiny/services/management" 
+					name="ApplicationService">
+
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://bluejungle.com/destiny/services/management" xmlns:types="http://bluejungle.com/destiny/services/management/types">
+			<xsd:import namespace="http://bluejungle.com/destiny/services/management/types" schemaLocation="types/ApplicationInfo.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/framework/types" 
+						schemaLocation="../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicFaults.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="addApplicationRequest">
+		<wsdl:part name="applicationInfo" type="types:ApplicationInfo"/>
+	</wsdl:message>
+	<wsdl:message name="addApplicationResponse">
+	</wsdl:message>
+	
+	<wsdl:message name="updateApplicationRequest">
+		<wsdl:part name="applicationInfo" type="types:ApplicationInfo"/>
+	</wsdl:message>
+	<wsdl:message name="updateApplicationResponse">
+	</wsdl:message>
+	
+	<wsdl:message name="getApplicationsRequest">
+		<wsdl:part name="applicationInfoQuery" type="types:ApplicationInfoQuery"/>
+		<wsdl:part name="sortSpec"   type="xsd:string"/>
+		<wsdl:part name="startIndex" type="xsd:int"/>
+		<wsdl:part name="fetchSize"  type="xsd:int"/>
+	</wsdl:message>
+	<wsdl:message name="getApplicationsResponse">
+		<wsdl:part name="result" type="types:ApplicationInfoList"/>
+	</wsdl:message>
+	
+	<wsdl:message name="removeApplicationRequest">
+		<wsdl:part name="appName" type="xsd:string"/>
+	</wsdl:message>
+	<wsdl:message name="removeApplicationResponse">
+	</wsdl:message>
+
+	<wsdl:message name="addApplicationCollectionRequest">
+		<wsdl:part name="applicationCollectionInfo" type="types:ApplicationCollectionInfo"/>
+	</wsdl:message>
+	<wsdl:message name="addApplicationCollectionResponse">
+	</wsdl:message>
+	
+	<wsdl:message name="removeApplicationCollectionRequest">
+		<wsdl:part name="collectionName" type="xsd:string"/>
+	</wsdl:message>
+	<wsdl:message name="removeApplicationCollectionResponse">
+	</wsdl:message>
+
+	<wsdl:message name="getApplicationCollectionsRequest">
+	</wsdl:message>
+	<wsdl:message name="getApplicationCollectionsResponse">
+		<wsdl:part name="result" type="types:ApplicationCollectionInfoList"/>
+	</wsdl:message>
+	
+	<wsdl:message name="addApplication2CollectionRequest">
+		<wsdl:part name="appName" type="xsd:string"/>
+		<wsdl:part name="collectionName" type="xsd:string"/>
+	</wsdl:message>
+	<wsdl:message name="addApplication2CollectionResponse">
+	</wsdl:message>
+	
+	<wsdl:message name="removeApplicationFromCollectionRequest">
+		<wsdl:part name="appName" type="xsd:string"/>
+		<wsdl:part name="collectionName" type="xsd:string"/>
+	</wsdl:message>
+	<wsdl:message name="removeApplicationFromCollectionResponse">
+	</wsdl:message>
+
+	<wsdl:message name="moveApplicationRequest">
+		<wsdl:part name="appName" type="xsd:string"/>
+		<wsdl:part name="srcCollection" type="xsd:string"/>
+		<wsdl:part name="targetCollection" type="xsd:string"/>
+	</wsdl:message>
+	<wsdl:message name="moveApplicationResponse">
+	</wsdl:message>
+
+	<wsdl:message name="CommitFault">
+		<wsdl:part name="CommitFault" type="common:CommitFault"/>
+	</wsdl:message>
+	
+	<wsdl:message name="UnauthorizedCallerFault">
+		<wsdl:part name="UnauthorizedCallerFault" type="common:UnauthorizedCallerFault"/>
+	</wsdl:message>
+	
+	<wsdl:message name="UnknownEntryFault">
+		<wsdl:part name="UnknownEntryFault" type="common:UnknownEntryFault"/>
+	</wsdl:message>
+
+	<wsdl:portType name="ApplicationServiceIF">
+
+		<wsdl:operation name="addApplication">
+			<wsdl:input  message="tns:addApplicationRequest"/>
+			<wsdl:output message="tns:addApplicationResponse"/>
+			<wsdl:fault  name="CommitFault" message="tns:CommitFault"/>
+			<wsdl:fault  name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="updateApplication">
+			<wsdl:input  message="tns:updateApplicationRequest"/>
+			<wsdl:output message="tns:updateApplicationResponse"/>
+			<wsdl:fault  name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+			<wsdl:fault  name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="getApplications">
+			<wsdl:input  message="tns:getApplicationsRequest"/>
+			<wsdl:output message="tns:getApplicationsResponse"/>
+			<wsdl:fault  name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="removeApplication">
+			<wsdl:input  message="tns:removeApplicationRequest"/>
+			<wsdl:output message="tns:removeApplicationResponse"/>
+			<wsdl:fault  name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+			<wsdl:fault  name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="addApplicationCollection">
+			<wsdl:input  message="tns:addApplicationCollectionRequest"/>
+			<wsdl:output  message="tns:addApplicationCollectionResponse"/>
+			<wsdl:fault  name="CommitFault" message="tns:CommitFault"/>
+			<wsdl:fault  name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="removeApplicationCollection">
+			<wsdl:input  message="tns:removeApplicationCollectionRequest"/>
+			<wsdl:output  message="tns:removeApplicationCollectionResponse"/>
+			<wsdl:fault  name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+			<wsdl:fault  name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="getApplicationCollections">
+			<wsdl:input  message="tns:getApplicationCollectionsRequest"/>
+			<wsdl:output  message="tns:getApplicationCollectionsResponse"/>
+			<wsdl:fault  name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="addApplication2Collection">
+			<wsdl:input  message="tns:addApplication2CollectionRequest"/>
+			<wsdl:output  message="tns:addApplication2CollectionResponse"/>
+			<wsdl:fault  name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+			<wsdl:fault  name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="removeApplicationFromCollection">
+			<wsdl:input  message="tns:removeApplicationFromCollectionRequest"/>
+			<wsdl:output  message="tns:removeApplicationFromCollectionResponse"/>
+			<wsdl:fault  name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+			<wsdl:fault  name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="moveApplication">
+			<wsdl:input  message="tns:moveApplicationRequest"/>
+			<wsdl:output  message="tns:moveApplicationResponse"/>
+			<wsdl:fault  name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+			<wsdl:fault  name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+
+	</wsdl:portType>
+	
+	<wsdl:binding name="ApplicationServiceIFBinding" type="tns:ApplicationServiceIF">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	
+		<wsdl:operation name="addApplication">
+			<wsdl:input>
+				<soap:body parts="applicationInfo" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="CommitFault">
+				<soap:fault name="CommitFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="updateApplication">
+			<wsdl:input>
+				<soap:body parts="applicationInfo" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getApplications">
+			<wsdl:input>
+				<soap:body parts="applicationInfoQuery sortSpec startIndex fetchSize" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="result" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+
+		<wsdl:operation name="removeApplication">
+			<wsdl:input>
+				<soap:body parts="appName" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="addApplicationCollection">
+			<wsdl:input>
+				<soap:body parts="applicationCollectionInfo" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="CommitFault">
+				<soap:fault name="CommitFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="removeApplicationCollection">
+			<wsdl:input>
+				<soap:body parts="collectionName" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="addApplication2Collection">
+			<wsdl:input>
+				<soap:body parts="appName collectionName" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getApplicationCollections">
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="result" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="removeApplicationFromCollection">
+			<wsdl:input>
+				<soap:body parts="appName collectionName" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="moveApplication">
+			<wsdl:input>
+				<soap:body parts="appName srcCollection targetCollection" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+	</wsdl:binding>
+	
+	<wsdl:service name="ApplicationService">
+		<wsdl:port name="ApplicationServiceIFPort" binding="tns:ApplicationServiceIFBinding">
+			<soap:address location="http://localhost:8080/dms/services/ApplicationServiceIFPort"/>
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>

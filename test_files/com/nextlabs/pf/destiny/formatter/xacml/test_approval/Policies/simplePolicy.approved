@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PolicySet xmlns="urn:oasis:names:tc:xacml:1.0:policy"
+           PolicySetId="Exported NextLabs Policies"
+           PolicyCombiningAlgId="urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:deny-overrides">
+  <Policy
+      xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17
+                          http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+      PolicyId="urn:nextlabs:simple_policy"
+      Version="1.0"
+      RuleCombiningAlgId="identifier:rule-combining-algorithm:deny-overrides">
+    <Target>
+      <!-- start ACTION -->
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:nextlabs:builtin:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">OPEN</AttributeValue>
+            <AttributeDesignator MustBePresent="true"
+                                 Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+                                 AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
+                                 DataType="http://www.w3.org/2001/XMLSchema#string"/>
+          </Match>
+        </AllOf>
+        <AllOf>
+          <Match MatchId="urn:nextlabs:builtin:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">EDIT</AttributeValue>
+            <AttributeDesignator MustBePresent="true"
+                                 Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+                                 AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
+                                 DataType="http://www.w3.org/2001/XMLSchema#string"/>
+          </Match>
+        </AllOf>
+      </AnyOf>
+      <!-- end ACTION -->
+      <!-- start FROM RESOURCE -->
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:nextlabs:builtin:string-equal">
+            <AttributeDesignator MustBePresent="true"
+                                 Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                 AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+                                 DataType="http://www.w3.org/2001/XMLSchema#string"/>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">*.txt</AttributeValue>
+          </Match>
+        </AllOf>
+      </AnyOf>
+      <!-- end FROM RESOURCE -->
+      <!-- start SUBJECT -->
+      <AnyOf>
+        <AllOf>
+          <Match MatchId="urn:nextlabs:builtin:string-equal">
+            <AttributeDesignator MustBePresent="true"
+                                 Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+                                 AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
+                                 DataType="http://www.w3.org/2001/XMLSchema#string"/>
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">John Unauthorized</AttributeValue>
+          </Match>
+        </AllOf>
+      </AnyOf>
+      <!-- end SUBJECT -->
+    </Target>
+    <Rule Effect="Deny" RuleId="simple_policy">
+      <Description>Simple Policy</Description>
+      <Condition FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+      </Condition>
+    </Rule>
+    <AssociatedAdvice>
+      <AdviceExpression AdviceId="urn:nextlabs:log" AppliesTo="Deny">
+      </AdviceExpression>
+    </AssociatedAdvice>
+  </Policy>
+<PolicySet>

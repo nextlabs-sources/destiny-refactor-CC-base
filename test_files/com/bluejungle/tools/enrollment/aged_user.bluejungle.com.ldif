@@ -1,0 +1,29 @@
+dn: cn=Aged User,cn=users,cn=BLUEJUNGLE.COM,dc=CustomerData,dc=Destiny,d
+ c=com
+objectClass: top
+objectClass: User
+winSAMAccountType: 805306368
+winHomeDrive: U:
+lastName: User
+winName: Aged User 
+winCn: Aged User 
+winLastName: User 
+winSAMAccountName: auser 
+winHomeDirectory: \\mahe\share\users\aged_user
+winCreateTimeStamp: 20040131062024.0Z
+winCanonicalName: bluejungle.com/domains/bluejungle.com/users/user Aged
+winModifyTimeStamp: 20051017143034.0Z
+winObjectSid: S-1-5-21-668023798-3031861066-1043980994-3333
+winEmail: user.Aged@bluejungle.com
+cn: user Aged
+winCountryCode: 0
+firstName: Aged
+uniqueGlobalIdentifier: BLUEJUNGLE.COM\92ee530152e50f4c9e787816fad2e505
+winDisplayName: user Aged
+winDistinguishedName: CN=Aged User,OU=users,OU=bluejungle.com,OU=domains
+ ,DC=bluejungle,DC=com
+winPrimaryGroupID: 513
+fullyQualifiedName: aged_user@bluejungle.com
+winObjectGUID: ku5TAVLlD0yeeHgW+tLlBQ==
+age: 5
+birthday: Nov 4, 2000 20:14 PM

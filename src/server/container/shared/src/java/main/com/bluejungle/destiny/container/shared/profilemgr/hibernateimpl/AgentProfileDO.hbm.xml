@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.profilemgr.hibernateimpl">
+	
+	<class name="AgentProfileDO" table="AGENT_PROFILE">
+        
+		<!-- Generic persisted properties -->
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		<property name="createdDate" column="created_date" access="field" not-null="true" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType"/>
+		<property name="modifiedDate" column="modified_date" access="field" not-null="true" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType"/>
+		
+		<!-- Object-specific properties -->
+		<property name="name" type="string" not-null="true" unique="true"/>
+		<property name="logViewingEnabled" column="log_viewing_enabled" not-null="true"/>
+		<property name="trayIconEnabled" column="tray_icon_enabled" not-null="true"/>
+	</class>
+
+</hibernate-mapping>

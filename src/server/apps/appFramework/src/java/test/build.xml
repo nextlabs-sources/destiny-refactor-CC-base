@@ -1,0 +1,52 @@
+<project name="App Framework Test" default="build">
+
+    <property name="src.dir"    value="${basedir}"/>
+    <property name="build.main.dest" value="${build.root.dir}/appFramework/classes" />   
+	<property name="build.dest" value="${build.root.dir}/appFramework/testClasses"/>
+	<property name="doc.dest"   value="${build.root.dir}/appFramework/testClasses/doc"/>
+	<property name="reporter.build.root.dir" value="${build.root.dir}/server/apps/inquiryCenter/WEB-INF/classes" />
+	
+	<path id="compile.appFmwkTest.classpath">
+		<path refid="compile.classpath"/>
+        <pathelement path="${build.dest}"/>
+        <pathelement path="${build.main.dest}"/>      
+		<pathelement path="${build.root.dir}/common-framework.jar"/>
+        <pathelement path="${build.root.dir}/app-framework.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-types.jar"/>      
+        <pathelement path="${build.root.dir}/server-shared-services.jar"/>    
+        <pathelement path="${build.root.dir}/client-security-config.jar"/>         
+	</path>
+		
+	<target name="pre-build">
+		<mkdir dir="${build.dest}"/>
+	</target>
+	
+    <target name="doc">
+		<mkdir dir="${doc.dest}"/>
+    	<javadoc sourcepath="${src.dir}" destdir="${doc.dest}" linksource="yes" classpathref="compile.appFmwkTest.classpath" source="${compile.source}" >
+    		<packageset dir="${src.dir}"/>
+    	</javadoc>
+    </target>
+		
+	<target name="compile" depends="pre-build">
+		<javac srcdir="${src.dir}" destdir="${build.dest}" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+			<classpath refid="compile.appFmwkTest.classpath"/>
+        </javac>
+	</target>
+	
+	<target name="tests">
+		<junit printsummary="withOutAndErr" showoutput="yes" haltonfailure="${junit.haltonfailure}" failureproperty="junit.fail" fork="true">
+			<formatter type="xml"/>
+            <sysproperty key="build.root.dir" value="${build.root.dir}" />               
+			<test name="com.bluejungle.destiny.appframework.AppFrameworkTestSuite" todir="${log.dir}/tests"/>
+            <classpath>
+                <path refid="compile.appFmwkTest.classpath"/>
+                <pathelement path="${build.root.dir}/common-res.jar"/>   
+                <pathelement path="${reporter.build.root.dir}"/>   
+            </classpath>			
+		</junit>
+	</target>
+		
+	<target name="build" depends="compile">
+	</target>
+</project>

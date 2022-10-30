@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://bluejungle.com/destiny/types/secure_session/v1" 
+			xmlns:tns="http://bluejungle.com/destiny/types/secure_session/v1"
+			xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			xmlns:basicTypes="http://bluejungle.com/destiny/types/basic/v1">
+			
+	<xs:import namespace="http://bluejungle.com/destiny/types/basic/v1" schemaLocation="../../../../../../../dac/src/wsdl/com/bluejungle/destiny/types/BasicTypes.v1.xsd"/>
+			
+	<xs:complexType name="SecureSession">
+		<xs:sequence>
+			<xs:element name="key" type="xs:string"/>
+			<xs:element name="properties" type="basicTypes:Properties" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="AccessDeniedFault" />
+</xs:schema>

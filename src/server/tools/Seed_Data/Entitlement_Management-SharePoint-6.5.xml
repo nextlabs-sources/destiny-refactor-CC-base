@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export-file>
+    <version>-1</version>
+    <export-entities name="ACTION/All Portal Action">
+        <type>COMPONENT</type>
+        <pql>ID 31 STATUS APPROVED CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "ACTION/All Portal Action" = (UPLOAD OR DOWNLOAD OR ATTACH OR DELETE OR EXPORT OR MOVE OR OPEN OR EDIT)</pql>
+    </export-entities>
+    <export-entities name="ACTION/Access">
+        <type>COMPONENT</type>
+        <pql>ID 34 STATUS APPROVED CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "ACTION/Access" = (FALSE OR OPEN)</pql>
+    </export-entities>
+    <export-entities name="ACTION/Upload">
+        <type>COMPONENT</type>
+        <pql>ID 37 STATUS APPROVED CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "ACTION/Upload" = (FALSE OR UPLOAD)</pql>
+    </export-entities>
+    <export-entities name="ACTION/Download">
+        <type>COMPONENT</type>
+        <pql>ID 38 STATUS APPROVED CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "ACTION/Download" = (FALSE OR DOWNLOAD)</pql>
+    </export-entities>
+</export-file>

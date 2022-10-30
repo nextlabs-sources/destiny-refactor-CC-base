@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.applicationusers.repository.hibernateimpl">
+
+	<class name="BaseApplicationUserDO" table="APPLICATION_USER">
+
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		<discriminator column="USER_TYPE" type="string"/>
+		
+		<property name="login" type="string" >
+			<column name="username" not-null="true" length="64" unique-key="usernameAndDomainIndex"/>
+        </property>
+        
+        <property name="firstName" column="first_name" type="string" length="64" not-null="true"/>
+        <property name="lastName" column="last_name" type="string" length="64" not-null="true"/>
+        <property name="status" column="status" type="string" />
+        <property name="version" column="version" type="integer"/>
+   		<many-to-one name="accessDomain" class="AccessDomainDO" cascade="none" update="false">
+			<column name="DOMAIN_ID" not-null="true" unique-key="usernameAndDomainIndex" />
+        </many-to-one>   		
+   		
+		<many-to-one name="hibernatePrimaryAccessGroup" class="BaseAccessGroupDO" column="PRIMARY_GROUP_ID" cascade="none" insert="false" />
+		
+		<subclass name="ImportedApplicationUserDO" discriminator-value="imported">			
+		</subclass>
+		
+		<subclass name="InternalApplicationUserDO" discriminator-value="internal">			
+        	<property name="password" length="128" type="binary" />
+		</subclass>
+		
+	</class>
+
+</hibernate-mapping>

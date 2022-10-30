@@ -1,0 +1,136 @@
+<xs:schema 	targetNamespace="http://bluejungle.com/destiny/types/report_result/v1" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:action="http://bluejungle.com/destiny/types/actions/v1"
+			xmlns:effect="http://bluejungle.com/destiny/types/effects/v1"
+			xmlns:types="http://bluejungle.com/destiny/types/report_result/v1"
+			xmlns:basicTypes="http://bluejungle.com/destiny/types/basic/v1"
+			xmlns:attr="http://nextlabs.com/destiny/types/custom_attr/v1">
+
+	<xs:complexType name="ActivityDetailResult" abstract="true">
+		<xs:sequence>
+			<xs:element name="id" type="basicTypes:Id"   minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="DetailResultList">
+		<xs:sequence>
+			<xs:element name="results" type="types:ActivityDetailResult" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="DocumentActivityDetailResult">
+		<xs:complexContent>
+			<xs:extension base="types:ActivityDetailResult">
+				<xs:sequence>
+					<xs:element name="action" type="action:ActionType" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="applicationName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="fromResourceName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="hostIPAddress" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="hostName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="timestamp" type="xs:dateTime"   minOccurs="1" maxOccurs="1"/>
+					<xs:element name="toResourceName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="userName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="loggingLevel" type="xs:int" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	
+	<xs:complexType name="PolicyActivityDetailResult">
+		<xs:complexContent>
+			<xs:extension base="types:ActivityDetailResult">
+				<xs:sequence>
+					<xs:element name="action" type="action:ActionType" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="applicationName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="effect" type="effect:EffectType" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="fromResourceName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="hostIPAddress" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="hostName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="policyName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="timestamp" type="xs:dateTime"   minOccurs="1" maxOccurs="1"/>
+					<xs:element name="toResourceName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="userName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="loggingLevel" type="xs:int" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+		<xs:complexType name="DocumentActivityCustomResult">
+		<xs:complexContent>
+			<xs:extension base="types:DocumentActivityDetailResult">
+				<xs:sequence>
+					<xs:element name="customAttributeList" type="attr:CustomAttributeList" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	
+	<xs:complexType name="PolicyActivityCustomResult">
+		<xs:complexContent>
+			<xs:extension base="types:PolicyActivityDetailResult">
+				<xs:sequence>
+					<xs:element name="customAttributeList" type="attr:CustomAttributeList" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="LogDetailResult">
+		<xs:sequence>
+			<xs:element name="data" type="types:ActivityDetailResult" nillable="true" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ReportDetailResult">
+		<xs:complexContent>
+			<xs:extension base="types:ReportResult">
+				<xs:sequence>
+					<xs:element name="data" type="types:DetailResultList" nillable="true" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+					
+	<xs:complexType name="ReportResult" abstract="true">
+		<xs:sequence>
+			<xs:element name="state" type="types:ReportState" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="totalRowCount" type="xs:long" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="availableRowCount" type="xs:long" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ReportSummaryResult">
+		<xs:complexContent>
+			<xs:extension base="types:ReportResult">
+				<xs:sequence>
+					<xs:element name="data" type="types:SummaryResultList" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+		
+	<xs:complexType name="ReportState">
+		<xs:sequence>
+			<xs:element name="state" type="xs:anyType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="SummaryResult">
+		<xs:sequence>
+			<xs:element name="value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="count" type="xs:long" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="SummaryResultList">
+		<xs:sequence>
+			<xs:element name="results" type="types:SummaryResult" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="minCount" type="xs:long" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="maxCount" type="xs:long" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="totalCount" type="xs:long" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

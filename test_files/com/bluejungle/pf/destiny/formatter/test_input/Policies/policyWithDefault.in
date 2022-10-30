@@ -1,0 +1,8 @@
+policy policy_with_default
+	description "this policy has a default clause"
+	for resource.name = "c:\\**.java"
+	on *
+	by user.group = "engineering"
+	do allow
+	by default
+		do deny "can't touch java files if you're not in engineering"

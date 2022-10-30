@@ -1,0 +1,3 @@
+DESKTOP 2.5
+id 0 POLICY EmailToContact FOR resource.fso.name = "c:\\test\\**" ON EMAIL SENT_TO user.did=$jed@dubious.com$ BY user.did=$jimmy.carter@test.bluejungle.com$ DO deny BY DEFAULT DO allow ON deny DO log, display("Deny") ON allow DO log, display("Allow")
+

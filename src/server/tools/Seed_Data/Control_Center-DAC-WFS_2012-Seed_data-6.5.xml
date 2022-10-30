@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export-file>
+    <version>-1</version>
+    <export-entities name="ACTION/Modify">
+        <type>COMPONENT</type>
+        <pql>ID 44 STATUS APPROVED CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "ACTION/Modify" = (OPEN OR RUN OR EDIT OR DELETE)</pql>
+    </export-entities>
+    <export-entities name="ACTION/Read And Excute">
+        <type>COMPONENT</type>
+        <pql>ID 63 STATUS APPROVED CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "ACTION/Read And Excute" = (RUN OR OPEN)</pql>
+    </export-entities>
+    <export-entities name="ACTION/Read">
+        <type>COMPONENT</type>
+        <pql>ID 64 STATUS APPROVED CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "ACTION/Read" = (FALSE OR OPEN)</pql>
+    </export-entities>
+    <export-entities name="ACTION/Write">
+        <type>COMPONENT</type>
+        <pql>ID 65 STATUS APPROVED CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "ACTION/Write" = (FALSE OR EDIT)</pql>
+    </export-entities>
+</export-file>

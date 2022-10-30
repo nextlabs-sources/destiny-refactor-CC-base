@@ -1,0 +1,71 @@
+<mapping>
+    <class name="com.nextlabs.destiny.container.ddac.configuration.DDACConfiguration">
+        <map-to xml="DDACConfig"/>
+        <field name="checkUpdatesFrequency" type="int">
+            <bind-xml name="check-updates-frequency"/>
+        </field>
+        
+        <field name="adConfig" 
+               type="com.nextlabs.destiny.container.ddac.configuration.DDACActiveDirectoryConfiguration"
+               collection="arraylist"
+               get-method="getADConfig"
+               set-method="setADConfig">
+            <bind-xml name="ad-definition"/>
+        </field>
+
+        <field name="actionMappings" collection="map">
+            <bind-xml name="action-mapping">
+                <class name="org.exolab.castor.mapping.MapItem">
+                    <field name="key" type="java.lang.String">
+                        <bind-xml name="nextlabs"/>
+                    </field>
+                    <field name="value" type="java.lang.String">
+                        <bind-xml name="sddl"/>
+                    </field>
+                </class>
+            </bind-xml>
+        </field>
+    </class>
+
+    <class name="com.nextlabs.destiny.container.ddac.configuration.DDACActiveDirectoryConfiguration">
+        <field name="hostName" type="string">
+            <bind-xml name="name" location="connection-settings"/>
+        </field>
+        <field name="login" type="string">
+            <bind-xml name="login" location="connection-settings"/>
+        </field>
+        <field name="password" type="string">
+            <bind-xml name="password" location="connection-settings"/>
+        </field>
+        <field name="activeDirectoryRuleIdentity" type="string">
+            <bind-xml name="ad-rule-identity"/>
+        </field>
+        <field name="activeDirectoryCAPIdentity" type="string">
+            <bind-xml name="ad-policy-identity"/>
+        </field>
+        <field name ="groupToSIDMappings" collection="map">
+            <bind-xml name="group-sid-mapping">
+                <class name="org.exolab.castor.mapping.MapItem">
+                    <field name="key" type="java.lang.String">
+                        <bind-xml name="group-name"/>
+                    </field>
+                    <field name="value" type="java.lang.String">
+                        <bind-xml name="sid"/>
+                    </field>
+                </class>
+            </bind-xml>
+        </field>
+        <field name="acplToADMappings" collection="map">
+            <bind-xml name="ad-mapping">
+                <class name="org.exolab.castor.mapping.MapItem">
+                    <field name="key" type="java.lang.String">
+                        <bind-xml name="acpl"/>
+                    </field>
+                    <field name="value" type="java.lang.String">
+                        <bind-xml name="ad"/>
+                    </field>
+                </class>
+            </bind-xml>
+        </field>
+    </class>
+</mapping>

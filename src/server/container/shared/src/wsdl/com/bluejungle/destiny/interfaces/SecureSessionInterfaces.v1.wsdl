@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://bluejungle.com/destiny/interfaces/secure_session/v1"
+				  xmlns:tns="http://bluejungle.com/destiny/interfaces/secure_session/v1"
+				  xmlns:types="http://bluejungle.com/destiny/types/secure_session/v1"
+				  xmlns:xs="http://www.w3.org/1999/XMLSchema" 
+				  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"> 
+				  
+	<wsdl:types>
+		<xs:schema targetNamespace="http://bluejungle.com/destiny/services/inquiry/v1">
+			<xs:import namespace="http://bluejungle.com/destiny/types/secure_session/v1" schemaLocation="../types/SecureSessionTypes.v1.xsd"/>
+		</xs:schema>
+	</wsdl:types>
+	
+   <wsdl:message name="initSessionRequest">      
+   </wsdl:message>
+   <wsdl:message name="initSessionResponse">
+		<wsdl:part name="secureSession" type="types:SecureSession"/>
+   </wsdl:message>
+   <wsdl:message name="AccessDeniedFault">
+		<wsdl:part name="AccessDeniedFault" type="types:AccessDeniedFault"/>
+   </wsdl:message>
+	
+   <wsdl:portType name="SecureSessionServiceIF">
+
+	  <!-- Initialize a Secure Session -->
+      <wsdl:operation name="initSession">
+         <wsdl:input message="tns:initSessionRequest" name="initSessionRequest"/>
+         <wsdl:output message="tns:initSessionResponse" name="initSessionResponse"/>
+		 <wsdl:fault message="tns:AccessDeniedFault" name="AccessDeniedFault" />
+      </wsdl:operation>
+   
+   </wsdl:portType>
+   
+</wsdl:definitions>

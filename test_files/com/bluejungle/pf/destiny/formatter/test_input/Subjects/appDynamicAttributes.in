@@ -1,0 +1,1 @@
+principal spamware = (application.dynamic_attribute==123 OR application."attribute in quotes"="456")

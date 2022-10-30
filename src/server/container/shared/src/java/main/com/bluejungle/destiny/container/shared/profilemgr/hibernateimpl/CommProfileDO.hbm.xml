@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.profilemgr.hibernateimpl">
+	
+	<class name="CommProfileDO" table="COMM_PROFILE">
+        
+		<!-- Generic persisted properties -->
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		<property name="default" column="default_profile" type="boolean" not-null="true" />
+		<property name="createdDate" column="created_date" access="field" not-null="true" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType"/>
+		<property name="modifiedDate" column="modified_date" access="field" not-null="true" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType"/>
+		
+		<!-- Object-specific properties -->
+		<property name="name" type="string" >
+			<column name="name" not-null="true" length="128" unique-key="nameAndTypeIndex"/>
+		</property> 
+		
+        <property name="DABSLocation" column="DABS_location" length="128" type="com.bluejungle.framework.datastore.hibernate.usertypes.URIToStringUserType" not-null="true"/>
+        <property name="agentType" type="com.bluejungle.destiny.container.shared.agentmgr.hibernateimpl.AgentTypeUserType">
+			<column name="agent_type" not-null="true" unique-key="nameAndTypeIndex"/>
+        </property> 
+        <property name="heartBeatFrequency" type="com.bluejungle.framework.datastore.hibernate.usertypes.TimeIntervalCompositeUserType">
+			<column name="heart_beat_freq_time" not-null="true"/>
+			<column name="heart_beat_freq_time_unit" not-null="true"/>
+		</property>
+        <property name="logLimit" column="log_limit" type="integer" not-null="true"/>
+		<property name="logFrequency" type="com.bluejungle.framework.datastore.hibernate.usertypes.TimeIntervalCompositeUserType">
+			<column name="log_freq_time" not-null="true"/>
+			<column name="log_freq_time_unit" not-null="true"/>
+		</property>
+        
+        <property name="defaultPushPort" column="default_port" not-null="true"/>
+        <property name="pushEnabled" column="push_enabled" not-null="true"/>
+		<property name="passwordHash" column="password_hash" length="20" type="binary" not-null="true" />
+		<property name="currentJournalingSettingsName" column="curr_act_journ_settings_name" />
+		
+		<many-to-one name="customJournalingSettings" column="cust_act_journ_settings_id" class="ActivityJournalingSettingsDO" cascade="delete" unique="true" not-null="true"/>
+			
+	</class>
+
+</hibernate-mapping>

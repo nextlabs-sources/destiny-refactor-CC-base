@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.nextlabs.destiny.container.shared.inquirymgr.hibernateimpl">
+	<class name="AttributeColumnMappingDO" table="RPA_LOG_MAPPING">
+		<!-- Generic persisted properties -->
+		<id name="id" column="id">
+			<generator class="native">
+				<param name="sequence">RPA_LOG_MAP_SEQUENCE</param>
+			</generator>
+		</id>
+		<property name="attributeName" column="name" type="string" />
+		<property name="columnName" column="mapped_column" type="string" />
+		<property name="dataType" column="data_type" type="string"/>
+		<property name="attributeType" column="attr_type" type="string"/>
+		<property name="dynamic" type="boolean" >
+		   <column  name="is_dynamic_attr" not-null="true"/>
+		</property>
+		
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,1 @@
+USER "negated_ldap_group" = ((TRUE AND NOT ((FALSE OR user.ldapgroup = "BLUEJUNGLE.COM:Groups:engineering"))) AND (TRUE AND TRUE))

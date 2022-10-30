@@ -1,0 +1,1 @@
+resource ref_l2 = resource.name = "**ref**"

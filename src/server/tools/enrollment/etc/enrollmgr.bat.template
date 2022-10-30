@@ -1,0 +1,7 @@
+@echo off
+
+set OPTIONS=-Djava.util.logging.config.file=enrollmgr.logging.properties -Djava.library.path=. -DENROLL_TOOL_HOME=.
+
+set JAVA=[JAVA_HOME]/bin/java
+%JAVA% %OPTIONS% -jar enrollment.jar %*
+

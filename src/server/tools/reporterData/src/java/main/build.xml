@@ -1,0 +1,168 @@
+<project basedir="." name="reporterdata_tool_main" default="build">
+
+	<var name="nlbuildroot" value="${basedir}/../../../../../../.." />
+	<property name="reporterdata.src.dir"      value="${basedir}"/>
+	<property name="reporterdata.tool.dir"      value="${build.root.dir}/tools/reporterdata"/>
+	<property name="build.dest"   value="${build.root.dir}/server/tools/reporterdata/classes/main"/>
+	<property name="doc.dest"   value="${build.root.dir}/server/tools/reporterdata/doc"/>
+
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	<tstamp>
+		<format property="reporterData.timestamp"  pattern="MM/dd/yyyy hh:mm aa" />
+	</tstamp>
+
+	<path id="reporterdata.classpath">
+		<fileset dir="${reporterdata.tool.dir}">
+			<include name="lib/**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<target name="clean">
+		<delete dir="${reporterdata.tool.dir}" failonerror="false"/>
+		<delete dir="${build.dest}" failonerror="false" />
+		<delete dir="${build.root.dir}/reporterdata.jar" failonerror="false" />
+	</target>
+
+	<target name="pre-build" depends="clean">
+		<mkdir dir="${build.dest}"/>
+		<mkdir dir="${reporterdata.tool.dir}"/>
+
+		<!-- copy dependence libraries -->
+		<copy todir="${reporterdata.tool.dir}/lib/nextlabs" failonerror="true">
+			<fileset dir="${build.root.dir}">
+				<include name="agent-manager.jar"/>
+				<include name="common-domain.jar"/>
+				<include name="common-framework.jar"/>
+				<include name="common-pf.jar"/>
+				<include name="configurationFileParser.jar"/>
+				<include name="crypt.jar"/>
+				<include name="dabs-components.jar"/>
+				<include name="db-init-tools.jar"/>
+				<include name="inquiry-manager-shared.jar"/>
+				<include name="management-types.jar"/>
+				<include name="policy-deploy-manager.jar"/>
+				<include name="profile-manager.jar"/>
+				<include name="server-base.jar"/>
+				<include name="server-datasource.jar"/>
+				<include name="server-dcsf.jar"/>
+				<include name="server-dcsf-test.jar"/>
+				<include name="server-framework.jar"/>
+				<include name="server-pf.jar"/>
+				<include name="server-pf-tests.jar"/>
+				<include name="server-shared-tests.jar"/>
+				<include name="random.jar"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${reporterdata.tool.dir}/lib/external" failonerror="true" flatten="true">
+			<path>
+				<pathelement path="${xlib_jar_dir}/antlr.jar" />
+				<pathelement path="${xlib_jar_dir}/axis.jar" />
+				<pathelement path="${xlib_jar_dir}/cglib-full-2.0.2.jar" />
+				<pathelement path="${xlib_jar_dir}/commons-beanutils.jar" />
+				<pathelement path="${xlib_jar_dir}/commons-collections-3.2.jar" />
+				<pathelement path="${xlib_jar_dir}/commons-digester.jar" />
+				<pathelement path="${xlib_jar_dir}/commons-logging-1.0.4.jar" />
+				<pathelement path="${xlib_jar_dir}/db2jcc_license_cu.jar" />
+				<pathelement path="${xlib_jar_dir}/db2jcc.jar" />
+				<pathelement path="${xlib_jar_dir}/dom4j-1.4.jar" />
+				<pathelement path="${xlib_jar_dir}/ehcache-1.1.jar" />
+				<pathelement path="${xlib_jar_dir}/hibernate2.jar" />
+				<pathelement path="${xlib_jar_dir}/jaxrpc.jar" />
+				<pathelement path="${xlib_jar_dir}/ldap.jar" />
+				<pathelement path="${xlib_jar_dir}/jta.jar" />
+				<pathelement path="${xlib_jar_dir}/jtds-1.2.2.jar" />
+				<pathelement path="${xlib_jar_dir}/junit-4.3.jar" />
+				<pathelement path="${xlib_jar_dir}/mail.jar" />
+				<pathelement path="${xlib_jar_dir}/odmg-3.0.jar" />
+				<pathelement path="${oracle.jdbc}" />
+				<pathelement path="${xlib_jar_dir}/postgresql-9.2-1002.jdbc4.jar" />
+				<pathelement path="${xlib_jar_dir}/sqljdbc4.jar" />
+				<pathelement path="${xlib_jar_dir}/xercesImpl.jar" />
+			</path>
+		</copy>
+	</target>
+
+	<target name="compile" depends="pre-build">
+		<javac srcdir="${reporterdata.src.dir}"
+		       destdir="${build.dest}"
+		       debug="${compile.debug}"
+		       verbose="${compile.verbose}"
+		       	source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}"
+		>
+			<classpath refid="reporterdata.classpath" />
+			<exclude name="com/bluejungle/destiny/tools/reporterdata/Deployment.java"
+			/>
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile" description="creates a jar file for the tool">
+		<copy file="${reporterdata.src.dir}/../../../etc/configuration.digester.rules.reporterData.xml"
+				      todir="${build.dest}/com/nextlabs/destiny/tools/reporterdata/"
+		/>
+
+		<manifestclasspath property="reporterdata.jar.classpath" jarfile="${reporterdata.tool.dir}/reporterdata.jar">
+			<classpath refid="reporterdata.classpath" />
+		</manifestclasspath>
+
+		<jar destfile="${build.root.dir}/reporterdata.jar">
+			<fileset dir="${build.dest}">
+				<include name="**/*"/>
+			</fileset>
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Class-Path" value="${reporterdata.jar.classpath}" />
+				<attribute name="Main-Class" value="com.nextlabs.destiny.tools.reporterdata.ReporterDataConsole" />
+				<attribute name="Implementation-Version" value="${reporterData.timestamp}"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="build" depends="jar"/>
+
+	<target name="doc">
+		<mkdir dir="${doc.dest}"/>
+		<javadoc sourcepath="${reporterdata.src.dir}" destdir="${doc.dest}" linksource="yes"
+    		classpathref="compile.server_shared.classpath" source="${compile.source}" >
+			<packageset dir="${src.dir}" defaultexcludes="yes">
+				<include name="**/*"/>
+			</packageset>
+		</javadoc>
+	</target>
+
+	<target name="setup-tool">
+		<copy todir="${reporterdata.tool.dir}">
+			<fileset dir="${reporterdata.src.dir}/../../../etc/">
+				<include name="perfConfig.properties"/>
+				<include name="csvConfig.properties"/>
+				<include name="reporterdata.bat"/>
+				<include name="reporterdata.sh"/>
+				<include name="configuration.digester.rules.reporterData.xml"/>
+				<include name="logging.properties"/>
+			</fileset>
+
+		</copy>
+		
+		<copy todir="${reporterdata.tool.dir}" flatten="true">
+			<resources>
+				<file file="${build.root.dir}/reporterdata.jar" />
+			</resources>
+		</copy>
+		
+		<replace file="${reporterdata.tool.dir}/perfConfig.properties" 
+				token="[BUILD_TIME]" value="${reporterData.timestamp}"/>
+
+		<replace file="${reporterdata.tool.dir}/perfConfig.properties" 
+				token="hackerPassword = " value=""/>
+		
+		<replace file="${reporterdata.tool.dir}/csvConfig.properties" 
+				token="[BUILD_TIME]" value="${reporterData.timestamp}"/>
+
+		<zip destfile="${reporterdata.tool.dir}/reporterdata.zip"
+			basedir="${reporterdata.tool.dir}"
+			excludes="reporterdata.zip"
+		/>
+	</target>
+
+</project>

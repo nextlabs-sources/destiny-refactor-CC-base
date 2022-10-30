@@ -1,0 +1,73 @@
+<DDACConfig>
+    <check-updates-frequency>60</check-updates-frequency>  <!-- Once per minute -->
+
+    <!-- Action mappings are the same across all ADs -->
+    <action-mapping>
+        <nextlabs>OPEN, RUN</nextlabs>
+        <sddl>0x1200a9</sddl>
+    </action-mapping>
+
+    <action-mapping>
+        <nextlabs>OPEN</nextlabs>
+        <sddl>FR</sddl>
+    </action-mapping>
+
+    <action-mapping>
+        <nextlabs>OPEN, EDIT</nextlabs>
+        <sddl>0x12019f</sddl>
+    </action-mapping>
+
+    <action-mapping>
+        <nextlabs>EDIT</nextlabs>
+        <sddl>0x100116</sddl>
+    </action-mapping>
+
+    <action-mapping>
+        <nextlabs>DELETE, EDIT, OPEN, RUN</nextlabs>
+        <sddl>0x1301bf</sddl>
+    </action-mapping>
+
+    <action-mapping>
+        <nextlabs>EDIT, OPEN, RUN</nextlabs>
+        <sddl>0x1201bf</sddl>
+    </action-mapping>
+
+    <action-mapping>
+        <nextlabs>CHANGE_ATTRIBUTES, CHANGE_SECURITY, DELETE, EDIT, OPEN, RUN</nextlabs>
+        <sddl>FA</sddl>
+    </action-mapping>
+
+    <!--
+    <ad-definition>
+        <connection-settings>
+            <name>AD HOSTNAME</name>
+            <login>USERNAME</login>
+            <password>PASSWORD</password>
+        </connection-settings>
+
+        <ad-rule-identity>CN=Central Access Rules,CN=Claims Configuration,CN=Services,CN=Configuration,DC=DOMAININFO,DC=DOMAIN,...</ad-rule-identity>
+
+        <ad-policy-identity>CN=Central Access Policies,CN=Claims Configuration,CN=Services,CN=Configuration,DC=DOMAIN,DC=DOMAIN,...</ad-policy-identity>
+
+        <group-sid-mapping>
+            <group-name>GROUP NAME</group-name>
+            <sid>sid</sid>
+        </group-sid-mapping>
+
+        <ad-mapping>
+            <acpl>resource.fso.attribute1</acpl>
+            <ad>AD RESOURCE PROPERTY</ad>
+        </ad-mapping>
+
+        <ad-mapping>
+            <acpl>user.attribute1</acpl>
+            <ad>AD USER CLAIM</ad>
+        </ad-mapping>
+
+        <ad-mapping>
+            <acpl>host.attribute1</acpl>
+            <ad>AD HOST CLAIM</ad>
+        </ad-mapping>
+    </ad-definition>
+    -->
+</DDACConfig>

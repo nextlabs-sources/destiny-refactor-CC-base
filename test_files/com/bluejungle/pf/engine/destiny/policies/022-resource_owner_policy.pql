@@ -1,0 +1,5 @@
+policy resource_owner_test
+for owner_test
+on *
+by *
+do deny

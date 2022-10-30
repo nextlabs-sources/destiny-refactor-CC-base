@@ -1,0 +1,22 @@
+ID null COMPONENT ID9b42e6 = user.name = "ID9b42e6"
+
+
+================ Re-parsed PQL =================
+
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "component": 'COMPONENT'
+        IDENTIFIER: 'ID9b42e6'
+        COMPONENT_EXPR: ''
+            RELATION_OP: '='
+                DOT_EXPRESSION: ''
+                    IDENTIFIER: 'user'
+                    IDENTIFIER: 'name'
+                QUOTED_STRING: 'ID9b42e6'

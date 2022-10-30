@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://nextlabs.com/empty"
+				  xmlns:tns="http://nextlabs.com/empty"
+				  xmlns:domainTypes="http://bluejungle.com/domain/types" 
+				  xmlns:xs="http://www.w3.org/1999/XMLSchema" 
+				  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+				  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" > 
+				  
+	<wsdl:types>
+		<xs:schema targetNamespace="http://nextlabs.com/empty">
+			<xs:import namespace="http://bluejungle.com/domain/types" schemaLocation="../xsd/com/bluejungle/domain/types/ActionType.xsd"/>	
+			<xs:import namespace="http://bluejungle.com/domain/types" schemaLocation="../xsd/com/bluejungle/domain/types/AgentType.xsd"/>	
+		</xs:schema>
+	</wsdl:types>
+
+</wsdl:definitions>	

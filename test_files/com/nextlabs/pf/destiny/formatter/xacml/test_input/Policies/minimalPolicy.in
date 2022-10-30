@@ -1,0 +1,8 @@
+policy minimal_policy
+    description "Minimal policy"
+    DO ALLOW
+    FOR * ON * TO * BY *
+    ON DENY DO LOG "Access denied", DONOTLOG
+    ON ALLOW DO LOG "Access granted", DONOTLOG
+
+

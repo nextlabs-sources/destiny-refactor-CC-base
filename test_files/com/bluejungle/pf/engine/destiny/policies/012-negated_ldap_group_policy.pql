@@ -1,0 +1,8 @@
+POLICY "Not Engineering Copy"
+    ATTRIBUTE USAGE
+    FOR resource.name = "**negated_ldap_group.test"
+    ON copy
+    TO true
+    BY ((TRUE AND (FALSE OR principal.group = negated_ldap_group)) AND (TRUE AND TRUE) AND (TRUE AND TRUE))
+    DO deny
+    ON deny DO log

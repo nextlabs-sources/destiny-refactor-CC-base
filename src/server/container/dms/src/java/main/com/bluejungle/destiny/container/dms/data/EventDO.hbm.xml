@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.dms.data">
+	
+	<class
+		name="EventDO" table="EVENT">
+
+		<!-- Generic persisted properties -->
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		
+		<!-- Object-specific properties -->
+		<property name="name" type="string" not-null="true" unique="true" length="128"/>
+		
+	    <map
+			name="registrations"
+			inverse="true"
+			cascade="all-delete-orphan"
+			table="EVENT_REGISTRATION">
+
+			<key column="EVENT_ID"/>
+			<index column="COMPONENT_ID" type="long"/>
+			<one-to-many class="EventRegistration"/>
+		</map>
+
+	</class>
+
+</hibernate-mapping>

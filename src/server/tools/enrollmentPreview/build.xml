@@ -1,0 +1,114 @@
+<project name="enrollment test tools" default="build">
+
+    <property name="src.main.dir" value="src/java/main/" />
+    <property name="src.etc.dir"  value="etc"/>
+    <property name="build.dest"   value="${build.root.dir}/server/tools/enrollmentPreview/"/>
+    <property name="deploy.dest"  value="${build.root.dir}/tools/enrollmentPreview/"/>
+    <property name="classes.dir"  value="${build.dest}classes/"/>
+
+    <path id="enrollmentPreview.classpath">
+		<!-- base enrollment preview jars -->
+        <pathelement path="${build.root.dir}/cli.jar"/>
+        <pathelement path="${build.root.dir}/enrollment.jar"/>
+        <pathelement path="${build.root.dir}/server-base.jar"/>
+        
+		<!-- dependence jars -->
+        <pathelement path="${build.root.dir}/common-dictionary.jar"/>
+        <pathelement path="${build.root.dir}/common-domain.jar"/>
+        <pathelement path="${build.root.dir}/common-framework.jar"/>
+        <pathelement path="${build.root.dir}/crypt.jar"/>
+        <pathelement path="${build.root.dir}/enrollment-service.jar"/>
+        <pathelement path="${build.root.dir}/server-datasource.jar"/>
+        <pathelement path="${build.root.dir}/server-dictionary.jar"/>
+        <pathelement path="${build.root.dir}/server-framework.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-enrollment.jar"/>
+        
+		<!-- third party libs -->
+        <pathelement path="${build.root.dir}/server/container/dem/WEB-INF/lib/axis.jar"/>
+        <pathelement path="${build.root.dir}/server/container/dem/WEB-INF/lib/commons-collections-2.1.1.jar"/>
+        
+        <pathelement path="${build.root.dir}/server/container/dem/WEB-INF/lib/commons-logging-1.0.4.jar"/>
+        <pathelement path="${build.root.dir}/server/container/dem/WEB-INF/lib/ldap.jar"/>
+        <pathelement path="${build.root.dir}/server/container/dem/WEB-INF/lib/hibernate2.jar"/>
+        <pathelement path="${build.root.dir}/server/container/dem/WEB-INF/lib/jaxrpc.jar"/>
+		
+		<!-- sharepoint third party libs -->
+		<pathelement path="${build.root.dir}/server/container/dem/WEB-INF/lib/commons-codec-1.8.jar"/>
+		<pathelement path="${build.root.dir}/server/container/dem/WEB-INF/lib/commons-discovery-0.2.jar"/>
+        <pathelement path="${build.root.dir}/server/container/dem/WEB-INF/lib/commons-httpclient-3.0-rc2.jar"/>
+        <pathelement path="${build.root.dir}/server/container/dem/WEB-INF/lib/saaj.jar"/>
+        <pathelement path="${build.root.dir}/server/container/dem/WEB-INF/lib/sharepoint-services.jar"/>
+        <pathelement path="${build.root.dir}/server/container/dem/WEB-INF/lib/wsdl4j-1.5.1.jar"/>
+		
+    </path>
+    
+    <target name="build">
+        <tstamp>
+            <format property="build.time"
+                    pattern="MM/dd/yyyy hh:mm aa"
+            />
+        </tstamp>
+
+        <delete dir="${build.dest}" failonerror="false" />
+
+        <mkdir dir="${build.dest}"/>
+        <mkdir dir="${classes.dir}"/>
+
+        <copy todir="${build.dest}lib" flatten="true" verbose="true">
+            <resources>
+                <path refid="enrollmentPreview.classpath" />
+            </resources>
+        </copy>
+
+        <javac srcdir="${src.main.dir}"
+               destdir="${classes.dir}"
+               debug="true"
+            	source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}"
+        >
+            <classpath>
+                <fileset dir="${build.dest}lib">
+                    <include name="**/*.jar" />
+                </fileset>
+            </classpath>
+        </javac>
+
+        <manifestclasspath property="jar.classpath" jarfile="${build.dest}enrollmentPreview.jar">
+            <classpath>
+                <fileset dir="${build.dest}lib">
+                    <include name="**/*.jar" />
+                </fileset>
+            </classpath>
+        </manifestclasspath>
+
+        <jar destfile="${build.dest}enrollmentPreview.jar">
+            <fileset dir="${classes.dir}" />
+            <manifest>
+                <attribute name="Built-By" value="${user.name}" />
+                <attribute name="Class-Path" value="${jar.classpath}" />
+                <attribute name="Main-Class" value="com.nextlabs.testtool.enrollment.EnrollmentPreview"    />
+                <attribute name="Implementation-Version" value="${build.time}"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="setup-tool"  depends="build">
+        <mkdir dir="${deploy.dest}"/>
+        <copy todir="${deploy.dest}">
+            <fileset dir="${src.etc.dir}">
+                <include name="enrollmentPreview.bat"/>
+				<include name="enrollmentPreview.sh"/>
+                <include name="logging.properties"/>
+                <include name="config.properties"/>
+            </fileset>
+            <fileset dir="${build.dest}">
+                <exclude name="classes//**"/>
+            </fileset>
+        </copy>
+
+        <zip destfile="${deploy.dest}/enrollmentPreview.zip"
+             basedir="${deploy.dest}"
+             excludes="enrollmentPreview.zip"
+        />
+    </target>
+
+</project>

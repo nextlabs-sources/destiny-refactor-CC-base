@@ -1,0 +1,11 @@
+<xs:schema 	targetNamespace="http://bluejungle.com/destiny/services/log/types" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:types="http://bluejungle.com/destiny/services/log/types">
+
+	<xs:simpleType name="LogStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Success"/>
+			<xs:enumeration value="Failed"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

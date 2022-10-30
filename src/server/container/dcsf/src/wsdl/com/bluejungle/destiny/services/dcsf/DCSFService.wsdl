@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:common="http://bluejungle.com/destiny/framework/types" 
+	xmlns:types="http://bluejungle.com/destiny/services/dcsf/types" 	
+	xmlns:tns="http://bluejungle.com/destiny/services/dcsf" 	
+	targetNamespace="http://bluejungle.com/destiny/services/dcsf" 
+	name="DCSFService">
+
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://bluejungle.com/destiny/services/management" xmlns:types="http://bluejungle.com/destiny/services/dcsf/types">
+			<xsd:import namespace="http://bluejungle.com/destiny/services/management/types" schemaLocation="types/Event.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/framework/types" schemaLocation="../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicFaults.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/framework/types" schemaLocation="../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicTypes.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+   
+	<wsdl:message name="DCSFServiceIF_NotifyEventRequest">
+    	<wsdl:part name="request" type="types:DestinyEvent"/>
+	</wsdl:message>
+  
+	<wsdl:message name="DCSFServiceIF_NotifyEventResponse">
+	</wsdl:message>
+	
+	<wsdl:message name="ServiceNotReadyFault">
+		<wsdl:part name="ServiceNotReadyFault" type="common:ServiceNotReadyFault"/>
+	</wsdl:message>
+	
+	<wsdl:message name="UnauthorizedCallerFault">
+		<wsdl:part name="UnauthorizedCallerFault" type="common:UnauthorizedCallerFault"/>
+	</wsdl:message>
+	
+     
+	<wsdl:portType name="DCSFServiceIF">
+    	<wsdl:operation name="NotifyEvent">
+			<wsdl:input message="tns:DCSFServiceIF_NotifyEventRequest"/>
+			<wsdl:output message="tns:DCSFServiceIF_NotifyEventResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation> 
+	</wsdl:portType>
+  
+	<wsdl:binding name="DCSFServiceIFBinding" type="tns:DCSFServiceIF">
+		<wsdl:operation name="NotifyEvent">
+			<wsdl:input>
+		        <soap:body parts="request" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="response" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+	    </wsdl:operation>
+	           
+    	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	</wsdl:binding>
+
+	<wsdl:service name="DCSFService">
+	    <wsdl:port name="DCSFServiceIFPort" binding="tns:DCSFServiceIFBinding">
+	      <soap:address location="http://localhost:8080/dcsf/services/DCSFServiceIFPort"/>
+	    </wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

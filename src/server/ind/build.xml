@@ -1,0 +1,102 @@
+<project name="server-ind" default="build">
+
+	<var name="nlbuildroot" value="${basedir}/../../.." />
+	<property name="java.main.src.dir"   value="${basedir}/src/java/main"/>
+    <property name="java.test.src.dir"   value="${basedir}/src/java/test"/>
+    <property name="build.dest"          value="${build.root.dir}/server/ind/classes"/>
+    <property name="build.test.dest"     value="${build.root.dir}/server/ind/testclasses"/>
+    <property name="doc.dest"            value="${build.root.dir}/server/ind/doc"/>
+	<property name="build.metainf"       value="${build.dest}/META-INF"/>
+	<property name="build.root.security" value="${build.root.dir}/security"/>
+	<property name="build.security"      value="${build.dest}/security"/>
+
+    <fileset id="destiny.jars" dir="${build.root.dir}">
+		<include name="common-framework.jar" />
+        <include name="common-pf.jar" />
+    </fileset>
+
+    <path id="this.compile.classpath">
+        <path refid="compile.classpath"/>
+        <pathelement path="${xlib_jar_dir}/sharepoint-services.jar"/>
+        <pathelement path="${xlib_jar_dir}/commons-httpclient-3.0-rc2.jar" />
+        <pathelement path="${xlib_jar_dir}/commons-digester.jar" />
+        <fileset refid="destiny.jars"/>
+    </path>
+
+    <target name="pre-build">
+        <mkdir dir="${build.dest}"/>
+        <mkdir dir="${build.test.dest}"/>
+    </target>
+
+    <target name="depend">
+        <depend srcDir="${java.main.src.dir};${java.test.src.dir}" destDir="${build.dest}" cache="${build.root.dir}/common/ind/depcache">
+            <classpath>
+                <fileset refid="destiny.jars"/>
+            </classpath>
+        </depend>
+    </target>
+
+    <target name="compile" depends="pre-build, depend">
+        <javac srcdir="${java.main.src.dir}" destdir="${build.dest}" debug="${compile.debug}"
+            verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="this.compile.classpath"/>
+        </javac>
+        <javac srcdir="${java.test.src.dir}" destdir="${build.test.dest}" debug="${compile.debug}"
+            verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath>
+                <path refid="this.compile.classpath"/>
+                <pathelement path="${build.dest}" />
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="${build.root.dir}/common-ind.jar" basedir="${build.dest}" 
+             includes="com/bluejungle/ind/*.class, com/bluejungle/ind/impl/*.class"  />
+        <jar destfile="${build.root.dir}/ind-sharepoint.jar" basedir="${build.dest}" 
+             includes="com/bluejungle/ind/impl/sharepoint/**/*.class"  />
+    </target>
+
+    <target name="run-tests-ui" depends="jar">
+        <java fork="yes" classname="junit.swingui.TestRunner" dir="${build.dest}" taskname="junit" failonerror="true">
+            <arg value="com.bluejungle.ind.TestindSuite" />
+            <classpath>
+                <pathelement path="${src.root.dir}/etc/junit" />
+                <pathelement path="${build.root.dir}/common-ind.jar" />
+                <path refid="this.compile.classpath" />
+				<pathelement path="${build.test.dest}" />
+            </classpath>
+        </java>
+    </target>
+	
+    <target name="tests" depends="jar">
+        <junit fork="yes" forkmode="once" printsummary="withOutAndErr" showoutput="yes" haltonfailure="${junit.haltonfailure}" failureproperty="junit.fail">
+            <formatter type="xml"/>
+            <sysproperty key="src.root.dir" value="${nlbuildroot}" />        	
+        	<sysproperty key="java.util.logging.config.file" value="${logging.properties}" />        	
+            <test name="com.bluejungle.ind.TestindSuite" todir="${log.dir}/tests" />
+            <classpath>
+                <pathelement path="${build.root.dir}/common-ind.jar" />
+				<pathelement path="${build.test.dest}" />
+                <path refid="this.compile.classpath" />
+            </classpath>
+        </junit>
+    </target>
+
+    <target name="doc">
+        <mkdir dir="${doc.dest}"/>
+        <javadoc sourcepath="${java.main.src.dir}" destdir="${doc.dest}" linksource="yes"
+            classpathref="this.compile.classpath" source="${compile.source}" >
+            <packageset dir="${java.main.src.dir}" defaultexcludes="yes">
+                <include name="com/bluejungle/ind/**"/>
+            </packageset>
+            <tag name="requires" description="Requires: " scope="methods"/>
+            <tag name="modifies" description="Modifies: " scope="methods"/>
+            <tag name="effects" description="Effects: " scope="methods"/>
+        </javadoc>
+    </target>
+
+    <target name="build" depends="jar">
+    </target>
+
+</project>

@@ -1,0 +1,173 @@
+<project name="build_compile" default="all" basedir=".">
+
+	<!-- Propery files -->
+	<property file="${basedir}/build.properties" />
+	<property environment="env" />
+	
+	<!-- Global properties -->
+	<property name="build_dir" location="${basedir}/../build" />
+	<property name="classes_dir" value="${build_dir}/classes" />
+	<property name="test_classes_dir" value="${build_dir}/classes_test" />
+	<property name="package_dir" value="${build_dir}/${package_name}" />
+
+	<property name="dist_zip_file_name" value="${package_name}-${version_str}-${version_build_short}-${build_date_long}.zip" />
+	
+	<!-- Dump properties -->
+	<echoproperties />
+
+	<echo message="INFO: Dump properties completed" />
+	
+	<!-- Sanity checks -->
+	<fail message="nlbuildroot is not set" unless="nlbuildroot" />
+	<fail message="nlbuildroot is empty">
+		<condition>
+			<equals arg1="${nlbuildroot}" arg2="" trim="true" />
+		</condition>
+	</fail>
+	<available file="${nlbuildroot}" type="dir" property="local.nlbuildroot_exists" />
+	<fail message="nlbuildroot directory does not exist - ${nlbuildroot}" unless="local.nlbuildroot_exists" />
+
+	<echo message="INFO: Sanity check completed (no error)" />
+	
+	<path id="classpath.gson">
+		<fileset dir="${gsonlibdir}" includes="*.jar"/>
+	</path>
+	<path id="classpath.httpclient">
+		<fileset dir="${httpclientlibdir}" includes="*.jar"/>
+	</path>
+	<path id="classpath.servlet">
+		<fileset dir="${servletlibdir}" includes="*.jar"/>
+	</path>
+	<path id="classpath.xmlbeanslib">
+		<fileset dir="${xmlbeanslibdir}" includes="*.jar"/>
+	</path>
+	<path id="classpath.javapclib">
+		<fileset dir="${javapclibdir}" includes="*.jar"/>
+	</path>
+	<path id="classpath.commons">
+		<fileset dir="${commonslibdir}" includes="*.jar"/>
+	</path>
+	<path id="classpath.junit">
+		<fileset dir="${junitlibdir}" includes="*.jar"/>
+	</path>
+	<path id="classpath.nljavasdk">
+		<fileset dir="${nljavasdklibdir}" includes="*.jar"/>
+	</path>
+	<path id="classpath.evalservice">
+		<fileset dir="${build_dir}" includes="${package_name}.jar"/>
+	</path>
+
+	<!-- Global tasks -->
+	<tstamp>
+		<format property="local.now" pattern="EEE, d MMM yyyy HH:mm:ss Z" />
+	</tstamp>
+
+	<echo message="version_str = ${version_str}" />
+	<echo message="time = ${local.now}" />
+
+	<!-- Targets -->
+	<target name="all" description="Default for all" depends="clean, compile, war, package, compile-test" />
+	
+	<target name="clean" description="Delete all build artifacts" depends="">
+		<delete includeemptydirs="true" dir="${build_dir}"/>
+	</target>
+	
+	<taskdef name="xmlbean" classname="org.apache.xmlbeans.impl.tool.XMLBean" >
+		<classpath>
+	    	<path refid="classpath.xmlbeanslib"/>
+		</classpath>
+	</taskdef>
+
+	<target name="xmlbeans">
+		<echo>Compiling xml schemas</echo> 
+    	<xmlbean destfile="${build_dir}/${package_name}_xmlbeans.jar" srcgendir="${build_dir}/xmlbeans_src">
+            <classpath>
+                <path refid="classpath.xmlbeanslib"/>
+            </classpath>
+            <fileset dir="${xmlbeans_schemas_dir}" includes="**/*.xsd"/>
+		</xmlbean>
+		<copy todir="${xmlbeanslibdir}" overwrite="true">
+			<fileset file="${build_dir}/${package_name}_xmlbeans.jar" />
+		</copy>
+	</target>
+	
+    <target name="compile" description="Compile the project" depends="clean, xmlbeans">	
+		<mkdir dir="${classes_dir}" />		  
+    	<!--//TODO: make 'debug' option configurable-->
+        <javac srcdir="${basedir}/../src" destdir="${classes_dir}" debug="true"  source="${compile.source}" target="${compile.target}" executable="${compile.executable}" bootclasspath="${compile.bootclasspath}">
+			<classpath refid="classpath.servlet"/>
+        	<classpath refid="classpath.gson"/>
+        	<classpath refid="classpath.javapclib"/>
+        	<classpath refid="classpath.commons"/>
+        	<classpath refid="classpath.nljavasdk"/>
+        	<classpath refid="classpath.xmlbeanslib"/>
+			<include name="**/*.java" />
+        	<exclude name="**/nextlabs/pdpevalservice/test/**"/>
+        </javac>
+        <jar destfile="${build_dir}/${package_name}.jar" basedir="${classes_dir}">
+			<manifest>
+				<attribute name="Java-Version" value="${java.version}"/>
+				<attribute name="Implementation-Vendor" value="NextLabs, Inc."/>
+				<attribute name="Implementation-Title" value="${product_name}"/>
+				<attribute name="Implementation-Version" value="${version_str} (${build_number})"/>
+				<attribute name="Implementation-Time" value="${local.now}"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="war">
+	        <delete includeEmptyDirs="true" >
+	            <fileset dir="${build_dir}">
+	                <include name="${package_name}.war" />
+	    	        </fileset>
+	        </delete>
+	    	<echo>Creating ${package_name}.war</echo>
+	        <war destfile="${build_dir}/${package_name}.war" basedir="${basedir}/../web" webxml="${basedir}/../web/WEB-INF/web.xml" duplicate="preserve">
+	            <lib dir="${build_dir}" includes="${package_name}.jar" />
+	        	<lib dir="${javapclibdir}" includes="*.jar" />
+	        	<lib dir="${nljavasdklibdir}" includes="*.jar" />
+	        	<lib dir="${gsonlibdir}" includes="*.jar" />
+	        	<lib dir="${commonslibdir}" includes="*.jar" />
+	        	<lib dir="${xmlbeanslibdir}" includes="*.jar" />
+	        </war>
+	</target>	
+	
+	<target name="package" description="builds each module">		
+		<mkdir dir="${package_dir}" />								
+		<copy todir="${package_dir}" overwrite="true">
+			<fileset file="${build_dir}/*.jar" />
+			<fileset file="${build_dir}/*.war" />
+			<fileset file="${basedir}/../README.doc" />
+		</copy>						
+		<copy todir="${package_dir}" overwrite="true">
+			<fileset dir="${basedir}/../conf/" />
+		</copy>		
+		<zip destfile="${build_dir}/${dist_zip_file_name}" encoding="UTF-8"> 
+			<fileset dir="${build_dir}/${package_name}/"> 
+				<include name="*.*" /> 
+			</fileset>
+		</zip> 							
+	</target>
+	
+    <target name="compile-test" description="Compile the Testing code" depends="clean, compile" >	
+		<mkdir dir="${test_classes_dir}" />		  
+        <javac srcdir="${basedir}/../src" destdir="${test_classes_dir}"  source="${compile.source}" target="${compile.target}" executable="${compile.executable}" bootclasspath="${compile.bootclasspath}"> 
+			<classpath refid="classpath.httpclient"/>
+        	<classpath refid="classpath.gson"/>
+        	<classpath refid="classpath.evalservice"/>
+        	<classpath refid="classpath.junit"/>
+        	<classpath refid="classpath.nljavasdk"/>
+			<include name="**/nextlabs/pdpevalservice/test/**/*.java" />
+        </javac>
+        <jar destfile="${build_dir}/${package_name_test}.jar" basedir="${test_classes_dir}">
+			<manifest>
+				<attribute name="Java-Version" value="${java.version}"/>
+				<attribute name="Implementation-Vendor" value="NextLabs, Inc."/>
+				<attribute name="Implementation-Title" value="${product_name}"/>
+				<attribute name="Implementation-Version" value="${version_str} (${build_number})"/>
+				<attribute name="Implementation-Time" value="${local.now}"/>
+			</manifest>
+		</jar>
+	</target>
+
+</project>

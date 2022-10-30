@@ -1,0 +1,10 @@
+<project basedir="." name="reporterData_tool" default="build">
+ 
+    <target name="build">        
+    	<ant dir="java/main" target="build" inheritRefs="true"/>
+	</target>
+	
+	<target name="setup-tool">        
+    	<ant dir="java/main" target="setup-tool" inheritRefs="true"/>
+	</target>
+</project>

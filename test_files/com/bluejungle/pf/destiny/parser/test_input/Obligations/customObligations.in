@@ -1,0 +1,15 @@
+// There is no top-level production for obligations;
+// these tests define the top-level policy production
+// to exercise the obligations production.
+
+policy a1 FOR * ON * BY * DO DENY
+    ON ALLOW DO CUSTOM1 // with no arguments
+
+policy a2 FOR * ON * BY * DO DENY
+    ON ALLOW DO CUSTOM2( x ) // with one argument
+
+policy a3 FOR * ON * BY * DO DENY
+    ON ALLOW DO CUSTOM3( "x" ) // one argument again, this time it's quoted
+
+policy a4 FOR * ON * BY * DO DENY
+    ON ALLOW DO CUSTOM4( "x", y, "z", 1, 2.3, .4 ) // many arguments

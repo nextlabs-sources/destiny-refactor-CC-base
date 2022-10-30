@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 	targetNamespace="http://bluejungle.com/destiny/services/deployment/types" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:types="http://bluejungle.com/destiny/services/deployment/types">
+
+	<xs:simpleType name="AgentDeployStatus">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Success"/>
+			<xs:enumeration value="Failed"/>
+		</xs:restriction>
+	</xs:simpleType>			
+
+	<xs:complexType name="AgentDeployResult">
+		<xs:sequence>
+			<xs:element name="message" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="status" type="types:AgentDeployStatus" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

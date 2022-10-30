@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+					xmlns:bindings="http://bluejungle.com/destiny/bindings/report/v1"
+					xmlns:tns="http://bluejungle.com/destiny/services/report/v1"
+					targetNamespace="http://bluejungle.com/destiny/services/report/v1">
+
+	<wsdl:import 	namespace="http://bluejungle.com/destiny/bindings/report/v1" 
+					location="../bindings/ReportLibraryBindings.v1.wsdl"/> 
+	<wsdl:import 	namespace="http://bluejungle.com/destiny/bindings/report/v1" 
+					location="../bindings/ReportExecutionBindings.v1.wsdl"/> 
+	<wsdl:import 	namespace="http://bluejungle.com/destiny/bindings/report/v1" 
+					location="../bindings/ComponentLookupBindings.v1.wsdl"/> 
+   
+   <wsdl:service name="ReportService">
+      <wsdl:port binding="bindings:ReportLibraryIFBinding" name="ReportLibrary">
+         <soap:address location="http://localhost:8080/dac/services/ReportService"/>
+      </wsdl:port>
+      <wsdl:port binding="bindings:ReportExecutionIFBinding" name="ReportExecution">
+         <soap:address location="http://localhost:8080/dac/services/ReportService"/>
+      </wsdl:port>
+      <wsdl:port binding="bindings:ComponentLookupIFBinding" name="ComponentLookup">
+         <soap:address location="http://localhost:8080/dac/services/ReportService"/>
+      </wsdl:port>   
+   </wsdl:service>
+</wsdl:definitions>

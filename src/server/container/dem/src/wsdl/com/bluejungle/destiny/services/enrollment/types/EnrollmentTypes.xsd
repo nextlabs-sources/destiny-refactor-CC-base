@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://bluejungle.com/destiny/services/enrollment/types" 
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+			xmlns:common="http://bluejungle.com/destiny/framework/types"
+			xmlns:types="http://bluejungle.com/destiny/services/enrollment/types">
+
+	<xsd:import
+			namespace="http://bluejungle.com/destiny/framework/types" 
+			schemaLocation="../../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicTypes.xsd"/>
+
+	<!-- Schema conversion types -->
+	<xsd:simpleType name="EnrollmentType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="DIRECTORY"/>
+			<xsd:enumeration value="LDIF"/>
+			<xsd:enumeration value="PORTAL"/>
+			<xsd:enumeration value="PROPERTY_FILE"/>
+			<xsd:enumeration value="CLIENT_INFO"/>
+			<xsd:enumeration value="DOMAINGROUP"/>
+			<xsd:enumeration value="UNKNOWN"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!--
+		This defines an "enrollment profile" which describes an enrollment from a
+		particular source. It defines the correlation between external attributes
+		and the searchable policy attributes, as well as the required attributes
+		that need to be enrolled from any source of subject data such as the
+		unique identifier attribute, the system identifier etc.
+	-->
+
+	<xsd:simpleType name="AttributeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="STRING"/>
+			<xsd:enumeration value="CS-STRING"/>
+			<xsd:enumeration value="MULTI-STRING"/>
+			<xsd:enumeration value="NUMBER"/>
+			<xsd:enumeration value="DATE"/>
+			<xsd:enumeration value="MULTI-LONG"/>
+			<xsd:enumeration value="LONG-STRING"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+<!--	<xsd:complexType name="SchemaMapping">
+		<xsd:sequence>
+			<xsd:element name="external" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+			<xsd:element name="internal" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+			<xsd:element name="type" type="types:AttributeType" minOccurs="1" maxOccurs="1" nillable="false"/>
+		</xsd:sequence>
+	</xsd:complexType> -->
+
+	<xsd:complexType name="EnrollmentProperty">
+		<xsd:sequence>
+			<xsd:element name="key" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+			<xsd:element name="value" type="xsd:string" minOccurs="1" maxOccurs="unlimited" nillable="true"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="EnrollmentStatus">
+		<xsd:sequence>
+			<xsd:element name="status" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+			<xsd:element name="startTime" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="true"/>
+			<xsd:element name="endTime" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="true"/>
+			<xsd:element name="errorMessage" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="true"/>
+			<xsd:element name="nextSyncTime" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="true"/>
+			
+			<!-- 
+			<xsd:element name="startTime" type="xsd:dateTime" minOccurs="1" maxOccurs="1" nillable="true"/>
+			<xsd:element name="endTime" type="xsd:dateTime" minOccurs="1" maxOccurs="1" nillable="true"/>
+			<xsd:element name="nextSyncTime" type="xsd:dateTime" minOccurs="1" maxOccurs="1" nillable="true"/>
+			-->
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!-- Profile information -->
+	<xsd:complexType name="Profile">
+		<xsd:sequence>
+			<xsd:element name="properties" type="types:EnrollmentProperty" minOccurs="1" maxOccurs="unlimited" nillable="true"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!--
+		This defines a "realm" - which is a source of enrollment data. This could either be
+		an LDAP server, or could be an LDIF file import of generic customer data.
+	-->	
+	<xsd:complexType name="Realm">
+		<xsd:sequence>
+			<xsd:element name="id" type="common:ID" minOccurs="1" maxOccurs="1" nillable="true"/>
+			<xsd:element name="name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+			<xsd:element name="type" type="types:EnrollmentType" minOccurs="1" maxOccurs="1" nillable="false"/>
+			<xsd:element name="profile" type="types:Profile" minOccurs="1" maxOccurs="1" nillable="true"/>
+			<xsd:element name="status" type="types:EnrollmentStatus" minOccurs="1" maxOccurs="1" nillable="true"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="RealmList">
+		<xsd:sequence>
+			<xsd:element name="realms" type="types:Realm" minOccurs="1" maxOccurs="unlimited" nillable="false"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!--
+		This defines the searchable columns for policies
+	-->
+	<xsd:simpleType name="EntityType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="USER"/>
+			<xsd:enumeration value="HOST"/>
+			<xsd:enumeration value="APPLICATION"/>
+			<xsd:enumeration value="SITE"/>
+			<xsd:enumeration value="CONTACT"/>
+			<xsd:enumeration value="CLIENT_INFO"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="Column">
+		<xsd:sequence>
+			<xsd:element name="type" type="types:AttributeType" minOccurs="1" maxOccurs="1" nillable="false"/>
+			<xsd:element name="logicalName" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+			<xsd:element name="displayName" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="false"/>
+			<xsd:element name="parentType" type="types:EntityType" minOccurs="1" maxOccurs="1" nillable="false"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="ColumnList">
+		<xsd:sequence>
+			<xsd:element name="columns" type="types:Column" minOccurs="1" maxOccurs="unlimited" nillable="true"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+</xsd:schema>

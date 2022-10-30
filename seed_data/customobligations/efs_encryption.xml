@@ -1,0 +1,5 @@
+<Obligation>
+    <DisplayName>Windows EFS Encryption</DisplayName>
+    <RunAt>PEP</RunAt>
+    <Name>EFS_ENCRYPTION</Name>
+</Obligation>

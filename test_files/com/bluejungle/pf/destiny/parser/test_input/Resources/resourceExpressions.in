@@ -1,0 +1,22 @@
+// This PQL tests the ability of the parser to process resource expressions.
+/**** It also verifies that the lexer is capable of dealing with comments
+// (regular or nested) */
+/* It also verifies the ability of the parser to handle random semicolons
+   and mixed_case keywords */
+
+resource r01 = (ALL_FILE_SERVERS OR ALL_FILES OR EXCEL_DOCS) AND (HOME_DIRECTORY OR LOCAL_FILES)
+
+resource r02 =  ALL_FILE_SERVERS OR ALL_FILES OR EXCEL_DOCS  AND  HOME_DIRECTORY OR LOCAL_FILES
+resource r03 = * OR *;
+
+resource r04 = (ALL_FILE_SERVERS OR (ALL_FILES OR (EXCEL_DOCS AND (HOME_DIRECTORY OR LOCAL_FILES))))
+
+RESOURCE r05 = Name >= 1 and sIze>.01 aNd typE <=100.001 and Owner = "me" and modified_date < "1/1/01"
+
+RESOURCE r06 = NOT Name = "Unclassifiefd" and sIze>.01
+
+RESOURCE r07 = NOT ( Name == "Unclassifiefd" and sIze>.01 )
+
+RESOURCE r08 = Name >= 1 and NOT sIze>.01 aNd NOT (typE <=100.001 and Owner == "me" and modified_date < "1/1/01")
+
+RESOURCE r09 = custom1 = null OR custom2 != null

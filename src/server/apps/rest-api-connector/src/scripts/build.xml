@@ -1,0 +1,294 @@
+<project name="build_compile" default="all" basedir=".">
+
+    <property name="nlbuildroot" value="${basedir}/../../../../../../.." />
+    <property name="war.dir" value="${nlbuildroot}/build/run/server/apps"/>
+
+    <!-- Property file loading -->
+    <property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+    <property file="${basedir}/build.properties" />
+    <property environment="env" />
+
+    <!-- properties -->
+    <property name="src_dir" location="${rest.api.root}/src" />
+    <property name="test_dir" location="${rest.api.root}/test" />
+    <property name="web_content_dir" location="${rest.api.root}/WebContent" />
+    <property name="build_dir" location="${rest.api.root}/build" />
+    <property name="resources_dir" value="${rest.api.root}/resources" />
+    <property name="package_dir" value="${build_dir}/${package_name}" />
+    <property name="classes_dir" value="${build_dir}/classes" />
+
+    <property name="test_classes_dir" value="${build_dir}/classes_test" />
+    <property name="package_name_test" value="${package_name}Test" />
+    <property name="tests_report_dir" value="${build_dir}/test_report" />
+
+
+    <!-- Global tasks -->
+    <tstamp>
+        <format property="local.now" pattern="EEE, d MMM yyyy HH:mm:ss Z" />
+        <format property="build_date" pattern="yyyMMdHHmm" />
+    </tstamp>
+
+    <property name="dist_zip_file_name" value="${package_name}-${build_version}-${version_build_short}-${build_date}.zip" />
+
+    <!-- Dump properties -->
+    <echoproperties />
+    <echo message="build version = ${build_version}" />
+    <echo message="time = ${local.now}" />
+    <echo message="time = ${build_date}" />
+
+    <path id="jaxb.classpath">
+        <fileset dir="${xlib_dir}/jar" includes="jaxb-api-2.2.7.jar" />
+        <fileset dir="${xlib_dir}/jar" includes="jaxb-core-2.2.7.jar" />
+        <fileset dir="${xlib_dir}/jar" includes="jaxb-impl-2.2.7.jar" />
+        <fileset dir="${xlib_dir}/jar" includes="jaxb-jxc.jar" />
+        <fileset dir="${xlib_dir}/jar" includes="jaxb-xjc-2.2.7.jar" />
+        <fileset dir="${xlib_dir}/jar" includes="jaxb-xjc.jar" />
+    </path>
+
+    <path id="build.classpath">
+       <fileset dir="${xlib_dir}/jar" includes="httpclient-4.3.3.jar" />
+       <fileset dir="${xlib_dir}/jar" includes="httpcore-4.3.3.jar" />
+       <fileset dir="${xlib_dir}/jar" includes="commons-lang3-3.3.2.jar" />
+       <fileset dir="${xlib_dir}/jar" includes="*.jar" /> 
+       <fileset dir="${build.root.dir}" includes="agent-controlmanager.jar"/>
+       <fileset dir="${build.root.dir}" includes="common-framework.jar"/>
+       <fileset dir="${build.root.dir}" includes="common-pf.jar"/>
+    </path>
+    
+    <path id="nxl.api.classpath">
+        <fileset dir="${build.root.dir}" includes="agent-controlmanager.jar"/>
+        <fileset dir="${build.root.dir}" includes="common-framework.jar"/>
+        <fileset dir="${build.root.dir}" includes="common-pf.jar"/>
+        <fileset dir="${xlib_dir}/jar" includes="nlJavaSDK2.jar"/>                       
+    </path>
+
+    <path id="test.classpath">
+        <fileset dir="${xlib_dir}/jar" includes="*.jar" />
+    </path>
+    
+    <path id="junit.test.classpath">
+        <fileset dir="${build.root.dir}" includes="agent-controlmanager.jar"/>
+        <fileset dir="${build.root.dir}" includes="common-framework.jar"/>
+        <fileset dir="${build.root.dir}" includes="common-pf.jar"/>
+        <fileset dir="${xlib_dir}/jar" includes="*.jar"/>
+    </path>
+
+    
+    <echo message="INFO: Dump properties and class path setting completed" />
+
+    <!-- Sanity checks -->
+    <fail message="nlbuildroot is not set" unless="nlbuildroot" />
+    <fail message="nlbuildroot is empty">
+        <condition>
+            <equals arg1="${nlbuildroot}" arg2="" trim="true" />
+        </condition>
+    </fail>
+    <available file="${nlbuildroot}" type="dir" property="local.nlbuildroot_exists" />
+    <fail message="nlbuildroot directory does not exist - ${nlbuildroot}" unless="local.nlbuildroot_exists" />
+
+    <echo message="INFO: Sanity check completed (no error)" />
+
+
+    <!-- Targets -->
+    <target name="all" description="Default for all" depends="clean, test, war, package, deploy" />
+
+    <target name="clean" description="Delete all build artifacts" depends="">
+        <delete includeemptydirs="true" dir="${build_dir}" />
+    </target>
+
+    <!-- Generates the source code from the xacml-core-v3-schema-wd-17.xsd schema 
+         using jaxb -->
+
+    <taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask" classpathref="jaxb.classpath" />
+
+    <target name="generate-xsd-source" description="Generates the source code">
+        <echo>Generating Beans from XACML 3.0 XSD</echo>
+        <mkdir dir="${build_dir}/generated_src" />
+        <xjc schema="${resources_dir}/xacml-core-v3-schema-wd-17.xsd" removeOldOutput="yes" destdir="${build_dir}/generated_src">
+            <produces dir="${build_dir}/generated_src" includes="**/*.java" />
+        </xjc>
+        <echo>Generating Beans from XACML 3.0 XSD - Completed</echo>
+    </target>
+
+
+    <target name="create-xsd-jar" description="Compile the project" depends="generate-xsd-source">
+        <mkdir dir="${classes_dir}/xml" />
+
+        <javac srcdir="${build_dir}/generated_src" destdir="${classes_dir}/xml" debug="${compile.debug}">
+            <classpath refid="build.classpath" />
+            <include name="**/*.java" />
+            <exclude name="**/*Test.java" />
+        </javac>
+
+        <jar destfile="${build_dir}/${package_name}-xmlbeans.jar" basedir="${classes_dir}/xml">
+            <manifest>
+                <attribute name="Java-Version" value="${java.version}" />
+                <attribute name="Implementation-Vendor" value="JAXB Generated XML beans for XACML 3.0" />
+                <attribute name="Implementation-Title" value="${package_name}-xmlbeans" />
+                <attribute name="Implementation-Version" value="${build_date} (${build_number})" />
+                <attribute name="Implementation-Time" value="${local.now}" />
+            </manifest>
+        </jar>
+
+        <delete includeEmptyDirs="true">
+            <fileset dir="${classes_dir}/xml" />
+        </delete>
+
+        <copy todir="${lib_dir}" overwrite="true">
+            <fileset file="${build_dir}/${package_name}-xmlbeans.jar" />
+        </copy>
+
+    </target>
+
+    <target name="compile" description="Compile the project" depends="clean">
+        <mkdir dir="${classes_dir}" />
+
+        <javac srcdir="${src_dir}" destdir="${classes_dir}" debug="${compile.debug}">
+            <classpath refid="build.classpath" />
+            <include name="**/*.java" />
+            <exclude name="**/*Test.java" />
+        </javac>
+
+        
+        <jar destfile="${build_dir}/${package_name}.jar" basedir="${classes_dir}">
+            <manifest>
+                <attribute name="Java-Version" value="${java.version}" />
+                <attribute name="Implementation-Vendor" value="NextLabs, Inc." />
+                <attribute name="Implementation-Title" value="${product_name}" />
+                <attribute name="Implementation-Version" value="${build_date} (${build_number})" />
+                <attribute name="Implementation-Time" value="${local.now}- [Amila Silva]" />
+            </manifest>
+        </jar>
+
+        <mkdir dir="${build.root.dir}/rest-api"/>
+        
+        <copy todir="${build.root.dir}/rest-api" overwrite="true">
+            <fileset file="${build_dir}/${package_name}.jar"/>
+            <fileset file="${web_content_dir}/WEB-INF/rest-api-connector.properties"/>
+			<fileset file="${web_content_dir}/WEB-INF/help.html"/>
+        </copy>
+    </target>
+
+    <target name="war" depends="compile">
+        <delete includeEmptyDirs="true">
+            <fileset dir="${build_dir}">
+                <include name="${package_name}.war" />
+            </fileset>
+        </delete>
+        <echo>Creating ${package_name}.war</echo>
+        <war destfile="${build_dir}/${package_name}.war" basedir="${web_content_dir}" webxml="${web_content_dir}/WEB-INF/web.xml" duplicate="preserve">
+            <lib dir="${build_dir}" includes="${package_name}.jar" />
+            <lib dir="${build.root.dir}" includes="agent-controlmanager.jar"/>
+            <lib dir="${build.root.dir}" includes="common-framework.jar"/>
+            <lib dir="${build.root.dir}" includes="common-pf.jar"/>
+            <lib dir="${xlib_dir}/jar" includes="nlJavaSDK2.jar"/>
+            <lib dir="${xlib_dir}/jar" includes="commons-lang3-3.3.2.jar" />
+            <lib dir="${xlib_dir}/jar" includes="commons-logging-1.1.1.jar"/>
+            <lib dir="${xlib_dir}/jar" includes="gson-2.4.jar"/>
+            <lib dir="${xlib_dir}/jar" includes="httpclient-4.3.3.jar"/>
+            <lib dir="${xlib_dir}/jar" includes="httpcore-4.3.3.jar"/>
+            <lib dir="${xlib_dir}/jar" includes="jaxb-api-2.2.7.jar"/>
+            <lib dir="${xlib_dir}/jar" includes="jaxb-api.jar"/>
+            <lib dir="${xlib_dir}/jar" includes="jaxb-core-2.2.7.jar"/>
+            <lib dir="${xlib_dir}/jar" includes="jaxb-core.jar"/>
+            <lib dir="${xlib_dir}/jar" includes="jaxb-impl-2.2.7.jar"/>
+            <lib dir="${xlib_dir}/jar" includes="jaxb-impl.jar"/>
+            <lib dir="${xlib_dir}/jar" includes="rest-api-xmlbeans.jar"/>
+            <lib dir="${xlib_dir}/jar" includes="servlet-api.jar"/>
+            
+            <manifest>
+                <attribute name="Java-Version" value="${java.version}" />
+                <attribute name="Implementation-Vendor" value="NextLabs, Inc." />
+                <attribute name="Implementation-Title" value="${product_name}" />
+                <attribute name="Implementation-Version" value="${build_version} (${build_number})" />
+                <attribute name="Implementation-Time" value="${local.now}- [Amila Silva]" />
+            </manifest>
+        </war>
+    </target>
+
+    <target name="package" description="builds each module" depends="war">
+        <mkdir dir="${package_dir}" />
+        <mkdir dir="${package_dir}/lib" />
+        <copy todir="${package_dir}" overwrite="true">
+            <fileset file="${build_dir}/*.jar" />
+            <fileset file="${build_dir}/*.war" />
+            <fileset file="${rest.api.root}/README.doc" />
+        </copy>
+        <copy todir="${package_dir}" overwrite="true">
+            <fileset dir="${web_content_dir}/WEB-INF/" />
+        </copy>
+        <copy todir="${package_dir}/lib" overwrite="true">
+            <fileset dir="${xlib_dir}/jar" includes="commons-lang3-3.3.2.jar" />
+            <fileset dir="${xlib_dir}/jar" includes="commons-logging-1.1.1.jar"/>
+            <fileset dir="${xlib_dir}/jar" includes="gson-2.4.jar"/>
+            <fileset dir="${xlib_dir}/jar" includes="httpclient-4.3.3.jar"/>
+            <fileset dir="${xlib_dir}/jar" includes="httpcore-4.3.3.jar"/>
+            <fileset dir="${xlib_dir}/jar" includes="jaxb-api-2.2.7.jar"/>
+            <fileset dir="${xlib_dir}/jar" includes="jaxb-api.jar"/>
+            <fileset dir="${xlib_dir}/jar" includes="jaxb-core-2.2.7.jar"/>
+            <fileset dir="${xlib_dir}/jar" includes="jaxb-core.jar"/>
+            <fileset dir="${xlib_dir}/jar" includes="jaxb-impl-2.2.7.jar"/>
+            <fileset dir="${xlib_dir}/jar" includes="jaxb-impl.jar"/>
+            <fileset dir="${xlib_dir}/jar" includes="rest-api-xmlbeans.jar"/>
+            <fileset dir="${xlib_dir}/jar" includes="servlet-api.jar"/>
+
+            
+            <fileset dir="${xlib_dir}/jar" includes="jaxb-xjc.jar" />
+            <fileset dir="${xlib_dir}/jar" includes="jaxb-xjc-2.2.7.jar" />
+            <fileset dir="${build.root.dir}" includes="agent-controlmanager.jar"/>
+            <fileset dir="${build.root.dir}" includes="common-framework.jar"/>
+            <fileset dir="${build.root.dir}" includes="common-pf.jar"/>
+            <fileset dir="${xlib_dir}/jar" includes="nlJavaSDK2.jar"/>
+        </copy>
+        
+        <zip destfile="${build_dir}/${dist_zip_file_name}" encoding="UTF-8">
+            <fileset dir="${build_dir}/${package_name}/">
+                <include name="*.*" />
+            </fileset>
+        </zip>
+    </target>
+
+    <target name="compile-test" description="Compile the Testing code" depends="compile">
+        <mkdir dir="${test_classes_dir}" />
+        <javac srcdir="${test_dir}" destdir="${test_classes_dir}" debug="${compile.debug}">
+            <classpath refid="build.classpath" />
+            <classpath refid="test.classpath" />
+            <classpath location="${build_dir}/${package_name}.jar" />
+            <include name="**/nextlabs/evaluationconnector/test/**/*.java" />
+        </javac>
+        <jar destfile="${build_dir}/${package_name_test}.jar" basedir="${test_classes_dir}">
+            <manifest>
+                <attribute name="Java-Version" value="${java.version}" />
+                <attribute name="Implementation-Vendor" value="NextLabs, Inc." />
+                <attribute name="Implementation-Title" value="${product_name}" />
+                <attribute name="Implementation-Version" value="${build_version} (${build_number})" />
+                <attribute name="Implementation-Time" value="${local.now}" />
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="test" depends="compile-test">
+        <mkdir dir="${tests_report_dir}"/>
+
+        <junit printsummary="yes" haltonfailure="no">
+            <classpath refid="junit.test.classpath"/>
+            <classpath>
+                <pathelement location="${build_dir}/${package_name}.jar"/>
+                <pathelement location="${build_dir}/${package_name_test}.jar"/>
+            </classpath>
+
+            <formatter type="plain"/>
+
+            <batchtest fork="yes" todir="${tests_report_dir}">
+                <fileset dir="${test_dir}">
+                    <include name="**/*Test.java"/>
+                </fileset>
+            </batchtest>
+
+        </junit>
+    </target>
+
+    <target name="deploy">
+        <copy file="${build_dir}/${package_name}.war" todir="${war.dir}"/>
+    </target>
+</project>

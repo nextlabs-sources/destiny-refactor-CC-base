@@ -1,0 +1,6 @@
+POLICY DenyBasedOnURL
+    DESCRIPTION "Denies run based on application name"
+    FOR resource.name = "c:\\deny_url.txt"
+    ON OPEN
+    BY APPLICATION.URL = "http://mail.google.com/**"
+    DO DENY

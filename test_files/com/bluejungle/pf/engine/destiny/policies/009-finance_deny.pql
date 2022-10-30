@@ -1,0 +1,7 @@
+POLICY FinanceDeny
+    DESCRIPTION "Applies to everyone, doing anything, on finance documents."
+    FOR resource.name = "?c:\\finance\\*.txt"
+    ON *
+    BY *
+    DO DENY
+    deployed to agent.id = 37

@@ -1,0 +1,117 @@
+<project name="dabs_test_build" default="build">
+
+	<var name="nlbuildroot" value="${basedir}/../../../../../../.." />
+	<property name="test.src.dir"      value="${basedir}"/>
+	<property name="build.dest"   value="${build.root.dir}/server/container/dabs/testclasses"/>
+	<property name="build.gendest" value="${build.root.dir}/server/container/dabs/genclasses"/>
+
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	<path id="compile.dabs.test.classpath">
+    	<path refid="compile.classpath"/>
+		<pathelement path="${build.root.dir}/agent-manager.jar"/>
+   	    <pathelement path="${build.root.dir}/common-domain.jar"/>
+   	    <pathelement path="${build.root.dir}/common-domain-test.jar"/>		
+    	<pathelement path="${build.root.dir}/common-framework.jar"/>
+        <pathelement path="${build.root.dir}/common-framework-types.jar"/>   
+    	<pathelement path="${build.root.dir}/common-framework-test.jar"/>
+    	<pathelement path="${build.root.dir}/common-pf.jar"/>
+	    <pathelement path="${build.root.dir}/dcsf-types.jar"/>
+    	<pathelement path="${build.root.dir}/management-types.jar"/>
+    	<pathelement path="${build.root.dir}/messages.jar"/>
+       	<pathelement path="${build.root.dir}/policy-deploy-manager.jar"/>
+   		<pathelement path="${build.root.dir}/profile-manager.jar"/>
+    	<pathelement path="${build.root.dir}/server-framework.jar"/>
+		<pathelement path="${build.root.dir}/server-datasource.jar"/>
+		<pathelement path="${build.root.dir}/server-base.jar"/>
+	    <pathelement path="${build.root.dir}/server-dcsf.jar"/>
+	    <pathelement path="${build.root.dir}/server-dcsf-test.jar"/>
+    	<pathelement path="${build.root.dir}/server-pf.jar"/>
+		<pathelement path="${build.root.dir}/server-shared-enumerations.jar"/>
+    	<pathelement path="${build.root.dir}/server-shared-tests.jar"/>
+    	<pathelement path="${build.root.dir}/server-shared-sharedfolder.jar"/>
+    	<pathelement path="${build.root.dir}/common-version.jar"/>
+    	<pathelement path="${build.root.dir}/dabs-components.jar"/>
+	    <pathelement path="${build.dest}"/>
+	    <pathelement path="${build.gendest}"/>
+        <pathelement path="${build.root.dir}/server/container/dabs/WEB-INF/classes/"/>
+    	<pathelement path="${build.root.dir}/server/container/dcsf/WEB-INF/classes/"/>
+		<pathelement path="${xlib_jar_dir}/commons-collections-3.2.jar"/>
+    	<pathelement path="${xlib_jar_dir}/cglib-full-2.0.2.jar"/>
+    	<pathelement path="${xlib_jar_dir}/dom4j-1.4.jar"/>
+    	<pathelement path="${xlib_jar_dir}/ldap.jar"/>
+    	<pathelement path="${xlib_jar_dir}/jta.jar"/>
+    	<pathelement path="${xlib_jar_dir}/odmg-3.0.jar"/>
+    	<pathelement path="${xlib_jar_dir}/postgresql-9.2-1002.jdbc4.jar"/>
+        <pathelement path="${oracle.jdbc}"/>
+        <pathelement path="${xlib_jar_dir}/db2jcc.jar"/>
+        <pathelement path="${xlib_jar_dir}/db2jcc_license_cu.jar"/>
+        <pathelement path="${xlib_jar_dir}/sqljdbc4.jar"/>
+        <pathelement path="${xlib_jar_dir}/jtds-1.2.2.jar"/>
+    	<pathelement path="${xlib_jar_dir}/ehcache-1.1.jar"/>
+    </path>
+	
+	<target name="build" depends="jar">
+	</target>
+	
+    <target name="compile" depends="pre-build">
+	     <javac srcdir="${test.src.dir}" destdir="${build.dest}" debug="${compile.debug}" verbose="${compile.verbose}">
+	        <classpath refid="compile.dabs.test.classpath"/>   
+	    </javac>
+    </target>
+	
+	<target name="jar" depends="compile">
+		<jar destfile="${build.root.dir}/dabs-tests.jar">
+			<fileset dir="${build.dest}"/>
+		</jar>
+	</target>
+		
+	<target name="pre-build">
+		<mkdir dir="${build.dest}"/>
+	</target>
+					
+    <target name="run-tests-ui">
+        <java fork="yes" classname="junit.swingui.TestRunner" dir="${build.dest}"
+            taskname="junit" failonerror="true">
+			<sysproperty key="build.root.dir" value="${build.root.dir}" />		
+            <arg value="com.bluejungle.destiny.container.dabs.tests.DABSTestSuite"/>
+            <classpath>
+            	<pathelement path="${src.root.dir}/etc/junit"/>
+            	<pathelement path="${xlib_jar_dir}/commons-digester.jar"/>
+            	<pathelement path="${xlib_jar_dir}/commons-beanutils.jar"/>
+            	<pathelement path="${build.dest}"/>
+            	<path refid="compile.dabs.test.classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="standalone-tests" depends="jar">
+        <junit printsummary="withOutAndErr" showoutput="yes" haltonfailure="${junit.haltonfailure}" failureproperty="junit.fail" fork="true">
+            <formatter type="xml"/>
+			<sysproperty key="build.root.dir" value="${build.root.dir}" />		
+            <test name="com.bluejungle.destiny.container.dabs.components.test.StandaloneDABSComponentTests" todir="${log.dir}/tests"/>
+        	<test name="com.nextlabs.destiny.container.dabs.components.test.StandaloneDABSComponentTests" todir="${log.dir}/tests"/>
+            <classpath>
+            	<path refid="compile.dabs.test.classpath"/>
+            	<pathelement path="${build.root.dir}/crypt.jar"/>
+				<pathelement path="${xlib_jar_dir}/commons-digester.jar"/>
+            	<pathelement path="${xlib_jar_dir}/commons-beanutils.jar"/>
+            </classpath>
+        </junit>
+    </target>
+    	
+	<target name="tests">
+		<junit printsummary="withOutAndErr" showoutput="yes" haltonfailure="${junit.haltonfailure}" failureproperty="junit.fail" fork="true">
+			<formatter type="xml"/>
+			<sysproperty key="build.root.dir" value="${build.root.dir}" />		
+			<test name="com.bluejungle.destiny.container.dabs.DABSTestSuite" todir="${log.dir}/tests"/>
+			<test name="com.nextlabs.destiny.bindings.log.v2.DABSLogServiceTestSuite" todir="${log.dir}/tests"/>
+            <classpath>
+            	<path refid="compile.dabs.test.classpath"/>
+            	<pathelement path="${build.root.dir}/crypt.jar"/>
+            	<pathelement path="${xlib_jar_dir}/commons-digester.jar"/>
+            	<pathelement path="${xlib_jar_dir}/commons-beanutils.jar"/>
+            </classpath>			
+		</junit>
+	</target>
+</project>

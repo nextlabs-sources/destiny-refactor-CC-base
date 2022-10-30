@@ -1,0 +1,2 @@
+Hi, this is read.txt
+Hi, this is line 2 of read.txt

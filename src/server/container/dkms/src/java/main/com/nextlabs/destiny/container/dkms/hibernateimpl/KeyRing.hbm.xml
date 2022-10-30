@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping package="com.nextlabs.destiny.container.dkms.hibernateimpl">
+    <class name="KeyRingDO" table="km_keyring">
+        <id name="id">
+            <generator class="native"/>
+        </id>
+        <version name="version" column="version"/>
+        <property name="name" type="string" unique="true" not-null="true" />
+        <property name="format" type="string" not-null="true" />
+        <property name="data" type="com.bluejungle.framework.datastore.hibernate.usertypes.BlobUserType"/>
+        <property name="lastUpdated"
+		        column="last_updated" 
+		        type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" 
+		        not-null="true"
+        />
+        <property name="created"
+        		column="created" 
+        		type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType"
+        		not-null="true"
+        />
+        
+    </class>
+</hibernate-mapping>

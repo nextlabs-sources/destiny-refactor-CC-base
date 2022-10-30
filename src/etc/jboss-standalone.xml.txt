@@ -1,0 +1,70 @@
+With these changes the NextLabs application logs will appear in the
+DCC.log file instead of the default JBoss log file.
+
+<subsystem xmlns="urn:jboss:domain:logging:1.3">
+    <console-handler name="CONSOLE">
+        <level name="INFO"/>
+        <formatter>
+            <pattern-formatter pattern="%K{level}%d{HH:mm:ss,SSS} %-5p [%c] (%t) %s%E%n"/>
+        </formatter>
+    </console-handler>
+    <periodic-rotating-file-handler name="FILE" autoflush="true">
+        <formatter>
+            <pattern-formatter pattern="%d{HH:mm:ss,SSS} %-5p [%c] (%t) %s%E%n"/>
+        </formatter>
+        <file relative-to="jboss.server.log.dir" path="server.log"/>
+        <suffix value=".yyyy-MM-dd"/>
+        <append value="true"/>
+    </periodic-rotating-file-handler>
+
+    <!-- define NextLabs loggers -->
+    <periodic-rotating-file-handler name="DCC" autoflush="true">
+        <formatter>
+            <pattern-formatter pattern="%d{HH:mm:ss,SSS} %-5p [%c] (%t) %s%E%n"/>
+        </formatter>
+        <file relative-to="jboss.server.log.dir" path="DCC.log"/>
+        <suffix value=".yyyy-MM-dd"/>
+        <append value="true"/>
+    </periodic-rotating-file-handler>
+    
+    <logger category="com.nextlabs" use-parent-handlers="false">
+        <level name="INFO"/>
+        <handlers>
+            <handler name="DCC"/>
+        </handlers>
+    </logger>
+    <logger category="com.bluejungle" use-parent-handlers="false">
+        <level name="INFO"/>
+        <handlers>
+            <handler name="DCC"/>
+        </handlers>
+    </logger>
+    <!-- end definition of NextLabs loggers -->
+
+
+    <logger category="com.arjuna">
+        <level name="WARN"/>
+    </logger>
+    <logger category="org.apache.tomcat.util.modeler">
+        <level name="WARN"/>
+    </logger>
+    <logger category="org.jboss.as.config">
+        <level name="DEBUG"/>
+    </logger>
+    <logger category="sun.rmi">
+        <level name="WARN"/>
+    </logger>
+    <logger category="jacorb">
+        <level name="WARN"/>
+    </logger>
+    <logger category="jacorb.config">
+        <level name="ERROR"/>
+    </logger>
+    <root-logger>
+        <level name="INFO"/>
+        <handlers>
+            <handler name="CONSOLE"/>
+            <handler name="FILE"/>
+        </handlers>
+    </root-logger>
+</subsystem>

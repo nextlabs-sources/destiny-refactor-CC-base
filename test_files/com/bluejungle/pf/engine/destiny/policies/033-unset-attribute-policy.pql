@@ -1,0 +1,7 @@
+policy unset_attribute_policy
+for resource.name="unset_attribute*.txt" AND resource.client_id == null
+on email
+sent_to *
+by *
+do allow
+on allow do unset_attribute

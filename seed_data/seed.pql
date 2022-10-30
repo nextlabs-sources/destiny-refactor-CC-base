@@ -1,0 +1,348 @@
+ID null STATUS APPROVED CREATOR "0" ACCESS_POLICY
+    ACCESS_CONTROL
+    ALLOWED_ENTITIES 
+        POLICY_ENTITY
+HIDDEN COMPONENT "Policy Analyst"  = EMPTY
+
+ID null STATUS APPROVED CREATOR "0" ACCESS_POLICY
+    ACCESS_CONTROL
+    ALLOWED_ENTITIES
+        USER_ENTITY
+    ,   RESOURCE_ENTITY
+    ,   PORTAL_ENTITY
+    ,   DEVICE_ENTITY
+    ,   SAP_ENTITY
+    ,   ENOVIA_ENTITY   
+    ,   HOST_ENTITY
+    ,   APPLICATION_ENTITY
+    ,   ACTION_ENTITY
+    ,   POLICY_ENTITY
+HIDDEN COMPONENT "Policy Administrator" = EMPTY
+
+ID null STATUS APPROVED CREATOR "0" ACCESS_POLICY
+    ACCESS_CONTROL
+    ALLOWED_ENTITIES
+        USER_ENTITY
+    ,   RESOURCE_ENTITY
+    ,   PORTAL_ENTITY
+    ,   DEVICE_ENTITY
+    ,   SAP_ENTITY
+    ,   ENOVIA_ENTITY 
+    ,   HOST_ENTITY
+    ,   APPLICATION_ENTITY
+    ,   ACTION_ENTITY
+    ,   POLICY_ENTITY
+HIDDEN COMPONENT "System Administrator" = EMPTY
+
+ID null STATUS APPROVED CREATOR "0" ACCESS_POLICY
+    ACCESS_CONTROL
+    ALLOWED_ENTITIES
+HIDDEN COMPONENT "Business Analyst" = EMPTY
+
+ID null STATUS APPROVED CREATOR "0" ACCESS_POLICY
+    ACCESS_CONTROL
+        PBAC FOR * ON READ BY PRINCIPAL.USER.GROUP = "ADMIN"  DO ALLOW
+        PBAC FOR * ON WRITE BY PRINCIPAL.USER.GROUP = "ADMIN" DO ALLOW
+    ALLOWED_ENTITIES 
+HIDDEN COMPONENT "ADMIN" = EMPTY
+
+ID null STATUS APPROVED CREATOR "0" ACCESS_POLICY
+    ACCESS_CONTROL
+        PBAC FOR * ON READ BY
+            PRINCIPAL.USER.GROUP = "ADMIN" 
+        OR  PRINCIPAL.USER.GROUP = "Policy Analyst"
+        OR  PRINCIPAL.USER.GROUP = "Policy Administrator"
+        OR  PRINCIPAL.USER.GROUP = "System Administrator"
+        DO ALLOW 
+        PBAC FOR * ON WRITE BY
+            PRINCIPAL.USER.GROUP = "ADMIN"
+        OR  PRINCIPAL.USER.GROUP = "Policy Analyst"
+        OR  PRINCIPAL.USER.GROUP = "Policy Administrator"
+        OR  PRINCIPAL.USER.GROUP = "System Administrator"
+        DO  ALLOW
+    ALLOWED_ENTITIES
+HIDDEN COMPONENT "Policy Author" = PRINCIPAL.APPLICATION.NAME = "Policy Author"
+
+ID null STATUS APPROVED CREATOR "0" ACCESS_POLICY
+    ACCESS_CONTROL
+        PBAC FOR * ON READ BY
+            PRINCIPAL.USER.GROUP = "ADMIN"
+        OR  PRINCIPAL.USER.GROUP = "System Administrator"
+        DO  ALLOW
+        PBAC FOR * ON WRITE BY
+            PRINCIPAL.USER.GROUP = "ADMIN"
+        OR  PRINCIPAL.USER.GROUP = "System Administrator"
+        DO  ALLOW
+    ALLOWED_ENTITIES
+HIDDEN COMPONENT "Management Console" = PRINCIPAL.APPLICATION.NAME = "Management Console"
+
+ID null STATUS APPROVED CREATOR "0" ACCESS_POLICY
+    ACCESS_CONTROL
+        PBAC FOR * ON READ
+            BY PRINCIPAL.USER.GROUP = "ADMIN"
+        OR  PRINCIPAL.USER.GROUP = "System Administrator"
+		OR  PRINCIPAL.USER.GROUP = "Report Administrator"
+        DO  ALLOW
+        PBAC FOR * ON WRITE BY
+            PRINCIPAL.USER.GROUP = "ADMIN"
+        OR  PRINCIPAL.USER.GROUP = "System Administrator"
+        DO  ALLOW
+    ALLOWED_ENTITIES
+HIDDEN COMPONENT "Inquiry Center Admin" = PRINCIPAL.APPLICATION.NAME = "Inquiry Center Admin"
+
+ID null STATUS APPROVED CREATOR "0" ACCESS_POLICY
+    ACCESS_CONTROL
+        PBAC FOR * ON READ
+            BY PRINCIPAL.USER.GROUP = "ADMIN"
+        OR  PRINCIPAL.USER.GROUP = "System Administrator"
+		OR  PRINCIPAL.USER.GROUP = "Business Analyst"
+		OR  PRINCIPAL.USER.GROUP = "Policy Analyst"
+        OR  PRINCIPAL.USER.GROUP = "Policy Administrator"
+        DO  ALLOW
+        PBAC FOR * ON WRITE BY
+            PRINCIPAL.USER.GROUP = "ADMIN"
+        OR  PRINCIPAL.USER.GROUP = "System Administrator"
+        DO  ALLOW
+    ALLOWED_ENTITIES
+HIDDEN COMPONENT "Inquiry Center User" = PRINCIPAL.APPLICATION.NAME = "Inquiry Center User"
+
+ID null STATUS APPROVED CREATOR "0" ACCESS_POLICY
+    ACCESS_CONTROL
+    ALLOWED_ENTITIES
+HIDDEN COMPONENT "Report Administrator" = EMPTY
+
+ID null STATUS APPROVED CREATOR "0" ACCESS_POLICY
+    ACCESS_CONTROL
+		    PBAC 
+		        FOR *
+		        ON *
+		        BY appuser.did = resource.dso.owner
+		        DO allow
+		    PBAC 
+		        FOR *
+		        ON READ
+		        BY *
+		        DO allow
+    ALLOWED_ENTITIES
+HIDDEN COMPONENT "RESOURCE/Word Documents" = RESOURCE.TYPE = "doc"
+
+ID null STATUS APPROVED CREATOR "0" ACCESS_POLICY
+    ACCESS_CONTROL
+		    PBAC 
+		        FOR *
+		        ON *
+		        BY appuser.did = resource.dso.owner
+		        DO allow
+		    PBAC 
+		        FOR *
+		        ON READ
+		        BY *
+		        DO allow
+    ALLOWED_ENTITIES
+HIDDEN COMPONENT "RESOURCE/Excel Spreadsheets" = RESOURCE.TYPE = "xls"
+
+ID null STATUS APPROVED CREATOR "0" ACCESS_POLICY
+    ACCESS_CONTROL
+		    PBAC 
+		        FOR *
+		        ON *
+		        BY appuser.did = resource.dso.owner
+		        DO allow
+		    PBAC 
+		        FOR *
+		        ON READ
+		        BY *
+		        DO allow
+    ALLOWED_ENTITIES
+HIDDEN COMPONENT "RESOURCE/Powerpoint Presentations" = RESOURCE.TYPE = "ppt"
+
+ID null STATUS APPROVED CREATOR "0" 
+ACCESS_POLICY
+ACCESS_CONTROL
+    PBAC 
+        FOR *
+        ON *
+        BY appuser.did = resource.dso.owner
+        DO allow
+ALLOWED_ENTITIES
+HIDDEN POLICY "Monitored Applications"
+    ATTRIBUTE USAGE
+    FOR FALSE
+    ON FALSE
+    TO FALSE
+    BY GROUP="APPLICATION/Monitor Specific Applications"
+    DO allow
+
+ID null STATUS APPROVED CREATOR "0" 
+ACCESS_POLICY
+ACCESS_CONTROL
+    PBAC 
+        FOR *
+        ON *
+        BY appuser.did = resource.dso.owner
+        DO allow
+ALLOWED_ENTITIES
+HIDDEN POLICY "Ignored Applications"
+    ATTRIBUTE USAGE
+    FOR FALSE
+    ON FALSE
+    TO FALSE
+    BY GROUP="APPLICATION/Monitor All Applications - Exceptions"
+    DO allow
+	
+ID null STATUS APPROVED CREATOR "0" 
+ACCESS_POLICY
+ACCESS_CONTROL
+    PBAC 
+        FOR *
+        ON *
+        BY appuser.did = resource.dso.owner
+        DO allow
+ALLOWED_ENTITIES
+HIDDEN POLICY "Trusted Applications"
+    ATTRIBUTE USAGE
+    FOR FALSE
+    ON FALSE
+    TO FALSE
+    BY GROUP="APPLICATION/Trusted Applications"
+    DO allow
+
+ID null STATUS APPROVED CREATOR "0" 
+ACCESS_POLICY
+ACCESS_CONTROL
+    PBAC 
+        FOR *
+        ON ADMIN
+        BY FALSE
+        DO allow
+    PBAC 
+        FOR *
+        ON APPROVE
+        BY appuser.accessgroupid has ${ALL_USERS_GROUP_ID}
+        DO allow
+    PBAC 
+        FOR TRUE
+        ON DELETE
+        BY FALSE
+        DO allow
+    PBAC 
+        FOR *
+        ON DEPLOY
+        BY appuser.accessgroupid has ${ALL_USERS_GROUP_ID}
+        DO allow
+    PBAC 
+        FOR *
+        ON READ
+        BY appuser.accessgroupid has ${ALL_USERS_GROUP_ID}
+        DO allow
+    PBAC 
+        FOR *
+        ON WRITE
+        BY appuser.accessgroupid has ${ALL_USERS_GROUP_ID}
+        DO allow
+ALLOWED_ENTITIES 
+HIDDEN COMPONENT "APPLICATION/Monitor Specific Applications" = (((FALSE OR TRUE) AND TRUE) AND (TRUE AND TRUE))
+
+ID null STATUS APPROVED CREATOR "0" 
+ACCESS_POLICY
+ACCESS_CONTROL
+    PBAC 
+        FOR *
+        ON ADMIN
+        BY FALSE
+        DO allow
+    PBAC 
+        FOR *
+        ON APPROVE
+        BY appuser.accessgroupid has ${ALL_USERS_GROUP_ID}
+        DO allow
+    PBAC 
+        FOR TRUE
+        ON DELETE
+        BY FALSE
+        DO allow
+    PBAC 
+        FOR *
+        ON DEPLOY
+        BY appuser.accessgroupid has ${ALL_USERS_GROUP_ID}
+        DO allow
+    PBAC 
+        FOR *
+        ON READ
+        BY appuser.accessgroupid has ${ALL_USERS_GROUP_ID}
+        DO allow
+    PBAC 
+        FOR *
+        ON WRITE
+        BY appuser.accessgroupid has ${ALL_USERS_GROUP_ID}
+        DO allow
+ALLOWED_ENTITIES 
+HIDDEN COMPONENT "APPLICATION/Monitor All Applications - Exceptions" = (((FALSE OR TRUE) AND TRUE) AND (TRUE AND TRUE))
+
+ID null STATUS APPROVED CREATOR "0" 
+ACCESS_POLICY
+ACCESS_CONTROL
+    PBAC 
+        FOR *
+        ON ADMIN
+        BY FALSE
+        DO allow
+    PBAC 
+        FOR *
+        ON APPROVE
+        BY appuser.accessgroupid has ${ALL_USERS_GROUP_ID}
+        DO allow
+    PBAC 
+        FOR TRUE
+        ON DELETE
+        BY FALSE
+        DO allow
+    PBAC 
+        FOR *
+        ON DEPLOY
+        BY appuser.accessgroupid has ${ALL_USERS_GROUP_ID}
+        DO allow
+    PBAC 
+        FOR *
+        ON READ
+        BY appuser.accessgroupid has ${ALL_USERS_GROUP_ID}
+        DO allow
+    PBAC 
+        FOR *
+        ON WRITE
+        BY appuser.accessgroupid has ${ALL_USERS_GROUP_ID}
+        DO allow
+ALLOWED_ENTITIES 
+HIDDEN COMPONENT "APPLICATION/Trusted Applications" = ((((GROUP = "APPLICATION/Nextlabs Policy Controler") OR (GROUP = "APPLICATION/Nextlabs Content Analysis Service")) AND TRUE) AND (TRUE AND TRUE))
+
+ID null STATUS APPROVED CREATOR "0" 
+ACCESS_POLICY
+ACCESS_CONTROL
+    PBAC 
+        FOR *
+        ON *
+		BY (appuser.did = resource.dso.owner OR FALSE)
+        DO allow
+    PBAC 
+        FOR *
+        ON READ
+        BY (TRUE OR appuser.accessgroupid has ${ALL_USERS_GROUP_ID})
+        DO allow
+ALLOWED_ENTITIES 
+HIDDEN COMPONENT "APPLICATION/Nextlabs Policy Controler" = (((FALSE OR TRUE) AND TRUE) AND (TRUE AND application.name = "**\\cepdpman.exe"))
+
+ID null STATUS APPROVED CREATOR "0" 
+ACCESS_POLICY
+ACCESS_CONTROL
+    PBAC 
+        FOR *
+        ON *
+		BY (appuser.did = resource.dso.owner OR FALSE)
+        DO allow
+    PBAC 
+        FOR *
+        ON READ
+        BY (TRUE OR appuser.accessgroupid has ${ALL_USERS_GROUP_ID})
+        DO allow
+ALLOWED_ENTITIES 
+HIDDEN COMPONENT "APPLICATION/Nextlabs Content Analysis Service" = (((FALSE OR TRUE) AND TRUE) AND (TRUE AND application.name = "**\\nlca_service.exe"))

@@ -1,0 +1,9 @@
+Main-Class: com.nextlabs.destiny.tools.clientinfo.ClientInfoGenerator
+Class-Path: common-framework.jar
+  commons-logging.jar
+  ldap.jar
+  crypt.jar
+  clientInfoGenerator.jar
+  server-shared-enrollment.jar
+  random.jar
+

@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export-file>
+    <version>-1</version>
+    <export-entities name="Unit Test/Tset">
+        <type>POLICY</type>
+        <pql>ID 505 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+POLICY "Unit Test/Tset"&#xd;
+    ATTRIBUTE USAGE&#xd;
+    FOR (TRUE AND (FALSE OR TRUE))&#xd;
+    ON (TRUE AND (FALSE OR GROUP="ACTION/Instant Message"))&#xd;
+    TO (TRUE AND TRUE)&#xd;
+    BY ((TRUE AND (GROUP="User/Something mixed" OR GROUP="User/Something mixed 2" OR GROUP="User/Test")) AND (TRUE AND TRUE) AND (TRUE AND TRUE))&#xd;
+    DO deny&#xd;
+    BY DEFAULT DO allow&#xd;
+    ON deny DO log&#xd;
+</pql>
+    </export-entities>
+    <export-entities name="ACTION/Instant Message">
+        <type>COMPONENT</type>
+        <pql>ID 12 STATUS DRAFT CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON TRUE&#xd;
+        BY appuser.did = resource.dso.owner&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY TRUE&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "ACTION/Instant Message" = &#xd;
+DESCRIPTION "Attaching to an instant message in AOL, Yahoo, or Microsoft Messenger."&#xd;
+(FALSE OR IM)</pql>
+    </export-entities>
+    <export-entities name="USER/Highly Restricted Clearance Level">
+        <type>COMPONENT</type>
+        <pql>ID 65 STATUS DRAFT CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON TRUE&#xd;
+        BY appuser.did = resource.dso.owner&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "USER/Highly Restricted Clearance Level" = (((FALSE OR TRUE) AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="USER/Sales Executives">
+        <type>COMPONENT</type>
+        <pql>ID 68 STATUS DRAFT CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON TRUE&#xd;
+        BY appuser.did = resource.dso.owner&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "USER/Sales Executives" = (((FALSE OR TRUE) AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="User/Empty">
+        <type>COMPONENT</type>
+        <pql>ID 493 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "User/Empty" = (((FALSE OR TRUE) AND (FALSE OR TRUE)) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="User/SomethingFlat">
+        <type>COMPONENT</type>
+        <pql>ID 494 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "User/SomethingFlat" = (((user.did = 175 OR user.did = 176 OR user.did = 76) AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="User/SomethingHier Empty">
+        <type>COMPONENT</type>
+        <pql>ID 495 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "User/SomethingHier Empty" = (((FALSE OR GROUP="User/Empty") AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="User/SomethingHier Flat">
+        <type>COMPONENT</type>
+        <pql>ID 496 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "User/SomethingHier Flat" = (((FALSE OR GROUP="User/SomethingFlat") AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="User/Something mixed">
+        <type>COMPONENT</type>
+        <pql>ID 497 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "User/Something mixed" = (((GROUP="User/SomethingFlat" OR GROUP="User/SomethingHier Empty" OR GROUP="User/SomethingHier Flat" OR GROUP="User/Empty" OR user.did = 175 OR user.did = 181) AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="User/Test">
+        <type>COMPONENT</type>
+        <pql>ID 498 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "User/Test" = &#xd;
+DESCRIPTION "dsafds"&#xd;
+(((FALSE OR user.did = 55) AND TRUE) AND (user.accountname = "sdafsadf" AND user.department != ""))</pql>
+    </export-entities>
+    <export-entities name="User/Something mixed 2">
+        <type>COMPONENT</type>
+        <pql>ID 503 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "User/Something mixed 2" = (((GROUP="User/SomethingFlat" OR GROUP="User/SomethingHier Empty" OR GROUP="User/SomethingHier Flat") AND (GROUP="USER/Sales Executives" OR GROUP="USER/Highly Restricted Clearance Level" OR user.did = 55) AND NOT ((FALSE OR GROUP="USER/Highly Restricted Clearance Level")) AND (user.did = 55 OR user.did = 529 OR user.did = 564 OR user.did = 181 OR user.ldapgroupid = 480)) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <users>
+        <name>Alexander Vladimirov</name>
+        <login>sasha@bluejungle.com</login>
+        <sid>S-1-5-21-668023798-3031861066-1043980994-1119</sid>
+        <id>55</id>
+    </users>
+    <users>
+        <name>Deepthi Shetty</name>
+        <login>dshetty@bluejungle.com</login>
+        <sid>S-1-5-21-668023798-3031861066-1043980994-1186</sid>
+        <id>76</id>
+    </users>
+    <users>
+        <name>Alan Morgan</name>
+        <login>amorgan@bluejungle.com</login>
+        <sid>S-1-5-21-668023798-3031861066-1043980994-3414</sid>
+        <id>175</id>
+    </users>
+    <users>
+        <name>Bernard Harguindeguy</name>
+        <login>bernard@bluejungle.com</login>
+        <sid>S-1-5-21-668023798-3031861066-1043980994-2619</sid>
+        <id>176</id>
+    </users>
+    <users>
+        <name>Andy Han</name>
+        <login>ahan@bluejungle.com</login>
+        <sid>S-1-5-21-668023798-3031861066-1043980994-1149</sid>
+        <id>181</id>
+    </users>
+    <users>
+        <name>Andrew Jackson</name>
+        <login>andrew.jackson@test.bluejungle.com</login>
+        <sid>S-1-5-21-830805687-550985140-3285839444-1178</sid>
+        <id>529</id>
+    </users>
+    <users>
+        <name>Andrew Johnson</name>
+        <login>andrew.johnson@test.bluejungle.com</login>
+        <sid>S-1-5-21-830805687-550985140-3285839444-1179</sid>
+        <id>564</id>
+    </users>
+    <usergroups>
+        <name>B2B Sales</name>
+        <login>TEST.BLUEJUNGLE.COM:Groups:b2b sales</login>
+        <sid>TEST.BLUEJUNGLE.COM:Groups:b2b sales</sid>
+        <id>480</id>
+    </usergroups>
+</export-file>

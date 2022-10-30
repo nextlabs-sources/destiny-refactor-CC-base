@@ -1,0 +1,23 @@
+<Obligation>
+    <DisplayName>Automatic File Tagging</DisplayName>
+    <RunAt>PEP</RunAt>
+    <Name>AUTOMATIC_FILE_TAGGING</Name>
+    <Arguments>
+        <Argument>
+            <Name>Tag Name</Name>
+            <Value>$ResourceAttribute.Name</Value>
+        </Argument>
+        <Argument>
+            <Name>Tag Value</Name>
+            <Value>$ResourceAttribute.Value </Value>
+        </Argument>
+        <Argument>
+            <Name>Target</Name>
+            <Value default="true">Source</Value>
+            <Value>Destination</Value>
+        </Argument>
+        <Argument usereditable="true">
+          <Name>Description</Name>
+        </Argument>
+    </Arguments>
+</Obligation>

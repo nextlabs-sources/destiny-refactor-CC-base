@@ -1,0 +1,1391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export-file>
+    <version>-1</version>
+    <export-entities name="Unit Test/Folder Lvl1/Folder Lvl2/Folder Lvl3/Policy Lvl3a">
+        <type>POLICY</type>
+        <pql>ID 513 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+POLICY "Unit Test/Folder Lvl1/Folder Lvl2/Folder Lvl3/Policy Lvl3a"&#xd;
+    ATTRIBUTE USAGE&#xd;
+    FOR (TRUE AND (FALSE OR TRUE))&#xd;
+    ON (TRUE AND (FALSE OR TRUE))&#xd;
+    TO (TRUE AND TRUE)&#xd;
+    BY ((TRUE AND (FALSE OR TRUE)) AND (TRUE AND TRUE) AND (TRUE AND TRUE))&#xd;
+    DO deny&#xd;
+    BY DEFAULT DO allow&#xd;
+    ON deny DO log&#xd;
+</pql>
+    </export-entities>
+    <export-entities name="Unit Test/Folder Lvl1/Folder Lvl2/Folder Lvl3/Policy Lvl3b">
+        <type>POLICY</type>
+        <pql>ID 514 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+POLICY "Unit Test/Folder Lvl1/Folder Lvl2/Folder Lvl3/Policy Lvl3b"&#xd;
+    ATTRIBUTE USAGE&#xd;
+    FOR (TRUE AND (FALSE OR TRUE))&#xd;
+    ON (TRUE AND (FALSE OR TRUE))&#xd;
+    TO (TRUE AND TRUE)&#xd;
+    BY ((TRUE AND (FALSE OR TRUE)) AND (TRUE AND TRUE) AND (TRUE AND TRUE))&#xd;
+    DO deny&#xd;
+    BY DEFAULT DO allow&#xd;
+    ON deny DO log&#xd;
+</pql>
+    </export-entities>
+    <export-entities name="Unit Test/Folder Lvl1/Folder Lvl2/Policy Lvl2">
+        <type>POLICY</type>
+        <pql>ID 512 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+POLICY "Unit Test/Folder Lvl1/Folder Lvl2/Policy Lvl2"&#xd;
+    ATTRIBUTE USAGE&#xd;
+    FOR (TRUE AND (FALSE OR TRUE))&#xd;
+    ON (TRUE AND (GROUP="Action/&lt;&gt;" OR GROUP="Action/Coopy" OR GROUP="Action/delette" OR GROUP="Action/format!" OR GROUP="Action/moove" OR GROUP="Action/passte" OR GROUP="Action/undooo"))&#xd;
+    TO (TRUE AND TRUE)&#xd;
+    BY ((TRUE AND (GROUP="User/ET" OR GROUP="User/Everyone" OR GROUP="User/Hor-kan" OR GROUP="User/Robert" OR GROUP="User/Scott")) AND (TRUE AND (GROUP="Host/Computer Bs" OR GROUP="Host/Computer Group C" OR GROUP="Host/Computer Group Ds" OR GROUP="Host/Computer Mixed" OR GROUP="Host/ComputerA")) AND (TRUE AND TRUE))&#xd;
+    DO deny&#xd;
+    BY DEFAULT DO allow&#xd;
+    ON deny DO log&#xd;
+</pql>
+    </export-entities>
+    <export-entities name="Unit Test/Folder Lvl1/Policy 2a">
+        <type>POLICY</type>
+        <pql>ID 534 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+POLICY "Unit Test/Folder Lvl1/Policy 2a"&#xd;
+    ATTRIBUTE USAGE&#xd;
+    FOR (TRUE AND (FALSE OR TRUE))&#xd;
+    ON (TRUE AND (FALSE OR GROUP="Action/&lt;&gt;"))&#xd;
+    TO (TRUE AND TRUE)&#xd;
+    BY ((TRUE AND (FALSE OR GROUP="User/ET")) AND (TRUE AND (FALSE OR GROUP="Host/Computer Bs")) AND (TRUE AND TRUE))&#xd;
+    DO deny&#xd;
+    BY DEFAULT DO allow&#xd;
+    ON deny DO log&#xd;
+</pql>
+    </export-entities>
+    <export-entities name="Unit Test/Folder Lvl1/Policy 2b">
+        <type>POLICY</type>
+        <pql>ID 535 STATUS DRAFT CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+POLICY "Unit Test/Folder Lvl1/Policy 2b"&#xd;
+    ATTRIBUTE USAGE&#xd;
+    FOR (TRUE AND (FALSE OR GROUP="Resource/Doc1"))&#xd;
+    ON (TRUE AND (GROUP="Action/format!" OR GROUP="Action/moove"))&#xd;
+    TO (TRUE AND TRUE)&#xd;
+    BY ((TRUE AND (FALSE OR GROUP="User/Everyone")) AND (TRUE AND TRUE) AND (TRUE AND TRUE))&#xd;
+    DO deny&#xd;
+    BY DEFAULT DO allow&#xd;
+    ON deny DO log&#xd;
+</pql>
+    </export-entities>
+    <export-entities name="Unit Test/Folder Lvl1/Policy 2c">
+        <type>POLICY</type>
+        <pql>ID 536 STATUS DRAFT CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+POLICY "Unit Test/Folder Lvl1/Policy 2c"&#xd;
+    ATTRIBUTE USAGE&#xd;
+    FOR (TRUE AND (FALSE OR TRUE))&#xd;
+    ON (TRUE AND (FALSE OR TRUE))&#xd;
+    TO (TRUE AND TRUE)&#xd;
+    BY ((TRUE AND (FALSE OR GROUP="User/Hor-kan")) AND (TRUE AND (FALSE OR GROUP="Host/Computer Mixed")) AND (TRUE AND TRUE))&#xd;
+    DO deny&#xd;
+    BY DEFAULT DO allow&#xd;
+    ON deny DO log&#xd;
+</pql>
+    </export-entities>
+    <export-entities name="Unit Test/Folder Lvl1/Policy 2d">
+        <type>POLICY</type>
+        <pql>ID 537 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+POLICY "Unit Test/Folder Lvl1/Policy 2d"&#xd;
+    ATTRIBUTE USAGE&#xd;
+    FOR (TRUE AND (FALSE OR TRUE))&#xd;
+    ON (TRUE AND (FALSE OR TRUE))&#xd;
+    TO (TRUE AND TRUE)&#xd;
+    BY ((TRUE AND (GROUP="User/Robert" OR GROUP="User/Scott")) AND (TRUE AND (GROUP="Host/Computer Group Ds" OR GROUP="Host/Computer Bs")) AND (TRUE AND TRUE))&#xd;
+    DO deny&#xd;
+    BY DEFAULT DO allow&#xd;
+    ON deny DO log&#xd;
+</pql>
+    </export-entities>
+    <export-entities name="Unit Test/Folder Lvl1/Policy 2e">
+        <type>POLICY</type>
+        <pql>ID 538 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+POLICY "Unit Test/Folder Lvl1/Policy 2e"&#xd;
+    ATTRIBUTE USAGE&#xd;
+    FOR (TRUE AND (GROUP="Resource/Doc1" OR GROUP="Resource/Doc2"))&#xd;
+    ON (TRUE AND (FALSE OR GROUP="Action/undooo"))&#xd;
+    TO (TRUE AND TRUE)&#xd;
+    BY ((TRUE AND (GROUP="User/ET" OR GROUP="User/Everyone" OR GROUP="User/Hor-kan")) AND (TRUE AND (GROUP="Host/Computer Group Ds" OR GROUP="Host/ComputerA")) AND (TRUE AND TRUE))&#xd;
+    DO deny&#xd;
+    BY DEFAULT DO allow&#xd;
+    ON deny DO log&#xd;
+</pql>
+    </export-entities>
+    <export-entities name="Unit Test/Folder Lvl1/Policy 2f">
+        <type>POLICY</type>
+        <pql>ID 539 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+POLICY "Unit Test/Folder Lvl1/Policy 2f"&#xd;
+    ATTRIBUTE USAGE&#xd;
+    FOR (TRUE AND (FALSE OR TRUE))&#xd;
+    ON (TRUE AND (FALSE OR TRUE))&#xd;
+    TO (TRUE AND TRUE)&#xd;
+    BY ((TRUE AND (GROUP="User/ET" OR GROUP="User/Scott")) AND (TRUE AND TRUE) AND (TRUE AND TRUE))&#xd;
+    DO deny&#xd;
+    BY DEFAULT DO allow&#xd;
+    ON deny DO log&#xd;
+</pql>
+    </export-entities>
+    <export-entities name="Unit Test/Folder Lvl1/Policy 2g">
+        <type>POLICY</type>
+        <pql>ID 540 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+POLICY "Unit Test/Folder Lvl1/Policy 2g"&#xd;
+    ATTRIBUTE USAGE&#xd;
+    FOR (TRUE AND (FALSE OR TRUE))&#xd;
+    ON (TRUE AND (FALSE OR TRUE))&#xd;
+    TO (TRUE AND TRUE)&#xd;
+    BY ((TRUE AND (FALSE OR TRUE)) AND (TRUE AND (GROUP="Host/Computer Group Ds" OR GROUP="Host/Computer Group C" OR GROUP="Host/Computer Bs" OR GROUP="Host/ComputerA")) AND (TRUE AND TRUE))&#xd;
+    DO deny&#xd;
+    BY DEFAULT DO allow&#xd;
+    ON deny DO log&#xd;
+</pql>
+    </export-entities>
+    <export-entities name="Unit Test/Policy Lvl1">
+        <type>POLICY</type>
+        <pql>ID 511 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+POLICY "Unit Test/Policy Lvl1"&#xd;
+    ATTRIBUTE USAGE&#xd;
+    FOR (TRUE AND (FALSE OR TRUE))&#xd;
+    ON (TRUE AND (GROUP="Action/Coopy" OR GROUP="Action/delette"))&#xd;
+    TO (TRUE AND TRUE)&#xd;
+    BY ((TRUE AND (FALSE OR GROUP="User/Robert")) AND (TRUE AND (FALSE OR GROUP="Host/Computer Bs")) AND (TRUE AND TRUE))&#xd;
+    DO deny&#xd;
+    BY DEFAULT DO allow&#xd;
+    ON deny DO log&#xd;
+</pql>
+    </export-entities>
+    <export-entities name="User/Hor-kan">
+        <type>COMPONENT</type>
+        <pql>ID 515 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "User/Hor-kan" = &#xd;
+DESCRIPTION ":-( empty list"&#xd;
+(((FALSE OR TRUE) AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="User/Robert">
+        <type>COMPONENT</type>
+        <pql>ID 516 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "User/Robert" = &#xd;
+DESCRIPTION "Robert Lin"&#xd;
+(((FALSE OR user.did = 124) AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="User/Scott">
+        <type>COMPONENT</type>
+        <pql>ID 517 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "User/Scott" = &#xd;
+DESCRIPTION "Scott G..... \r\nDon't know how to spell. Sorry."&#xd;
+(((FALSE OR user.did = 173) AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="User/Everyone">
+        <type>COMPONENT</type>
+        <pql>ID 518 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "User/Everyone" = (((user.ldapgroupid = 148 OR user.ldapgroupid = 100 OR user.ldapgroupid = 452 OR user.ldapgroupid = 59) AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="User/ET">
+        <type>COMPONENT</type>
+        <pql>ID 519 STATUS DRAFT CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "User/ET" = &#xd;
+DESCRIPTION "3 different domains in 1"&#xd;
+(((user.did = 175 OR user.did = 807 OR user.did = 442) AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="Host/ComputerA">
+        <type>COMPONENT</type>
+        <pql>ID 521 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "Host/ComputerA" = (((FALSE OR host.did = 158) AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="Host/Computer Bs">
+        <type>COMPONENT</type>
+        <pql>ID 522 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "Host/Computer Bs" = (((host.ldapgroupid = 553 OR host.ldapgroupid = 106 OR host.ldapgroupid = 140) AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="Host/Computer Group C">
+        <type>COMPONENT</type>
+        <pql>ID 523 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "Host/Computer Group C" = (((FALSE OR host.ldapgroupid = 549) AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="Host/Computer Group Ds">
+        <type>COMPONENT</type>
+        <pql>ID 525 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "Host/Computer Group Ds" = (((host.ldapgroupid = 59 OR host.ldapgroupid = 140 OR host.ldapgroupid = 536 OR host.ldapgroupid = 535) AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="Host/Computer Mixed">
+        <type>COMPONENT</type>
+        <pql>ID 526 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "Host/Computer Mixed" = (((host.did = 602 OR host.did = 164 OR host.ldapgroupid = 566) AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="Action/Coopy">
+        <type>COMPONENT</type>
+        <pql>ID 527 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "Action/Coopy" = (FALSE OR COPY)</pql>
+    </export-entities>
+    <export-entities name="Action/moove">
+        <type>COMPONENT</type>
+        <pql>ID 528 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "Action/moove" = (FALSE OR MOVE)</pql>
+    </export-entities>
+    <export-entities name="Action/passte">
+        <type>COMPONENT</type>
+        <pql>ID 529 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "Action/passte" = (PASTE OR OPEN)</pql>
+    </export-entities>
+    <export-entities name="Action/delette">
+        <type>COMPONENT</type>
+        <pql>ID 530 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "Action/delette" = (FALSE OR DELETE)</pql>
+    </export-entities>
+    <export-entities name="Action/undooo">
+        <type>COMPONENT</type>
+        <pql>ID 531 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "Action/undooo" = (IM OR EMAIL OR PRINT)</pql>
+    </export-entities>
+    <export-entities name="Action/format!">
+        <type>COMPONENT</type>
+        <pql>ID 532 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "Action/format!" = (DELETE OR MOVE OR RENAME OR CHANGE_ATTRIBUTES)</pql>
+    </export-entities>
+    <export-entities name="Action/&lt;>">
+        <type>COMPONENT</type>
+        <pql>ID 533 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "Action/&lt;&gt;" = &#xd;
+DESCRIPTION "Will this work?"&#xd;
+(CHANGE_SECURITY OR CHANGE_ATTRIBUTES)</pql>
+    </export-entities>
+    <export-entities name="Resource/Doc1">
+        <type>COMPONENT</type>
+        <pql>ID 541 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "Resource/Doc1" = (((FALSE OR TRUE) AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="Resource/Doc2">
+        <type>COMPONENT</type>
+        <pql>ID 542 STATUS EMPTY CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "Resource/Doc2" = (((FALSE OR TRUE) AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <users>
+        <name>Robert Lin</name>
+        <login>rlin@bluejungle.com</login>
+        <sid>S-1-5-21-668023798-3031861066-1043980994-2628</sid>
+        <id>124</id>
+    </users>
+    <users>
+        <name>Scott Goldstein</name>
+        <login>sgoldstein@bluejungle.com</login>
+        <sid>S-1-5-21-668023798-3031861066-1043980994-2634</sid>
+        <id>173</id>
+    </users>
+    <users>
+        <name>Alan Morgan</name>
+        <login>amorgan@bluejungle.com</login>
+        <sid>S-1-5-21-668023798-3031861066-1043980994-3414</sid>
+        <id>175</id>
+    </users>
+    <users>
+        <name>Dwight Eisenhower</name>
+        <login>dwight.eisenhower@test.bluejungle.com</login>
+        <sid>S-1-5-21-830805687-550985140-3285839444-1168</sid>
+        <id>442</id>
+    </users>
+    <users>
+        <name>ldapuser4</name>
+        <login>ldapuser4</login>
+        <id>807</id>
+    </users>
+    <hosts>
+        <name>ALDERNEY</name>
+        <login>alderney.bluejungle.com</login>
+        <sid>S-1-5-21-668023798-3031861066-1043980994-1151</sid>
+        <id>158</id>
+    </hosts>
+    <hosts>
+        <name>ARUBA</name>
+        <login>aruba.bluejungle.com</login>
+        <sid>S-1-5-21-668023798-3031861066-1043980994-1197</sid>
+        <id>164</id>
+    </hosts>
+    <hosts>
+        <name>AGENTTEST4</name>
+        <login>agenttest4.test.bluejungle.com</login>
+        <sid>S-1-5-21-830805687-550985140-3285839444-713243</sid>
+        <id>602</id>
+    </hosts>
+    <usergroups>
+        <name>destiny-eng@bluejungle.com</name>
+        <login>BLUEJUNGLE.COM:Groups:destiny-eng@bluejungle.com</login>
+        <sid>BLUEJUNGLE.COM:Groups:destiny-eng@bluejungle.com</sid>
+        <id>100</id>
+    </usergroups>
+    <usergroups>
+        <name>users</name>
+        <login>BLUEJUNGLE.COM:Groups:users</login>
+        <sid>BLUEJUNGLE.COM:Groups:users</sid>
+        <id>148</id>
+    </usergroups>
+    <usergroups>
+        <name>All Sales Groups</name>
+        <login>TEST.BLUEJUNGLE.COM:Groups:all sales groups</login>
+        <sid>TEST.BLUEJUNGLE.COM:Groups:all sales groups</sid>
+        <id>452</id>
+    </usergroups>
+    <usergroups>
+        <name>bluejungle.com</name>
+        <login>BLUEJUNGLE.COM:Groups:bluejungle.com</login>
+        <sid>BLUEJUNGLE.COM:Groups:bluejungle.com</sid>
+        <id>59</id>
+    </usergroups>
+    <hostgroups>
+        <name>bluejungle.com</name>
+        <login>BLUEJUNGLE.COM:Groups:bluejungle.com</login>
+        <sid>BLUEJUNGLE.COM:Groups:bluejungle.com</sid>
+        <id>59</id>
+    </hostgroups>
+    <hostgroups>
+        <name>computers</name>
+        <login>BLUEJUNGLE.COM:Groups:computers</login>
+        <sid>BLUEJUNGLE.COM:Groups:computers</sid>
+        <id>106</id>
+    </hostgroups>
+    <hostgroups>
+        <name>computers-disabled</name>
+        <login>BLUEJUNGLE.COM:Groups:computers-disabled</login>
+        <sid>BLUEJUNGLE.COM:Groups:computers-disabled</sid>
+        <id>140</id>
+    </hostgroups>
+    <hostgroups>
+        <name>System Software Upgrade</name>
+        <login>TEST.BLUEJUNGLE.COM:Groups:system software upgrade</login>
+        <sid>TEST.BLUEJUNGLE.COM:Groups:system software upgrade</sid>
+        <id>535</id>
+    </hostgroups>
+    <hostgroups>
+        <name>Financial Planning</name>
+        <login>TEST.BLUEJUNGLE.COM:Groups:financial planning</login>
+        <sid>TEST.BLUEJUNGLE.COM:Groups:financial planning</sid>
+        <id>536</id>
+    </hostgroups>
+    <hostgroups>
+        <name>Facilities Upgrade Planning</name>
+        <login>TEST.BLUEJUNGLE.COM:Groups:facilities upgrade planning</login>
+        <sid>TEST.BLUEJUNGLE.COM:Groups:facilities upgrade planning</sid>
+        <id>549</id>
+    </hostgroups>
+    <hostgroups>
+        <name>All Legal Groups</name>
+        <login>TEST.BLUEJUNGLE.COM:Groups:all legal groups</login>
+        <sid>TEST.BLUEJUNGLE.COM:Groups:all legal groups</sid>
+        <id>553</id>
+    </hostgroups>
+    <hostgroups>
+        <name>computers</name>
+        <login>TEST.BLUEJUNGLE.COM:Groups:computers</login>
+        <sid>TEST.BLUEJUNGLE.COM:Groups:computers</sid>
+        <id>566</id>
+    </hostgroups>
+</export-file>

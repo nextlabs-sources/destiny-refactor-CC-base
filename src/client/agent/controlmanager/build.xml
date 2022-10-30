@@ -1,0 +1,224 @@
+<?xml version="1.0"?>
+<project name="controlmanager" default="build">
+
+    <var name="nlbuildroot" value="${basedir}/../../../.."/>
+    <property name="src.dir"    value="${basedir}"/>
+    <property name="embeddedapi.dir"    value="${basedir}/embeddedapi"/>
+    <property name="build.dest" value="${build.root.dir}/client/agent/controlmanager"/>
+    <property name="build.embeddedapi.dest" value="${build.root.dir}/client/agent/controlmanager/embeddedapi"/>
+    <property name="cfg.dest" value="${build.root.dir}/config" />
+    <property name="doc.dest" value="${build.root.dir}/client/agent/controlmanager/doc" />
+
+    <property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+    <path id="compile.agentcontrolmanager.classpath">
+        <pathelement path="${build.root.dir}/crypt.jar" />
+        <pathelement path="${build.root.dir}/common-framework.jar" />
+        <pathelement path="${build.root.dir}/common-framework-test.jar" />
+        <pathelement path="${build.root.dir}/common-framework-types.jar" />
+        <pathelement path="${build.root.dir}/common-domain.jar" />      		
+        <pathelement path="${build.root.dir}/common-domain-types.jar" />      
+        <pathelement path="${build.root.dir}/agent-ipc.jar" />
+        <pathelement path="${build.root.dir}/log-types.jar" />
+        <pathelement path="${build.root.dir}/management-types.jar" />
+        <pathelement path="${build.root.dir}/agent-types.jar" />
+        <pathelement path="${build.root.dir}/dabs-agent-services.jar" />
+        <pathelement path="${build.root.dir}/dabs-common-services.jar" />
+        <pathelement path="${build.root.dir}/policy-types.jar" />
+        <pathelement path="${build.root.dir}/common-pf.jar" />
+        <pathelement path="${build.root.dir}/client-pf.jar"/>		
+        <pathelement path="${build.root.dir}/agent-common.jar"/>		
+        <pathelement path="${build.root.dir}/server-shared-types.jar"/>	
+        <pathelement path="${build.root.dir}/common-version.jar"/>
+        <pathelement path="${build.root.dir}/common-version-impl.jar"/>
+        <pathelement path="${build.root.dir}/common-oil.jar"/>
+        <pathelement path="${build.root.dir}/version-types.jar"/>
+        <pathelement path="${xlib_jar_dir}/castor-0.9.5.4-xml.jar" />
+        <pathelement path="${xlib_jar_dir}/xmlParserAPIs.jar" />
+        <pathelement path="${xlib_jar_dir}/xercesImpl.jar" />
+        <pathelement path="${xlib_dir}/onejar" />
+        <pathelement location="${xlib_jar_dir}/antlr.jar"/>
+        <pathelement location="${xlib_jar_dir}/ehcache-1.1.jar"/>
+        <path refid="compile.classpath" />
+    </path>
+    
+    <target name="pre-build">
+        <mkdir dir="${build.dest}"/>
+        <mkdir dir="${build.embeddedapi.dest}"/>
+        <mkdir dir="${cfg.dest}"/>
+        <copy todir="${cfg.dest}">
+            <fileset dir="${src.dir}/etc">
+                <include name="mapping.xml"/>
+                <include name="agentprofile.xml"/>
+                <include name="commprofile.xml"/>
+                <include name="commprofile.template.xml"/>
+                <include name="config.dat"/>
+                <include name="folder.info"/>
+            </fileset>
+        </copy>		
+    </target>
+    
+    <target name="doc">
+        <mkdir dir="${doc.dest}" />
+        <javadoc sourcepath="${src.dir}" destdir="${doc.dest}" linksource="yes" classpathref="compile.agentcontrolmanager.classpath" source="${compile.source}" >
+            <packageset dir="${src.dir}" defaultexcludes="yes">
+                <include name="com/bluejungle/destiny/agent/controlmanager/**" />
+                <exclude name="**/tests/**" />
+            </packageset>
+        </javadoc>
+    </target>
+    
+    <target name="pdpapi-doc">
+        <mkdir dir="${doc.dest}" />
+        <javadoc sourcepath="${embeddedapi.dir}" destdir="${doc.dest}" linksource="yes" classpathref="compile.agentcontrolmanager.classpath" source="${compile.source}" >
+            <packageset dir="${embeddedapi.dir}" defaultexcludes="yes">
+                <include name="com/bluejungle/destiny/agent/controlmanager/embeddedapi/**" />
+                <exclude name="**/tests/**" />
+            </packageset>
+        </javadoc>
+    </target>
+    
+    <target name="compile" depends="pre-build">
+        <javac srcdir="${src.dir}" destdir="${build.dest}" debug="${compile.debug}" verbose="true" includes="com/bluejungle/**" excludes="**/test/**" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="compile.agentcontrolmanager.classpath" />
+        </javac>
+        
+        <javac srcdir="${src.dir}" destdir="${build.embeddedapi.dest}" debug="${compile.debug}" verbose="true" includes="com/bluejungle/**, embeddedapi/**" excludes="**/test/**, com/bluejungle/**/pdpapi/**" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="compile.agentcontrolmanager.classpath" />
+        </javac>
+
+        <mkdir dir="${build.root.dir}/jinclude"/>
+        <javah destdir="${build.root.dir}/jinclude" class="com.bluejungle.destiny.agent.controlmanager.PDPJni" verbose="${compile.verbose}">
+            <classpath>
+                <pathelement path="${build.dest}" />
+                <path refid="compile.agentcontrolmanager.classpath" />
+            </classpath>
+        </javah>	  
+    </target>
+
+    <target name="compile-tests" depends="compile">
+        <javac srcdir="${src.dir}" destdir="${build.dest}" debug="${compile.debug}" verbose="${compile.verbose}" includes="com/bluejungle/**/test/**" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath>
+                <path refid="compile.agentcontrolmanager.classpath" />
+                <pathelement path="${build.root.dir}/client-pf-tests.jar" />
+            </classpath>
+        </javac>
+    </target>		
+    
+    <target name="setup-tests" if="${tests.standalone}">
+    </target>
+
+    <target name="run-tests-ui" depends="setup-tests">
+        <java fork="yes" classname="junit.swingui.TestRunner" dir="${build.dest}" taskname="junit" failonerror="true">
+            <arg value="com.bluejungle.destiny.agent.controlmanager.test.ControlManagerTestSuite" />
+            <arg value="com.bluejungle.destiny.agent.commandengine.tests.CommandEngineTestSuite" />
+            <arg value="com.bluejungle.destiny.agent.communication.tests.CommunicationManagerTestSuite" />
+            <classpath>
+                <pathelement path="${src.root.dir}/etc/junit" />
+                <pathelement path="${build.dest}" />
+                <path refid="compile.agentcontrolmanager.classpath" />
+            </classpath>
+        </java>
+    </target>
+
+    <target name="tests" depends="setup-tests">
+        <junit printsummary="withOutAndErr" showoutput="yes" haltonfailure="${junit.haltonfailure}" fork="yes" dir="${build.root.dir}" failureproperty="junit.fail">
+            <formatter type="xml"/>
+            <jvmarg value="-Djava.library.path=${build.root.dir}\platform\win32\Debug\bin" />
+            <test name="com.bluejungle.destiny.agent.controlmanager.test.ControlManagerTestSuite" todir="${log.dir}/tests" />
+            <test name="com.bluejungle.destiny.agent.commandengine.tests.CommandEngineTestSuite" todir="${log.dir}/tests" />
+            <test name="com.bluejungle.destiny.agent.communication.tests.CommunicationManagerTestSuite" todir="${log.dir}/tests" />						
+            <test name="com.bluejungle.destiny.agent.scheduling.tests.SchedulingTestSuite" todir="${log.dir}/tests" />						
+            <classpath>
+                <pathelement path="${build.dest}" />
+                <path refid="compile.agentcontrolmanager.classpath" />
+            </classpath>
+        </junit>
+    </target>
+    
+    <target name="jar" depends="compile">
+        <jar manifest="${src.dir}/etc/controlmanager-manifest.txt" destfile="${build.root.dir}/agent-controlmanager.jar">
+            <fileset dir="${build.dest}">
+                <include name="**/*.class" />
+                <exclude name="**/tests/**" />
+                <exclude name="embeddedapi/**" />
+            </fileset>
+        </jar>
+        
+        <jar manifest="${src.dir}/etc/controlmanager-embeddedapi-manifest.txt" destfile="${build.root.dir}/agent-controlmanager-embeddedapi.jar">
+            <fileset dir="${build.dest}/embeddedapi">
+                <include name="**/*.class"/>
+                <exclude name="**/tests/**" />
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="tests-jar" depends="compile-tests">
+        <jar destfile="${build.root.dir}/agent-controlmanager-tests.jar">
+            <fileset dir="${build.dest}">
+                <include name="**/tests/**/*.class" />
+            </fileset>
+        </jar>
+    </target>
+    
+    <target name="install" depends="jar">
+        <copy todir="${build.root.dir}/agent/lib">
+            <fileset dir="${build.root.dir}">
+                <include name="agent-common.jar"/>
+                <include name="common-domain-types.jar"/>
+                <include name="common-domain.jar"/>
+                <include name="common-oil.jar"/>
+                <include name="agent-controlmanager.jar"/>
+                <include name="common-framework.jar"/>
+                <include name="common-framework-types.jar" /> 
+                <include name="server-base.jar"/>
+                <include name="common-pf.jar"/>
+                <include name="agent-types.jar"/>
+                <include name="management-types.jar"/>
+                <include name="agent-common.jar "/>
+                <include name="dabs-common-services.jar"/>
+                <include name="dabs-agent-services.jar"/> 
+                <include name="log-types.jar"/>
+                <include name="agent-ipc.jar"/> 
+                <include name="client-pf.jar"/> 
+                <include name="deployment-types.jar"/>
+                <include name="policy-types.jar"/>
+                <include name="server-shared-types.jar"/>
+                <include name="crypt.jar"/>
+                <include name="version.jar"/>
+                <include name="version-types.jar"/>
+                <include name="common-version.jar"/>
+                <include name="common-version-impl.jar"/>
+            </fileset>
+        </copy>
+        <copy todir="${build.root.dir}/agent/lib" file="${xlib_jar_dir}/axis.jar"/>
+        <copy todir="${build.root.dir}/agent/lib" file="${xlib_jar_dir}/commons-logging-1.0.4.jar"/>
+        <copy todir="${build.root.dir}/agent/lib" file="${xlib_jar_dir}/castor-0.9.5.4.jar"/>
+        <copy todir="${build.root.dir}/agent/lib" file="${xlib_jar_dir}/jaxrpc.jar"/>
+        <copy todir="${build.root.dir}/agent/lib" file="${xlib_jar_dir}/xercesImpl.jar"/>
+        <copy todir="${build.root.dir}/agent/lib" file="${xlib_jar_dir}/xml-apis.jar"/>
+        <copy todir="${build.root.dir}/agent/lib" file="${xlib_jar_dir}/commons-discovery-0.2.jar"/>
+        <copy todir="${build.root.dir}/agent/lib" file="${xlib_jar_dir}/saaj.jar"/>
+        <copy todir="${build.root.dir}/agent/lib" file="${xlib_jar_dir}/wsdl4j-1.5.1.jar"/>
+        <copy todir="${build.root.dir}/agent/lib" file="${xlib_jar_dir}/ehcache-1.1.jar"/>
+        <copy todir="${build.root.dir}/agent/lib" file="${xlib_jar_dir}/commons-collections-2.1.1.jar"/>
+        <copy todir="${build.root.dir}/agent/lib" file="${xlib_jar_dir}/junit-4.3.jar"/>
+        <copy todir="${build.root.dir}/agent/lib" file="${xlib_jar_dir}/activation.jar"/>
+        <copy todir="${build.root.dir}/agent/lib" file="${xlib_jar_dir}/mail.jar"/>
+        <copy todir="${build.root.dir}/agent/lib" file="${xlib_jar_dir}/antlr.jar"/> 			
+        <copy todir="${build.root.dir}/agent/lib" file="${xlib_jar_dir}/jargs.jar"/> 
+        <copy todir="${build.root.dir}/platform/win32/debug/bin" file="${xlib_bin32_dir}/MSVCR71D.DLL" preservelastmodified="true"/>
+        <copy todir="${build.root.dir}/platform/win32/debug/bin" file="${xlib_bin32_dir}/MSVCR71D.PDB" preservelastmodified="true"/>
+        <copy todir="${build.root.dir}/platform/win32/release/bin" file="${xlib_bin32_dir}/MSVCR71.DLL" preservelastmodified="true"/>
+        <copy todir="${build.root.dir}/platform/win32/release/bin" file="${xlib_bin32_dir}/MSVCR71.PDB" preservelastmodified="true"/>
+        <copy todir="${build.root.dir}/platform/win32/debug/bin" file="${xlib_bin32_dir}/MSVCP71D.DLL" preservelastmodified="true"/>
+        <copy todir="${build.root.dir}/platform/win32/debug/bin" file="${xlib_bin32_dir}/MSVCP71D.PDB" preservelastmodified="true"/>
+        <copy todir="${build.root.dir}/platform/win32/release/bin" file="${xlib_bin32_dir}/MSVCP71.DLL" preservelastmodified="true"/>
+        <copy todir="${build.root.dir}/platform/win32/release/bin" file="${xlib_bin32_dir}/MSVCP71.PDB" preservelastmodified="true"/>
+    </target>
+
+    <target name="build" depends="compile,jar,install" />
+    <target name="build-tests" depends="compile-tests,tests-jar" />
+</project>
+
+

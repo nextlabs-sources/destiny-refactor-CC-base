@@ -1,0 +1,13 @@
+FILE_SERVER
+id  0 host testhost_inner00 = host.machinename="grande1"
+id  1 host testhost_inner01 = not id 0 AND host.machinename!="grande2"
+id  2 host testhost_inner02 = not id 1 OR host.machinename="grande3"
+id  3 host testhost_inner03 = not id 2 AND host.machinename!="grande4"
+id  4 host testhost_inner04 = not id 3 OR host.machinename="grande5"
+id  5 host testhost_inner05 = not id 4 AND host.machinename!="grande6"
+id  6 host testhost_inner06 = not id 5 OR host.machinename="grande7"
+id  7 host testhost_inner07 = not id 6 AND host.machinename!="grande8"
+id  8 host testhost_inner08 = not id 7 OR host.machinename="grande9"
+id  9 host testhost_inner09 = not id 8 AND host.machinename!="grande10"
+id 10 host testhost_inner20 = not id 9 // The net effect of these inversions is the exclusion of [grande1..grande10]
+id 11 POLICY TestPolicy FOR * ON * BY not id 10 DO deny

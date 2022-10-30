@@ -1,0 +1,74 @@
+Deployment Bundle:
+Deployment entities:
+ID # STATUS EMPTY POLICY TestPolicy
+    FOR TRUE
+    ON TRUE
+    BY TRUE
+    WHERE "a" includes "b"
+    DO deny
+    ON deny DO log
+ID # STATUS APPROVED LOCATION localhost = "10.0.0.0/8"
+Policies that apply to all users: {0}
+Policies that apply to all hosts: {0}
+Policies that apply to all applications: {0}
+Subject-Policy Mappings:
+1 -> {}
+2 -> {}
+3 -> {}
+Action-Policy Mappings:
+ADMIN -> {0}
+APPROVE -> {0}
+ATTACH -> {0}
+AVDCALL -> {0}
+BATCH -> {0}
+BURN -> {0}
+CHANGE_ATTRIBUTES -> {0}
+CHANGE_SECURITY -> {0}
+COPY -> {0}
+CREATE_NEW -> {0}
+CUT_PASTE -> {0}
+DELETE -> {0}
+DEPLOY -> {0}
+EDIT -> {0}
+EDIT_COPY -> {0}
+EMAIL -> {0}
+EMBED -> {0}
+EXPORT -> {0}
+IM -> {0}
+JOIN -> {0}
+MEETING -> {0}
+MOVE -> {0}
+NOP -> {0}
+OPEN -> {0}
+PASTE -> {0}
+PRESENCE -> {0}
+PRINT -> {0}
+QUESTION -> {0}
+READ -> {0}
+RECORD -> {0}
+RENAME -> {0}
+RUN -> {0}
+SENDTO -> {0}
+SHARE -> {0}
+VIDEO -> {0}
+VOICE -> {0}
+WEBMAIL -> {0}
+WRITE -> {0}
+Subject-Group Mappings:
+1 -> {}
+2 -> {}
+3 -> {}
+Subject keys:
+keng.lim@bluejungle.com (user-mail) -> 0
+keng.lim@nextlabs.com (user-mail) -> 0
+keng@bluejungle.com (user-mail) -> 0
+keng@nextlabs.com (user-mail) -> 0
+klim@bluejungle.com (user-mail) -> 0
+klim@nextlabs.com (user-mail) -> 0
+S-1-5-21-668023798-3031861066-1043980994-1114 (user-windowsSid) -> 0
+sip:keng.lim@bluejungle.com (user-mail) -> 0
+x400:c=us;a= ;p=first organizati;o=exchange;s=lim;g=keng; (user-mail) -> 0
+{UNKNOWN-APP} (application-builtin) -> 1
+{UNKNOWN-HOST} (host-builtin) -> 2
+{UNKNOWN-USER} (user-builtin) -> 3
+

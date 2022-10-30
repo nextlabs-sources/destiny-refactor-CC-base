@@ -1,0 +1,2 @@
+DESKTOP 8.0.0.0.0
+id 0 POLICY TestPolicy FOR * ON * BY * WHERE recipient.eyecolor="blue" DO deny ON deny DO Log

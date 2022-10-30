@@ -1,0 +1,3 @@
+FILE_SERVER
+id 0 host testhost = host.windowsSid!="#INVALID#" OR host.unixid!="#INVALID#"// This expands to include all hosts, because we do not enroll computers with #INVALID# SID.
+id 1 POLICY TestPolicy FOR * ON * BY user.ldapgroup != "BLUEJUNGLE.COM:Groups:engineering" AND ID 0 DO deny

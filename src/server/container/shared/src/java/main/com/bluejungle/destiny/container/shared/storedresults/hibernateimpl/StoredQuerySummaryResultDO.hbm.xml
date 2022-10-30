@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.storedresults.hibernateimpl">
+	
+	<class name="StoredQuerySummaryResultDO" table="STORED_QUERY_SUMMARY_RESULTS">
+        
+		<!-- Generic persisted properties -->
+		<id type="long">
+			<generator class="native">
+				<param name="sequence">stored_results_sequence</param>
+			</generator>
+		</id>
+		
+		<!-- Stored Query related to this result -->
+		<many-to-one name="query"
+					 class="StoredQueryDO"
+					 not-null="true">
+ 			 <column name="stored_query_id" index="SummaryResultsStoredQueryIndex" not-null="true"/>
+		 </many-to-one>
+
+		<!-- Summary value -->
+		<property name="value" not-null="true"/>		
+		<!-- Summary count -->
+		<property name="count" not-null="true"/>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,59 @@
+<project name="common-framework-java-main" default="compile">
+	<property name="src.dir" value="${basedir}" />
+	<property name="build.dest" value="${build.root.dir}/common/framework/classes" />
+	<property name="doc.dest" value="${build.root.dir}/common/framework/doc" />
+
+	<path id="compile.common.framework.classpath">
+		<!-- <pathelement path="" /> -->
+		<path refid="compile.classpath" />
+	</path>
+
+	<target name="pre-build">
+		<mkdir dir="${build.dest}" />
+		<mkdir dir="${build.root.dir}/include" />
+	</target>
+
+	<target name="depend" depends="pre-build">
+		<depend srcDir="${src.dir}"
+		        destDir="${build.dest}"
+		        cache="${build.root.dir}/common/framework/depcache"
+		/>
+	</target>
+
+	<target name="compile" depends="depend">
+		<javac srcdir="${src.dir}"
+		       destdir="${build.dest}"
+		       debug="${compile.debug}"
+		       verbose="${compile.verbose}"
+		       	source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}"
+		       excludes="**/error/**, **/exceptions/tests/**"
+		>
+			<classpath refid="compile.common.framework.classpath" />
+		</javac>
+		<javah destdir="${build.root.dir}/include"
+		       class="com.bluejungle.framework.utils.NetworkUtils"
+		       verbose="${compile.verbose}"
+		>
+			<classpath>
+				<pathelement path="${build.dest}" />
+				<path refid="compile.common.framework.classpath" />
+			</classpath>
+		</javah>
+	</target>
+
+	<target name="doc">
+		<mkdir dir="${doc.dest}" />
+		<javadoc sourcepath="${src.dir}"
+		         destdir="${doc.dest}"
+		         linksource="yes"
+		         classpathref="compile.classpath"
+		         source="${compile.source}"
+		>
+			<packageset dir="${src.dir}" defaultexcludes="yes">
+				<include name="com/bluejungle/framework/**" />
+				<exclude name="**/test/**" />
+			</packageset>
+			<link href="http://jakarta.apache.org/commons/logging/api/" />
+		</javadoc>
+	</target>
+</project>

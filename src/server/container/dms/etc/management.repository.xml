@@ -1,0 +1,35 @@
+<!DOCTYPE hibernate-configuration PUBLIC 
+	"-//Hibernate/Hibernate Configuration DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-2.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+
+		<!--
+			Persisted object class mappings
+		-->
+		<mapping resource="com/bluejungle/destiny/container/shared/agentmgr/hibernateimpl/AgentDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/agentmgr/hibernateimpl/AgentRegistrationDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/agentmgr/hibernateimpl/HeartbeatRecordDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/policydeploymentmgr/hibernateimpl/AgentProcessorDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/policydeploymentmgr/hibernateimpl/DeploymentRequestDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/policydeploymentmgr/hibernateimpl/TargetAgentDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/policydeploymentmgr/hibernateimpl/TargetHostDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/profilemgr/hibernateimpl/UserProfileDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/profilemgr/hibernateimpl/CommProfileDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/profilemgr/hibernateimpl/CommProfileSeedDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/profilemgr/hibernateimpl/ActivityJournalingSettingsDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/profilemgr/hibernateimpl/AgentProfileDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/dms/data/ComponentDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/dms/data/EventDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/dms/data/EventRegistration.hbm.xml"/>
+  		<mapping resource="com/bluejungle/destiny/container/shared/applicationusers/repository/hibernateimpl/hibernate/AccessDomainDO.hbm.xml"/>
+  		<mapping resource="com/bluejungle/destiny/container/shared/applicationusers/repository/hibernateimpl/hibernate/AccessGroupDO.hbm.xml"/>
+  		<mapping resource="com/bluejungle/destiny/container/shared/applicationusers/repository/hibernateimpl/hibernate/ApplicationUserDO.hbm.xml"/>
+  		<mapping resource="com/bluejungle/destiny/container/shared/applicationusers/repository/hibernateimpl/hibernate/SuperUserDO.hbm.xml"/>
+  		
+  		 <!--  custom reports -->   
+        <mapping resource="com/nextlabs/destiny/container/shared/customapps/hibernateimpl/CustomAppDO.hbm.xml"/>
+        
+	</session-factory>
+</hibernate-configuration>

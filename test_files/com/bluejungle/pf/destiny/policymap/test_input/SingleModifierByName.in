@@ -1,0 +1,2 @@
+PORTAL
+id 0 POLICY TestPolicy FOR resource.portal.modified_by = "jimmy.carter@test.bluejungle.com" ON * BY * DO deny

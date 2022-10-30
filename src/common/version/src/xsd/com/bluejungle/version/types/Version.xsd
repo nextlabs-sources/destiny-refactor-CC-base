@@ -1,0 +1,14 @@
+<xsd:schema targetNamespace="http://bluejungle.com/version/types" 
+		   xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+		   xmlns:version="http://bluejungle.com/version/types">
+
+<xsd:complexType name="Version">
+	<xsd:sequence>
+		<xsd:element name="major" type="xsd:nonNegativeInteger"/>
+		<xsd:element name="minor" type="xsd:nonNegativeInteger"/>
+		<xsd:element name="maintenance" type="xsd:nonNegativeInteger"/>
+		<xsd:element name="patch" type="xsd:nonNegativeInteger"/>
+        <xsd:element name="build" type="xsd:nonNegativeInteger"/>
+	</xsd:sequence>
+</xsd:complexType>
+</xsd:schema>

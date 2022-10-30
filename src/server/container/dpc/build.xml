@@ -1,0 +1,141 @@
+<!--$Id: //depot/Destiny/D_Nimbus/release/8.1/main/src/server/container/dpc/build.xml#1 $-->
+
+<project name="dpc" default="build">
+  <property file="${basedir}/build.properties"/>
+
+  <property name="src.dir"           value="${basedir}"/>
+  <property name="etc.dir"           value="${src.dir}/etc"/>
+  <property name="main.src.dir"      value="${src.dir}/src/java/main"/>
+  <property name="build.webapp"      value="${build.root.dir}/server/container/dpc" />
+  <property name="build.webinf"      value="${build.webapp}/WEB-INF"/>
+  <property name="build.weblib"      value="${build.webinf}/lib"/>
+  <property name="build.dest"        value="${build.webinf}/classes"/>
+
+  <path id="compile.dpc.classpath">
+    <path refid="compile.classpath"/>
+    <pathelement path="${build.root.dir}/agent-controlmanager.jar"/>
+    <pathelement path="${build.root.dir}/server-dcsf.jar"/>
+    <pathelement path="${build.root.dir}/server-base.jar"/>
+    <pathelement path="${build.root.dir}/server-framework.jar"/>
+    <pathelement path="${build.dest}"/>
+  </path>
+
+  <target name="copy-jars">
+    <copy toDir="${build.weblib}">
+      <fileset dir="${build.root.dir}/agent/lib">
+        <include name="**/*.jar"/>
+        <exclude name="**/agent-ipc.jar"/>
+        <exclude name="**/server-base.jar"/>
+        <exclude name="**/common-version.jar"/>
+        <exclude name="**/junit-4.3.jar"/>
+      </fileset>
+    </copy>
+    <copy toDir="${build.weblib}">
+      <fileset dir="${build.root.dir}/agent-ipc">
+        <include name="**/agent-ipc-stub.jar"/>
+      </fileset>
+    </copy>
+    <copy toDir="${build.weblib}">
+      <fileset dir="${build.root.dir}">
+        <include name="common-version.jar"/>
+        <include name="crypt.jar"/>
+        <include name="server-base.jar"/>
+        <include name="server-base-internal.jar"/>
+        <include name="server-dcsf.jar"/>
+        <include name="server-framework.jar"/>
+      </fileset>
+    </copy>
+    <copy toDir="${build.weblib}">
+        <fileset dir="${build.root.dir}/rest-api">
+            <include name="rest-api.jar"/>
+        </fileset>
+    </copy>
+    <copy toDir="${build.weblib}">
+        <fileset dir="${build.root.dir}">
+            <include name="nextlabs-oauth2-jwt.jar"/>
+        </fileset>
+    </copy>
+    <copy file="${oracle.jdbc}" todir="${build.weblib}"/>
+    <copy toDir="${build.weblib}">
+        <fileset dir="${xlib_jar_dir}">
+            <include name="postgresql-9.2-1002.jdbc4.jar"/>
+            <include name="sqljdbc4.jar"/>
+            <include name="commons-logging-1.0.4.jar"/>
+            <include name="log4j-1.2.16.jar"/>
+            <include name="dnsjava.jar"/>
+            <include name="gson-2.4.jar"/>
+            <include name="rest-api-xmlbeans.jar"/>
+            <include name="nlJavaSDK2.jar"/>
+            <include name="esapi-2.1.0.jar"/>
+            <include name="joda-time-2.9.1.jar"/>
+            <include name="opensaml-2.6.5.jar"/>
+            <include name="openws-1.5.5.jar"/>
+            <include name="velocity-1.7.jar"/>
+            <include name="xmlsec-1.5.7.jar"/>
+            <include name="xmltooling-1.4.5.jar"/>
+            <include name="jcl-over-slf4j.17.10.jar"/>
+            <include name="jul-to-slf4j-1.7.10.jar"/>
+            <include name="log4j-over-slf4j-1.7.10"/>
+            <include name="slf4j-api-1.7.10.jar"/>
+            <include name="commons-httpclient-3.0-rc2.jar"/>
+            <include name="xml-apis.jar"/>
+            <include name="not-yet-commons-ssl-0.3.9.jar"/>
+            <include name="jackson-annotations-2.6.0.jar" />
+            <include name="jackson-core-2.6.3.jar" />
+            <include name="jackson-databind-2.6.3.jar" />
+            <include name="commons-codec-1.10.jar" />
+            <include name="java-jwt-3.0.2.jar" />
+        </fileset>
+    </copy>
+  </target>
+
+  <target name="copy-webxml">
+    <copy file="${etc.dir}/web.xml" toDir="${build.webinf}" />
+  </target>
+
+  <target name="copy-rest-properties">
+    <copy file="${build.root.dir}/rest-api/rest-api-connector.properties" toDir="${build.webinf}"/>
+  </target>
+  
+  <target name="copy-service-discovery">
+    <copy file="${build.root.dir}/rest-api/help.html" toDir="${build.webinf}"/>
+  </target>
+
+  <target name="copy-jboss-config">
+      <copy file="${etc.dir}/jboss-deployment-structure.xml" todir="${build.webinf}"/>
+  </target>
+
+    <target name="setup" depends="pre-build,copy-jars,copy-webxml,copy-jboss-config,copy-rest-properties,copy-service-discovery"/>
+
+  <target name="compile">
+    <javac srcdir="${main.src.dir}" 
+           destdir="${build.dest}" 
+           debug="${compile.debug}" 
+           verbose="${compile.verbose}" 
+           source="${compile.source}"
+           target="${compile.target}"
+           bootclasspath="${compile.bootclasspath}"       
+    >
+      <classpath refid="compile.dpc.classpath"/>
+    </javac>
+  </target>
+
+  <target name="pre-build">
+    <mkdir dir="${build.dest}"/>
+  </target>
+  
+  <target name="jar" depends="compile">
+    <jar destfile="${build.root.dir}/dpc-components.jar">
+      <fileset dir="${build.dest}">
+        <include name="**/*"/>
+      </fileset>
+    </jar>
+  </target>
+
+  <target name="setup-war">
+    <war destfile="${war.dir}/dpc.war" manifest="${etc.dir}/dpc.manifest.txt" basedir="${build.webapp}" webxml="${build.webinf}/web.xml"/>
+  </target>
+
+  <target name="build" depends="setup, jar, setup-war"/>
+
+</project>

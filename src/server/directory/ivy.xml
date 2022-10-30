@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="1.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation=
+                  "http://incubator.apache.org/ivy/schemas/ivy.xsd">
+    <info organisation="nextlabs"
+          module="server-directory"
+		  revision="2.0"/>
+    <configurations>
+	    <conf name="main" visibility="public" />
+		<conf name="test" visibility="private" />
+		<conf name="report" visibility="private" />
+	</configurations>
+	<publications>
+	    <artifact conf="main" name="ddif-tools" />
+	</publications>
+	<dependencies>
+	    <!-- Dependencies for main only -->
+	    <dependency org="nextlabs" name="common-framework" rev="latest.integration" conf="main->main" />
+	</dependencies>
+</ivy-module>

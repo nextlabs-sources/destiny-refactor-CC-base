@@ -1,0 +1,530 @@
+tree grammar PolicyBuilder;
+
+options {
+    k=3;
+    tokenVocab=PolicyLanguage;
+    ASTLabelType = CommonTree;
+}
+
+@header {
+
+package com.nextlabs.language.parser.antlr.v1;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import com.nextlabs.expression.representation.AttributeReference;
+import com.nextlabs.expression.representation.BinaryOperator;
+import com.nextlabs.expression.representation.CompositeExpression;
+import com.nextlabs.expression.representation.Constant;
+import com.nextlabs.expression.representation.DataType;
+import com.nextlabs.expression.representation.ExpressionReference;
+import com.nextlabs.expression.representation.FunctionCall;
+import com.nextlabs.expression.representation.IDataType;
+import com.nextlabs.expression.representation.IExpression;
+import com.nextlabs.expression.representation.IFunction;
+import com.nextlabs.expression.representation.IFunctionCall;
+import com.nextlabs.expression.representation.Relation;
+import com.nextlabs.expression.representation.RelationOperator;
+import com.nextlabs.expression.representation.UnaryOperator;
+import com.nextlabs.expression.representation.UnaryExpression;
+import com.nextlabs.language.representation.CallableType;
+import com.nextlabs.language.representation.ContextType;
+import com.nextlabs.language.representation.FunctionType;
+import com.nextlabs.language.representation.IContextType;
+import com.nextlabs.language.representation.IDefinitionVisitor;
+import com.nextlabs.language.representation.IFunctionType;
+import com.nextlabs.language.representation.IObligationType;
+import com.nextlabs.language.representation.IPolicy;
+import com.nextlabs.language.representation.IPolicyComponent;
+import com.nextlabs.language.representation.IPolicyType;
+import com.nextlabs.language.representation.ObligationType;
+import com.nextlabs.language.representation.Outcome;
+import com.nextlabs.language.representation.Policy;
+import com.nextlabs.language.representation.PolicyComponent;
+import com.nextlabs.language.representation.PolicySet;
+import com.nextlabs.language.representation.PolicyType;
+import com.nextlabs.language.representation.Target;
+import com.nextlabs.util.Path;
+import com.nextlabs.util.ref.IReference;
+import com.nextlabs.util.ref.IReferenceFactory;
+
+}
+
+@members {
+private IReferenceFactory refFactory = IReferenceFactory.DEFAULT;
+
+private static String text(Object obj) {
+    return ((CommonTree)obj).getToken().getText();
+}
+
+void setReferenceFactory(IReferenceFactory refFactory) {
+    this.refFactory = refFactory;
+}
+
+}
+
+program[IDefinitionVisitor visitor]
+    :   {
+        if (visitor == null) {
+            throw new NullPointerException("visitor");
+        }
+    }
+    (   pt = policyTypeDeclaration     { visitor.visitPolicyType(pt); }
+    |   ct = contextTypeDeclaration    { visitor.visitContextType(ct); }
+    |   ot = obligationTypeDeclaration { visitor.visitObligationType(ot); }
+    |   ft = functionTypeDeclaration   { visitor.visitFunctionType(ft); }
+    |   pd = policyDeclaration         { visitor.visitPolicy(pd); }
+    |   ps = policySetDeclaration      { visitor.visitPolicySet(ps); }
+    |   cd = componentDeclaration      { visitor.visitPolicyComponent(cd); }
+    )*
+    ;
+
+policyTypeDeclaration returns [IPolicyType ret]
+    :   ^(POLICY_TYPE p=path {
+            PolicyType res = new PolicyType(p);
+            ret = res;
+        }   (e=policyTypeExtensionBase {res.setBase(e);})?
+            contextSection[res]*
+            (^(USES r=contextTypeReferenceList) {res.addContexts(r);} )?
+            (^(OBLIGATION o=obligationTypeReferenceList) {
+                res.addObligations(o);
+            })?
+        )
+    ;
+
+fragment
+contextSection [PolicyType pt]
+    :   ^(CONTEXT_SECTION
+            section=Identifier
+            req=requiredOrOptional
+            ^(CONTEXTS ctx=contextTypeReferenceList)
+        ) {
+            String s = text(section);
+            pt.setSectionRequired(s, req);
+            pt.addContexts(s, ctx);
+        }
+    ;
+
+fragment
+requiredOrOptional returns [boolean res=false]
+    :   REQUIRED {res = true;}
+    |   OPTIONAL {res = false;}
+    ;
+
+contextTypeDeclaration returns [IContextType ret]
+    :   ^(CONTEXT_TYPE p=path {
+                ContextType res = new ContextType(p);
+                ret = res;
+            }
+            (b=contextExtensionBase {res.setBase(b);})?
+            contextAttributeDeclaration[res]*
+        )
+    ;
+
+fragment
+contextAttributeDeclaration [ContextType ct]
+    :   ^(ATTRIBUTE n=Identifier u=UNIQUE? t=dataType) {
+        ct.addAttribute(text(n), t, u!=null);
+    }
+    |   ^(ANY_ATTRIBUTE n=Identifier? u=UNIQUE? t=dataType) {
+        String txt;
+        if (n != null) {
+            txt = text(n);
+        } else {
+            txt = "";
+        }
+        ct.addAttributeTemplate(txt, t, u!=null);
+    }
+    ;
+
+obligationTypeDeclaration returns [IObligationType ret]
+    :   ^(OBLIGATION_TYPE p=path {
+                ObligationType res = new ObligationType(p);
+                ret = res;
+            }
+            argumentDeclaration[res]*
+        ) 
+    ;
+
+functionTypeDeclaration returns [IFunctionType ret]
+    :   ^(FUNCTION_TYPE p=path
+            r=dataType {
+                  FunctionType res = new FunctionType(p, r);
+                  ret = res;
+            }
+            argumentDeclaration[res]*
+        ) 
+    ;
+
+fragment
+argumentDeclaration [CallableType ct]
+    :   ^(ARGUMENT n=Identifier
+            t=dataType
+            req=requiredOrOptional?
+            def=expression?) {
+            ct.addArgument(text(n), t, req, def);
+        }
+    ;
+
+policySetDeclaration returns [PolicySet ret]
+    :   ^(POLICY_SET
+            name=path {ret = new PolicySet(name);}
+            types=policyTypeReferenceList {ret.addAllowedTypes(types);}
+            apply=applyTarget[ret]?
+            ignore=ignoreTarget[ret]?
+            override=overridePolicy  {ret.setOverridingOutcome(override);}
+            content=policyReferenceList? {
+                if (content != null) {
+                    ret.addPolicies(content);
+                }
+            }
+        )
+    ;
+
+fragment
+applyTarget [PolicySet set]
+    :   ^(APPLY_TARGET targetContext[set.getApplyTarget()]*)
+    ;
+
+fragment
+ignoreTarget [PolicySet set]
+    :   ^(IGNORE_TARGET targetContext[set.getIgnoreTarget()]*)
+    ;
+
+fragment
+overridePolicy returns [Outcome res]
+    :   ALLOW {res = Outcome.ALLOW; }
+    |   DENY {res = Outcome.DENY; }
+    ;
+
+policyDeclaration returns [IPolicy ret]
+    :   ^(POLICY p=path (b=policyExtensionBase|t=typeBase) {
+                Policy res=new Policy(p, b, t);
+                ret = res;
+            }
+            targetContext[res.getTarget()]*
+            rule[res]+
+            obligation[res]*
+        )
+    ;
+
+fragment
+targetContext [Target t]
+    :   ^(TARGET_CONTEXT n=Identifier pred=expression) {
+        t.addContext(text(n), pred);
+    }
+    ;
+
+fragment
+rule [Policy p]
+    :   ^(RULE o=outcome pred=expression) {
+        p.addRule(pred, o);
+    }
+    ;
+
+fragment
+outcome returns [Outcome res]
+    :   ALLOW {res = Outcome.ALLOW; }
+    |   DENY {res = Outcome.DENY; }
+    |   NOTHING {res = Outcome.NOTHING; }
+    ;
+
+fragment
+obligation [Policy p]
+    : {
+        List<IFunctionCall> calls = new ArrayList<IFunctionCall>();
+    }   ^(OBLIGATION
+            o=outcome
+            (f=functionExpression {calls.add(f);})+
+        ) {
+        for (IFunctionCall fc : calls) {
+            p.addObligation(o, fc);
+        }
+    }
+    ;
+
+fragment
+typeBase returns [IReference<IPolicyType> res]
+    :   ^(TYPE r=reference[IPolicyType.class]) {
+        res = r;
+    }
+    ;
+
+componentDeclaration returns [IPolicyComponent res]
+    :   ^(COMPONENT
+            name=path
+            ref=reference[IContextType.class]
+            pred=expression) {
+        res = new PolicyComponent(name, ref, pred);
+    }
+    ;
+
+fragment
+policyTypeExtensionBase returns [IReference<IPolicyType> res]
+    :   ^(BASE r=reference[IPolicyType.class]) {
+        res = r;
+    }
+    ;
+
+fragment
+contextExtensionBase returns [IReference<IContextType> res]
+    :   ^(BASE r=reference[IContextType.class]) {
+        res = r;
+    }
+    ;
+
+fragment
+policyExtensionBase returns [IReference<IPolicy> res]
+    :   ^(BASE r=reference[IPolicy.class]) {
+        res = r;
+    }
+    ;
+
+fragment
+policyReference returns [IReference<IPolicy> res]
+    :   r=reference[IPolicy.class] {
+        res = (IReference<IPolicy>)r;
+    }
+    ;
+
+fragment
+policyTypeReference returns [IReference<IPolicyType> res]
+    :   r=reference[IPolicyType.class] {
+        res = (IReference<IPolicyType>)r;
+    }
+    ;
+
+fragment
+contextTypeReference returns [IReference<IContextType> res]
+    :   r=reference[IContextType.class] {
+        res = (IReference<IContextType>)r;
+    }
+    ;
+
+fragment
+obligationTypeReference returns [IReference<IObligationType> res]
+    :   r=reference[IObligationType.class] {
+        res = (IReference<IObligationType>)r;
+    }
+    ;
+
+fragment
+functionReference returns [IReference<IFunction> res]
+    :   r=reference[IFunction.class] {
+        res = (IReference<IFunction>)r;
+    }
+    ;
+
+fragment
+reference [Class cl] returns [IReference res]
+    :   p=path {
+        res = refFactory.create(p, cl);
+    }
+    |   ^(REFERENCE id=IntegerLiteral) {
+        res = refFactory.create(Long.parseLong(text(id)), cl);
+    }
+    ;
+
+fragment
+policyReferenceList returns [List<IReference<IPolicy>> res=new ArrayList<IReference<IPolicy>>()]
+    :    (r=policyReference {res.add(r);})+
+    ;
+
+fragment
+policyTypeReferenceList returns [List<IReference<IPolicyType>> res=new ArrayList<IReference<IPolicyType>>()]
+    :    (r=policyTypeReference {res.add(r);})+
+    ;
+
+fragment
+contextTypeReferenceList returns [List<IReference<IContextType>> res=new ArrayList<IReference<IContextType>>()]
+    :    (r=contextTypeReference {res.add(r);})+
+    ;
+
+fragment
+obligationTypeReferenceList returns [List<IReference<IObligationType>> res=new ArrayList<IReference<IObligationType>>()]
+    :    (r=obligationTypeReference {res.add(r);})+
+    ;
+
+fragment
+dataType returns [IDataType res]
+    :   BOOLEAN   { res=DataType.BOOLEAN; }
+    |   DATE      { res=DataType.DATE; }
+    |   DOUBLE   { res=DataType.DOUBLE; }
+    |   INTEGER   { res=DataType.INTEGER; }
+    |   CS_STRING { res=DataType.CS_STRING; }
+    |   STRING    { res=DataType.STRING; }
+    |   ^(REFERENCED_CONTEXT_TYPE r=reference[IContextType.class]) {
+        res=DataType.makeReference(r);
+    }
+    |   ^(CODE c=stringLiteralList) {
+        if (c!=null) {
+            res=DataType.makeCode(c);
+        } else {
+            res=DataType.makeCode(Collections.EMPTY_LIST);
+        }
+    }
+    |   ^(MULTIVALUE t=dataType) { res = DataType.makeMultivalue(t); }
+    ;
+
+fragment
+unaryOperator returns [UnaryOperator res]
+    :   ANY   { res = UnaryOperator.ANY; }
+    |   ALL   { res = UnaryOperator.ALL; }
+    |   NOT   { res = UnaryOperator.NOT; }
+    |   MINUS { res = UnaryOperator.SIGN; }
+    ;
+
+expression returns [IExpression res]
+    :   ^(COMPOSITE ops=binaryOperators expr=expressions) {
+        res = new CompositeExpression(ops, expr);
+    }
+    |   ^(UNARY op=unaryOperator cs=expression) {
+        res = new UnaryExpression(op, cs);
+    }
+    |   ^(DOT db=expression nm=names) {
+        res = db;
+        for (String name : nm) {
+            res = new AttributeReference(res, name);
+        }
+    }
+    |   f=functionExpression {
+        res=f;
+    }
+    |   p=path {
+        res = new ExpressionReference(
+            refFactory.create(p, IExpression.class)
+        );
+    }
+    |   ^(REFERENCE id=IntegerLiteral) {
+        res = new ExpressionReference(
+            refFactory.create(Long.parseLong(text(id)), IExpression.class)
+        );
+    }
+    |   ^(rop=relationOperator lhs=expression rhs=expression) {
+        res = new Relation(rop, lhs, rhs);
+    }
+    |   constantVal=constant {
+        res = constantVal;
+    }
+    ;
+
+fragment
+constant returns [Constant res]
+    :   il=IntegerLiteral {
+        res = Constant.makeInteger(Long.parseLong(text(il)));
+    }
+    |   fl=FPLiteral {
+        res = Constant.makeDouble(Double.parseDouble(text(fl)));
+    }
+    |   sl=StringLiteral {
+        res = Constant.makeCsString(text(sl));
+    }
+    |   aggregate=setAggregate {
+        res = aggregate;
+    }
+    |   NULL {
+        res = IExpression.NULL;
+    }
+    |   TRUE {
+        res = IExpression.TRUE;
+    }
+    |   FALSE {
+        res = IExpression.FALSE;
+    }
+    ;
+
+fragment
+setAggregate returns [Constant res] 
+    :
+    {
+        List<Constant> constants = new ArrayList<Constant>();
+    }   ^(SET_AGGREGATE (val=constant {
+            constants.add(val);
+        })*
+        ) {
+            try {
+                res = Constant.makeMultivalue(constants);
+            } catch (IllegalArgumentException iae) {
+                throw new RecognitionException();
+            }
+        }
+    ;
+
+fragment
+functionExpression returns [IFunctionCall res]
+    :   ^(CALL r=functionReference args=functionArguments) {
+        res = new FunctionCall(r, args );
+    }
+    ;
+
+fragment
+path returns [Path res]
+    :   ^(PATH nm=names) {
+        res = new Path(nm);
+    }
+    ;
+
+fragment
+predicates returns [List<IExpression> res=new ArrayList<IExpression>()]
+    :   (pred=expression {res.add(pred);})+
+    ;
+
+fragment
+expressions returns [List<IExpression> res=new ArrayList<IExpression>()]
+    :   (expr=expression {res.add(expr);})+
+    ;
+
+fragment
+functionArguments returns [List<IFunctionCall.Argument> res=new ArrayList<IFunctionCall.Argument>()]
+    :   (
+        ^(ASSIGNMENT name=Identifier? expr=expression) {
+            if($name!=null) {
+                res.add(FunctionCall.createArgument(text(name), expr));
+            } else {
+                res.add(FunctionCall.createArgument(expr));
+            }
+        }
+    )*
+    ;
+
+fragment
+binaryOperators returns [List<BinaryOperator> res=new ArrayList<BinaryOperator>()]
+    :   (op=binaryOperator {res.add(op);})+
+    ;
+
+fragment
+names returns [List<String> res=new ArrayList<String>()]
+    :   (id=Identifier {res.add(text(id));})+
+    ;
+
+fragment
+stringLiteralList returns [List<String> res = new ArrayList<String>()]
+    :   (s=StringLiteral {res.add(text(s));})*
+    ;
+
+fragment
+binaryOperator returns [BinaryOperator res]
+    :   PLUS     { res=BinaryOperator.ADD; }
+    |   MINUS    { res=BinaryOperator.SUBTRACT; }
+    |   ASTERISK { res=BinaryOperator.MULTIPLY; }
+    |   DIV      { res=BinaryOperator.DIVIDE; }
+    |   REM      { res=BinaryOperator.REMAINDER; }
+    |   AND      { res=BinaryOperator.AND; }
+    |   OR       { res=BinaryOperator.OR; }
+    ;
+
+fragment
+relationOperator returns [RelationOperator res]
+    :   EQUALS            { res = RelationOperator.EQUAL; }
+    |   NOT_EQUALS        { res = RelationOperator.NOT_EQUAL; }
+    |   GREATER           { res = RelationOperator.GREATER_THAN; }
+    |   GREATER_OR_EQUALS { res = RelationOperator.GREATER_THAN_OR_EQUAL_TO; }
+    |   LESS              { res = RelationOperator.LESS_THAN; }
+    |   LESS_OR_EQUALS    { res = RelationOperator.LESS_THAN_OR_EQUAL_TO; }
+    |   POS_MATCH         { res = RelationOperator.MATCHES; }
+    |   NEG_MATCH         { res = RelationOperator.DOES_NOT_MATCH; }
+    |   POS_INCLUSION     { res = RelationOperator.IS_INCLUDED; }
+    |   NEG_INCLUSION     { res = RelationOperator.IS_NOT_INCLUDED; }
+    ;

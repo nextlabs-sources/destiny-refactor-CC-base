@@ -1,0 +1,2 @@
+FILE_SERVER
+id 1 POLICY TestPolicy FOR * ON * BY application.displayname="small" DO deny

@@ -1,0 +1,14 @@
+<Obligation>
+    <DisplayName>Verify Recipients</DisplayName>
+    <RunAt>PEP</RunAt>
+    <Name>EXTERNAL</Name>
+    <Arguments>
+        <Argument usereditable="true">
+            <Name>Help URL</Name>
+        </Argument>
+        <Argument>
+            <Name>Offending Recipients</Name>
+            <Value>$CEMatchedRecipients</Value>
+        </Argument>
+    </Arguments>
+</Obligation>

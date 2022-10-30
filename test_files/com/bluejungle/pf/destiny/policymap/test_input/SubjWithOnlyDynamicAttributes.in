@@ -1,0 +1,2 @@
+DESKTOP 2.5.0.0.0
+id 0 POLICY SubjWithOnlyDynamicAttributes FOR * ON EMAIL SENT_TO * BY user.mail_domain = "dynamic.com" DO deny

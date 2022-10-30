@@ -1,0 +1,10 @@
+<Obligation>
+    <DisplayName>Internal Use Only</DisplayName>
+    <RunAt>PEP</RunAt>
+    <Name>INTERNAL</Name>
+    <Arguments>
+        <Argument usereditable="true">
+            <Name>Help URL</Name>
+        </Argument>
+    </Arguments>
+</Obligation>

@@ -1,0 +1,34 @@
+ID null POLICY policyWithSubjects
+    FOR TRUE
+    ON TRUE
+    BY (ALL_USERS OR ALL_HOSTS OR ALL_APPLICATIONS OR *)
+    DO deny
+
+
+================ Re-parsed PQL =================
+
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "policy": 'POLICY'
+        IDENTIFIER: 'policyWithSubjects'
+        TARGET: ''
+            FROM: ''
+                RESOURCE_EXPR: ''
+                    "true": 'TRUE'
+            ACTION_EXPR: ''
+                "true": 'TRUE'
+            SUBJECT_EXPR: ''
+                "or": ''
+                    IDENTIFIER: 'ALL_USERS'
+                    IDENTIFIER: 'ALL_HOSTS'
+                    IDENTIFIER: 'ALL_APPLICATIONS'
+                    STAR: '*'
+        EFFECT_CLAUSE: 'DO'
+            EFFECT_TYPE: 'deny'

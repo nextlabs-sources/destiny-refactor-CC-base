@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+    targetNamespace="http://bluejungle.com/destiny/services/management/types" 
+    xmlns:types="http://bluejungle.com/destiny/services/management/types" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns:pf="http://bluejungle.com/destiny/services/policy/types"
+	xmlns:frameworkTypes="http://bluejungle.com/destiny/framework/types"
+	xmlns:common="http://bluejungle.com/destiny/framework/types">
+    
+    
+    <xs:include namespace="http://bluejungle.com/destiny/services/policy/types" 
+        schemaLocation="../../../../../../../../../dps/src/wsdl/main/com/bluejungle/pf/destiny/services/types/PolicyTypes.xsd"/>
+        
+    <xs:import namespace="http://bluejungle.com/destiny/framework/types" 
+		schemaLocation="../../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/Search.xsd"/>
+		
+	<xs:import namespace="http://bluejungle.com/destiny/framework/types" 
+		schemaLocation="../../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicTypes.xsd"/>
+		
+    <xs:complexType name="UserDTO">
+        <xs:complexContent>
+            <xs:extension base="pf:SubjectDTO">
+                <xs:sequence>
+                    <xs:element name="firstName" type="xs:string"/>
+                    <xs:element name="lastName" type="xs:string"/>
+                    <xs:element name="password" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="local" type="xs:boolean"/>
+                    <xs:element name="primaryUserGroupId" type="common:ID" nillable="true"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="UserDTOList">
+        <xs:sequence>
+            <xs:element name="users" type="types:UserDTO" minOccurs="0" 
+                maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+	
+	<xs:complexType name="UserQueryTerm">
+		<xs:sequence>
+			<xs:element name="queryField" type="xs:string"/> <!-- not strongly typed to allow expansion of user object -->
+			<xs:element name="operator" type="frameworkTypes:RelationalOpDTO" />
+			<xs:element name="value" type="xs:anyType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UserQueryTermSet">
+		<xs:sequence>
+			<xs:element name="userQueryTerm" type="types:UserQueryTerm" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="UserQuerySpec">
+		<xs:sequence>
+			<xs:element name="userQueryTermSet" type="types:UserQueryTermSet" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="maxResults" type="xs:nonNegativeInteger"  minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+    
+	<xs:complexType name="UserDTOQueryResults">
+		<xs:sequence>
+			<xs:element name="matchingUsers" type="types:UserDTOList" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	
+    <xs:complexType name="DuplicateLoginNameException"/>
+    
+    <xs:simpleType name="AuthenticationModeEnumDTO">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="LOCAL" />
+            <xs:enumeration value="REMOTE" />
+            <xs:enumeration value="HYBRID" />            
+        </xs:restriction>    	
+    </xs:simpleType>
+    
+    <xs:complexType name="UserManagementMetadata">
+      	<xs:sequence>
+      	    <xs:element name="authenticationMode" type="types:AuthenticationModeEnumDTO" />
+      	</xs:sequence>      	
+    </xs:complexType>
+</xs:schema>

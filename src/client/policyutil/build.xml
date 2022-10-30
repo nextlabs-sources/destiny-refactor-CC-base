@@ -1,0 +1,111 @@
+<!--$Id: //depot/Destiny/D_Nimbus/release/8.1/main/src/client/policyutil/build.xml#1 $-->
+<project name="client-policyutil" default="build">
+
+	<var name="nlbuildroot" value="${basedir}/../../.." />
+	<property name="java.main.src.dir" value="${basedir}/src/java/main"/>
+    <property name="java.test.src.dir" value="${basedir}/src/java/test"/>
+    <property name="build.dest" value="${build.root.dir}/client/policyutil/classes"/>
+    <property name="build.common.dest" value="${build.root.dir}/common/policyutil/classes"/>
+    <property name="doc.dest" value="${build.root.dir}/client/policyutil/doc"/>
+
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	<fileset id="destiny.jars" dir="${build.root.dir}">
+        <include name="common-pf.jar"/>
+        <include name="common-framework.jar"/>
+        <include name="server-base.jar"/>
+        <include name="server-dcsf.jar"/>
+        <include name="server-pf.jar"/>
+        <include name="server-pf-tests.jar"/>
+    </fileset>
+        
+    <path id="this.compile.classpath">
+        <path refid="compile.classpath"/>        
+        <pathelement location="${build.root.dir}/common-framework.jar"/>
+        <pathelement location="${build.root.dir}/common-pf.jar"/>
+        <pathelement location="${build.root.dir}/server-pf.jar"/>
+        <pathelement location="${build.root.dir}/server-dcsf-test.jar"/>
+        <pathelement location="${build.root.dir}/management-types.jar"/>
+        <pathelement location="${build.root.dir}/server-datasource.jar"/>
+        <pathelement location="${build.root.dir}/server-framework.jar"/>
+        <pathelement location="${xlib_jar_dir}/junit-4.3.jar"/>
+        <pathelement location="${xlib_jar_dir}/hibernate2.jar"/>
+        <pathelement location="${xlib_jar_dir}/commons-logging-1.0.4.jar"/>
+        <pathelement location="${xlib_jar_dir}/dom4j-1.4.jar"/>
+        <pathelement location="${xlib_jar_dir}/axis.jar"/>
+        <pathelement location="${xlib_jar_dir}/commons-collections.jar"/>
+        <pathelement location="${xlib_jar_dir}/cglib-full-2.0.2.jar"/>
+        <pathelement location="${xlib_jar_dir}/postgresql-9.2-1002.jdbc4.jar"/>    
+        <pathelement location="${xlib_jar_dir}/antlr.jar"/>
+        <pathelement location="${xlib_jar_dir}/jta.jar"/>
+        
+        <fileset refid="destiny.jars"/>
+    </path>
+    
+    <target name="pre-build">
+        <mkdir dir="${build.dest}"/>
+    </target>
+    
+    <target name="clean" unless="compile.notRequired" depends="check-jars">
+        <!-- this is a wholesale deletion of all the class files for client-pf if any
+        of the jars that client-pf depend on have been updated since 
+        client-pf was built -->
+        <delete>
+            <fileset dir="${build.dest}" includes="**/*.class"/>
+        </delete>
+    </target>
+    
+    <target name="check-jars">
+        <uptodate property="compile.notRequired" targetfile="${build.root.dir}/client-pf.jar">
+            <srcfiles refid="destiny.jars"/>
+        </uptodate>
+    </target>
+        
+    <target name="compile" depends="pre-build, clean">
+        <javac srcdir="${java.main.src.dir}" destdir="${build.dest}" debug="${compile.debug}" 
+            verbose="${compile.verbose}" excludes="**/services/**"  source="${compile.source}" target="${compile.target}" executable="${compile.executable}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="this.compile.classpath"/>
+        </javac>
+        <javac srcdir="${java.test.src.dir}" destdir="${build.dest}" debug="${compile.debug}" 
+            verbose="${compile.verbose}" excludes="**/services/**" source="${compile.source}" target="${compile.target}" executable="${compile.executable}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="this.compile.classpath"/>
+        </javac>
+    </target>
+
+    
+    <target name="jar" depends="compile">
+        <jar destfile="${build.root.dir}/client-policyutil.jar" basedir="${build.dest}" />
+    </target>
+
+    <target name="tests" depends="jar">
+        <junit printsummary="withOutAndErr" showoutput="yes" haltonfailure="false" failureproperty="junit.fail" fork="true">
+            <sysproperty key="build.root.dir" value="${build.root.dir}" />
+            <formatter type="xml"/>
+            <test name="com.bluejungle.destiny.policyutil.deploy.TestPQLImporter" todir="${log.dir}/tests" />        
+            <classpath>
+                <pathelement path="${build.root.dir}/client-policyutil.jar" />
+                <pathelement path="${build.root.dir}/common-dictionary.jar" />
+                <pathelement path="${build.root.dir}/server-dictionary.jar" />
+                <pathelement location="${xlib_jar_dir}/odmg-3.0.jar"/>
+                <path refid="this.compile.classpath" />
+            </classpath>
+        </junit>
+    </target>        
+
+    <target name="doc">
+        <mkdir dir="${doc.dest}"/>
+        <javadoc sourcepath="${java.main.src.dir}" destdir="${doc.dest}" linksource="yes" 
+            classpathref="compile.classpath" source="${compile.source}" >
+            <packageset dir="${java.main.src.dir}" defaultexcludes="yes">
+                <include name="com/bluejungle/pf/**"/>
+            </packageset>
+            <tag name="requires" description="Requires: " scope="methods"/>
+            <tag name="modifies" description="Modifies: " scope="methods"/>
+            <tag name="effects" description="Effects: " scope="methods"/>
+        </javadoc>
+    </target>
+
+    <target name="build" depends="jar">
+    </target>
+    
+</project>

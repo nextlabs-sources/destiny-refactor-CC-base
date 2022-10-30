@@ -1,0 +1,8 @@
+policy relationOperatorTest
+description "test relation operators"
+FOR resource.fso.size = 100 OR resource.fso.size > 100 OR resource.fso.size >= 100 OR
+    resource.fso.name = "foo.txt" OR resource.fso.name != "foo.txt"
+ON *
+TO *
+BY *
+DO ALLOW

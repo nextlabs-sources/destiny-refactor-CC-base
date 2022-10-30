@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.inquirymgr.resourcecache.hibernateimpl">
+	
+	<class name="ResourceCacheStateDO" table="RESOURCE_CACHE_STATE">
+		<!-- Generic persisted properties -->
+		<id name="id">
+			<generator class="native"/>
+		</id>		
+        <property name="lastUpdated" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType" not-null="true"/>
+		<property name="type" type="com.bluejungle.destiny.container.shared.inquirymgr.resourcecache.hibernateimpl.ResourceCacheUserType" not-null="true"/>
+	</class>
+</hibernate-mapping>

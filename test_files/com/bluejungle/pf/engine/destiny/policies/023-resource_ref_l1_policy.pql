@@ -1,0 +1,5 @@
+policy subref_test_policy
+for ref_l1
+on *
+by user.displayname = "Alan Morgan"
+do deny

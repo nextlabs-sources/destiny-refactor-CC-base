@@ -1,0 +1,6 @@
+POLICY UserByEmailDomain
+    FOR resource.name = "c:\\userbyemaildomain"
+    ON EDIT
+    BY user.mail_domain="bluejungle.com"
+    DO DENY
+    ON DENY DO byemaildomain

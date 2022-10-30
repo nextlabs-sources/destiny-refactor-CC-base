@@ -1,0 +1,17 @@
+policy first_policy
+    description "this policy is trivial"
+    RULE
+      DESCRIPTION "This description belongs to the rule"
+      FOR * ON * BY * // an all-inclusive target
+      DO DENY
+
+policy second_policy
+    description "this policy is also very simple";;
+    // but it also has lots of ignored semicolons.
+    RULE
+      DESCRIPTION "This description belongs to the rule";
+      FOR * ON * BY * // an all-inclusive target
+      DO DENY;;;;;;;;;;;;
+
+// Also note that the file ends with an end-of-line comment (no CR/LF).
+// This should catch certain improper lexer modifications, such as expanding the character range too much :-)

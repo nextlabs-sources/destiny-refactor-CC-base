@@ -1,0 +1,2 @@
+FILE_SERVER
+id 0 POLICY TestPolicy FOR * ON * BY user.ldapgroupid = $BLUEJUNGLE.COM:Groups:engineering$ DO deny

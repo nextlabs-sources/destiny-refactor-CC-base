@@ -1,0 +1,14 @@
+policy multirule
+    description "this description belongs to the policy"
+    RULE
+      DESCRIPTION "This description belongs to the first rule"
+      FOR * ON * BY * // an all-inclusive target
+      DO DENY
+    RULE
+      DESCRIPTION "This description belongs to the second rule";
+      FOR * ON * BY * // an all-inclusive target
+      DO DENY
+    RULE
+      DESCRIPTION "This description belongs to the third rule";
+      FOR * ON * BY * // an all-inclusive target
+      DO DENY

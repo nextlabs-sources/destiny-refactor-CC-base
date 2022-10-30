@@ -1,0 +1,8 @@
+action a01 = action.NAME = "aaa"
+action a02 = action.GROUP >= bbb;
+action a03 = action.NAME <= 1
+action a04 = action.GROUP != "xyZ";
+action a05 = action.NAME < "1/2/3333"
+action a06 = action.group > 4.05;
+action a07 = action.name >= 1.00001
+action a08 = action.GROUP >= 1;

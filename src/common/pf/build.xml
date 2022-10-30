@@ -1,0 +1,102 @@
+<project name="common-pf" default="build" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<var name="nlbuildroot" value="${basedir}/../../.." />
+	<property name="common.build.script.dir" value="${nlbuildroot}/build_scripts" />
+
+	<!-- Load build properties -->
+  <property file="${basedir}/build.properties" />
+  <property name="obfuscation.config.file" location="config.xml"/>
+
+  <import file="${common.build.script.dir}/java_build.xml" />
+  <import file="${common.build.script.dir}/wsdl_build.xml" />
+  <import file="${common.build.script.dir}/obfuscate_build.xml" />
+
+  <property name="initial.jar.name" location="${build.dir}/orig-common-pf.jar" />
+  <property name="final.jar.name" location="${build.dir}/common-pf.jar" />
+
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	<target name="init" depends="java_build.init, wsdl_build.init, obfuscate_build.init" />
+
+  <target name="pre_compile" depends="resolve, wsdl_build.pre_compile, wsdl, antlr" />
+
+ <target name="wsdl" unless="wsdl_build_uptodate">
+    <mkdir dir="${src.main.gen.dir}" />
+	<wsdl2java url="${build.wsdl.temp.dir}/empty.wsdl"
+               output="${src.gen.dir}"
+               deployscope="application"
+               serverSide="no"
+               skeletonDeploy="no"
+               implementationClassName="com.bluejungle.destiny.common.framework.EmptyService"
+               noimports="no"
+               verbose="yes"
+               testcase="no"
+               nowrapped="true"
+               factory="com.bluejungle.destiny.wsgen.EmptyWSDLTypeGenerator" 
+			   all="true"
+			   timeout="-1"
+			   wrapArrays="false">
+	</wsdl2java>
+  </target>  
+
+  <target name="antlr">
+    <dependset>
+      <srcfilelist dir="${src.main.dir}/com/bluejungle/pf/destiny/parser/" files="pql.g,pqltree.g" />
+      <targetfileset dir="${src.main.gen.dir}" includes="*" />
+    </dependset>
+
+	<mkdir dir="${src.main.gen.dir}/com/bluejungle/pf/destiny/parser" />
+	<ivy:cachepath transitive="false" pathid="antlr.classpath" conf="antlr" resolveId="antlr_resolve_id" />
+    <antlr target="${src.main.dir}/com/bluejungle/pf/destiny/parser/pql.g" outputdirectory="${src.main.gen.dir}/com/bluejungle/pf/destiny/parser">
+		<classpath>
+			<path refid="antlr.classpath" />
+			<fileset dir="${nlbuildroot}/xlib/jar">
+				<include name="*.jar" />
+			</fileset>
+		</classpath>
+	</antlr>
+    <antlr target="${src.main.dir}/com/bluejungle/pf/destiny/parser/pqltree.g" outputdirectory="${src.main.gen.dir}/com/bluejungle/pf/destiny/parser">
+		<classpath>
+			<path refid="antlr.classpath" />
+			<fileset dir="${nlbuildroot}/xlib/jar">
+				<include name="*.jar" />
+			</fileset>
+		</classpath>
+    </antlr>
+  </target>
+
+  <target name="compile" depends="pre_compile">
+    <mkdir dir="${build.gen.classes.dir}" />
+
+    <ivy:cachepath transitive="false" pathid="antlr.classpath" conf="antlr" resolveId="antlr_resolve_id" />
+    <ivy:cachepath transitive="false" pathid="main.classpath" conf="main" resolveId="${ant.project.name}" />
+    <javac srcdir="${src.main.gen.dir}" sourcepath="${src.main.dir}" destdir="${build.gen.classes.dir}" fork="true" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" executable="${compile.executable}" bootclasspath="${compile.bootclasspath}">
+        <classpath>
+            <path refid="antlr.classpath" />
+            <path refid="wsdl.gen.classpath" />
+            <path refid="main.classpath" />
+            <fileset dir="${nlbuildroot}/xlib/jar">
+                <include name="*.jar" />
+            </fileset>
+        </classpath>
+    </javac>
+
+    <antcall target="java_build.compile" />
+  </target>
+
+  <target name="jar" depends="copy_resource, compile">
+    <jar destfile="${build.dir}/orig-common-pf.jar">
+	  <fileset dir="${build.main.classes.dir}" />
+	  <fileset dir="${build.gen.classes.dir}" includes="**/parser/**" />
+    </jar>
+    <jar destfile="${build.dir}/policy-types.jar" basedir="${build.gen.classes.dir}" excludes="**/parser/**"/>
+    <jar destfile="${build.dir}/common-pf-test.jar" basedir="${build.test.classes.dir}" includes="**/TestUser.class" />
+  </target>
+
+  <target name="package" depends="copy_resource, compile, jar, obfuscate_build.package">
+	<copy file="${build.wsdl.temp.dir}/PolicyTypes.xsd" todir="${build.dir}" />
+	<copy file="${build.wsdl.temp.dir}/PolicyEditorTypes.xsd" todir="${build.dir}" />
+	<copy file="${build.wsdl.temp.dir}/PolicyEditorFaults.xsd" todir="${build.dir}" />
+  </target>  
+
+</project>

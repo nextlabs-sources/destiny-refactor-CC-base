@@ -1,0 +1,22 @@
+<xs:schema targetNamespace="http://bluejungle.com/destiny/types/inquiry_alert_log/v1" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:tns="http://bluejungle.com/destiny/types/inquiry_alert_log/v1"
+			xmlns:basicTypes="http://bluejungle.com/destiny/types/basic/v1">
+
+	<xs:import namespace="http://bluejungle.com/destiny/types/basic/v1" schemaLocation="BasicTypes.v1.xsd"/>
+	
+	<xs:complexType name="InquiryAlertLogEntry">
+		<xs:sequence>
+				<xs:element name="message" type="xs:string"/>
+				<xs:element name="messageSubject" type="xs:string"/>
+				<xs:element name="timestamp" type="xs:dateTime"/>
+				<xs:element name="inquiryAlertId" type="basicTypes:Id"/>
+		</xs:sequence>
+	</xs:complexType>			
+	
+	<xs:complexType name="InquiryAlertLogEntryList">
+		<xs:sequence>
+				<xs:element name="inquiryAlertLogEntry" type="tns:InquiryAlertLogEntry" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

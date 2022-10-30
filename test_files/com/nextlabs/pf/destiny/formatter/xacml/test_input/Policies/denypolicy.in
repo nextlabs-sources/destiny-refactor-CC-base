@@ -1,0 +1,8 @@
+policy "deny"
+FOR resource.fso.name = "*.txt"
+ON *
+BY *
+DO deny
+BY DEFAULT DO allow
+ON deny DO log
+ON allow DO log

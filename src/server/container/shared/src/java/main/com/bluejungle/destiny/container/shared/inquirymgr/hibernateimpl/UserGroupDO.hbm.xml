@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.inquirymgr.hibernateimpl">
+	
+	<class name="UserGroupDO" table="CACHED_USERGROUP">
+	
+		<!-- Unique sequence id -->
+		<id name="id" type="long">
+			<generator class="native">
+				<param name="sequence">cached_table_sequence</param>
+			</generator>
+		</id>
+
+		<!-- User Group id -->
+		<property name="originalId" column="original_id" type="long" not-null="true" unique="false" index="usergroup_id_index"/>	
+		<property name="name" column="name" not-null="true" index="cached_usergroup_name_index" unique="false"/>
+		<property name="displayName" column="display_name" not-null="true" index="c_usergroup_display_name_index"/>
+		
+		<property name="timeRelation" type="com.bluejungle.framework.datastore.hibernate.usertypes.TimeRelationUserType" not-null="true" unique="false" update="true" insert="true">
+		  <column name="active_from"/> 
+		  <column name="active_to"/> 
+		</property>	
+		
+		<property name="enrollmentType" column="enroll_type" not-null="true"/>
+		
+	</class>
+</hibernate-mapping>

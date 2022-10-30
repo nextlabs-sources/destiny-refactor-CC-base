@@ -1,0 +1,12 @@
+FILE_SERVER
+id  0 host testhost_inner00 = host.machinename="grande1"
+id  1 host testhost_inner01 = id 0 OR host.machinename="grande2"
+id  2 host testhost_inner02 = id 1 OR host.machinename="grande3"
+id  3 host testhost_inner03 = id 2 OR host.machinename="grande4"
+id  4 host testhost_inner04 = id 3 OR host.machinename="grande5"
+id  5 host testhost_inner05 = id 4 OR host.machinename="grande6"
+id  6 host testhost_inner06 = id 5 OR host.machinename="grande7"
+id  7 host testhost_inner07 = id 6 OR host.machinename="grande8"
+id  8 host testhost_inner08 = id 7 OR host.machinename="grande9"
+id  9 host testhost_inner09 = id 8 OR host.machinename="grande10" // The net effect of these inversions is the inclusion of [grande1..grande10]
+id 10 POLICY TestPolicy FOR * ON * BY id 9 DO deny

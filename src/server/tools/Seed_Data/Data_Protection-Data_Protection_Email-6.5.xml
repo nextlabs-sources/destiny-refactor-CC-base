@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export-file>
+    <version>-1</version>
+    <export-entities name="ACTION/Email">
+        <type>COMPONENT</type>
+        <pql>ID 30 STATUS APPROVED CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON ADMIN&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON APPROVE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DELETE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON DEPLOY&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON WRITE&#xd;
+        BY appuser.did = 0&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "ACTION/Email" = (FALSE OR EMAIL)</pql>
+    </export-entities>
+	<export-entities name="APPLICATION/Monitor All Applications - Exceptions">
+        <type>COMPONENT</type>
+        <pql>ID 2 STATUS APPROVED CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON TRUE&#xd;
+        BY (appuser.did = resource.dso.owner OR FALSE)&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY (TRUE OR appuser.accessgroupid has 12)&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "APPLICATION/Monitor All Applications - Exceptions" = (((FALSE OR TRUE) AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="APPLICATION/Monitor Specific Applications">
+        <type>COMPONENT</type>
+        <pql>ID 3 STATUS APPROVED CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON TRUE&#xd;
+        BY (appuser.did = resource.dso.owner OR FALSE)&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY (TRUE OR appuser.accessgroupid has 12)&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "APPLICATION/Monitor Specific Applications" = (((FALSE OR TRUE) AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+	    <export-entities name="RESOURCE/My Documents">
+        <type>COMPONENT</type>
+        <pql>ID 806 STATUS DRAFT CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON TRUE&#xd;
+        BY appuser.did = resource.dso.owner&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.accessgroupid has 12&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "RESOURCE/My Documents" = (((FALSE OR resource.fso.name = "[mydocuments]\\**") AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="RESOURCE/My Desktop">
+        <type>COMPONENT</type>
+        <pql>ID 814 STATUS DRAFT CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON TRUE&#xd;
+        BY appuser.did = resource.dso.owner&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.accessgroupid has 12&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "RESOURCE/My Desktop" = (((FALSE OR resource.fso.name = "[mydesktop]\\**") AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+    <export-entities name="RESOURCE/Removable Media">
+        <type>COMPONENT</type>
+        <pql>ID 845 STATUS DRAFT CREATOR "0" &#xd;
+ACCESS_POLICY&#xd;
+ACCESS_CONTROL&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON TRUE&#xd;
+        BY appuser.did = resource.dso.owner&#xd;
+        DO allow&#xd;
+    PBAC &#xd;
+        FOR TRUE&#xd;
+        ON READ&#xd;
+        BY appuser.accessgroupid has 12&#xd;
+        DO allow&#xd;
+ALLOWED_ENTITIES &#xd;
+&#xd;
+COMPONENT "RESOURCE/Removable Media" = (((FALSE OR resource.fso.name = "[removablemedia]\\**") AND TRUE) AND (TRUE AND TRUE))</pql>
+    </export-entities>
+</export-file>

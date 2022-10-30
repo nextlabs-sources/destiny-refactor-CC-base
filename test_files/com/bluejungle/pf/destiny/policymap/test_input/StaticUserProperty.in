@@ -1,0 +1,2 @@
+FILE_SERVER
+id 1 POLICY TestPolicy FOR * ON * BY user.firstname="sergey" DO deny

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.nextlabs.destiny.container.shared.customapps.hibernateimpl">
+    
+    <class name="CustomAppDO" table="CUSTOM_APP">     
+        
+        <id name="id">
+            <generator class="native"/>
+        </id>
+        
+        <property name="name" type="string">
+            <column name="name" not-null="true" unique-key="UniqueCustomAppsProp"/>
+        </property>
+        
+        <property name="version" type="string">
+            <column name="version" not-null="true" unique-key="UniqueCustomAppsProp"/>
+        </property>
+        
+        <property name="description" type="string">
+            <column name="description"/>
+        </property>
+    </class>
+</hibernate-mapping>

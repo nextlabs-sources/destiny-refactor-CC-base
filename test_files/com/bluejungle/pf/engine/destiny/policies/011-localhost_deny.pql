@@ -1,0 +1,6 @@
+policy deny_localhost
+description "denies access to c:\\foofoo.doc for any request for localhost"
+for resource.name = "c:\\foofoo.doc"
+on *
+by host.location = "localhost"
+do deny

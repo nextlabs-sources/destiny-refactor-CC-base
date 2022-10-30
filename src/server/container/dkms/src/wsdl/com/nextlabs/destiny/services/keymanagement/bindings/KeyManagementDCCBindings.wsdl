@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+		xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+		xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		xmlns:faults="http://bluejungle.com/destiny/framework/types"
+		xmlns:interfaces="http://nextlabs.com/destiny/services/keymanagement"
+		xmlns:tns="http://nextlabs.com/destiny/services/keymanagement"
+		targetNamespace="http://nextlabs.com/destiny/services/keymanagement"
+>
+
+	<wsdl:import
+			namespace="http://nextlabs.com/destiny/services/keymanagement" 
+			location="../interfaces/KeyManagementDCCInterfaces.wsdl"
+	/>
+	
+	<wsdl:binding name="KeyManagementDCCIFBinding" type="tns:KeyManagementDCCIF">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+		<!-- begin keyring operations -->
+		
+		<wsdl:operation name="createKeyRing">
+			<wsdl:input>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:output>
+		
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			
+			<wsdl:fault name="KeyManagementFault">
+				<soap:fault name="KeyManagementFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getKeyRingNames">
+			<wsdl:input>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:output>
+		
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			
+			<wsdl:fault name="KeyManagementFault">
+				<soap:fault name="KeyManagementFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getKeyRing">
+			<wsdl:input>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:output>
+		
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			
+			<wsdl:fault name="KeyManagementFault">
+				<soap:fault name="KeyManagementFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getKeyRingWithKeys">
+			<wsdl:input>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:output>
+		
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			
+			<wsdl:fault name="KeyManagementFault">
+				<soap:fault name="KeyManagementFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="deleteKeyRing">
+			<wsdl:input>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:output>
+		
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			
+			<wsdl:fault name="KeyManagementFault">
+				<soap:fault name="KeyManagementFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<!-- end keyring operations -->
+		
+		
+		
+		<!-- begin key operations -->
+
+		<wsdl:operation name="generateKey">
+			<wsdl:input>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:output>
+		
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			
+			<wsdl:fault name="KeyManagementFault">
+				<soap:fault name="KeyManagementFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="setKey">
+			<wsdl:input>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:output>
+		
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			
+			<wsdl:fault name="KeyManagementFault">
+				<soap:fault name="KeyManagementFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getKey">
+			<wsdl:input>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:output>
+		
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			
+			<wsdl:fault name="KeyManagementFault">
+				<soap:fault name="KeyManagementFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="deleteKey">
+			<wsdl:input>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:output>
+		
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			
+			<wsdl:fault name="KeyManagementFault">
+				<soap:fault name="KeyManagementFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<!-- end key operations -->
+		
+		
+		<!-- being other operations -->
+		
+		<wsdl:operation name="getAllLatestModifiedDate">
+			<wsdl:input>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:output>
+		
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			
+			<wsdl:fault name="KeyManagementFault">
+				<soap:fault name="KeyManagementFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getAllKeyRingsWithKeys">
+			<wsdl:input>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://nextlabs.com/destiny/services/dkms" use="literal"/>
+			</wsdl:output>
+		
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			
+			<wsdl:fault name="KeyManagementFault">
+				<soap:fault name="KeyManagementFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<!-- end other operations -->
+		
+	</wsdl:binding>
+</wsdl:definitions>

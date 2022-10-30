@@ -1,0 +1,22 @@
+<!DOCTYPE hibernate-configuration PUBLIC 
+	"-//Hibernate/Hibernate Configuration DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-2.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<!--
+			Persisted object class mappings
+		-->
+		<mapping resource="com/bluejungle/destiny/container/shared/securesession/hibernate/SecureSessionDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/ApplicationDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/HostDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/HostGroupDO.hbm.xml"/>
+
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/PolicyDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/resourcecache/hibernateimpl/ResourceCacheStateDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/UserDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/UserGroupMemberDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/inquirymgr/hibernateimpl/UserGroupDO.hbm.xml"/>
+
+	</session-factory>
+</hibernate-configuration>

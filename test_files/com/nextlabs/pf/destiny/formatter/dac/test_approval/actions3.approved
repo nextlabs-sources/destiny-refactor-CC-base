@@ -1,0 +1,2 @@
+New-ADCentralAccessRule -CurrentAcl:"O:SYG:SYD:AR(A;;FA;;;OW)(A;;FA;;;BA)(A;;FA;;;SY)(XA;;0x1301bf;;;AU;@USER.ad://company:88cecb735d351145 == `"Evil Industries`")" -Name:"minimal_policy" -ProposedAcl:$null -ProtectedFromAccidentalDeletion:$true -ResourceCondition:"@RESOURCE.urnbailsExportC_88cecd270d44d7d8 == `"export control name`"" -Server:"ad.nextlabs.com"
+Set-ADObject -Identity:"CN=minimal_policy,CN=Central Access Rules,CN=Claims Configuration,CN=Services,CN=Configuration,DC=demo8,DC=nextlabs,DC=com" -ProtectedFromAccidentalDeletion:$true -Server:"ad.nextlabs.com"

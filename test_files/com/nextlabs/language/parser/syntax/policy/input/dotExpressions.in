@@ -1,0 +1,5 @@
+policy DotExpressionPolicy is FileSystemPolicy
+    on a.b>b or id 3.c<d or id 3<d or id 4.a.b.c.d > x.y.z.w
+    by (x.y).z > null or (id -5.[asjlksd sakdjalskdj]).bbb.ccc.ddd != 0
+    for (((((a).b).c).d).e).f <= 0
+do  allow by default

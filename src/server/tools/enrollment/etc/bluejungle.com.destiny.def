@@ -1,0 +1,45 @@
+# This is the definition file for a default Active Directory enrollment. It assumes
+# a default Active Directory schema.
+
+enroll.users						true
+enroll.contacts						true
+enroll.computers					true
+enroll.applications					false
+
+#
+# Required attributes
+#
+entry.attributefor.staticid				winObjectGUID
+entry.attributefor.parentid				winParentID
+entry.attributefor.isdeleted		    winIsDeleted
+
+computer.requirements				   objectClass=Host
+
+user.requirements					   objectClass=User
+contact.requirements					   objectClass=contact
+
+group.requirements					   objectclass=EnumeratedGroup
+group.attributefor.enumeration		   groupMember
+
+structure.requirements					(|(objectClass=organizationalUnit)(objectClass=domain)(objectClass=container))
+
+#
+# Attribute mappings
+#
+user.string.principalName				fullyQualifiedName
+user.string.displayname					winName
+user.string.firstName					firstName	
+user.string.lastName				    	lastName
+user.multi-string.mail				    	proxyAddresses
+user.cs-string.windowsSid				winObjectSid
+
+contact.string.principalName				mail
+contact.string.displayname				name
+contact.string.firstName				firstName	
+contact.string.lastName				    	sn
+contact.multi-string.mail				proxyAddresses
+
+computer.string.dnsName					winDNSHostName
+computer.cs-string.windowsSid			winObjectSid
+
+ldif.filename                           [BUILD_ROOT_DIR]/seed_data/bluejungle.com.destiny.ldif

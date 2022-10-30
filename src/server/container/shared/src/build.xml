@@ -1,0 +1,25 @@
+<project name="container-shared" default="build">
+    
+    <property name="etc.src.dir"    value="${basedir}/etc"/>
+    <property name="etc.dest.dir"   value="${web.framework.dir}/etc"/>
+
+    <target name="build" depends="build-components"> 
+    </target>
+    
+    <target name="build-components">
+        <ant dir="java/main" target="build" inheritrefs="true"/>
+        <ant dir="java/test" target="build" inheritrefs="true"/>   
+    </target>
+
+    <target name="wsdl-generate" description="Generates code from WSDL "> 
+        <ant dir="wsdl" target="wsdl-generate" inheritrefs="true"/>
+    </target>
+
+    <target name="wsdl-compile" description="Compiles the WSDL generated code"> 
+        <ant dir="wsdl" target="wsdl-compile" inheritrefs="true"/>
+    </target>
+
+    <target name="wsdl-jar" description="JAR compiled java classes"> 
+        <ant dir="wsdl" target="wsdl-jar" inheritrefs="true"/>
+    </target>
+</project>

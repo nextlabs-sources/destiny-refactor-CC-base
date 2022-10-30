@@ -1,0 +1,27 @@
+<project name="common-framework-java-main" default="compile">
+	<property name="src.test.dir" value="${basedir}" />
+	<property name="build.test.dest" value="${build.root.dir}/common/framework/testclasses" />
+	<property name="build.dest" value="${build.root.dir}/common/framework/classes" />
+
+	<target name="pre-build">
+		<mkdir dir="${build.test.dest}" />
+	</target>
+
+	<target name="depend" depends="pre-build">
+			<depend srcDir="${src.dir}" destDir="${build.dest}" cache="${build.root.dir}/common/framework/depcache"/>
+	</target>	
+
+	<target name="compile" depends="depend">
+		<javac srcdir="${src.test.dir}" destdir="${build.test.dest}" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" excludes="**/error/**, **/exceptions/tests/**" bootclasspath="${compile.bootclasspath}">
+			<!-- FIXME don't build the cli project at this moment -->
+			<exclude name = "com/nextlabs/**" />
+			
+			<!-- FIXME TestEncryptor is using JUnit4 -->
+			<exclude name = "com/bluejungle/framework/crypt/TestEncryptor.java" />
+			<classpath>
+				<pathelement location="${build.dest}"/>
+				<pathelement location="${xlib_jar_dir}/junit-4.3.jar" />
+			</classpath>
+		</javac>
+	</target>
+</project>

@@ -1,0 +1,2 @@
+DESKTOP 2.0
+id 0 POLICY TestPolicy FOR * ON * BY user.mail="a@b.com" DO deny

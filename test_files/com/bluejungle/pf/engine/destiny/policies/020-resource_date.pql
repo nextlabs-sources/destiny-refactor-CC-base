@@ -1,0 +1,5 @@
+policy resource_created_date
+for resource.created_date < "01/01/3007" and resource.name = "**resource_date.pql"
+on *
+by *
+do deny

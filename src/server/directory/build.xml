@@ -1,0 +1,9 @@
+<project name="server-base" default="build">
+
+	<var name="nlbuildroot" value="${basedir}/../../.." />
+	<property name="common.build.script.dir" value="${nlbuildroot}/build_scripts" />
+	<property file="${basedir}/build.properties" />
+
+  <import file="${common.build.script.dir}/java_build.xml" />
+
+</project>

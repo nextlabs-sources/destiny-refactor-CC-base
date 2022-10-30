@@ -1,0 +1,14 @@
+<Obligation>
+    <DisplayName>Multiple Client Confirmation</DisplayName>
+    <RunAt>PEP</RunAt>
+    <Name>MULTIPLE</Name>
+    <Arguments>
+        <Argument usereditable="true">
+            <Name>Help URL</Name>
+        </Argument>
+        <Argument>
+            <Name>Recipients</Name>
+            <Value>$CEMatchedRecipients</Value>
+        </Argument>
+    </Arguments>
+</Obligation>

@@ -1,0 +1,5 @@
+policy resource_owner_ldap_test
+for owner_ldap_test
+on *
+by *
+do deny

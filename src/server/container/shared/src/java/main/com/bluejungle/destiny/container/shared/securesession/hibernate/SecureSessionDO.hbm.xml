@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.securesession.hibernate">
+	
+	<class name="SecureSessionDO" table="SECURE_SESSION">
+        
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		<property name="endOfLife" column="end_of_life" not-null="true"/>
+
+		<!-- No need to lazy load this map, as the persistent session itself is lazily loaded -->
+		<map name="propertiesAsMap" table="SECURE_SESSION_PROPERTIES">
+			<key column="SECURE_SESSION_ID"/>
+			<index column="NAME" type="string" length="128"/>
+			<element column="VALUE" type="string"/>
+		</map>
+		
+	</class>
+
+</hibernate-mapping>

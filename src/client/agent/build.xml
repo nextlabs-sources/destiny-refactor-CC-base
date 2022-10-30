@@ -1,0 +1,109 @@
+<!--$Id: //depot/Destiny/D_Nimbus/release/8.1/main/src/client/agent/build.xml#1 $-->
+<project name="client-pf" default="build">
+	<property name="java.main.src.dir" value="${basedir}/src/java/main"/>
+	<property name="java.test.src.dir" value="${basedir}/src/java/test"/>
+	<property name="build.dest" value="${build.root.dir}/client/agent/classes"/>
+	<property name="doc.dest" value="${build.root.dir}/client/agent/doc"/>
+
+	
+	<fileset id="destiny.jars" dir="${build.root.dir}">
+		<include name="common-framework.jar" />
+		<include name="common-framework-types.jar" />
+		<include name="common-framework-test.jar" />
+		<include name="common-domain.jar" />
+		<include name="common-domain-types.jar" />
+		<include name="agent-ipc.jar" />
+		<include name="dcsf-types.jar" />
+		<include name="log-types.jar" />
+		<include name="management-types.jar" />
+		<include name="agent-types.jar" />
+		<include name="dabs-agent-services.jar" />
+		<include name="dabs-common-services.jar" />
+		<include name="policy-types.jar" />
+		<include name="common-pf.jar" />
+		<include name="client-pf.jar"/>		
+		<include name="agent-common.jar"/>		
+		<include name="agent-controlmanager.jar"/>
+		<include name="agent-controlmanager-tests.jar"/>
+	</fileset>
+		
+	<path id="compile.agent.classpath">
+		<pathelement path="${xlib_jar_dir}/castor-0.9.5.4-xml.jar" />
+		<pathelement path="${xlib_jar_dir}/xmlParserAPIs.jar" />
+		<pathelement path="${xlib_jar_dir}/xercesImpl.jar" />
+		<fileset refid="destiny.jars"/>
+		<path refid="compile.classpath" />
+	</path>
+	
+	<target name="pre-build">
+		<mkdir dir="${build.dest}"/>
+		<copy todir="${build.root.dir}/agent" file="etc/logging.properties-template"/>
+	</target>
+	
+	<target name="clean" unless="compile.notRequired" depends="check-jars">
+		<!-- this is a wholesale deletion of all the class files for client-pf if any
+		of the jars that client-pf depend on have been updated since 
+		client-pf was built -->
+		<delete>
+			<fileset dir="${build.dest}" includes="**/*.class"/>
+		</delete>
+	</target>
+	
+	<target name="check-jars">
+		<uptodate property="compile.notRequired" targetfile="${build.root.dir}/agent-test.jar">
+			<srcfiles refid="destiny.jars"/>
+		</uptodate>
+	</target>
+		
+	<target name="compile" depends="pre-build">
+		<javac srcdir="${java.test.src.dir}" destdir="${build.dest}" debug="${compile.debug}" 
+			verbose="${compile.verbose}" excludes="**/services/**" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+			<classpath refid="compile.agent.classpath"/>
+		</javac>
+	</target>
+	
+	<target name="jar" depends="compile">
+		<jar destfile="${build.root.dir}/agent-test.jar" basedir="${build.dest}" />
+	</target>
+	
+	<target name="run-tests-ui" depends="jar">
+		<java fork="yes" classname="junit.swingui.TestRunner" dir="${build.dest}" taskname="junit" failonerror="true">
+			<arg value="com.bluejungle.destiny.agent.activityjournal.ActivityJournalTestSuite" />
+			<classpath>
+				<pathelement path="${src.root.dir}/etc/junit" />
+				<pathelement path="${build.root.dir}/agent-test.jar" />
+				<path refid="compile.agent.classpath" />
+			</classpath>
+		</java>
+	</target>
+
+	<target name="tests" depends="jar">
+		<junit printsummary="withOutAndErr" showoutput="yes" fork="yes" dir="${build.root.dir}" haltonfailure="${junit.haltonfailure}" failureproperty="junit.fail">
+			<formatter type="xml"/>
+			<jvmarg value="-Djava.library.path=${build.root.dir}\platform\win32\Debug\bin" />
+			<test name="com.bluejungle.destiny.agent.activityjournal.ActivityJournalTestSuite" todir="${log.dir}/tests" />
+			<test name="com.bluejungle.destiny.agent.notification.NotificationTests" todir="${log.dir}/tests" />			
+			<classpath>
+				<pathelement path="${build.root.dir}/agent-test.jar" />
+				<path refid="compile.agent.classpath" />
+			</classpath>
+		</junit>
+	</target>		
+
+    <target name="doc">
+		<mkdir dir="${doc.dest}"/>
+    	<javadoc sourcepath="${java.main.src.dir}" destdir="${doc.dest}" linksource="yes" 
+    		classpathref="compile.agent.classpath" source="${compile.source}" >
+    		<packageset dir="${java.main.src.dir}" defaultexcludes="yes">
+    			<include name="com/bluejungle/agent/**"/>
+    		</packageset>
+    		<tag name="requires" description="Requires: " scope="methods"/>
+    		<tag name="modifies" description="Modifies: " scope="methods"/>
+    		<tag name="effects" description="Effects: " scope="methods"/>
+    	</javadoc>
+    </target>	
+
+	<target name="build" depends="jar">
+	</target>
+	
+</project>

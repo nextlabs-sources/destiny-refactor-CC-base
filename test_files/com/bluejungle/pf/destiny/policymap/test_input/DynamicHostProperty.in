@@ -1,0 +1,4 @@
+FILE_SERVER
+id 0 host testhost_inner = host.machinename="grande1"
+id 1 host testhost = id 0 OR host.inet_address="1.2.3.4"
+id 2 POLICY DynamicHostProperty FOR * ON * BY id 1 OR host.location="4.3.2.1" DO deny

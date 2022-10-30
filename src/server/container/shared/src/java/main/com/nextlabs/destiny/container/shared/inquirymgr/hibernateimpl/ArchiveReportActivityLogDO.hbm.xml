@@ -1,0 +1,385 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.nextlabs.destiny.container.shared.inquirymgr.hibernateimpl">
+	<class name="ArchiveReportActivityLogDO" table="APA_LOG">
+		<!-- Generic persisted properties -->
+		<id name="id" column="id">
+			<generator class="assigned"/>
+		</id>
+		
+		<property name="timestamp" type="timestamp">
+			<column name="time" not-null="true"/>
+	    </property>
+	    <property name="month">
+			<column name="month_nb" not-null="true"/>
+		</property>
+		<property name="day">
+			<column name="day_nb" not-null="true"/>
+		</property>
+		
+		<property name="hostId" column="host_id" not-null="true"/>
+		<property name="hostIPAddress">
+			<column name="host_ip" length="15" not-null="false"/>
+		</property>
+		<property name="hostName">
+			<column name="host_name" not-null="false"/>
+		</property>
+
+		<property name="userId">
+			<column name="user_id" not-null="true"/>
+		</property>
+		<property name="userName">
+			<column name="user_name" not-null="false" />
+		</property>
+ 		<property name="userSID">
+            <column name="user_sid" not-null="false"/>
+        </property>
+
+		<property name="applicationId" column="application_id" not-null="true"/>
+		<property name="applicationName" column="application_name" not-null="false"/>
+		
+		<property name="action">
+			<column name="action" sql-type="char(2)" length="2"  not-null="true"/>
+		</property>
+		
+		<property name="policyId" >
+			<column name="policy_id" not-null="true"/>
+		</property>
+		<property name="policyFullName" >
+            <column name="policy_fullname" length="512" not-null="false"/>
+        </property>
+        <property name="policyName" >
+            <column name="policy_name" length="512" not-null="false"/>
+        </property>	
+		
+		<property name="policyDecision">
+		   <column name="policy_decision" length="512" not-null="false" />
+		</property>
+		<property name="decisionRequestId" column="decision_request_id" type="long"/>
+		<property name="logLevel" column="log_level" not-null="true" />
+		
+		<property name="resourceName">
+		   <column name="from_resource_name" length="512" not-null="false"/>
+		</property>
+		
+		<property name="resourceSize" column="from_resource_size" type="long"/>
+		
+		<property name="resourceOwnerId" column="from_resource_owner_id" type="string" />
+		<property name="resourceCreatedDate" column="from_resource_created_date" type="long"/>
+		<property name="resourceModifiedDate" column="from_resource_modified_date" type="long"/>
+		<property name="resourcePrefix">
+		  <column name="from_resource_prefix" length="512" not-null="false"/>
+		</property>
+		
+		<property name="resourcePath">
+		  <column name="from_resource_path" length="512" not-null="false"/>
+		</property>
+		
+		<property name="resourceShortName">
+		  <column name="from_resource_short_name" length="512" not-null="false"/>
+		</property>
+		<property name="toResourceName">
+		  <column name="to_resource_name" length="512" not-null="false"/>
+		</property>
+		
+		<property name="attr1">
+		  <column name="attr1" length="4000" not-null="false"/>
+		</property>
+		<property name="attr2">
+		  <column name="attr2" length="4000" not-null="false"/>
+		</property>
+		<property name="attr3">
+		  <column name="attr3" length="4000" not-null="false"/>
+		</property>
+		<property name="attr4">
+		  <column name="attr4" length="4000" not-null="false"/>
+		</property>
+		<property name="attr5">
+		  <column name="attr5" length="4000" not-null="false"/>
+		</property>
+		<property name="attr6">
+		  <column name="attr6" length="4000" not-null="false"/>
+		</property>
+		<property name="attr7">
+		  <column name="attr7" length="4000" not-null="false"/>
+		</property>
+		<property name="attr8">
+		  <column name="attr8" length="4000" not-null="false"/>
+		</property>
+		<property name="attr9">
+		  <column name="attr9" length="4000" not-null="false"/>
+		</property>
+		<property name="attr10">
+		  <column name="attr10" length="4000" not-null="false"/>
+		</property>
+		<property name="attr11">
+		  <column name="attr11" length="4000" not-null="false"/>
+		</property>
+		<property name="attr12">
+		  <column name="attr12" length="4000" not-null="false"/>
+		</property>
+		<property name="attr13">
+		  <column name="attr13" length="4000" not-null="false"/>
+		</property>
+		<property name="attr14">
+		  <column name="attr14" length="4000" not-null="false"/>
+		</property>
+		<property name="attr15">
+		  <column name="attr15" length="4000" not-null="false"/>
+		</property>
+		<property name="attr16">
+		  <column name="attr16" length="4000" not-null="false"/>
+		</property>
+		<property name="attr17">
+		  <column name="attr17" length="4000" not-null="false"/>
+		</property>
+		<property name="attr18">
+		  <column name="attr18" length="4000" not-null="false"/>
+		</property>
+		<property name="attr19">
+		  <column name="attr19" length="4000" not-null="false"/>
+		</property>
+		<property name="attr20">
+		  <column name="attr20" length="4000" not-null="false"/>
+		</property>
+		<property name="attr21">
+		  <column name="attr21" length="4000" not-null="false"/>
+		</property>
+		<property name="attr22">
+		  <column name="attr22" length="4000" not-null="false"/>
+		</property>
+		<property name="attr23">
+		  <column name="attr23" length="4000" not-null="false"/>
+		</property>
+		<property name="attr24">
+		  <column name="attr24" length="4000" not-null="false"/>
+		</property>
+		<property name="attr25">
+		  <column name="attr25" length="4000" not-null="false"/>
+		</property>
+		<property name="attr26">
+		  <column name="attr26" length="4000" not-null="false"/>
+		</property>
+		<property name="attr27">
+		  <column name="attr27" length="4000" not-null="false"/>
+		</property>
+		<property name="attr28">
+		  <column name="attr28" length="4000" not-null="false"/>
+		</property>
+		<property name="attr29">
+		  <column name="attr29" length="4000" not-null="false"/>
+		</property>
+		<property name="attr30">
+		  <column name="attr30" length="4000" not-null="false"/>
+		</property>
+		<property name="attr31">
+		  <column name="attr31" length="4000" not-null="false"/>
+		</property>
+		<property name="attr32">
+		  <column name="attr32" length="4000" not-null="false"/>
+		</property>
+		<property name="attr33">
+		  <column name="attr33" length="4000" not-null="false"/>
+		</property>
+		<property name="attr34">
+		  <column name="attr34" length="4000" not-null="false"/>
+		</property>
+		<property name="attr35">
+		  <column name="attr35" length="4000" not-null="false"/>
+		</property>
+		<property name="attr36">
+		  <column name="attr36" length="4000" not-null="false"/>
+		</property>
+		<property name="attr37">
+		  <column name="attr37" length="4000" not-null="false"/>
+		</property>
+		<property name="attr38">
+		  <column name="attr38" length="4000" not-null="false"/>
+		</property>
+		<property name="attr39">
+		  <column name="attr39" length="4000" not-null="false"/>
+		</property>
+		<property name="attr40">
+		  <column name="attr40" length="4000" not-null="false"/>
+		</property>
+		<property name="attr41">
+		  <column name="attr41" length="4000" not-null="false"/>
+		</property>
+		<property name="attr42">
+		  <column name="attr42" length="4000" not-null="false"/>
+		</property>
+		<property name="attr43">
+		  <column name="attr43" length="4000" not-null="false"/>
+		</property>
+		<property name="attr44">
+		  <column name="attr44" length="4000" not-null="false"/>
+		</property>
+		<property name="attr45">
+		  <column name="attr45" length="4000" not-null="false"/>
+		</property>
+		<property name="attr46">
+		  <column name="attr46" length="4000" not-null="false"/>
+		</property>
+		<property name="attr47">
+		  <column name="attr47" length="4000" not-null="false"/>
+		</property>
+		<property name="attr48">
+		  <column name="attr48" length="4000" not-null="false"/>
+		</property>
+		<property name="attr49">
+		  <column name="attr49" length="4000" not-null="false"/>
+		</property>
+		<property name="attr50">
+		  <column name="attr50" length="4000" not-null="false"/>
+		</property>
+		<property name="attr51">
+		  <column name="attr51" length="4000" not-null="false"/>
+		</property>
+		<property name="attr52">
+		  <column name="attr52" length="4000" not-null="false"/>
+		</property>
+		<property name="attr53">
+		  <column name="attr53" length="4000" not-null="false"/>
+		</property>
+		<property name="attr54">
+		  <column name="attr54" length="4000" not-null="false"/>
+		</property>
+		<property name="attr55">
+		  <column name="attr55" length="4000" not-null="false"/>
+		</property>
+		<property name="attr56">
+		  <column name="attr56" length="4000" not-null="false"/>
+		</property>
+		<property name="attr57">
+		  <column name="attr57" length="4000" not-null="false"/>
+		</property>
+		<property name="attr58">
+		  <column name="attr58" length="4000" not-null="false"/>
+		</property>
+		<property name="attr59">
+		  <column name="attr59" length="4000" not-null="false"/>
+		</property>
+		<property name="attr60">
+		  <column name="attr60" length="4000" not-null="false"/>
+		</property>
+		<property name="attr61">
+		  <column name="attr61" length="4000" not-null="false"/>
+		</property>
+		<property name="attr62">
+		  <column name="attr62" length="4000" not-null="false"/>
+		</property>
+		<property name="attr63">
+		  <column name="attr63" length="4000" not-null="false"/>
+		</property>
+		<property name="attr64">
+		  <column name="attr64" length="4000" not-null="false"/>
+		</property>
+		<property name="attr65">
+		  <column name="attr65" length="4000" not-null="false"/>
+		</property>
+		<property name="attr66">
+		  <column name="attr66" length="4000" not-null="false"/>
+		</property>
+		<property name="attr67">
+		  <column name="attr67" length="4000" not-null="false"/>
+		</property>
+		<property name="attr68">
+		  <column name="attr68" length="4000" not-null="false"/>
+		</property>
+		<property name="attr69">
+		  <column name="attr69" length="4000" not-null="false"/>
+		</property>
+		<property name="attr70">
+		  <column name="attr70" length="4000" not-null="false"/>
+		</property>
+		<property name="attr71">
+		  <column name="attr71" length="4000" not-null="false"/>
+		</property>
+		<property name="attr72">
+		  <column name="attr72" length="4000" not-null="false"/>
+		</property>
+		<property name="attr73">
+		  <column name="attr73" length="4000" not-null="false"/>
+		</property>
+		<property name="attr74">
+		  <column name="attr74" length="4000" not-null="false"/>
+		</property>
+		<property name="attr75">
+		  <column name="attr75" length="4000" not-null="false"/>
+		</property>
+		<property name="attr76">
+		  <column name="attr76" length="4000" not-null="false"/>
+		</property>
+		<property name="attr77">
+		  <column name="attr77" length="4000" not-null="false"/>
+		</property>
+		<property name="attr78">
+		  <column name="attr78" length="4000" not-null="false"/>
+		</property>
+		<property name="attr79">
+		  <column name="attr79" length="4000" not-null="false"/>
+		</property>
+		<property name="attr80">
+		  <column name="attr80" length="4000" not-null="false"/>
+		</property>
+		<property name="attr81">
+		  <column name="attr81" length="4000" not-null="false"/>
+		</property>
+		<property name="attr82">
+		  <column name="attr82" length="4000" not-null="false"/>
+		</property>
+		<property name="attr83">
+		  <column name="attr83" length="4000" not-null="false"/>
+		</property>
+		<property name="attr84">
+		  <column name="attr84" length="4000" not-null="false"/>
+		</property>
+		<property name="attr85">
+		  <column name="attr85" length="4000" not-null="false"/>
+		</property>
+		<property name="attr86">
+		  <column name="attr86" length="4000" not-null="false"/>
+		</property>
+		<property name="attr87">
+		  <column name="attr87" length="4000" not-null="false"/>
+		</property>
+		<property name="attr88">
+		  <column name="attr88" length="4000" not-null="false"/>
+		</property>
+		<property name="attr89">
+		  <column name="attr89" length="4000" not-null="false"/>
+		</property>
+		<property name="attr90">
+		  <column name="attr90" length="4000" not-null="false"/>
+		</property>
+		<property name="attr91">
+		  <column name="attr91" length="4000" not-null="false"/>
+		</property>
+		<property name="attr92">
+		  <column name="attr92" length="4000" not-null="false"/>
+		</property>
+		<property name="attr93">
+		  <column name="attr93" length="4000" not-null="false"/>
+		</property>
+		<property name="attr94">
+		  <column name="attr94" length="4000" not-null="false"/>
+		</property>
+		<property name="attr95">
+		  <column name="attr95" length="4000" not-null="false"/>
+		</property>
+		<property name="attr96">
+		  <column name="attr96" length="4000" not-null="false"/>
+		</property>
+		<property name="attr97">
+		  <column name="attr97" length="4000" not-null="false"/>
+		</property>
+		<property name="attr98">
+		  <column name="attr98" length="4000" not-null="false"/>
+		</property>
+		<property name="attr99">
+		  <column name="attr99" length="4000" not-null="false"/>
+		</property>
+	</class>
+</hibernate-mapping>

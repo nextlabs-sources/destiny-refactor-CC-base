@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.profilemgr.hibernateimpl">
+	
+	<class name="ActivityJournalingSettingsDO" table="ACTIVITY_JOURNALING_SETTINGS">
+        
+		<!-- Generic persisted properties -->
+		<id name="id">
+			<generator class="native"/>
+		</id>
+
+		<property name="name" not-null="true" length="128" unique="true"/>
+		<property name="customizable" not-null="true" />
+		
+		<set name="loggedActions" table="ACT_JOURN_SETTINGS_LOGGED_ACTS">
+			<key column="settings_id"/>
+			<element type="com.bluejungle.domain.action.hibernateimpl.ActionEnumUserType">
+				<column name="action" length="2" sql-type="char(2)" not-null="true"/>
+			</element>
+		</set>
+	</class>
+
+</hibernate-mapping>

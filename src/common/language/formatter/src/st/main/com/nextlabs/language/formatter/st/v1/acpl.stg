@@ -1,0 +1,176 @@
+group acpl;
+
+definition(it) ::= <<$ (defFormatter.(it.Class))(it) $>>
+
+contextType(it) ::=
+    <<$ definitionHeader(type="context", def=it) $$
+    it.Base : { extends $ reference(it) $} $$
+    it.Attributes : contextAttribute(it) ; separator=","
+    $$if( it.Attributes )$,$endif$$
+    it.AttributeTemplates : contextAttribute(it) ; separator="," $>>
+
+contextAttribute(it) ::=
+    <<$\ $$ it.Name $$if( it.Template )$*$endif$$
+    unique.(it.Unique)$ $ it.Type : dataType() $>>
+
+obligationType(it) ::=
+    <<$ definitionHeader(type="obligation", def=it) $$ arglist(it) $>>
+
+functionType(it) ::=
+    <<$ definitionHeader(type="function", def=it) $$
+    arglist(it) $ returns $
+    it.ReturnType : dataType() $>>
+
+arglist(it) ::= <<$if( it )$($ it : argument() ; separator = ", "$)$endif$>>
+
+argument(it) ::=
+    <<$ it.Name $ $ dataType(it.Type) $ $
+    required.(it.Required) $$
+    it.Default : { = $ expression(it) $} ; null = "" $>>
+
+policy(it) ::=
+    <<$ definitionHeader(type="policy", def=it) $$
+    it.Base : { extends $ reference(it) $} $$
+    it.Type : { is $ reference(it) $} $$
+    target(it.Target) $
+do$ it.Rules : {
+    $ rule(it) $}$$
+    it.Obligations : {
+    $ obligations(it) $} $>>
+
+rule(it) ::=
+    <<$ it.Outcome $ $if(it.Default)$by default$else$when $
+    expression(it.Condition) $$endif$>>
+
+obligations(it) ::=
+    <<on $ it.Outcome $ do $ it : functionCall() ; separator=", " $>>
+
+policySet(it) ::=
+    <<$ definitionHeader(type="policy set", def=it) $ of $
+    referenceList(it.AllowedTypes) $$
+    specialTarget(header="apply when", target=it.ApplyTarget) $$
+    specialTarget(header="ignore when", target=it.IgnoreTarget) $
+    $ it.OverridingOutcome $ overrides$if(it.Policies)$ (
+        $ referenceList(it.Policies) $
+    )$endif$>>
+
+specialTarget(target, header) ::=
+    <<$if(target.Contexts)$$ {
+    $ header $$ target : target() $}$$endif$>>
+
+target(it) ::=
+    <<$ it.Contexts : {
+    $ it.Section $ $ expression(it.Condition) $} $>>
+
+policyComponent(it) ::=
+    <<$ definitionHeader(type="component", def=it) $ is $
+    it.Type : reference() $ = $ expression(it.Predicate) $>>
+
+policyType(it) ::=
+    <<$ definitionHeader(type="policy type", def=it) $$
+    it.Base : { extends $ reference(it) $} $$
+    it.ContextSections : {
+    $ contextSection(it) $} $$if(it.Contexts)$${
+    uses $ referenceList(it.Contexts) $} $$endif$$if(it.Obligations)$${
+    with obligation $ referenceList(it.Obligations) $}$$endif$>>
+
+contextSection(it) ::=
+    <<$ required.(it.Required) $ $ referenceList(it) $ as $ it.Section $>>
+
+definitionHeader(type, def) ::= <<$ type $ $ path(def.Path) $>>
+
+dataType(it) ::= <<$ (dataTypeFormatter.(it.Class))(it) $>>
+
+codesDataType(it) ::=
+    <<code$if(it)$($ it : stringLiteral(); separator=", " $)$endif$>>
+
+multivalueDataType(it) ::=
+    <<multivalued $it : dataType(it.InnerType)$>>
+
+referenceDataType(it) ::= <<references $ reference(it.ReferencedContext) $>>
+
+relation(it) ::=
+    <<$
+    it.LHS : expression() $ $
+    it.Operator.Representation $ $
+    it.RHS : expression()
+    $>>
+
+expression(it) ::= <<$ (exprFormatter.(it.Class))(it) $>>
+
+compositeExpression(it) ::=
+    <<($ it : {$ it.OperatorBefore : {$\ $$ it.Representation $ } ; null="" $$
+    it.Expression : expression() $} $)>>
+
+unary(it) ::= <<$ it.Operator.Representation $ $ it.Operand : expression() $>>
+
+attributeRef(it) ::= <<$ it.Base : expression() $.$ it.AttributeName $>>
+
+functionCall(it) ::=
+    <<$ reference(it.Function) $($
+    it.Arguments : functionArgument() ; separator = ", " $)>>
+
+functionArgument(it) ::= <<$ it.Name : {$ it $=} ; null="" $$ it.Expression : expression() $>>
+
+constant(it) ::=
+    <<$ it.Value : {$ (constFormatter.(it.Class))(it) $}; null="null" $>>
+
+reference(it) ::=
+    <<$if( it.ByPath )$$ path(it.Path) $$else$id $ it.Id $$endif$>>
+
+innerReference(it) ::= <<$ reference(it.Reference) $>>
+
+referenceList(it) ::= <<$ it : reference() ; separator = ", " $>>
+
+path(it) ::= <<$ it : identifier() ; separator="/" $>>
+
+identifier(it) ::= <<$if( keywords.(it) )$[$ it $]$else$$ it $$endif$>>
+
+stringLiteral(it) ::= <<"$ it $">>
+
+self(it) ::= <<$ it $>>
+
+unknown(it) ::= <<[$ it.Class $]>>
+
+defFormatter ::= [
+    "class com.nextlabs.language.representation.ObligationType"  : "obligationType"
+,   "class com.nextlabs.language.representation.FunctionType"    : "functionType"
+,   "class com.nextlabs.language.representation.ContextType"     : "contextType"
+,   "class com.nextlabs.language.representation.Policy"          : "policy"
+,   "class com.nextlabs.language.representation.PolicyComponent" : "policyComponent"
+,   "class com.nextlabs.language.representation.PolicySet"       : "policySet"
+,   "class com.nextlabs.language.representation.PolicyType"      : "policyType"
+,   default                                                      : "unknown"  
+]
+
+dataTypeFormatter ::= [
+    "class com.nextlabs.expression.representation.DataType$MultivalueDataType" : "multivalueDataType"
+,   "class com.nextlabs.expression.representation.DataType$CodeDataType"       : "codesDataType"
+,   "class com.nextlabs.expression.representation.DataType$ReferenceDataType"  : "referenceDataType"
+,   default                                                                    : "self"  
+]
+
+exprFormatter ::= [
+    "class com.nextlabs.expression.representation.Constant"            : "constant"
+,   "class com.nextlabs.expression.representation.UnaryExpression"     : "unary"
+,   "class com.nextlabs.expression.representation.CompositeExpression" : "compositeExpression"
+,   "class com.nextlabs.expression.representation.FunctionCall"        : "functionCall"
+,   "class com.nextlabs.expression.representation.AttributeReference"  : "attributeRef"
+,   "class com.nextlabs.expression.representation.ExpressionReference" : "innerReference"
+,   "class com.nextlabs.expression.representation.Relation"            : "relation"
+,   default                                                            : "unknown"  
+]
+
+constFormatter ::= [
+    "class java.lang.String" : "stringLiteral"
+,   default                  : "self"
+]
+
+unique ::= [
+    "true" : " unique"
+]
+
+required ::= [
+    "true"  : "required"
+,   "false" : "optional"
+]

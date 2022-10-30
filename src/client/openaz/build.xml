@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<project name="openaz" default="build" basedir=".">
+	<echo message="Basedir is ${basedir}"/>
+	<property name="src.dir"    value="${basedir}"/>
+	<property name="java.main.src.dir" value="${basedir}/src/java/main"/>
+	<property name="java.test.src.dir" value="${basedir}/src/java/test"/>
+	<property name="build.dest" value="${build.root.dir}/client/openaz/classes"/>
+	<property name="doc.dest"   value="${build.root.dir}/client/openaz/doc"/>
+
+	<path id="compile.openaz.classpath">
+		<path refid="compile.classpath"/>
+		<pathelement location="${xlib_jar_dir}/httpclient-4.3.1.jar"/>
+		<pathelement location="${xlib_jar_dir}/httpcore-4.3.jar"/>
+		<pathelement location="${xlib_jar_dir}/commons-lang-2.6.jar"/>
+		<pathelement location="${xlib_jar_dir}/openaz-pep-0.0.1-SNAPSHOT.jar"/>
+		<pathelement location="${xlib_jar_dir}/openaz-xacml-0.0.1-SNAPSHOT.jar"/>
+		<pathelement location="${xlib_jar_dir}/jackson-core-2.6.3.jar"/>
+		<pathelement location="${xlib_jar_dir}/jackson-databind-2.6.3.jar"/>
+		<pathelement location="${xlib_jar_dir}/jackson-annotations-2.6.0.jar"/>
+		<pathelement location="${build.root.dir}/agent-controlmanager-embeddedapi.jar"/>
+	</path>
+
+	<target name="clean">
+		<delete dir="${build.dest}" />
+		<delete dir="${doc.dest}" />
+	</target>
+
+	<target name="pre-build">
+		<mkdir dir="${build.dest}" />
+	</target>
+
+	<target name="build" depends="clean,jar,doc">
+	</target>
+
+	<target name="compile" depends="pre-build">
+		<javac srcdir="${java.main.src.dir}"
+               destdir="${build.dest}"
+               debug="${compile.debug}"
+               verbose="${compile.verbose}"
+               source="${compile.source}"
+               target="${compile.target}"
+               bootclasspath="${compile.bootclasspath}">
+			<classpath refid="compile.openaz.classpath"/>
+		</javac>
+	</target>
+
+	<target name="doc">
+		<mkdir dir="${doc.dest}"/>
+		<javadoc sourcepath="${java.main.src.dir}" destdir="${doc.dest}" linksource="yes"
+            classpathref="compile.openaz.classpath" source="${compile.source}" >
+			<packageset dir="${java.main.src.dir}" defaultexcludes="yes">
+				<include name="com/nextlabs/openaz/**"/>
+			</packageset>
+		</javadoc>
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="${build.root.dir}/nextlabs-openaz-pep.jar">
+			<fileset dir="${build.dest}">
+				<include name="**/*"/>
+			</fileset>
+		</jar>
+	</target>
+</project>

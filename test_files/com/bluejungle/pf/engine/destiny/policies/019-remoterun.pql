@@ -1,0 +1,10 @@
+policy deny_remoterun
+description "denies run of any applications when connected remotely"
+for true
+on RUN
+by host.location != "localhost"
+where ENVIRONMENT.REMOTE_ACCESS = 1
+do deny
+by default do allow
+on deny do display("deny")
+on allow do log, display("allow")

@@ -1,0 +1,172 @@
+<project basedir="." name="dbinit_tool_main" default="build">
+
+    <var name="nlbuildroot" value="${basedir}/../../../../../../.." />
+    <property name="dbinit.src.dir"        value="${basedir}"/>
+    <property name="etc.dir"               value="../../etc"/>
+    <property name="build.dest"            value="${build.root.dir}/server/tools/dbinit/classes/main"/>
+    <property name="doc.dest"              value="${build.root.dir}/server/tools/dbinit/doc"/>
+    <property name="dbInit.root.dir"       value="${server.tools.dir}/dbInit"/>
+    <property name="dbInit.mgmt.dir"       value="${dbInit.root.dir}/mgmt"/>
+    <property name="dbInit.activity.dir"   value="${dbInit.root.dir}/activity"/>
+    <property name="dbInit.dictionary.dir" value="${dbInit.root.dir}/dictionary"/>
+    <property name="dbInit.pf.dir"         value="${dbInit.root.dir}/pf"/>
+
+    <property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+    <path id="compile.dbinit.classpath">
+        <path refid="compile.classpath"/>
+        <pathelement path="${build.root.dir}/agent-manager.jar"/>
+        <pathelement path="${build.root.dir}/common-domain.jar"/>
+        <pathelement path="${build.root.dir}/common-domain-types.jar"/>
+        <pathelement path="${build.root.dir}/common-framework.jar"/>
+        <pathelement path="${build.root.dir}/common-framework-types.jar"/>
+        <pathelement path="${build.root.dir}/common-pf.jar"/>
+        <pathelement path="${build.root.dir}/common-version.jar"/>
+        <pathelement path="${build.root.dir}/common-version-impl.jar"/>
+        <pathelement path="${build.root.dir}/configurationFileParser.jar"/>
+        <pathelement path="${build.root.dir}/dms-components.jar"/>
+        <pathelement path="${build.root.dir}/dms-services.jar"/>
+        <pathelement path="${build.root.dir}/management-types.jar"/>
+        <pathelement path="${build.root.dir}/profile-manager.jar"/>
+        <pathelement path="${build.root.dir}/server-datasource.jar"/>
+        <pathelement path="${build.root.dir}/server-base.jar"/>
+        <pathelement path="${build.root.dir}/server-pf.jar"/>
+        <pathelement path="${xlib_jar_dir}/dom4j-1.4.jar;"/>
+        <pathelement path="${xlib_jar_dir}/jackson-core-2.6.3.jar" />
+        <pathelement path="${xlib_jar_dir}/jackson-databind-2.6.3.jar" />
+        <pathelement path="${xlib_jar_dir}/jackson-annotations-2.6.0.jar" />
+        <pathelement path="${build.dest}"/>
+    </path>
+
+
+    <target name="build" depends="jar"/>
+    <target name="build-misc" depends="jar-misc"/>
+
+    <target name="compile" depends="pre-build">
+        <javac srcdir="${dbinit.src.dir}" destdir="${build.dest}" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="compile.dbinit.classpath"/>
+        </javac>
+    </target>
+
+    <target name="compile-misc" depends="pre-build">
+        <javac srcdir="${dbinit.src.dir}" destdir="${build.dest}" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="compile.dbinit.classpath"/>
+            <include name="**/seedtasks/**"/>
+            <include name="**/hibernate/**"/>
+            <include name="**/DBInitConnectionProvider.java"/>
+        </javac>
+    </target>
+
+    <target name="doc">
+        <mkdir dir="${doc.dest}"/>
+        <javadoc sourcepath="${src.dir}" destdir="${doc.dest}" linksource="yes"
+            classpathref="compile.server_shared.classpath" source="${compile.source}" >
+            <packageset dir="${dbinit.src.dir}" defaultexcludes="yes">
+                <include name="**/*"/>
+            </packageset>
+        </javadoc>
+    </target>
+
+    <target name="jar-misc" depends="compile-misc" description="creates jar files for db-init-tools">
+        <jar destfile="${build.root.dir}/db-init-tools.jar">
+            <fileset dir="${build.dest}">
+                <include name="**/seedtasks/**"/>
+                <include name="**/hibernate/**"/>
+                <include name="**/DBInitConnectionProvider.class"/>
+            </fileset>
+        </jar>
+
+    </target>
+
+    <target name="jar" depends="compile" description="creates a jar file for the tool">
+        <jar manifest="${etc.dir}/dbinit-manifest.txt" destfile="${build.root.dir}/db-init.jar">
+            <fileset dir="${build.dest}">
+                <include name="**/*"/>
+            </fileset>
+            <fileset dir="${dbinit.src.dir}">
+                <include name="**/*.sql"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="pre-build">
+        <mkdir dir="${build.dest}"/>
+    </target>
+
+    <target name="setup-tool">
+        <!-- Copy the main dbInit jar file(s) -->
+        <copy todir="${dbInit.root.dir}" failonerror="true">
+            <fileset dir="${build.root.dir}">
+                <include name="db-init-tools.jar"/>
+                <include name="db-init.jar"/>
+            </fileset>
+        </copy>
+
+        <!-- Copy the required libraries for activity repository -->
+        <copy todir="${dbInit.activity.dir}" failonerror="true">
+            <fileset dir="${build.root.dir}">
+                <include name="dabs-components.jar"/>
+                <include name="inquiry-manager-shared.jar"/>
+                <include name="secure-session.jar"/>
+                <include name="storedResults-shared.jar"/>
+            </fileset>
+            <fileset dir="${etc.dir}">
+                <include name="activity.cfg"/>
+            </fileset>
+        </copy>
+
+        <!-- Copy the required libraries for dictionary repository -->
+        <copy todir="${dbInit.dictionary.dir}" failonerror="true">
+            <fileset dir="${build.root.dir}">
+                <include name="server-dictionary.jar"/>
+                <include name="common-dictionary.jar"/>
+                <include name="common-framework.jar"/>
+            </fileset>
+            <fileset dir="${etc.dir}">
+                <include name="dictionary_template.cfg"/>
+            </fileset>
+        </copy>
+
+        <!-- Copy the required libraries for the management repository -->
+        <copy todir="${dbInit.mgmt.dir}" failonerror="true">
+            <fileset dir="${build.root.dir}">
+                <include name="agent-manager.jar"/>
+            	<include name="common-domain.jar"/>
+            	<include name="common-domain-types.jar"/>
+                <include name="common-framework-types.jar"/>
+            	<include name="common-version-impl.jar"/>
+            	<include name="common-version.jar"/>
+                <include name="dms-components.jar"/>
+                <include name="dms-services.jar"/>
+                <include name="management-types.jar"/>
+                <include name="policy-deploy-manager.jar"/>
+                <include name="profile-manager.jar"/>
+                <include name="server-datasource.jar"/>
+                <include name="server-shared-applicationusers.jar"/>
+            	<include name="server-shared-customapps.jar"/>
+            	<include name="version-types.jar"/>
+            </fileset>
+            <fileset dir="${etc.dir}">
+                <include name="mgmt_template.cfg"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${dbInit.mgmt.dir}" file="${xlib_jar_dir}/axis.jar"/>
+        <copy todir="${dbInit.mgmt.dir}" file="${xlib_jar_dir}/jaxrpc.jar"/>
+
+        <!-- Copy the required libraries for the policy framework repository -->
+        <copy todir="${dbInit.pf.dir}" failonerror="true">
+            <fileset dir="${build.root.dir}">
+                <include name="common-pf.jar"/>
+                <include name="server-pf.jar"/>
+                <include name="server-framework.jar"/>
+            </fileset>
+            <fileset dir="${etc.dir}">
+                <include name="pf_template.cfg"/>
+            </fileset>
+        </copy>
+        <copy todir="${dbInit.pf.dir}" file="${xlib_jar_dir}/antlr.jar" failonerror="true"/>
+        <copy todir="${dbInit.pf.dir}" file="${xlib_jar_dir}/mail.jar" failonerror="true"/>
+        <copy file="${nlbuildroot}/seed_data/seed.pql" todir="${build.root.dir}/seed_data"/>
+    </target>
+</project>

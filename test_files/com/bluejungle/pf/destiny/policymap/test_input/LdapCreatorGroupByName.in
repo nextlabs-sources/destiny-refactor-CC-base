@@ -1,0 +1,2 @@
+PORTAL
+id 0 POLICY TestPolicy FOR resource.portal.created_by_ldap_group = "BLUEJUNGLE.COM:Groups:engineering" ON * BY * DO deny

@@ -1,0 +1,314 @@
+<project name="server-security" default="build">
+
+	<var name="nlbuildroot" value="${basedir}/../../.." />
+	<property name="common.build.script.dir" value="${nlbuildroot}/build_scripts" />
+	<property file="${basedir}/build.properties" />
+
+	<import file="${common.build.script.dir}/java_build.xml" />
+
+	<target name="init" depends="java_build.init" />
+
+        <target name="compile" depends="init, pre_compile">
+            <mkdir dir="${build.main.classes.dir}" />
+            <javac srcdir="${src.main.dir}" destdir="${build.main.classes.dir}" debug="${compile.debug}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+                <classpath>
+                    <fileset dir="${build.root.dir}">
+                        <include name="common-framework.jar"/>
+                        <include name="common-framework-types.jar"/>
+                        <include name="crypt.jar"/>
+                    </fileset>
+                    <fileset dir="${nlbuildroot}/xlib/jar">
+                        <include name="**.jar"/>
+                    </fileset>
+                </classpath>
+            </javac>
+        </target>
+
+	<target name="package" depends="copy_resource, compile">
+		<jar destfile="${build.dir}/server-security.jar">
+			<fileset dir="${build.main.classes.dir}">
+				<include name="**/secureConnector/*"/>
+				<include name="**/secureConnector/tomcat7/*"/>
+			</fileset>
+		</jar>
+		<jar destfile="${build.dir}/server-axis-security.jar">
+			<fileset dir="${build.main.classes.dir}">
+				<include name="**/security/*"/>
+			</fileset>
+		</jar>
+
+		<available file="${dcc.cerfile}" type="file" filepath="${build.dir}" property="genCertificates.notRequired" />
+		<antcall target="generate-certificates" inheritRefs="true"/>
+		<antcall target="generate-truststores" inheritRefs="true"/> 
+	</target>	
+	
+	<target name="generate-certificates" unless="genCertificates.notRequired">
+		<!-- The enrollment, policy author and temp agent keystore/truststore are already defined -->
+		<copy todir="${build.dir}">
+			<fileset dir="${build.main.resource.dir}">
+				<include name="*.jks"/>
+			</fileset>
+		</copy>
+
+		<echo>Exporting Temp-Agent certificate</echo>
+		<exec failonerror="true" executable="keytool">
+			<arg line="-export"/>
+			<arg line="-alias ${temp_agent.alias}"/>
+			<arg line='-file "${build.dir}\${temp_agent.cerfile}"'/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line='-keystore "${build.dir}\${temp_agent.keystorefile}"'/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec>
+			
+		<!--
+			Generation of Web certificate
+		-->
+		<!-- We need to use RSA algorithm for web cert to fix issues with Firefox.  See bug #5420 -->
+		<echo>Generating the Web Certificate</echo>
+		<genkey alias="${web.alias}" 
+				keypass="${keystore.password}" 
+				storepass="${keystore.password}"
+				dname="${web.dname}" 
+				keystore="${build.dir}\${web.keystorefile}" 
+				verbose="${compile.verbose}"
+				keyalg="RSA"
+				validity="${genkey.validity}"/> 
+		
+		<echo>Self signing web Certificate</echo>
+		<exec failonerror="true" executable="keytool">
+			<arg line="-selfcert"/>
+			<arg line="-alias ${web.alias}"/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line='-keystore "${build.dir}\${web.keystorefile}"'/>
+			<arg line="-storepass ${keystore.password}"/>
+			<arg line="-validity ${genkey.validity}"/>
+		</exec>
+
+		<echo>Exporting web certificate</echo>
+		<exec failonerror="true" executable="keytool">
+			<arg line="-export"/>
+			<arg line="-alias ${web.alias}"/>
+			<arg line='-file "${build.dir}\${web.cerfile}"'/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line='-keystore "${build.dir}\${web.keystorefile}"'/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec>
+
+		<!--
+			Generation of Agent certificate
+		-->
+		<echo>Generating the Agent Certificate</echo>
+		<genkey alias="${agent.alias}" 
+				keypass="${keystore.password}" 
+				storepass="${keystore.password}"
+				dname="${agent.dname}" 
+				keystore="${build.dir}\${agent.keystorefile}" 
+				verbose="${compile.verbose}"
+				validity="${genkey.validity}"/> 
+		
+		<echo>Self signing agent Certificate</echo>
+		<exec failonerror="true" executable="keytool">
+			<arg line="-selfcert"/>
+			<arg line="-alias ${agent.alias}"/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line='-keystore "${build.dir}\${agent.keystorefile}"'/>
+			<arg line="-storepass ${keystore.password}"/>
+			<arg line="-validity ${genkey.validity}"/>
+		</exec>
+
+		<echo>Exporting agent certificate</echo>
+		<exec failonerror="true" executable="keytool">
+			<arg line="-export"/>
+			<arg line="-alias ${agent.alias}"/>
+			<arg line='-file "${build.dir}\${agent.cerfile}"'/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line='-keystore "${build.dir}\${agent.keystorefile}"'/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec>
+			
+		<!--
+			Generation of DCC certificate
+		-->
+		<echo>Generating the DCC Certificate</echo>
+		<genkey alias="${dcc.alias}" 
+				keypass="${keystore.password}" 
+				storepass="${keystore.password}"
+				dname="${dcc.dname}" 
+				keystore="${build.dir}\${dcc.keystorefile}" 
+				verbose="${compile.verbose}"/> 
+		
+		<echo>Self signing the DCC Certificate</echo>
+		<exec failonerror="true" executable="keytool">
+			<arg line="-selfcert"/>
+			<arg line="-alias ${dcc.alias}"/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line='-keystore "${build.dir}\${dcc.keystorefile}"'/>
+			<arg line="-storepass ${keystore.password}"/>
+			<arg line="-validity ${genkey.validity}"/>
+		</exec>
+			
+		<echo>Exporting the DCC certificate</echo>
+		<exec failonerror="true" executable="keytool">
+			<arg line="-export"/>
+			<arg line="-alias ${dcc.alias}"/>
+			<arg line='-file "${build.dir}\${dcc.cerfile}"'/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line='-keystore "${build.dir}\${dcc.keystorefile}"'/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec>
+
+		<echo>Exporting the Enrollment certificate</echo>
+		<exec failonerror="true" executable="keytool">
+			<arg line="-export"/>
+			<arg line="-alias ${enrollment.alias}"/>
+			<arg line='-file "${build.dir}\${enrollment.cerfile}"'/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line='-keystore "${build.dir}\${enrollment.keystorefile}"'/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec>
+		
+		<echo>Exporting the Policy Manager certificate</echo>
+		<exec failonerror="true" executable="keytool">
+			<arg line="-export"/>
+			<arg line="-alias ${policyAuthor.alias}"/>
+			<arg line='-file "${build.dir}\${policyAuthor.cerfile}"'/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line='-keystore "${build.dir}\${policyAuthor.keystorefile}"'/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec>
+		
+		<echo>Exporting the Key Management certificate</echo>
+		<exec failonerror="true" executable="keytool">
+			<arg line="-export"/>
+			<arg line="-alias ${keymanagement.alias}"/>
+			<arg line='-file "${build.dir}\${keymanagement.cerfile}"'/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line='-keystore "${build.dir}\${keymanagement.keystorefile}"'/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec>
+	</target>
+	
+	<target name="generate-truststores" 
+			unless="genCertificates.notRequired"
+			description="Takes the certificates and place them in the correct keystore / truststore">
+		<echo>Creating Web trust store</echo>
+		<!-- The Web trustroe contains only the web cert -->
+		<exec failonerror="true" executable="keytool">
+			<arg line="-import -v -noprompt"/>
+			<arg line="-alias ${web.alias}"/>
+			<arg line='-file "${build.dir}/${web.cerfile}"'/>
+			<arg line='-keystore "${build.dir}/${web.truststorefile}"'/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec>
+
+		<echo>Creating Temp-Agent trust store</echo>
+		<!-- The Temp-Agent trust store contains the DCC certificate -->
+		<exec failonerror="true" executable="keytool">
+			<arg line="-import -v -noprompt"/>
+			<arg line="-alias ${dcc.alias}"/>
+			<arg line='-file "${build.dir}/${dcc.cerfile}"'/>
+			<arg line='-keystore "${build.dir}/${temp_agent.truststorefile}"'/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec>
+
+		<!-- The Agent trust store contains the DCC certificate -->
+		<exec failonerror="true" executable="keytool">
+			<arg line="-import -v -noprompt"/>
+			<arg line="-alias ${dcc.alias}"/>
+			<arg line='-file "${build.dir}/${dcc.cerfile}"'/>
+			<arg line='-keystore "${build.dir}/${agent.truststorefile}"'/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec>
+		
+		<echo>Creating DCC trust store</echo>
+		<!-- The DCC trust store contains the Temp-Agent, Agent, DCC, Enrollment, PolicyAuthor -->
+		<exec failonerror="true" executable="keytool">
+			<arg line="-import -v -noprompt"/>
+			<arg line="-alias ${temp_agent.alias}"/>
+			<arg line='-file "${build.dir}/${temp_agent.cerfile}"'/>
+			<arg line='-keystore "${build.dir}/${dcc.truststorefile}"'/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec>
+		<exec failonerror="true" executable="keytool">
+			<arg line="-import -v -noprompt"/>
+			<arg line="-alias ${agent.alias}"/>
+			<arg line='-file "${build.dir}/${agent.cerfile}"'/>
+			<arg line='-keystore "${build.dir}/${dcc.truststorefile}"'/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec>
+		<exec failonerror="true" executable="keytool">
+			<arg line="-import -v -noprompt"/>
+			<arg line="-alias ${dcc.alias}"/>
+			<arg line='-file "${build.dir}/${dcc.cerfile}"'/>
+			<arg line='-keystore "${build.dir}/${dcc.truststorefile}"'/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec>
+		<exec failonerror="true" executable="keytool">
+			<arg line="-import -v -noprompt"/>
+			<arg line="-alias ${enrollment.alias}"/>
+			<arg line='-file "${build.dir}/${enrollment.cerfile}"'/>
+			<arg line='-keystore "${build.dir}/${dcc.truststorefile}"'/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec>
+		<exec failonerror="true" executable="keytool">
+			<arg line="-import -v -noprompt"/>
+			<arg line="-alias ${policyAuthor.alias}"/>
+			<arg line='-file "${build.dir}/${policyAuthor.cerfile}"'/>
+			<arg line='-keystore "${build.dir}/${dcc.truststorefile}"'/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec>
+		<exec failonerror="true" executable="keytool">
+			<arg line="-import -v -noprompt"/>
+			<arg line="-alias ${keymanagement.alias}"/>
+			<arg line='-file "${build.dir}/${keymanagement.cerfile}"'/>
+			<arg line='-keystore "${build.dir}/${dcc.truststorefile}"'/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec>
+		
+		<!-- Add the OpenLDAP Cert to the DCC truststore -->
+		<!--exec failonerror="true" executable="keytool">
+			<arg line="-import -v -noprompt"/>
+			<arg line="-alias ${openldap.alias}"/>
+			<arg line='-file "${openldap.cerfile}"'/>
+			<arg line='-keystore "${build.dir}/${dcc.truststorefile}"'/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec-->
+		
+		<echo>Creating Policy Manager trust store</echo>
+		<!-- The Policy Manager trust store contains the DCC certificate -->
+		<exec failonerror="true" executable="keytool">
+			<arg line="-import -v -noprompt"/>
+			<arg line="-alias ${dcc.alias}"/>
+			<arg line='-file "${build.dir}/${dcc.cerfile}"'/>
+			<arg line='-keystore "${build.dir}/${policyAuthor.truststorefile}"'/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec>
+		<exec failonerror="true" executable="keytool">
+			<arg line="-import -v -noprompt"/>
+			<arg line="-alias ${dcc.alias}"/>
+			<arg line='-file "${build.dir}/${dcc.cerfile}"'/>
+			<arg line='-keystore "${build.dir}/${enrollment.truststorefile}"'/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec>
+		<exec failonerror="true" executable="keytool">
+			<arg line="-import -v -noprompt"/>
+			<arg line="-alias ${dcc.alias}"/>
+			<arg line='-file "${build.dir}/${dcc.cerfile}"'/>
+			<arg line='-keystore "${build.dir}/${keymanagement.truststorefile}"'/>
+			<arg line="-keypass ${keystore.password}"/>
+			<arg line="-storepass ${keystore.password}"/>
+		</exec>
+	</target>
+	
+</project>

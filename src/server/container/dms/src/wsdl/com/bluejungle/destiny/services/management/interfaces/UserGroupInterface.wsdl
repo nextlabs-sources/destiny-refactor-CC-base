@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://bluejungle.com/destiny/services/management/types"
+				  xmlns:tns="http://bluejungle.com/destiny/services/management/types"
+				  xmlns:basicTypes="http://bluejungle.com/destiny/framework/types"
+				  xmlns:policyTypes="http://bluejungle.com/destiny/services/policy/types" 
+				  xmlns:xs="http://www.w3.org/1999/XMLSchema" 
+				  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"> 
+				  
+	<wsdl:types>
+		<xs:schema targetNamespace="http://bluejungle.com/destiny/services/management/types">
+			<xs:import namespace="http://bluejungle.com/destiny/services/management/types" schemaLocation="../types/UserGroup.xsd"/>
+            <xs:import namespace="http://bluejungle.com/destiny/services/policy/types" schemaLocation="../../../../.././../../../../dps/src/wsdl/main/com/bluejungle/pf/destiny/services/types/PolicyTypes.xsd"/> 
+			<xs:import namespace="http://bluejungle.com/destiny/framework/types" 
+						schemaLocation="../../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicTypes.xsd"/>
+			<xs:import namespace="http://bluejungle.com/destiny/framework/types" 
+						schemaLocation="../../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicFaults.xsd"/>
+	        <xs:import namespace="http://bluejungle.com/destiny/services/management/types" schemaLocation="../types/UserDTO.xsd"/>  
+			
+		</xs:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="runExternalUserGroupQueryRequest">
+		<wsdl:part name="userGroupQuerySpec" type="tns:UserGroupQuerySpec"/>
+	</wsdl:message>
+    <wsdl:message name="runExternalUserGroupQueryResponse">
+		<wsdl:part name="externalGroupQueryResults" type="tns:ExternalUserGroupQueryResults"/>
+    </wsdl:message>
+
+	<wsdl:message name="getUsersInUserGroupRequest">
+		<wsdl:part name="userGroupID" type="basicTypes:ID"/>
+	</wsdl:message>
+    <wsdl:message name="getUsersInUserGroupResponse">
+		<wsdl:part name="usersInUserGroup" type="tns:UserDTOList"/>
+    </wsdl:message>
+
+    <wsdl:message name="getAllUserGroupsRequest">
+    </wsdl:message>
+    <wsdl:message name="getAllUserGroupsResponse">
+		<wsdl:part name="allUserGroups" type="tns:UserGroupReducedList"/>
+    </wsdl:message>
+
+    <wsdl:message name="getUserGroupsForUserRequest">
+    	<wsdl:part name="user" type="tns:UserDTO"/>
+    </wsdl:message>
+    <wsdl:message name="getUserGroupsForUserResponse">
+		<wsdl:part name="userGroups" type="tns:UserGroupReducedList"/>
+    </wsdl:message>
+    
+    <wsdl:message name="addUsersToUserGroupRequest">
+	    <wsdl:part name="userGroupID" type="basicTypes:ID"/>
+		<wsdl:part name="userIDs" type="basicTypes:IDList"/>
+    </wsdl:message>
+    <wsdl:message name="addUsersToUserGroupResponse">
+    </wsdl:message>
+
+    <wsdl:message name="linkExternalGroupsRequest">
+		<wsdl:part name="externalGroupID" type="tns:ExternalUserGroupList"/>
+    </wsdl:message>
+    <wsdl:message name="linkExternalGroupsResponse">
+    </wsdl:message>
+
+    <wsdl:message name="getDefaultAccessAssignmentsRequest">
+		<wsdl:part name="userGroupID" type="basicTypes:ID"/>
+    </wsdl:message>
+    <wsdl:message name="getDefaultAccessAssignmentsResponse">
+		<wsdl:part name="defaultAccessAssignments" type="policyTypes:DefaultAccessAssignmentList"/>
+    </wsdl:message>
+
+    <wsdl:message name="deleteGroupRequest">
+		<wsdl:part name="userGroupID" type="basicTypes:ID"/>
+    </wsdl:message>
+	<wsdl:message name="deleteGroupResponse">
+    </wsdl:message>
+
+    <wsdl:message name="updateGroupRequest">
+		<wsdl:part name="userGroupToUpdate" type="tns:UserGroupDTO"/>
+    </wsdl:message>
+   <wsdl:message name="updateGroupResponse">
+   </wsdl:message>
+
+   <wsdl:message name="getUserGroupRequest">
+		<wsdl:part name="userGroupID" type="basicTypes:ID"/>
+   </wsdl:message>
+   <wsdl:message name="getUserGroupResponse">
+		<wsdl:part name="userGroup" type="tns:UserGroupDTO"/>
+   </wsdl:message>
+
+   <wsdl:message name="setDefaultAccessAssignmentsRequest">
+      <wsdl:part name="userGroupID" type="basicTypes:ID"/>
+      <wsdl:part name="defaultAccessAssignments" type="policyTypes:DefaultAccessAssignmentList"/>
+   </wsdl:message>
+   <wsdl:message name="setDefaultAccessAssignmentsResponse">
+   </wsdl:message>
+
+   <wsdl:message name="createUserGroupRequest">
+      <wsdl:part name="userGroupInfo" type="tns:UserGroupInfo"/>
+   </wsdl:message>
+   <wsdl:message name="createUserGroupResponse">
+      <wsdl:part name="userGroupCreated" type="tns:UserGroupDTO"/>
+   </wsdl:message>
+
+   <wsdl:message name="removeUsersFromUserGroupRequest">
+		<wsdl:part name="userGroupID" type="basicTypes:ID"/>
+		<wsdl:part name="userIDs" type="basicTypes:IDList"/>
+   </wsdl:message>
+   <wsdl:message name="removeUsersFromUserGroupResponse">
+   </wsdl:message>
+
+   <wsdl:message name="runUserGroupQueryRequest">
+	<wsdl:part name="userGroupQuerySpec" type="tns:UserGroupQuerySpec"/>
+   </wsdl:message>
+   <wsdl:message name="runUserGroupQueryResponse">
+	   <wsdl:part name="userGroupQueryResults" type="tns:UserGroupQueryResults"/>
+   </wsdl:message>
+
+   <wsdl:message name="UniqueConstraintViolationFault">
+		<wsdl:part name="UniqueConstraintViolationFault" type="basicTypes:UniqueConstraintViolationFault" />
+   </wsdl:message>
+   
+   <wsdl:message name="CommitFault">
+		<wsdl:part name="CommitFault" type="basicTypes:CommitFault"/>
+   </wsdl:message>
+	
+   <wsdl:message name="UnauthorizedCallerFault">
+		<wsdl:part name="UnauthorizedCallerFault" type="basicTypes:UnauthorizedCallerFault"/>
+   </wsdl:message>
+	
+   <wsdl:message name="ServiceNotReadyFault">
+		<wsdl:part name="ServiceNotReadyFault" type="basicTypes:ServiceNotReadyFault"/>
+   </wsdl:message>
+	
+   <wsdl:message name="UnknownEntryFault">
+		<wsdl:part name="UnknownEntryFault" type="basicTypes:UnknownEntryFault"/>
+   </wsdl:message>
+	
+   <wsdl:portType name="UserGroupServiceIF">
+		<wsdl:operation name="getAllUserGroups">
+			<wsdl:input message="tns:getAllUserGroupsRequest" name="getAllUserGroupsRequest"/>
+			<wsdl:output message="tns:getAllUserGroupsResponse" name="getAllUserGroupsResponse"/>
+	    	<wsdl:fault name="CommitFault" message="tns:CommitFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>		
+	   </wsdl:operation>
+
+	   <wsdl:operation name="getUserGroupsForUser">
+			<wsdl:input message="tns:getUserGroupsForUserRequest" name="getUserGroupsForUserRequest"/>
+			<wsdl:output message="tns:getUserGroupsForUserResponse" name="getUserGroupsForUserResponse"/>
+	    	<wsdl:fault name="CommitFault" message="tns:CommitFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>		
+	   </wsdl:operation>
+	   
+	   <wsdl:operation name="getUserGroup" parameterOrder="userGroupID">
+		    <wsdl:input message="tns:getUserGroupRequest" name="getUserGroupRequest"/>
+	        <wsdl:output message="tns:getUserGroupResponse" name="getUserGroupResponse"/>
+			<wsdl:fault name="CommitFault" message="tns:CommitFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+	   </wsdl:operation>
+
+	   <wsdl:operation name="getUsersInUserGroup" parameterOrder="userGroupID">
+			<wsdl:input message="tns:getUsersInUserGroupRequest" name="getUsersInUserGroupRequest"/>
+	        <wsdl:output message="tns:getUsersInUserGroupResponse" name="getUsersInUserGroupResponse"/>
+			<wsdl:fault name="CommitFault" message="tns:CommitFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+	   </wsdl:operation>
+
+	   <wsdl:operation name="addUsersToUserGroup" parameterOrder="userGroupID userIDs">
+		    <wsdl:input message="tns:addUsersToUserGroupRequest" name="addUsersToUserGroupRequest"/>
+			<wsdl:output message="tns:addUsersToUserGroupResponse" name="addUsersToUserGroupResponse"/>
+			<wsdl:fault name="CommitFault" message="tns:CommitFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>			
+	   </wsdl:operation>
+
+	   <wsdl:operation name="removeUsersFromUserGroup" parameterOrder="userGroupID userIDs">
+		    <wsdl:input message="tns:removeUsersFromUserGroupRequest" name="removeUsersFromUserGroupRequest"/>
+			<wsdl:output message="tns:removeUsersFromUserGroupResponse" name="removeUsersFromUserGroupResponse"/>
+			<wsdl:fault name="CommitFault" message="tns:CommitFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+	   </wsdl:operation>
+
+	   <wsdl:operation name="getDefaultAccessAssignments" parameterOrder="userGroupID">
+		    <wsdl:input message="tns:getDefaultAccessAssignmentsRequest" name="getDefaultAccessAssignmentsRequest"/>
+			<wsdl:output message="tns:getDefaultAccessAssignmentsResponse" name="getDefaultAccessAssignmentsResponse"/>
+			<wsdl:fault name="CommitFault" message="tns:CommitFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+	   </wsdl:operation>
+
+	   <wsdl:operation name="setDefaultAccessAssignments" parameterOrder="userGroupID defaultAccessAssignments">
+			<wsdl:input message="tns:setDefaultAccessAssignmentsRequest" name="setDefaultAccessAssignmentsRequest"/>
+			<wsdl:output message="tns:setDefaultAccessAssignmentsResponse" name="setDefaultAccessAssignmentsResponse"/>
+			<wsdl:fault name="CommitFault" message="tns:CommitFault"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+	   </wsdl:operation>
+
+	   <wsdl:operation name="linkExternalGroups" parameterOrder="externalGroupID">
+		   <wsdl:input message="tns:linkExternalGroupsRequest" name="linkExternalGroupsRequest"/>
+		   <wsdl:output message="tns:linkExternalGroupsResponse" name="linkExternalGroupsResponse"/>
+   		   <wsdl:fault name="CommitFault" message="tns:CommitFault"/>
+		   <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+		   <wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>		   
+	   </wsdl:operation>
+
+	   <wsdl:operation name="updateGroup" parameterOrder="userGroupToUpdate">
+		   <wsdl:input message="tns:updateGroupRequest" name="updateGroupRequest"/>
+		   <wsdl:output message="tns:updateGroupResponse" name="updateGroupResponse"/>
+		   <wsdl:fault name="CommitFault" message="tns:CommitFault"/>
+   		   <wsdl:fault name="UniqueConstraintViolationFault" message="tns:UniqueConstraintViolationFault"/>
+		   <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+		   <wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+	   </wsdl:operation>
+
+	   <wsdl:operation name="deleteGroup" parameterOrder="userGroupID">
+		   <wsdl:input message="tns:deleteGroupRequest" name="deleteGroupRequest"/>
+		   <wsdl:output message="tns:deleteGroupResponse" name="deleteGroupResponse"/>
+		   <wsdl:fault name="CommitFault" message="tns:CommitFault"/>
+		   <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+		   <wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		   <wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>		   
+	   </wsdl:operation>
+
+	   <wsdl:operation name="runUserGroupQuery" parameterOrder="userGroupQuerySpec">
+		   <wsdl:input message="tns:runUserGroupQueryRequest" name="runUserGroupQueryRequest"/>
+		   <wsdl:output message="tns:runUserGroupQueryResponse" name="runUserGroupQueryResponse"/>
+   		   <wsdl:fault name="CommitFault" message="tns:CommitFault"/>
+		   <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+		   <wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+	   </wsdl:operation> 
+
+	   <wsdl:operation name="runExternalUserGroupQuery" parameterOrder="userGroupQuerySpec">
+		   <wsdl:input message="tns:runExternalUserGroupQueryRequest" name="runExternalUserGroupQueryRequest"/>
+		   <wsdl:output message="tns:runExternalUserGroupQueryResponse" name="runExternalUserGroupQueryResponse"/>
+		   <wsdl:fault name="CommitFault" message="tns:CommitFault"/>
+		   <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+		   <wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+	   </wsdl:operation>
+
+	   <wsdl:operation name="createUserGroup" parameterOrder="userGroupInfo">
+		   <wsdl:input message="tns:createUserGroupRequest" name="createUserGroupRequest"/>
+		   <wsdl:output message="tns:createUserGroupResponse" name="createUserGroupResponse"/>
+		   <wsdl:fault name="CommitFault" message="tns:CommitFault"/>
+   		   <wsdl:fault name="UniqueConstraintViolationFault" message="tns:UniqueConstraintViolationFault"/>
+		   <wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+		   <wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+	   </wsdl:operation>
+	</wsdl:portType>
+</wsdl:definitions>

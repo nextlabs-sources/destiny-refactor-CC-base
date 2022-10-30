@@ -1,0 +1,36 @@
+<project name="server-dictionary" default="build" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<var name="nlbuildroot" value="${basedir}/../../.." />
+	<property name="common.build.script.dir" value="${nlbuildroot}/build_scripts" />
+
+	<!-- Load build properties -->
+  <property file="${basedir}/build.properties" />
+  <property name="obfuscation.config.file" location="config.xml" />
+  <!-- Import required common build files -->
+  <import file="${common.build.script.dir}/hibernate_client_build.xml" />
+  <import file="${common.build.script.dir}/obfuscate_build.xml" />
+
+  <property name="initial.jar.name" location="${build.dir}/orig-server-dictionary.jar" />
+  <property name="final.jar.name" location="${build.dir}/server-dictionary.jar" />
+
+
+  <target name="init" depends="java_build.init, obfuscate_build.init"/>
+  <target name="test" depends="hibernate_client_build.test">
+    <!--  FIX ME - This is a hack.  The dictionary test suite currently destroys the seed data.  
+	In the long run, we need to fix the test so that it doesn't do this -->
+	<ant dir="../../build-scripts/project" target="refresh-bluejungle-seeds" />
+  </target> 
+
+  <target name="package" depends="hibernate_client_build.package, obfuscate_build.package">
+    <jar destfile="${build.dir}/${jar.file.name}">
+      <fileset dir="${build.main.classes.dir}" />
+      <fileset dir="${build.main.hibernate.dir}" />
+    </jar>
+
+    <jar destfile="${build.dir}/server-dictionary-tests.jar">
+	  <fileset dir="${build.test.classes.dir}" />
+	</jar>
+  </target>
+</project>
+
+

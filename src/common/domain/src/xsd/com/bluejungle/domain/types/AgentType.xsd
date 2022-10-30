@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://bluejungle.com/domain/types" targetNamespace="http://bluejungle.com/domain/types">
+	
+	<xs:simpleType name="AgentTypeDTO">
+		<xs:annotation>
+			<xs:docomentation>Represents an enumeration of agent types</xs:docomentation>
+		</xs:annotation>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="DESKTOP"/>
+				<xs:enumeration value="FILE_SERVER"/>
+				<xs:enumeration value="PORTAL"/>
+				<xs:enumeration value="ACTIVE_DIRECTORY"/>
+			</xs:restriction>
+	</xs:simpleType>
+		
+</xs:schema>

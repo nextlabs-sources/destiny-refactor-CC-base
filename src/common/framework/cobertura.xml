@@ -1,0 +1,90 @@
+<project name="cli-test" default="test">
+	<!-- Notes: nlbuildroot must be defined before build-scripts/etc/build.properties and
+		build-scripts/etc/build_external.properties
+	-->
+	<var name="nlbuildroot" value="${basedir}/../../.." />
+	<property name="src.dir" 			value="${basedir}/src/java/main/" />
+	<property name="src.test.dir" 		value="${basedir}/src/java/test/" />
+	<property name="build.project.dir" 	value="${build.root.dir}/common/framework/" />
+	<property name="build.dir" 		value="${build.project.dir}/classes" />
+	<property name="build.test.dir" 	value="${build.project.dir}/testclasses" />
+	<property name="instrumented.dir" 	value="${build.project.dir}/instrumented" />
+		
+	<property file="${nlbuildroot}/src/build-scripts/etc/build_external.properties"/>
+
+	<property name="cobertura.dir" value="${external.dir}/cobertura-1.9" />
+
+	<path id="cobertura.classpath">
+	    <fileset dir="${cobertura.dir}">
+	        <include name="cobertura.jar" />
+	        <include name="lib/**/*.jar" />
+	    </fileset>
+	</path>
+
+	<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />	
+		
+	<target name="test">
+		<delete dir="${instrumented.dir}"/>
+		<delete file="${build.project.dir}/cobertura.ser" />
+		
+		<mkdir dir="${build.test.dir}"/>
+		<mkdir dir="${instrumented.dir}"/>
+		
+		<javac srcdir="${src.test.dir}" 
+				destdir="${build.test.dir}" 
+				includes="com/nextlabs/**"
+				source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}"
+				debug="true">
+			<classpath>
+				<pathelement location="${build.root.dir}/cli.jar"/>
+				<pathelement location="${xlib_jar_dir}/junit-4.3.jar" />
+			</classpath>
+		</javac>
+		
+			
+		<cobertura-instrument todir="${instrumented.dir}" 
+			datafile="${build.project.dir}/cobertura.ser">
+			<fileset dir="${build.root.dir}">
+				<include name="cli.jar" />
+			</fileset>
+		</cobertura-instrument>
+		
+		<mkdir dir="${build.project.dir}/junit-xml"/>
+		<mkdir dir="${build.project.dir}/junit-html"/>
+			
+		<junit fork="yes" printsummary="true" haltonfailure="yes" >
+			<sysproperty key="net.sourceforge.cobertura.datafile" file="${build.project.dir}/cobertura.ser" />
+						
+			<classpath>
+				<fileset dir="${instrumented.dir}" includes="*.jar" />
+				<pathelement location="${build.root.dir}/cli.jar" />
+				<pathelement location="${xlib_jar_dir}/junit-4.3.jar" />
+				<dirset dir="${build.test.dir}" />
+			</classpath>
+			<classpath refid="cobertura.classpath" />
+
+			<test name="com.nextlabs.shared.tools.TestCliSuite" 
+				todir="${build.project.dir}/junit-xml">
+				<formatter type="xml"/>
+			</test>
+
+			<formatter type="plain"/>
+		</junit>
+		
+		
+		<junitreport todir="${build.project.dir}/junit-xml">
+			<fileset dir="${build.project.dir}/junit-xml">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${build.project.dir}/junit-html" />
+		</junitreport>
+
+		
+		<mkdir dir="${build.project.dir}/cobertura-html"/>
+		<cobertura-report format="html" 
+			destdir="${build.project.dir}/cobertura-html" 
+			srcdir="${src.dir}" 
+			datafile="${build.project.dir}/cobertura.ser"
+		/>
+	</target>
+</project>

@@ -1,0 +1,15 @@
+action a01 = (CHANGE_PROPERTIES OR DELETE OR CREATE_NEW) AND (EDIT_COPY OR CUT_PASTE)
+
+action a02 =  COPY_PASTE OR BATCH OR BURN AND print OR eMail
+
+action a03 = * OR * OR * OR *;
+
+action a04 = (COPY OR (EMAIL OR (IM AND (WEBMAIL OR RENAME))))
+
+action a05 = action.Name >= 1 and action.group > .01 aNd action.name <=100.001 and action.group = "me" and action.name < "1/1/01"
+
+action a06 = NOT action.Name = "Unclassifiefd" and action.group>.01
+
+action a07 = NOT ( action.Name == "Unclassifiefd" and action.group>.01 )
+
+action a08 = action.Name >= 1 and NOT action.group>.01 aNd NOT (action.group <=100.001 and action.name == "me" and action.group < "1/1/01")

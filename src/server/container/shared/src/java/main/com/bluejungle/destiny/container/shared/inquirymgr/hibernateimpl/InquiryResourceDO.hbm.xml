@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.inquirymgr.hibernateimpl">
+	
+	<class name="InquiryResourceDO" table="INQUIRY_RESOURCES">
+		<!-- Generic persisted properties -->
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		
+		<property name="name" length="512" not-null="true"/>
+
+		<!-- Many obligations are linked to the same inquiry definition -->		
+		<many-to-one name="inquiry" 
+					 class="InquiryDO" 
+					 column="inquiry_id"
+					 not-null="true"/>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,17 @@
+POLICY AllowPolicyOnFuad
+    DESCRIPTION "Policy that allows Hor-Kan access to *.java while on localhost and to Bo Meng while using small.exe and denies it to everyone else."
+    FOR resource.name = "?c:\\**.java"
+    ON *
+    BY (
+        (
+                (PRINCIPAL.USER.NAME = "hchan@bluejungle.com" AND
+                 PRINCIPAL.HOST.NAME = "savaii.bluejungle.com")
+        ) OR
+        (
+                (PRINCIPAL.USER.NAME = "bmeng@bluejungle.com" AND
+                 PRINCIPAL.APPLICATION.DISPLAYNAME = "small")
+        )
+       )
+    DO ALLOW
+    BY DEFAULT DO DENY
+    ON ALLOW DO log

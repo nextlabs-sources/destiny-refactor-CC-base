@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+		xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+		xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		xmlns:bindings="http://nextlabs.com/destiny/bindings/keymanagement"
+		xmlns:tns="http://nextlabs.com/destiny/services/keymanagement"
+		targetNamespace="http://nextlabs.com/destiny/services/keymanagement"
+>
+
+	<wsdl:import 
+			namespace="http://nextlabs.com/destiny/services/keymanagement" 
+			location="bindings/KeyManagementBindings.wsdl"
+	/> 
+
+	<wsdl:service name="KeyManagementService">
+		<wsdl:port binding="tns:KeyManagementIFBinding" name="KeyManagementIFPort">
+			<soap:address location="http://localhost:8080/dkms/services/KeyManagementService"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

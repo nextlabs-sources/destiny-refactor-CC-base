@@ -1,0 +1,8 @@
+POLICY TrackingPolicy
+    DESCRIPTION "Applies to everyone, doing anything, on any document -- tracking policy."
+    FOR resource.name = "?c:\\**" or dir_test
+    ON *
+    BY *
+    DO ALLOW
+    ON ALLOW DO log
+    deployed to agent.type = desktop

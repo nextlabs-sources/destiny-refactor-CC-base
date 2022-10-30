@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<project name="agent-common" default="build">
+	<property name="src.dir"    value="${basedir}"/>
+	<property name="build.dest" value="${build.root.dir}/common/agent"/>
+	<property name="cfg.dest" value="${build.root.dir}/config" />
+	<property name="doc.dest" value="${build.root.dir}/common/agent/doc" />
+	
+	<path id="compile.agentcommon.classpath">
+		<pathelement path="${build.root.dir}/log-types.jar" />
+		<pathelement path="${build.root.dir}/common-domain-types.jar" />
+		<pathelement path="${build.root.dir}/common-domain.jar" />		
+		<pathelement path="${build.root.dir}/common-framework.jar" />
+	 	<pathelement path="${build.root.dir}/common-oil.jar"/>				
+		<pathelement path="${build.root.dir}/management-types.jar" />
+		<pathelement path="${build.root.dir}/dabs-agent-services.jar" />
+		<pathelement path="${build.root.dir}/dabs-common-services.jar" />
+		<path refid="compile.classpath" />
+	</path>
+	
+	<target name="pre-build">
+		<mkdir dir="${build.dest}"/>
+	</target>
+	
+	<target name="doc">
+		<mkdir dir="${doc.dest}" />
+		<javadoc sourcepath="${src.dir}" destdir="${doc.dest}" linksource="yes" classpathref="compile.agentcommon.classpath" source="${compile.source}" >
+			<packageset dir="${src.dir}" defaultexcludes="yes">
+				<include name="com/bluejungle/destiny/agent/**" />
+				<exclude name="**/tests/**" />
+			</packageset>
+		</javadoc>
+	</target>
+	
+	<target name="compile" depends="pre-build">
+		<javac srcdir="${src.dir}" destdir="${build.dest}" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+                    <classpath refid="compile.agentcommon.classpath" />
+                </javac>
+        </target>		
+	
+	<target name="jar" depends="compile">
+		<jar destfile="${build.root.dir}/agent-common.jar">
+			<fileset dir="${build.dest}">
+				<include name="**/*.class"/>
+			</fileset>
+		</jar>
+	</target>
+	
+	<target name="build" depends="compile,jar">
+	</target>	
+</project>
+

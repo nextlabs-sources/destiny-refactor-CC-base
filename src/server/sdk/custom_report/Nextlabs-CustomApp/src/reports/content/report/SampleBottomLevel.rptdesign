@@ -1,0 +1,727 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.20" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 2.5.1.v20090903 Build &lt;2.5.1.v20090917-1447></property>
+    <property name="units">in</property>
+    <text-property name="title">Control Center Reporter</text-property>
+    <property name="comments">Copyright (c) 2008 NextLabs, Inc.</property>
+    <html-property name="description">Creates a listing report with fields from the data source.</html-property>
+    <text-property name="displayName">Simple Listing</text-property>
+    <property name="iconFile">/templates/simple_listing.gif</property>
+    <property name="cheatSheet">org.eclipse.birt.report.designer.ui.cheatsheet.simplelisting</property>
+    <property name="layoutPreference">auto layout</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">PA_components.rptlibrary</property>
+            <property name="namespace">PA_components</property>
+        </structure>
+    </list-property>
+    <parameters>
+        <scalar-parameter name="SortKey" id="173">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">true</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">Date</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="ExistingSortKey" id="179">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">Date</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="UserName" id="159">
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">rlin%</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="Action" id="160">
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">%</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="Resource" id="180">
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">%</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="Policy" id="181">
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">%</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="Enforcement" id="163">
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">%</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="EventLevel" id="164">
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">3</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="concealValue">false</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="SelectedLogID" id="249">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">true</property>
+            <property name="dataType">decimal</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">12,884,901,891</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="Host" id="278">
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">%</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="TimeDimension" id="279">
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">""</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="Time" id="280">
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">1213945200000</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="BeginDate" id="281">
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">0</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="EndDate" id="282">
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">253402329599000</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="Title" id="308">
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <script-data-source name="PolicyActivityDataSource" id="310"/>
+    </data-sources>
+    <data-sets>
+        <script-data-set name="TopDetails" id="311">
+            <list-property name="resultSetHints">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">id</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">user_name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">Policy</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">action</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">policy_decision</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">ComputedTime</property>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">ShortenedResource</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">id</property>
+                    <text-property name="displayName">id</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">user_name</property>
+                    <property name="alias">User</property>
+                    <text-property name="displayName">User</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Policy</property>
+                    <text-property name="displayName">Policy</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">action</property>
+                    <property name="alias">Action</property>
+                    <text-property name="displayName">action</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">policy_decision</property>
+                    <property name="alias">Enforcement</property>
+                    <text-property name="displayName">Enforcement</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">ComputedTime</property>
+                    <property name="alias">Date</property>
+                    <text-property name="displayName">Date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">ShortenedResource</property>
+                    <property name="alias">Resource</property>
+                    <text-property name="displayName">Resource</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">id</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">User</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">Policy</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">Action</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">Enforcement</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">Date</property>
+                        <property name="dataType">date-time</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">Resource</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">PolicyActivityDataSource</property>
+            <method name="open"><![CDATA[mgr = new Packages.com.nextlabs.report.datagen.ReportDataManagerFactory.getReportDataManager();
+index = 0;
+var databaseType = mgr.getDatabaseType();
+if (databaseType == com.nextlabs.report.datagen.IReportDataManager.DB_TYPE_MS_SQL) {
+    qryStr = "SELECT TOP 100  timestamp, user_name, policy_full_name, source_resource_short_name, action, policy_decision" +
+                    " FROM policy_log_v1 AS palog WHERE timestamp >= " +
+                    mgr.convertToTimestamp(params["BeginDate"]) + " AND timestamp <= " + mgr.convertToTimestamp(params["EndDate"]) + 
+                    " AND palog.policy_decision = 'A' AND palog.log_level = 3 " +
+                    "  ORDER BY timestamp DESC"
+} else if ( databaseType == com.nextlabs.report.datagen.IReportDataManager.DB_TYPE_ORACLE) {
+    qryStr = " SELECT timestamp, user_name, policy_full_name, source_resource_short_name, action, policy_decision" +
+                    " FROM policy_log_v1 palog WHERE timestamp >= " +
+                    mgr.convertToTimestamp(params["BeginDate"]) + " AND timestamp <= " + mgr.convertToTimestamp(params["EndDate"]) + 
+                    " AND palog.policy_decision = 'A' AND palog.log_level = 3 " +
+                    " ROWNUM <= 100 ORDER BY timestamp DESC" 
+} else {
+    qryStr = " SELECT timestamp, user_name, policy_full_name, source_resource_short_name, action, policy_decision" +
+                    " FROM policy_log_v1 AS palog WHERE timestamp >= " +
+                    mgr.convertToTimestamp(params["BeginDate"]) + " AND timestamp <= " + mgr.convertToTimestamp(params["EndDate"]) + 
+                    " AND palog.policy_decision = 'A' AND palog.log_level = 3 " +
+                    "  ORDER BY timestamp DESC LIMIT 100" 
+}
+data = mgr.runQuery(qryStr);
+]]></method>
+            <method name="fetch"><![CDATA[if(index  < data.size()){
+
+	row["Date"] = data.get(index, 0);
+	row["user_name"] = data.get(index, 1);
+	row["Policy"] = data.get(index, 2);
+	row["Resource"] = data.get(index, 3);
+	row["Action"] = data.get(index,4);
+	row["Enforcement"] = data.get(index, 5);
+	
+	++index;
+	return true;
+}
+
+return false;]]></method>
+        </script-data-set>
+    </data-sets>
+    <styles>
+        <style name="crosstab" id="24">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab-cell" id="25">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="NewStyle" id="182">
+            <property name="fontFamily">"v"</property>
+            <property name="color">#FFFFFF</property>
+        </style>
+        <style name="NewStyle1" id="190">
+            <property name="backgroundColor">#004699</property>
+            <property name="fontFamily">"Verdana"</property>
+            <property name="fontSize">small</property>
+            <property name="fontWeight">bold</property>
+            <property name="color">#FFFFFF</property>
+            <property name="textUnderline">underline</property>
+            <property name="paddingTop">1pt</property>
+            <property name="paddingBottom">1pt</property>
+        </style>
+        <style name="TableEntryHeader" id="246">
+            <property name="fontFamily">"Verdana"</property>
+            <property name="fontSize">small</property>
+            <property name="fontWeight">bolder</property>
+            <property name="color">#004699</property>
+            <property name="textUnderline">underline</property>
+            <property name="paddingTop">0pt</property>
+            <property name="paddingBottom">0pt</property>
+            <property name="textAlign">right</property>
+        </style>
+        <style name="TableValueEntry" id="259">
+            <property name="fontFamily">"Verdana"</property>
+            <property name="fontSize">small</property>
+            <property name="fontWeight">bold</property>
+            <property name="paddingLeft">5pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="orientation">landscape</property>
+            <property name="topMargin">1in</property>
+            <property name="leftMargin">0.5in</property>
+            <property name="bottomMargin">1in</property>
+            <property name="rightMargin">0.5in</property>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <data id="309">
+            <property name="fontFamily">"Verdana"</property>
+            <property name="fontSize">large</property>
+            <property name="textAlign">center</property>
+            <property name="allowExport">false</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">Title</property>
+                    <expression name="expression">params["Title"]</expression>
+                </structure>
+            </list-property>
+            <property name="resultSetColumn">Title</property>
+        </data>
+        <list id="270">
+            <property name="pageBreakInterval">50</property>
+            <detail>
+                <table id="123" name="Table">
+                    <property name="marginTop">0pt</property>
+                    <property name="masterPage">Simple MasterPage</property>
+                    <property name="pageBreakInside">avoid</property>
+                    <property name="canShrink">true</property>
+                    <property name="width">100%</property>
+                    <property name="dataSet">TopDetails</property>
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">all</property>
+                            <expression name="valueExpr">rowCount = Total.count();
+rowCount &lt; 1</expression>
+                        </structure>
+                    </list-property>
+                    <list-property name="boundDataColumns">
+                        <structure>
+                            <property name="name">id</property>
+                            <expression name="expression">dataSetRow["id"]</expression>
+                            <property name="dataType">decimal</property>
+                        </structure>
+                        <structure>
+                            <property name="name">Action</property>
+                            <expression name="expression">dataSetRow["Action"]</expression>
+                            <property name="dataType">string</property>
+                        </structure>
+                        <structure>
+                            <property name="name">Date</property>
+                            <expression name="expression">dataSetRow["Date"]</expression>
+                            <property name="dataType">date-time</property>
+                        </structure>
+                        <structure>
+                            <property name="name">Resource</property>
+                            <expression name="expression">dataSetRow["Resource"]</expression>
+                            <property name="dataType">string</property>
+                        </structure>
+                        <structure>
+                            <property name="name">User</property>
+                            <expression name="expression">dataSetRow["User"]</expression>
+                            <property name="dataType">string</property>
+                        </structure>
+                        <structure>
+                            <property name="name">Enforcement</property>
+                            <text-property name="displayName">policy_decision</text-property>
+                            <expression name="expression">dataSetRow["Enforcement"]</expression>
+                            <property name="dataType">string</property>
+                        </structure>
+                        <structure>
+                            <property name="name">Policy</property>
+                            <text-property name="displayName">Policy</text-property>
+                            <expression name="expression">dataSetRow["Policy"]</expression>
+                            <property name="dataType">string</property>
+                        </structure>
+                    </list-property>
+                    <property name="repeatHeader">true</property>
+                    <property name="pageBreakInterval">20</property>
+                    <list-property name="sort">
+                        <structure>
+                            <expression name="key">if (params["SortKey"] == params["ExistingSortKey"]){
+
+} else if (params["SortKey"] == "Date") {
+row["Time"]
+} else if (params["SortKey"] == "User") {
+row["User"]
+} else if (params["SortKey"] == "Computer") {
+row["Computer"]
+} else if (params["SortKey"] == "Resource") {
+row["Resource"]
+} else if (params["SortKey"] == "Action") {
+row["Action"]
+} else {
+row["Time"]
+}</expression>
+                            <property name="direction">desc</property>
+                        </structure>
+                    </list-property>
+                    <column id="145"/>
+                    <column id="146"/>
+                    <column id="286"/>
+                    <column id="148"/>
+                    <column id="150"/>
+                    <column id="303"/>
+                    <header>
+                        <row id="124">
+                            <property name="backgroundColor">#C0C0C0</property>
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="fontSize">smaller</property>
+                            <property name="color">#000000</property>
+                            <property name="textAlign">center</property>
+                            <cell id="125">
+                                <property name="backgroundAttachment">scroll</property>
+                                <property name="paddingTop">1pt</property>
+                                <property name="paddingLeft">1pt</property>
+                                <property name="paddingBottom">1pt</property>
+                                <property name="paddingRight">5pt</property>
+                                <property name="textAlign">left</property>
+                                <label id="175">
+                                    <property name="style">NewStyle</property>
+                                    <property name="fontFamily">"Arial"</property>
+                                    <property name="color">#000000</property>
+                                    <property name="marginTop">0pt</property>
+                                    <property name="paddingTop">1pt</property>
+                                    <text-property name="text">          Date          </text-property>
+                                    <structure name="action">
+                                        <property name="linkType">none</property>
+                                    </structure>
+                                </label>
+                            </cell>
+                            <cell id="126">
+                                <property name="paddingTop">1pt</property>
+                                <property name="textAlign">left</property>
+                                <label id="153">
+                                    <property name="style">NewStyle</property>
+                                    <property name="fontFamily">"Arial"</property>
+                                    <property name="color">#000000</property>
+                                    <text-property name="text">User	</text-property>
+                                    <structure name="action">
+                                        <property name="linkType">none</property>
+                                    </structure>
+                                </label>
+                            </cell>
+                            <cell id="283">
+                                <property name="textAlign">left</property>
+                                <label id="289">
+                                    <property name="paddingTop">1pt</property>
+                                    <text-property name="text">Policy</text-property>
+                                </label>
+                            </cell>
+                            <cell id="128">
+                                <property name="textAlign">left</property>
+                                <label id="293">
+                                    <property name="paddingTop">1pt</property>
+                                    <text-property name="text">Resource</text-property>
+                                </label>
+                            </cell>
+                            <cell id="130">
+                                <property name="paddingTop">1pt</property>
+                                <property name="paddingRight">3pt</property>
+                                <property name="textAlign">left</property>
+                                <label id="161">
+                                    <property name="style">NewStyle</property>
+                                    <property name="fontFamily">"Arial"</property>
+                                    <property name="color">#000000</property>
+                                    <text-property name="text">Action</text-property>
+                                    <structure name="action">
+                                        <property name="linkType">none</property>
+                                    </structure>
+                                </label>
+                            </cell>
+                            <cell id="300">
+                                <property name="paddingTop">1pt</property>
+                                <property name="paddingRight">3pt</property>
+                                <property name="textAlign">left</property>
+                                <label id="304">
+                                    <text-property name="text">Enforcement</text-property>
+                                </label>
+                            </cell>
+                        </row>
+                    </header>
+                    <detail>
+                        <row id="131">
+                            <property name="height">200%</property>
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="fontSize">7pt</property>
+                            <property name="fontWeight">normal</property>
+                            <property name="color">#000000</property>
+                            <property name="borderBottomColor">black</property>
+                            <property name="masterPage">Simple MasterPage</property>
+                            <property name="pageBreakInside">auto</property>
+                            <list-property name="highlightRules">
+                                <structure>
+                                    <property name="operator">eq</property>
+                                    <property name="backgroundColor">#E1E2E3</property>
+                                    <expression name="testExpr">row["__rownum"] % 2</expression>
+                                    <simple-property-list name="value1">
+                                        <value>1</value>
+                                    </simple-property-list>
+                                </structure>
+                            </list-property>
+                            <cell id="132">
+                                <property name="colSpan">1</property>
+                                <property name="rowSpan">1</property>
+                                <property name="paddingTop">1pt</property>
+                                <property name="paddingLeft">3pt</property>
+                                <property name="paddingRight">5pt</property>
+                                <data id="176">
+                                    <property name="resultSetColumn">Date</property>
+                                    <structure name="action">
+                                        <property name="linkType">none</property>
+                                    </structure>
+                                </data>
+                            </cell>
+                            <cell id="133">
+                                <property name="colSpan">1</property>
+                                <property name="rowSpan">1</property>
+                                <property name="paddingTop">1pt</property>
+                                <property name="paddingLeft">3pt</property>
+                                <property name="paddingRight">2pt</property>
+                                <data id="154">
+                                    <property name="resultSetColumn">User</property>
+                                </data>
+                            </cell>
+                            <cell id="284">
+                                <property name="paddingTop">1pt</property>
+                                <property name="paddingLeft">3pt</property>
+                                <property name="paddingRight">5pt</property>
+                                <data id="317">
+                                    <property name="resultSetColumn">Policy</property>
+                                </data>
+                            </cell>
+                            <cell id="135">
+                                <property name="colSpan">1</property>
+                                <property name="rowSpan">1</property>
+                                <property name="paddingTop">1pt</property>
+                                <property name="paddingLeft">3pt</property>
+                                <property name="paddingRight">5pt</property>
+                                <data id="294">
+                                    <property name="resultSetColumn">Resource</property>
+                                </data>
+                            </cell>
+                            <cell id="137">
+                                <property name="colSpan">1</property>
+                                <property name="rowSpan">1</property>
+                                <property name="paddingTop">1pt</property>
+                                <property name="paddingLeft">3pt</property>
+                                <property name="paddingRight">3pt</property>
+                                <data id="313">
+                                    <property name="resultSetColumn">Action</property>
+                                </data>
+                            </cell>
+                            <cell id="301">
+                                <property name="paddingTop">1pt</property>
+                                <property name="paddingLeft">3pt</property>
+                                <property name="paddingRight">3pt</property>
+                                <data id="314">
+                                    <property name="resultSetColumn">Enforcement</property>
+                                </data>
+                            </cell>
+                        </row>
+                    </detail>
+                    <footer>
+                        <row id="138">
+                            <property name="borderTopColor">#000000</property>
+                            <property name="borderTopStyle">solid</property>
+                            <property name="borderTopWidth">1px</property>
+                            <cell id="139"/>
+                            <cell id="140"/>
+                            <cell id="285"/>
+                            <cell id="142"/>
+                            <cell id="144"/>
+                            <cell id="302"/>
+                        </row>
+                    </footer>
+                </table>
+            </detail>
+        </list>
+        <label name="EmptyResultSetMsg" id="307" extends="PA_components.EmptyResultSetMsg"/>
+    </body>
+</report>

@@ -1,0 +1,109 @@
+<project basedir="." name="dbinit_tool" default="build">
+
+    <property name="src.dir"               value="${basedir}"/>
+    <property name="dbInit.root.dir"       value="${build.root.dir}/tools/dbInit"/>
+    <property name="dbInit.mgmt.dir"       value="${dbInit.root.dir}/mgmt"/>
+    <property name="dbInit.activity.dir"   value="${dbInit.root.dir}/activity"/>
+    <property name="dbInit.dictionary.dir" value="${dbInit.root.dir}/dictionary"/>
+    <property name="dbInit.pf.dir"         value="${dbInit.root.dir}/pf"/>
+
+    <path id="run.dbinit.activity.classpath">
+        <fileset dir="${dbInit.activity.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="run.dbinit.dictionary.classpath">
+        <fileset dir="${dbInit.dictionary.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="run.dbinit.mgmt.classpath">
+        <fileset dir="${dbInit.mgmt.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="run.dbinit.pf.classpath">
+        <fileset dir="${dbInit.pf.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="build-dbinit">
+        <ant dir="${src.root.dir}/server/tools/dbinit/src/java/main" target="build" inheritRefs="true"/>
+    </target>
+
+    <target name="build-dbinit-misc">
+        <ant dir="${src.root.dir}/server/tools/dbinit/src/java/main" target="build-misc" inheritRefs="true"/>
+    </target>
+
+    <target name="build-schemas" depends="create-activity-schema, create-dictionary-schema, create-mgmt-schema, create-pf-schema">
+    </target>
+
+    <target name="create-activity-schema" description="Creates activity repository">
+        <!-- Prepare the config file -->
+        <copy file="${dbInit.activity.dir}/activity.cfg" tofile="${dbInit.activity.dir}/activity.cfg"/>
+        <!-- Starts the seed data utility for activity repository -->
+        <java failonerror="true" jar="${dbInit.root.dir}/db-init.jar" dir="${dbInit.root.dir}" fork="true">
+            <arg line="-install"/>
+            <arg line="-config ${dbInit.activity.dir}/activity.cfg"/>
+            <arg line="-libraryPath ${dbInit.activity.dir}"/>
+            <arg line="-connection ${build.root.dir}/run"/>
+            <classpath refid="run.dbinit.activity.classpath"/>
+        </java>
+    </target>
+
+    <target name="create-dictionary-schema" description="Creates dictionary repository">
+        <!-- Prepare the config file -->
+        <copy file="${dbInit.dictionary.dir}/dictionary_template.cfg" tofile="${dbInit.dictionary.dir}/dictionary.cfg"/>
+        <replace file="${dbInit.dictionary.dir}/dictionary.cfg" token="[BLUEJUNGLE_HOME]" value="${build.root.dir}"/>
+        <replace file="${dbInit.dictionary.dir}/dictionary.cfg" token="\" value="\\"/>
+        <replace file="${dbInit.dictionary.dir}/dictionary.cfg" token="\\\\" value="\\"/>
+        <!-- Starts the seed data utility for activity repository -->
+        <java failonerror="true" jar="${dbInit.root.dir}/db-init.jar" dir="${dbInit.root.dir}" fork="true">
+            <arg line="-install"/>
+            <arg line="-config ${dbInit.dictionary.dir}/dictionary.cfg"/>
+            <arg line="-libraryPath ${dbInit.dictionary.dir}"/>
+            <arg line="-connection ${build.root.dir}/run"/>
+            <classpath refid="run.dbinit.dictionary.classpath"/>
+        </java>
+    </target>
+
+    <target name="create-mgmt-schema">
+        <!-- Prepare the config file -->
+        <copy file="${dbInit.mgmt.dir}/mgmt_template.cfg" tofile="${dbInit.mgmt.dir}/mgmt.cfg"/>
+        <replace file="${dbInit.mgmt.dir}/mgmt.cfg" token="[ADMINISTRATOR_PASSWORD]" value="123blue!"/>
+
+        <!-- Starts the seed data utility for management repository -->
+        <java failonerror="true" jar="${dbInit.root.dir}/db-init.jar" dir="${dbInit.root.dir}" fork="true">
+            <arg line="-install"/>
+            <arg line="-config ${dbInit.mgmt.dir}/mgmt.cfg"/>
+            <arg line="-libraryPath ${dbInit.mgmt.dir}"/>
+            <arg line="-connection ${build.root.dir}/run"/>
+            <classpath refid="run.dbinit.mgmt.classpath"/>
+        </java>
+    </target>
+
+    <target name="create-pf-schema">
+        <!-- Prepare the config file -->
+        <copy file="${dbInit.pf.dir}/pf_template.cfg" tofile="${dbInit.pf.dir}/pf.cfg"/>
+        <replace file="${dbInit.pf.dir}/pf.cfg" token="[BLUEJUNGLE_HOME]" value="${build.root.dir}"/>
+        <replace file="${dbInit.pf.dir}/pf.cfg" token="\" value="\\"/>
+        <replace file="${dbInit.pf.dir}/pf.cfg" token="\\\\" value="\\"/>
+
+        <!-- Starts the seed data utility for pf repository -->
+        <java failonerror="true" jar="${dbInit.root.dir}/db-init.jar" dir="${dbInit.root.dir}" fork="true">
+            <arg line="-install"/>
+            <arg line="-config ${dbInit.pf.dir}/pf.cfg"/>
+            <arg line="-libraryPath ${dbInit.pf.dir}"/>
+            <arg line="-connection ${build.root.dir}/run"/>
+            <classpath refid="run.dbinit.pf.classpath"/>
+        </java>
+    </target>
+
+    <target name="setup-tool">
+        <ant dir="${src.root.dir}/server/tools/dbinit/src/java/main" target="setup-tool" inheritRefs="true"/>
+    </target>
+</project>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.inquirymgr.hibernateimpl">
+	
+	<class name="PolicyDO" table="CACHED_POLICY">
+		<id name="id">
+			<generator class="assigned"/>
+		</id>
+		
+		<!-- At a given time, the folder and policy name should always be unique -->
+		<property name="name">
+			<column name="name" length="512" not-null="true"/>
+		</property>
+		<property name="fullName">
+			<column name="fullname" length="512" not-null="true" index="cachedPolicyFullNameIndex"/>
+		</property>
+	</class>
+</hibernate-mapping>

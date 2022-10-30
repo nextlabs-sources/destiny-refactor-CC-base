@@ -1,0 +1,43 @@
+ID null POLICY policy_with_default
+    DESCRIPTION "this policy has a default clause"
+    FOR resource.fso.name = "c:\\**.java"
+    ON TRUE
+    BY GROUP="engineering"
+    DO allow
+    BY DEFAULT DO deny
+
+
+================ Re-parsed PQL =================
+
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "policy": 'POLICY'
+        IDENTIFIER: 'policy_with_default'
+        "description": 'this policy has a default clause'
+        TARGET: ''
+            FROM: ''
+                RESOURCE_EXPR: ''
+                    RELATION_OP: '='
+                        DOT_EXPRESSION: ''
+                            IDENTIFIER: 'resource'
+                            IDENTIFIER: 'fso'
+                            IDENTIFIER: 'name'
+                        QUOTED_STRING: 'c:\**.java'
+            ACTION_EXPR: ''
+                "true": 'TRUE'
+            SUBJECT_EXPR: ''
+                RELATION_OP: '='
+                    IDENTIFIER: 'GROUP'
+                    QUOTED_STRING: 'engineering'
+        EFFECT_CLAUSE: 'DO'
+            EFFECT_TYPE: 'allow'
+        "default": 'DEFAULT'
+            EFFECT_CLAUSE: 'DO'
+                EFFECT_TYPE: 'deny'

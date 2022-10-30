@@ -1,0 +1,12 @@
+context referenceAttributes0
+/*comment 2*/
+    name0 references A
+
+context referenceAttributes1
+// comment1
+    name1 references X
+,   name2 references Y
+
+context referenceAttributes2 extends referenceAttributes1
+    name3 references Z
+,   name4 multivalued references X

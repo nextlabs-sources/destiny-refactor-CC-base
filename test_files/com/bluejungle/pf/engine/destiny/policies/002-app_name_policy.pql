@@ -1,0 +1,6 @@
+POLICY DenyAutorun
+    DESCRIPTION "Denies run based on application name"
+    FOR TRUE
+    ON RUN
+    BY APPLICATION.NAME = "autorun.exe"
+    DO DENY

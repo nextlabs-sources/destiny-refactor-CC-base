@@ -1,0 +1,16 @@
+<project name="REST-API" default="build">
+
+    <property name="nlbuildroot" value="${basedir}/../../../../.." />
+	
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	
+	
+	<target name="build-rest-api">
+		<ant dir="${basedir}/scripts" target="all" inheritrefs="true"/>
+	</target>
+	
+	<target name="build" depends="build-rest-api">
+	</target>
+
+</project>

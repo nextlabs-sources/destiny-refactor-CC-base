@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+		  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+                  xmlns:common="http://bluejungle.com/destiny/framework/types"
+                  xmlns:domainTypes="http://bluejungle.com/domain/types"
+                  xmlns:types="http://bluejungle.com/destiny/services/management/types" 
+                  xmlns:tns="http://bluejungle.com/destiny/services/management" 
+                  xmlns:policy="http://bluejungle.com/destiny/services/policy/types" 
+                  targetNamespace="http://bluejungle.com/destiny/services/management" 
+                  name="UserRoleService">
+
+    <wsdl:types>
+		<xsd:schema targetNamespace="http://bluejungle.com/destiny/services/management" 
+					xmlns:types="http://bluejungle.com/destiny/services/management/types">
+            <xsd:import namespace="http://bluejungle.com/destiny/services/policy/types" schemaLocation="../../../../../../../../dps/src/wsdl/main/com/bluejungle/pf/destiny/services/types/PolicyTypes.xsd"/>                                
+            <xsd:import namespace="http://bluejungle.com/destiny/framework/types" schemaLocation="../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicTypes.xsd"/>
+            <xsd:import namespace="http://bluejungle.com/destiny/services/management/types" schemaLocation="types/UserDTO.xsd"/>						
+		</xsd:schema>
+	</wsdl:types>
+       
+
+    <wsdl:message name="empty"/>
+    <wsdl:message name="userOrRoleType">
+        <wsdl:part name="userOrRole" type="policy:SubjectDTO"/>
+    </wsdl:message>
+    <wsdl:message name="userOrRoleId">
+        <wsdl:part name="userOrRoleId" type="common:ID"/>
+    </wsdl:message>
+    <wsdl:message name="userOrRoleListType">
+        <wsdl:part name="userOrRoleList" type="policy:SubjectDTOList"/>
+    </wsdl:message>
+    <wsdl:message name="userListType">
+        <wsdl:part name="userList" type="types:UserDTOList"/>
+    </wsdl:message>
+    <wsdl:message name="userDataType">
+        <wsdl:part name="userDataType" type="policy:DMSUserData"/>
+    </wsdl:message>
+    <wsdl:message name="roleDataType">
+        <wsdl:part name="roleDataType" type="policy:DMSRoleData"/>
+    </wsdl:message>
+    <wsdl:message name="roleDataListType">
+        <wsdl:part name="roleDataType" type="policy:DMSRoleDataList"/>
+    </wsdl:message>
+    <wsdl:message name="setUserDataType">
+        <wsdl:part name="user" type="types:UserDTO"/>
+        <wsdl:part name="data" type="policy:DMSUserData"/>
+    </wsdl:message>
+    <wsdl:message name="setRoleDataType">
+        <wsdl:part name="role" type="policy:SubjectDTO"/>
+        <wsdl:part name="data" type="policy:DMSRoleData"/>
+    </wsdl:message>
+    <wsdl:message name="setRoleDataTypeId">
+        <wsdl:part name="role" type="common:ID"/>
+        <wsdl:part name="data" type="policy:DMSRoleData"/>
+    </wsdl:message>
+    <wsdl:message name="isAdmin">
+        <wsdl:part name="admin" type="xsd:boolean"/>
+    </wsdl:message>
+	<wsdl:message name="runUserQueryRequest">
+		<wsdl:part name="userQueryTermSpec" type="types:UserQuerySpec"/>
+	</wsdl:message>
+	<wsdl:message name="runUserQueryResponse">
+		<wsdl:part name="result" type="types:UserDTOQueryResults"/>
+	</wsdl:message>	
+	<wsdl:message name="runExternalUserQueryResponse">
+		<wsdl:part name="result" type="policy:DMSExternalUserQueryResultsDTO"/>
+	</wsdl:message>
+    <wsdl:message name="createUserRequest">
+        <wsdl:part type="types:UserDTO" name="newUser"/>
+        <wsdl:part type="policy:DMSUserData" name="date"/>
+    </wsdl:message>
+    <wsdl:message name="createUserResponse">
+      <wsdl:part type="types:UserDTO" name="createdUser"/>
+    </wsdl:message>
+    <wsdl:message name="getUserRequest">
+        <wsdl:part type="common:ID" name="userId"/>
+    </wsdl:message>
+    <wsdl:message name="getUserResponse">
+        <wsdl:part type="types:UserDTO" name="user"/>
+    </wsdl:message>
+    <wsdl:message name="duplicateLoginNameException">
+        <wsdl:part type="types:DuplicateLoginNameException" name="DuplicateLoginNameException"/>
+    </wsdl:message>
+	
+	<wsdl:message name="userManagementMetadata" >
+		<wsdl:part type="types:UserManagementMetadata" name="userManagementMetadata" />
+	</wsdl:message>
+	
+    <wsdl:portType name="UserRoleServiceIF">
+        <wsdl:operation name="getAllUsers">
+          <wsdl:input message="tns:empty"/>
+          <wsdl:output message="tns:userListType"/>
+        </wsdl:operation>
+        <wsdl:operation name="getUser">
+          <wsdl:input message="tns:getUserRequest"/>
+          <wsdl:output message="tns:getUserResponse"/>
+        </wsdl:operation>
+		<wsdl:operation name="runUserQuery">
+			<wsdl:input message="tns:runUserQueryRequest" />
+			<wsdl:output message="tns:runUserQueryResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="runExternalUserQuery">
+			<wsdl:input message="tns:runUserQueryRequest" />
+			<wsdl:output message="tns:runExternalUserQueryResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="importExternalUsers">
+			<wsdl:input message="tns:userOrRoleListType" />
+			<wsdl:output message="tns:userListType" />
+		</wsdl:operation>
+        <wsdl:operation name="createUser">
+            <wsdl:input message="tns:createUserRequest"/>
+            <wsdl:output message="tns:createUserResponse"/>
+            <wsdl:fault name="DuplicateLoginNameException" message="tns:duplicateLoginNameException"/>
+        </wsdl:operation>
+        <wsdl:operation name="addToUsers">
+          <wsdl:input message="tns:userOrRoleType"/>
+          <wsdl:output message="tns:empty"/>
+        </wsdl:operation>
+        <wsdl:operation name="deleteFromUsers">
+          <wsdl:input message="tns:userOrRoleType"/>
+          <wsdl:output message="tns:empty"/>
+        </wsdl:operation>
+        <wsdl:operation name="getAllRoles">
+          <wsdl:input message="tns:empty"/>
+          <wsdl:output message="tns:userOrRoleListType"/>
+        </wsdl:operation>
+        <wsdl:operation name="getUserData">
+          <wsdl:input message="tns:userOrRoleType"/>
+          <wsdl:output message="tns:userDataType"/>
+        </wsdl:operation>
+        <wsdl:operation name="getRoleData">
+          <wsdl:input message="tns:userOrRoleType"/>
+          <wsdl:output message="tns:roleDataType"/>
+        </wsdl:operation>
+        <wsdl:operation name="getAllRoleData">
+          <wsdl:input message="tns:empty"/>
+          <wsdl:output message="tns:roleDataListType"/>
+        </wsdl:operation>
+        <wsdl:operation name="getRoleDataById">
+          <wsdl:input message="tns:userOrRoleId"/>
+          <wsdl:output message="tns:roleDataType"/>
+        </wsdl:operation>
+        <wsdl:operation name="setUserData">
+          <wsdl:input message="tns:setUserDataType"/>
+          <wsdl:output message="tns:empty"/>
+        </wsdl:operation>
+        <wsdl:operation name="setRoleData">
+          <wsdl:input message="tns:setRoleDataType"/>
+          <wsdl:output message="tns:empty"/>
+        </wsdl:operation>
+        <wsdl:operation name="setRoleDataById">
+          <wsdl:input message="tns:setRoleDataTypeId"/>
+          <wsdl:output message="tns:empty"/>
+        </wsdl:operation>
+        <wsdl:operation name="getUserManagementMetadata">
+          <wsdl:input message="tns:empty"/>
+          <wsdl:output message="tns:userManagementMetadata"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="UserRoleServiceIFBinding" type="tns:UserRoleServiceIF">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        <wsdl:operation name="getAllUsers">
+            <wsdl:input>
+                <soap:body parts="empty" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="userListType" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getUser">
+            <wsdl:input>
+                <soap:body parts="getUserRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="getUserResponse" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+	    <wsdl:operation name="runUserQuery">
+            <wsdl:input>
+                <soap:body parts="runUserQueryRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="runUserQueryResponse" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+	    <wsdl:operation name="runExternalUserQuery">
+            <wsdl:input>
+                <soap:body parts="runUserQueryRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="runExternalUserQueryResponse" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+	    <wsdl:operation name="importExternalUsers">
+            <wsdl:input>
+                <soap:body parts="userOrRoleListType" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="userListType" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="createUser">
+            <wsdl:input>
+                <soap:body parts="createUserRequest" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="createUserResponse" use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="DuplicateLoginNameException">
+                <soap:fault name="DuplicateLoginNameException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="addToUsers">
+            <wsdl:input>
+                <soap:body parts="userOrRoleType" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="empty" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="deleteFromUsers">
+            <wsdl:input>
+                <soap:body parts="userOrRoleType" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="empty" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getAllRoles">
+            <wsdl:input>
+                <soap:body parts="empty" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="userOrRoleListType" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getUserData">
+            <wsdl:input>
+                <soap:body parts="userOrRoleType" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="userDataType" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getRoleData">
+            <wsdl:input>
+                <soap:body parts="userOrRoleType" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="roleDataType" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getAllRoleData">
+            <wsdl:input>
+                <soap:body parts="empty" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="roleDataListType" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getRoleDataById">
+            <wsdl:input>
+                <soap:body parts="userOrRoleTypeId" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="roleDataType" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="setUserData">
+            <wsdl:input>
+                <soap:body parts="setUserDataType" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="empty" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="setRoleData">
+            <wsdl:input>
+                <soap:body parts="setRoleDataType" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="empty" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="setRoleDataById">
+            <wsdl:input>
+                <soap:body parts="setRoleDataTypeId" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="empty" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getUserManagementMetadata">
+            <wsdl:input>
+                <soap:body parts="empty" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body parts="userManagementMetadata" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>        
+    </wsdl:binding>
+    <wsdl:service name="UserRoleService">
+	<wsdl:port name="UserRoleServiceIFPort" binding="tns:UserRoleServiceIFBinding">
+  	    <soap:address location="http://localhost:8080/dms/services/UserRoleServiceIFPort"/>
+	</wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

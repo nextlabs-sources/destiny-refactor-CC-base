@@ -1,0 +1,22 @@
+// There is no top-level production for obligations;
+// these tests define the top-level policy production
+// to exercise the obligations production.
+
+policy a1
+    DESCRIPTION "combine all \"atomic\" obligations into this meaningless mess"
+    ON ALLOW DO
+        LOG "hello"
+    ,   LOG "hello" world
+    ,   DONTLOG
+    ,   NOTIFY "asd@fgh.com" "something was allowed"
+    ,   NOTIFY "abc@fgh.com, foo@bar.com" "notify-shmotify" BY EMAIL
+    ,   NOTIFY "xyz@fgh.com, baz@dop.com, chief@wiggam.com" "potato potato potato" BY IM
+
+policy a2
+    DESCRIPTION "combine several \"atomic\" obligations with some custom ones"
+    ON ALLOW DO
+        LOG "hello" world
+    ,   NOTIFY "abc@fgh.com" "your pants are on fire" BY EMAIL
+    ,   CUSTOM1
+    ,   CUSTOM2(x)
+    ,   Custom3(1,2.3,.4,hello,"w_o_r_l_d")

@@ -1,0 +1,52 @@
+ID null POLICY policyWithActions
+    DESCRIPTION "this policy tries all built-in actions"
+    FOR TRUE
+    ON (CREATE_NEW OR OPEN OR WRITE OR DELETE OR CHANGE_ATTRIBUTES OR CHANGE_SECURITY OR EDIT OR EDIT_COPY OR SENDTO OR CUT_PASTE OR BATCH OR BURN OR PRINT OR COPY OR EMAIL OR IM OR WEBMAIL OR RENAME OR MOVE OR SHARE)
+    BY TRUE
+    DO deny
+
+
+================ Re-parsed PQL =================
+
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "policy": 'POLICY'
+        IDENTIFIER: 'policyWithActions'
+        "description": 'this policy tries all built-in actions'
+        TARGET: ''
+            FROM: ''
+                RESOURCE_EXPR: ''
+                    "true": 'TRUE'
+            ACTION_EXPR: ''
+                "or": ''
+                    IDENTIFIER: 'CREATE_NEW'
+                    IDENTIFIER: 'OPEN'
+                    IDENTIFIER: 'WRITE'
+                    IDENTIFIER: 'DELETE'
+                    IDENTIFIER: 'CHANGE_ATTRIBUTES'
+                    IDENTIFIER: 'CHANGE_SECURITY'
+                    IDENTIFIER: 'EDIT'
+                    IDENTIFIER: 'EDIT_COPY'
+                    IDENTIFIER: 'SENDTO'
+                    IDENTIFIER: 'CUT_PASTE'
+                    IDENTIFIER: 'BATCH'
+                    IDENTIFIER: 'BURN'
+                    IDENTIFIER: 'PRINT'
+                    IDENTIFIER: 'COPY'
+                    IDENTIFIER: 'EMAIL'
+                    IDENTIFIER: 'IM'
+                    IDENTIFIER: 'WEBMAIL'
+                    IDENTIFIER: 'RENAME'
+                    IDENTIFIER: 'MOVE'
+                    IDENTIFIER: 'SHARE'
+            SUBJECT_EXPR: ''
+                "true": 'TRUE'
+        EFFECT_CLAUSE: 'DO'
+            EFFECT_TYPE: 'deny'

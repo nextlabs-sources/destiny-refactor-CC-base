@@ -1,0 +1,79 @@
+<html>
+<body>
+
+Component Manager is a minimalist component container.  It frees developers from having to
+implement some fundamental patterns like singleton.  It also provides convenient initialization
+including providing a Log (see Appache-Commons logging).  It is losely-based on ideas
+from Apache Avalon project.
+
+<p></p>
+<strong>Features provided include:</strong>
+<ul> 
+	<li>Singleton Lifestyle</li>
+	<li>Transient Lifestyle</li>
+	<li>Threaded Lifestyle</li>
+	<li>Pooled Lifestyle</li>
+	<li>Component-specific log intialization</li>
+	<li>Component Initialization</li>
+	<li>Component Disposal</li>
+	<li>Component Start</li>
+	<li>Component Shutdown</li>
+    <li>Component Configuration</li>
+</ul>
+
+Registration of components is dynamic and programmatic.  It is accomplished by providing
+a ComponentInfo object to the component manager.  Component info specifies the name of
+the component, the name of the implementation class, name of the interface (optional),
+component configuration (optional),
+and desired lifestyle type for the component.  See LifestyleType documentation for
+an explanation of what each lifestyle means.  Registration and retrieval can be done
+in one shot for convenience.
+
+<p></p>
+Notice that component info does not contain information regarding what other functionality
+the component would like to utilize.  That is determined dynamically based on the
+component's implementation.  For example, if the component wishes to use logging, the
+implementation class should implement ILogEnabled interface.  See the documentation for
+other interfaces for details of what functionality they expose.  In addition, if a
+component wishes to utilize all the functionality, it can implement ICompleteComponent
+interface, which is just a convenience interface that iherits from all others.  Such
+a component can utilize a convenience base class ComponentImplBase that provides some
+implementations for these methods.
+<p></p>
+There is a couple of different ways to get an instance of a component.  One way to do this
+is to implement IHasComponentInfo interface in the class that you want componentized.  
+Here's an example of how to do that:
+
+<pre>
+public class TestComponent
+	extends ComponentImplBase 
+	implements IHasComponentInfo, ICompleteComponent {
+    public static final String NAME = TestComponent.class.getName();
+    
+    private static final ComponentInfo COMP_INFO = 
+        new ComponentInfo(NAME, NAME, null, LifestyleType.SINGLETON_TYPE);
+    
+    public ComponentInfo getComponentInfo() {
+        return COMP_INFO;
+    }
+</pre>	
+	
+Now test component can be instantiated like this:
+
+<pre>
+	IComponentManager manager = ComponentManagerFactory.getComponentManager();
+	TestComponent tc = (TestComponent) manager.getComponent(TestComponent.class);
+</pre>
+	
+Alternatively, ComponentInfo can simply be constructed and passed to the component
+manager, like this:
+
+<pre>
+	ComponentInfo info = new ComponentInfo(compName, implName, ifName, LifestyleType.SOME_TYPE);
+	ifName newComponent = manager.getComponent(info);
+</pre>
+Finally, as the examples above show, component manager itself should be retrieved from
+ComponentManagerFactory.
+	
+</body>
+</html>

@@ -1,0 +1,26 @@
+<Obligation>
+    <DisplayName>Missing Tag</DisplayName>
+    <RunAt>PEP</RunAt>
+    <Name>MISSING</Name>
+    <Arguments>
+        <Argument usereditable="true">
+            <Name>Help URL</Name>
+        </Argument>
+        <Argument>
+            <Name>Tag Name</Name>
+            <Value>client_id</Value>
+        </Argument>
+        <Argument>
+            <Name>Clients</Name>
+            <Value>$CEClients</Value>
+        </Argument>
+        <Argument>
+            <Name>Client Ids</Name>
+            <Value>$CEClientIds</Value>
+        </Argument>
+        <Argument>
+            <Name>Unknown Id</Name>
+            <Value>**Unknown Client Id**</Value>
+        </Argument>
+    </Arguments>
+</Obligation>

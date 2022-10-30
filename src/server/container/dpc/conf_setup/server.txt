@@ -1,0 +1,41 @@
+<Service name="CE-Core">
+
+<!-- Manager App Setup -->	
+	  <Connector port="58080" protocol="HTTP/1.1"
+	               connectionTimeout="20000"
+               redirectPort="8443"/>
+
+    <Engine name="CE-Core" defaultHost="localhost" debug="1">
+      
+	<!-- Manager App Setup -->
+      <Realm className="org.apache.catalina.realm.LockOutRealm">
+        <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+               resourceName="UserDatabase"/>
+      </Realm>
+
+        <Host name="localhost" 
+              debug="0" 
+              autoDeploy="false"
+              unpackWARs = "false"
+              xmlValidation="false"
+              xmlNamespaceAware="false">
+
+<!--[DPC_COMPONENT_BEGIN]-->
+        <Context path="/dpc" reloadable="false" docBase="${catalina.home}/nextlabs/dpc.war">    
+            <Parameter name="ComponentName"  value="[HOST]_dpc"/>
+            <Parameter name="InstallHome" value="${catalina.home}"/>
+            <Parameter name="AgentType" value="[AGENT]"/>
+            <Parameter name="RootDirectory" value="${catalina.home}/nextlabs/dpc"/>
+            <Parameter name="DisableJWTAuthenticationFilter" value="true"/>
+        </Context>
+<!--[DPC_COMPONENT_END]-->
+
+<!-- Manager App Setup -->
+        <Context path="/manager" privileged="true" docBase="${catalina.home}/webapps/manager">    
+        </Context>
+        <Context path="/host-manager" privileged="true" docBase="${catalina.home}/webapps/host-manager">    
+        </Context>
+
+        </Host>
+    </Engine>
+</Service>

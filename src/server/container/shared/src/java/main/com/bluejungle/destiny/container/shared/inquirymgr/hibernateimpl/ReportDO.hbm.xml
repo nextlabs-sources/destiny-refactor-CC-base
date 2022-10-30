@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.inquirymgr.hibernateimpl">
+	
+	<class name="ReportDO" table="REPORT">
+		   
+		<!-- Generic persisted properties -->
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		
+		<property name="description" length="512"/>
+		<property name="summaryType" type="com.bluejungle.destiny.container.shared.inquirymgr.hibernateimpl.ReportSummaryUserType" not-null="true"/>
+		<property name="title" length="128" not-null="true"/>		
+
+		<!-- Report ownership information -->
+		<component name="owner" class="ReportOwnerDO">
+			<property name="isShared">
+				<column name="isShared" not-null="true" index="queryIndex"/>
+			</property>
+			<property name="ownerId">
+				<column name="ownerId" not-null="true" index="queryIndex"/>
+			</property>
+		</component>
+
+		<!-- Report time information -->
+		<component name="timePeriod" class="TimePeriodImpl">
+			<property name="beginDate" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType"/>
+			<property name="endDate" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType"/>
+		</component>
+
+		<!-- The relationship between report and inquiry is one to one, however in Hibernate, it has to be expressed as a many-to-one relationship -->		
+		<many-to-one name="inquiry" 
+					 class="InquiryDO" 
+					 column="inquiry_id" 
+					 cascade="all" 
+					 unique="true" 
+					 not-null="true"/>
+	</class>
+</hibernate-mapping>

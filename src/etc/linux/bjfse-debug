@@ -1,0 +1,196 @@
+#!/bin/sh
+#
+# bjfse:        Blue Jungle File Server Enforcer
+# 
+# chkconfig: 12345 92 08
+# description: Starts and status the Blue Jungle File Server Enforcer daemons
+#
+
+BJROOT=[BLUEJUNGLE_HOME]
+export BJROOT
+
+jlibpath=${BJROOT}/jlib
+libpath=${BJROOT}/lib
+binpath=${BJROOT}/bin
+etcpath=${BJROOT}/etc
+
+smbpath=/usr/sbin
+
+# List of jarfiles required
+jarfiles=(  agent-controlmanager.jar \
+            common-domain.jar        \
+            common-domain-types.jar  \
+            common-framework.jar     \
+            common-framework-types.jar \
+	    common-oil.jar	     \
+            server-base.jar          \
+            common-pf.jar            \
+            management-types.jar     \
+            agent-types.jar          \
+            agent-common.jar         \
+            dabs-common-services.jar \
+            dabs-agent-services.jar  \
+            log-types.jar            \
+            agent-ipc.jar            \
+            client-pf.jar            \
+            dcsf-types.jar           \
+            policy-types.jar         \
+            deployment-types.jar     \
+            server-shared-types.jar  \
+            common-version.jar       \
+            version-types.jar        \
+            version.jar              \
+            crypt.jar                \
+         )
+
+# List of external jar files rquired
+ext_jarfiles=(  antlr.jar                     \
+                axis.jar                      \
+                commons-logging.jar           \
+                castor-0.9.5.4.jar            \
+                jaxrpc.jar                    \
+                xercesImpl.jar                \
+                xmlParserAPIs.jar             \
+                commons-discovery-0.2.jar     \
+                saaj.jar                      \
+                wsdl4j-1.5.1.jar              \
+                ehcache-1.1.jar               \
+                commons-collections-2.1.1.jar \
+                junit.jar                     \
+                activation.jar                \
+                mail.jar                      \
+            )
+
+
+classpath=
+
+
+
+# Source function library.
+if [ -f /etc/init.d/functions ] ; then
+  . /etc/init.d/functions
+elif [ -f /etc/rc.d/init.d/functions ] ; then
+  . /etc/rc.d/init.d/functions
+else
+  exit 0
+fi
+
+unload_bjfse_drivers() {
+    rmmod bj_sysl
+    rmmod pep_vfs
+    rmmod Detours
+    rmmod Disasm
+    rmmod bj_core
+    rmmod bj_kthread
+}
+
+load_bjfse_drivers() {
+    insmod ${BJROOT}/drivers/bj_kthread.ko >& /dev/null
+    insmod ${BJROOT}/drivers/bj_core.ko >& /dev/null
+    insmod ${BJROOT}/drivers/Disasm.ko >& /dev/null
+    insmod ${BJROOT}/drivers/Detours.ko >& /dev/null
+    insmod ${BJROOT}/drivers/pep_vfs.ko >& /dev/null
+}
+ 
+
+start() {
+        KIND="BJFSE"
+        echo -n $"Preparing $KIND services: "
+
+        if [ ! -f $binpath/controlmodule ] ; then
+           failure
+           echo
+           return 1
+        fi
+
+        for j in "${jarfiles[@]}" ;  do
+            if [ ! -f $jlibpath/$j ] ; then
+                failure
+                echo
+                return 2
+            fi
+            classpath=${jlibpath}/$j":"$classpath;
+        done
+
+        for j in "${ext_jarfiles[@]}" ;  do
+            if [ ! -f $jlibpath/$j ] ; then
+                failure
+                echo
+                return 2
+            fi
+            classpath=${jlibpath}/$j":"$classpath;
+        done
+
+        load_bjfse_drivers
+
+        # Apply tamper-proof
+        insmod ${BJROOT}/drivers/bj_sysl.ko BJ_ROOT=${BJROOT} >& /dev/null
+        mknod /dev/bj_sysl c `grep bj_sysl /proc/devices | awk '{print $1}'` 0 >& /dev/null
+
+        # Apply smbd driver, only if we need to
+        bjlib=`ldd $smbpath/smbd | grep libbj`
+        if [ "$?" -eq 0 ] ; then 
+            service smb restart >& /dev/null
+        else
+            service smb stop >& /dev/null
+            if [ -f $smbpath/.smbd.bjbak ] ; then
+                mv -f $smbpath/.smbd.bjbak $smbpath/smbd;
+            fi
+            ${BJROOT}/bin/elfchg
+            if [ -f $smbpath/.smbd.bjbak ] ; then
+                cp -f $smbpath/.smbd.bjbak ${BJROOT}/bin ;
+            fi
+            service smb start >& /dev/null
+        fi
+        success
+        echo
+
+        echo -n $"Starting $KIND services: "
+
+        # Don't daemon in debug build, and set "-i" for interactive mode
+        $binpath/controlmodule -i -f \
+            -d java.class.path=\":${classpath}\" \
+            -d java.library.path=${libpath}     \
+            -d java.util.logging.config.file=${etcpath}/agent.logging.properties \
+            -x debug -x runjdwp:transport=dt_socket,address=9001,server=y,suspend=n \
+            -w ${BJROOT} \
+            -a FileServer \
+
+         RETVAL=$?
+         echo
+         return $RETVAL
+}
+
+
+rhstatus() {
+        pid=`ps ax | grep controlmodule | grep -v grep | sed s'/^ *//' | cut -f1 -d" "`
+        if [ -n "$pid" ] ; then
+                echo "bjfse (pid $pid) is running..."
+                return 0
+        else
+                echo "bjfse is stopped"
+                return 3
+        fi
+}
+
+
+# Allow status as non-root.
+if [ "$1" = status ]; then
+       rhstatus
+       exit $?
+fi
+
+
+case "$1" in
+  start)
+        start
+        ;;
+  status)
+        rhstatus
+        ;;
+  *)
+        echo $"Usage: $0 {start|status}"
+        exit 1
+esac
+
+exit $?

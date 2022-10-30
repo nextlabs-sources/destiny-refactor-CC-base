@@ -1,0 +1,21 @@
+// There is no top-level production for obligations;
+// these tests define the top-level poilcy production
+// to exercise the obligations production.
+
+policy a1 FOR * ON * BY * DO DENY
+    ON DENY DO LOG "hello"
+
+policy a2 FOR * ON * BY * DO DENY
+    ON dontcare DO LOG "hello" world
+
+policy a3 FOR * ON * BY * DO DENY
+    ON ALLOW DO DONTLOG
+
+policy a4 FOR * ON * BY * DO DENY
+    on local allow DO NOTIFY "asd@fgh.com" "well, well, well"
+
+policy a5 FOR * ON * BY * DO DENY
+    on local deny DO NOTIFY "abc@fgh.com" "unicorns don't play leapfrog" BY EMAIL
+
+policy a6 FOR * ON * BY * DO DENY
+    on local dontcare DO NOTIFY "xyz@fgh.com" "this statement is false" BY IM

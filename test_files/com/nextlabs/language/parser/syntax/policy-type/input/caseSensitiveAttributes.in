@@ -1,0 +1,10 @@
+context caseSensitiveAttributes0
+    name0 multivalued case sensitive string
+
+context caseSensitiveAttributes1
+    name1 case sensitive string
+,   name2 unique case sensitive string
+
+context caseSensitiveAttributes2 extends caseSensitiveAttributes1
+    name3 case sensitive string
+,   name4 case sensitive string

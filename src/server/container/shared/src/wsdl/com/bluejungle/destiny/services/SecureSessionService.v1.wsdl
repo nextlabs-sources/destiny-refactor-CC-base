@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://bluejungle.com/destiny/services/secure_session/v1" 
+				  xmlns:tns="http://bluejungle.com/destiny/services/secure_session/v1"
+				  xmlns:bindings="http://bluejungle.com/destiny/bindings/secure_session/v1"
+				  xmlns:xs="http://www.w3.org/1999/XMLSchema" 
+				  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+				  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+
+   <wsdl:import namespace="http://bluejungle.com/destiny/bindings/secure_session/v1" location="../bindings/SecureSessionBindings.v1.wsdl"/> 
+   
+   <wsdl:service name="SecureSessionService">
+      <wsdl:port binding="bindings:SecureSessionServiceIFBinding" name="SecureSessionService">
+         <soap:address location="http://localhost:8080/dac/services/SecureSessionService"/>
+      </wsdl:port>
+   </wsdl:service>
+
+</wsdl:definitions>

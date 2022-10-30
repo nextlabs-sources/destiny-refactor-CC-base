@@ -1,0 +1,7 @@
+policy ComplexPredicatePolicy is FileSystemPolicy
+    on a>b or b<c and (c==d or e==f and (not g>=h or j <=k) and not a matches  b or not a matches b or not g matches b)
+    by a>1.23 and b!="xyz"
+    for any 11.22e33 > a 
+     OR all (* and a in b or b not in a) 
+    and any (f != g or x in y or v matches "w*")
+do  allow by default

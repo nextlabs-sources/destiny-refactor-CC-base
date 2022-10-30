@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+					xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+					xmlns:basicfaults="http://bluejungle.com/destiny/framework/types"
+					xmlns:tns="http://bluejungle.com/destiny/services/enrollment"
+					xmlns:types="http://bluejungle.com/destiny/services/enrollment/types"
+					targetNamespace="http://bluejungle.com/destiny/services/enrollment">
+
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://bluejungle.com/destiny/services/enrollment">
+			<xsd:import namespace="http://bluejungle.com/destiny/services/enrollment/types" schemaLocation="../types/EnrollmentTypes.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/services/enrollment/types" schemaLocation="../types/EnrollmentFaults.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/framework/types" schemaLocation="../../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicFaults.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+
+	<wsdl:message name="getRealmsRequest">
+	<wsdl:part name="name" type="xsd:string"/>
+	</wsdl:message>
+
+	<wsdl:message name="getRealmsResponse">
+	<wsdl:part name="realms" type="types:RealmList"/>
+	</wsdl:message>
+
+	<wsdl:message name="createRealmRequest">
+		<wsdl:part name="realm" type="types:Realm"/>
+	</wsdl:message>
+	
+	<wsdl:message name="updateRealmRequest">
+		<wsdl:part name="realm" type="types:Realm"/>
+	</wsdl:message>
+
+	<wsdl:message name="deleteRealmRequest">
+		<wsdl:part name="realm" type="types:Realm"/>
+	</wsdl:message>
+
+	<wsdl:message name="enrollRealmRequest">
+		<wsdl:part name="realm" type="types:Realm"/>
+	</wsdl:message>
+
+	<wsdl:message name="addColumnRequest">
+		<wsdl:part name="column" type="types:Column"/>
+	</wsdl:message>
+	
+	<wsdl:message name="delColumnRequest">
+		<wsdl:part name="logicalName" type="xsd:string"/>
+		<wsdl:part name="elementType" type="types:EntityType"/>
+	</wsdl:message>
+
+	<wsdl:message name="getColumnsRequest"/>
+
+	<wsdl:message name="getColumnsResponse">
+	<wsdl:part name="columns" type="types:ColumnList"/>
+	</wsdl:message>
+
+	<wsdl:message name="empty"/>
+
+	<!-- Fault messages -->
+	<wsdl:message name="ServiceNotReadyFault">
+		<wsdl:part name="ServiceNotReadyFault" type="basicfaults:ServiceNotReadyFault"/>
+	</wsdl:message>
+
+	<wsdl:message name="UnauthorizedCallerFault">
+		<wsdl:part name="UnauthorizedCallerFault" type="basicfaults:UnauthorizedCallerFault"/>
+	</wsdl:message>
+
+
+	<wsdl:message name="InvalidConfigurationFault">
+		<wsdl:part name="InvalidConfigurationFault" type="types:InvalidConfigurationFault"/>
+	</wsdl:message>
+	
+	<wsdl:message name="DictionaryFault">
+		<wsdl:part name="DictionaryFault" type="types:DictionaryFault"/>
+	</wsdl:message>
+
+	<wsdl:message name="EnrollmentFailedFault">
+		<wsdl:part name="EnrollmentFailedFault" type="types:EnrollmentFailedFault"/>
+	</wsdl:message>
+
+	<wsdl:message name="EnrollmentInternalFault">
+		<wsdl:part name="EnrollmentInternalFault" type="types:EnrollmentInternalFault"/>
+	</wsdl:message>
+
+	<wsdl:message name="DuplicatedFault">
+		<wsdl:part name="DuplicatedFault" type="types:DuplicatedFault"/>
+	</wsdl:message>
+
+	<wsdl:message name="NotFoundFault">
+		<wsdl:part name="NotFoundFault" type="types:NotFoundFault"/>
+	</wsdl:message>
+
+
+
+	<wsdl:portType name="EnrollmentIF">
+	
+		<!-- begin Realms operations -->
+		
+		<wsdl:operation name="getRealms">
+			<wsdl:input message="tns:getRealmsRequest"/>
+			<wsdl:output message="tns:getRealmsResponse"/>
+			
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			
+			<!-- base EnrollmentIF faults -->
+			<wsdl:fault name="DictionaryFault" message="tns:DictionaryFault"/>
+			<wsdl:fault name="EnrollmentInternalFault" message="tns:EnrollmentInternalFault"/>
+			
+			<!-- operation specific fault -->
+			<wsdl:fault name="NotFoundFault" message="tns:NotFoundFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="createRealm">
+			<wsdl:input message="tns:createRealmRequest"/>
+			<wsdl:output message="tns:empty"/>
+			
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			
+			<!-- base EnrollmentIF faults -->
+			<wsdl:fault name="DictionaryFault" message="tns:DictionaryFault"/>
+			<wsdl:fault name="EnrollmentInternalFault" message="tns:EnrollmentInternalFault"/>
+			
+			<!-- operation specific fault -->
+			<wsdl:fault name="DuplicatedFault" message="tns:DuplicatedFault"/>
+			<wsdl:fault name="InvalidConfigurationFault" message="tns:InvalidConfigurationFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="updateRealm">
+			<wsdl:input message="tns:updateRealmRequest"/>
+			<wsdl:output message="tns:empty"/>
+			
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			
+			<!-- base EnrollmentIF faults -->
+			<wsdl:fault name="DictionaryFault" message="tns:DictionaryFault"/>
+			<wsdl:fault name="EnrollmentInternalFault" message="tns:EnrollmentInternalFault"/>
+			
+			<!-- operation specific fault -->
+			<wsdl:fault name="InvalidConfigurationFault" message="tns:InvalidConfigurationFault"/>
+			<wsdl:fault name="NotFoundFault" message="tns:NotFoundFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="deleteRealm">
+			<wsdl:input message="tns:deleteRealmRequest"/>
+			<wsdl:output message="tns:empty"/>
+			
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			
+			<!-- base EnrollmentIF faults -->
+			<wsdl:fault name="DictionaryFault" message="tns:DictionaryFault"/>
+			<wsdl:fault name="EnrollmentInternalFault" message="tns:EnrollmentInternalFault"/>
+			
+			<!-- operation specific fault -->
+			<wsdl:fault name="InvalidConfigurationFault" message="tns:InvalidConfigurationFault"/>
+			<wsdl:fault name="NotFoundFault" message="tns:NotFoundFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="enrollRealm">
+			<wsdl:input message="tns:enrollRealmRequest"/>
+			<wsdl:output message="tns:empty"/>
+			
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			
+			<!-- base EnrollmentIF faults -->
+			<wsdl:fault name="DictionaryFault" message="tns:DictionaryFault"/>
+			<wsdl:fault name="EnrollmentInternalFault" message="tns:EnrollmentInternalFault"/>
+			
+			<!-- operation specific fault -->
+			<wsdl:fault name="EnrollmentFailedFault" message="tns:EnrollmentFailedFault"/>
+			<wsdl:fault name="InvalidConfigurationFault" message="tns:InvalidConfigurationFault"/>
+			<wsdl:fault name="NotFoundFault" message="tns:NotFoundFault"/>
+		</wsdl:operation>
+		
+		<!-- end Realms operations -->
+		
+		<!-- begin Columns operations -->
+		
+		<wsdl:operation name="getColumns">
+			<wsdl:input message="tns:getColumnsRequest"/>
+			<wsdl:output message="tns:getColumnsResponse"/>
+			
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			
+			<!-- base EnrollmentIF faults -->
+			<wsdl:fault name="DictionaryFault" message="tns:DictionaryFault"/>
+			<wsdl:fault name="EnrollmentInternalFault" message="tns:EnrollmentInternalFault"/>
+			
+			<!-- operation specific fault -->
+		</wsdl:operation>
+		<wsdl:operation name="addColumn">
+			<wsdl:input message="tns:addColumnRequest"/>
+			<wsdl:output message="tns:empty"/>
+			
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			
+			<!-- base EnrollmentIF faults -->
+			<wsdl:fault name="DictionaryFault" message="tns:DictionaryFault"/>
+			<wsdl:fault name="EnrollmentInternalFault" message="tns:EnrollmentInternalFault"/>
+			
+			<!-- operation specific fault -->
+			<wsdl:fault name="DuplicatedFault" message="tns:DuplicatedFault"/>
+			<wsdl:fault name="InvalidConfigurationFault" message="tns:InvalidConfigurationFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="delColumn">
+			<wsdl:input message="tns:delColumnRequest"/>
+			<wsdl:output message="tns:empty"/>
+			
+			<!-- web service entry faults -->
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			
+			<!-- base EnrollmentIF faults -->
+			<wsdl:fault name="DictionaryFault" message="tns:DictionaryFault"/>
+			<wsdl:fault name="EnrollmentInternalFault" message="tns:EnrollmentInternalFault"/>
+			
+			<!-- operation specific fault -->
+			<wsdl:fault name="InvalidConfigurationFault" message="tns:InvalidConfigurationFault"/>
+			<wsdl:fault name="NotFoundFault" message="tns:NotFoundFault"/>
+		</wsdl:operation>
+		
+		<!-- end Columns operations -->
+		
+	</wsdl:portType>
+</wsdl:definitions>

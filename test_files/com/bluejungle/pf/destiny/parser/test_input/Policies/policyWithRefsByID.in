@@ -1,0 +1,3 @@
+policy nonReadablePolicy
+    FOR ID 123 and ID 234 ON ID 345 TO NOT ID 456 BY ID 567 OR ID 678 AND ID 789
+    DO DENY

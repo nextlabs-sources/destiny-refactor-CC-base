@@ -1,0 +1,17 @@
+<project name="keymanagement-tool" default="build"  basedir=".">
+    <property name="service.tool.dir" value="${build.root.dir}/tools/InstallService"/>
+
+  
+    <target name="prepare">
+        <!-- Setup folders -->    
+        <mkdir dir="${service.tool.dir}"/>
+    </target>
+
+    <!-- Setup the keymanagement tool -->
+    <target name="setup-tool" depends="prepare">
+        <copy todir="${service.tool.dir}" 
+        	  file="installService.bat" 
+        	  failonerror="true"
+        />
+    </target>
+</project>

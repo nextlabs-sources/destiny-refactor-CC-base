@@ -1,0 +1,517 @@
+Deployment Bundle:
+Deployment entities:
+ID 0 STATUS APPROVED POLICY AllowPolicyOnFuad
+    DESCRIPTION "Policy that allows Hor-Kan access to *.java while on localhost and to Bo Meng while using small.exe and denies it to everyone else."
+    FOR resource.fso.name = "?c:\\**.java"
+    ON TRUE
+    BY ((user.GROUP has 0 AND host.GROUP has 0) OR (user.GROUP has 1 AND application.GROUP has 0))
+    DO allow
+    BY DEFAULT DO deny
+    ON allow DO log
+ID 1 STATUS APPROVED POLICY DenyAutorun
+    DESCRIPTION "Denies run based on application name"
+    FOR TRUE
+    ON RUN
+    BY application.name = "autorun.exe"
+    DO deny
+ID 2 STATUS APPROVED POLICY DenyBasedOnURL
+    DESCRIPTION "Denies run based on application name"
+    FOR resource.fso.name = "c:\\deny_url.txt"
+    ON OPEN
+    BY application.url = "http://mail.google.com/**"
+    DO deny
+ID 3 STATUS APPROVED POLICY CommunicationPolicy01
+    FOR resource.fso.name = "c:\\communication_policy"
+    ON EMAIL
+    SENT_TO user.mail = "keng.lim@bluejungle.com"
+    BY TRUE
+    DO deny
+    ON deny DO policy01
+ID 4 STATUS APPROVED POLICY CommunicationPolicy02
+    FOR resource.fso.name = "c:\\communication_policy"
+    ON EMAIL
+    SENT_TO user.mail_domain = "gs.com;ml.com;equity.gs.com;"
+    BY TRUE
+    DO deny
+    ON deny DO policy02
+ID 5 STATUS APPROVED POLICY CommunicationPolicy03
+    FOR resource.fso.name = "c:\\communication_policy"
+    ON EMAIL
+    SENT_TO user.GROUP has 2
+    BY TRUE
+    DO deny
+    ON deny DO policy03
+ID 6 STATUS APPROVED POLICY CommunicationPolicyNot
+    FOR resource.fso.name = "c:\\communication_policy_not"
+    ON EMAIL
+    SENT_TO user.GROUP has 3
+    BY host.GROUP has 1
+    DO deny
+    ON deny DO policyNOT
+ID 7 STATUS APPROVED POLICY destiny_group_policy
+    FOR (resource.fso.owner_ldap_group has 4 AND resource.fso.name = "**owner_destiny.test")
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 8 STATUS APPROVED POLICY FinanceDeny
+    DESCRIPTION "This policy is excluded because its deployment target does not match the agent"
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    DO deny
+ID 9 STATUS APPROVED POLICY LdapPolicy
+    DESCRIPTION "Policy that allows engineers access to Java files and denies it to everyone else"
+    FOR resource.fso.name = "?c:\\**.ldap"
+    ON TRUE
+    BY (user.GROUP has 5 AND application.GROUP has 1)
+    DO allow
+    BY DEFAULT DO deny
+    ON allow DO log
+ID 10 STATUS APPROVED POLICY deny_localhost
+    DESCRIPTION "denies access to c:\\foofoo.doc for any request for localhost"
+    FOR resource.fso.name = "c:\\foofoo.doc"
+    ON TRUE
+    BY host.location = localhost
+    DO deny
+ID 11 STATUS APPROVED POLICY "Not Engineering Copy"
+    ATTRIBUTE USAGE
+    FOR resource.fso.name = "**negated_ldap_group.test"
+    ON COPY
+    TO TRUE
+    BY user.GROUP has 6
+    DO deny
+    ON deny DO log
+ID 12 STATUS APPROVED POLICY TestDirOpenIsAlwaysOK
+    DESCRIPTION "c:\\windows is a directory; opening it should work, anything else should fail."
+    FOR resource.fso.name = "C:\\WINDOWS"
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 13 STATUS APPROVED POLICY Obligations01
+    FOR resource.fso.name = "c:\\verify.obligations"
+    ON TRUE
+    BY user.GROUP has 7
+    DO allow
+    BY DEFAULT DO deny
+    ON allow DO log
+ID 14 STATUS APPROVED POLICY Obligations02
+    FOR resource.fso.name = "c:\\verify.obligations"
+    ON TRUE
+    BY user.GROUP has 8
+    DO allow
+    BY DEFAULT DO deny
+    ON dontcare DO log
+ID 15 STATUS APPROVED POLICY Obligations03
+    FOR resource.fso.name = "c:\\verify.obligations"
+    ON TRUE
+    BY user.GROUP has 9
+    DO deny
+    ON deny DO log
+    ON dontcare DO log
+ID 16 STATUS APPROVED POLICY testpolicy2
+    ATTRIBUTE USAGE
+    FOR resource.fso.name = "c:\\testfolder2\\*"
+    ON READ
+    TO TRUE
+    BY TRUE
+    DO deny
+ID 17 STATUS APPROVED POLICY Policy1
+    ATTRIBUTE USAGE
+    FOR resource.fso.name = "c:\\financepa\\**"
+    ON TRUE
+    TO TRUE
+    BY user.GROUP has 10
+    DO deny
+ID 18 STATUS APPROVED POLICY deny_remoterun
+    DESCRIPTION "denies run of any applications when connected remotely"
+    FOR TRUE
+    ON RUN
+    BY host.location != localhost
+    WHERE ENVIRONMENT.REMOTE_ACCESS = 1
+    DO deny
+    BY DEFAULT DO allow
+    ON allow DO log, display( "allow" )
+    ON deny DO display( "deny" )
+ID 19 STATUS APPROVED POLICY resource_created_date
+    FOR (resource.fso.created_date < "01/01/3007" AND resource.fso.name = "**resource_date.pql")
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 20 STATUS APPROVED POLICY resource_owner_ldap_test
+    FOR (resource.fso.owner_ldap_group has 11 AND resource.fso.name = "**owner_ldap.test")
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 21 STATUS APPROVED POLICY resource_owner_test
+    FOR (resource.fso.owner = user.uid AND resource.fso.name = "**owner.test")
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 22 STATUS APPROVED POLICY subref_test_policy
+    FOR (resource.fso.name = "**ref**" AND resource.fso.name = "**subref.test")
+    ON TRUE
+    BY user.GROUP has 12
+    DO deny
+ID 23 STATUS APPROVED POLICY TrackingPolicy
+    DESCRIPTION "Applies to everyone, doing anything, on any document -- tracking policy."
+    FOR (resource.fso.name = "?c:\\**" OR resource.fso.directory = "test")
+    ON TRUE
+    BY TRUE
+    DO allow
+    ON allow DO log
+ID 24 STATUS APPROVED POLICY UnknownOwner
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    DO deny
+ID 25 STATUS APPROVED POLICY EmailToContact
+    FOR resource.fso.name = "c:\\emailcontact"
+    ON EMAIL
+    SENT_TO user.GROUP has 14
+    BY user.GROUP has 13
+    DO deny
+    BY DEFAULT DO allow
+    ON allow DO emc_allow
+    ON deny DO emc_deny
+ID 26 STATUS APPROVED POLICY EmailToNotContact
+    FOR resource.fso.name = "c:\\emailcontact"
+    ON EMAIL
+    SENT_TO user.GROUP has 16
+    BY user.GROUP has 15
+    DO deny
+    BY DEFAULT DO allow
+    ON allow DO emNc_allow
+    ON deny DO emNc_deny
+ID 27 STATUS APPROVED POLICY UserByEmail
+    FOR resource.fso.name = "c:\\userbyemail"
+    ON EDIT
+    BY user.mail = "sgoldstein@bluejungle.com"
+    DO deny
+    ON deny DO byemail
+ID 28 STATUS APPROVED POLICY UserByEmailDomain
+    FOR resource.fso.name = "c:\\userbyemaildomain"
+    ON EDIT
+    BY user.mail_domain = "bluejungle.com"
+    DO deny
+    ON deny DO byemaildomain
+ID 29 STATUS APPROVED POLICY NegatedAppPolicy
+    FOR resource.fso.name = "c:\\negatedapp"
+    ON OPEN
+    BY application.GROUP has 2
+    DO deny
+ID 30 STATUS APPROVED POLICY misdirected_email_policy
+    FOR (resource.fso.name = "misdirected*.txt" AND resource.fso.client_id != null)
+    ON EMAIL
+    SENT_TO (user.client_id != null AND user.client_id != resource.fso.client_id)
+    BY TRUE
+    DO allow
+    ON allow DO misdirected
+ID 31 STATUS APPROVED POLICY multiclient_email_policy
+    FOR resource.fso.name = "multiclient.txt"
+    ON EMAIL
+    SENT_TO user.sent_to_client_count > 1
+    BY TRUE
+    DO allow
+    ON allow DO multiclient
+ID 32 STATUS APPROVED POLICY unset_attribute_policy
+    FOR (resource.fso.name = "unset_attribute*.txt" AND resource.fso.client_id = null)
+    ON EMAIL
+    SENT_TO TRUE
+    BY TRUE
+    DO allow
+    ON allow DO unset_attribute
+ID 33 STATUS APPROVED POLICY SmallFiles
+    DESCRIPTION "Denies all access of small (<1024) files in a particular directory."
+    FOR (resource.fso.name = "c:\\smallfiles\\**" AND resource.fso.size < 1024)
+    ON TRUE
+    BY user.GROUP has 17
+    DO deny
+    ON allow DO log
+ID 34 STATUS APPROVED LOCATION localhost = "10.0.0.0/8"
+Policies that apply to all users: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 16, 18, 19, 20, 21, 23, 27, 28, 29, 30, 31, 32}
+Policies that apply to all hosts: {0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33}
+Policies that apply to all applications: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 30, 31, 32, 33}
+Subject-Policy Mappings:
+0 -> {}
+1 -> {}
+2 -> {}
+3 -> {22}
+4 -> {}
+6 -> {15}
+7 -> {}
+8 -> {11}
+9 -> {17, 33}
+10 -> {11}
+11 -> {}
+14 -> {}
+15 -> {11}
+16 -> {11}
+17 -> {11}
+18 -> {11}
+19 -> {11}
+20 -> {11}
+21 -> {11}
+22 -> {11}
+23 -> {11}
+24 -> {11}
+25 -> {11}
+26 -> {11}
+27 -> {11}
+28 -> {11}
+29 -> {}
+30 -> {}
+31 -> {11}
+32 -> {11}
+33 -> {11}
+34 -> {11}
+35 -> {11}
+36 -> {11}
+38 -> {}
+39 -> {11}
+40 -> {25}
+41 -> {26}
+42 -> {}
+43 -> {11}
+44 -> {11}
+45 -> {11}
+46 -> {11}
+47 -> {29}
+48 -> {6}
+49 -> {11}
+Action-Policy Mappings:
+ADMIN -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+APPROVE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+ATTACH -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+AVDCALL -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+BATCH -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+BURN -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+CHANGE_ATTRIBUTES -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+CHANGE_SECURITY -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+COPY -> {0, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+CREATE_NEW -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+CUT_PASTE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+DELETE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+DEPLOY -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+EDIT -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 27, 28, 33}
+EDIT_COPY -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+EMAIL -> {0, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 25, 26, 30, 31, 32, 33}
+EMBED -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+EXPORT -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+IM -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+JOIN -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+MEETING -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+MOVE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+NOP -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+OPEN -> {0, 2, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 29, 33}
+PASTE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+PRESENCE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+PRINT -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+QUESTION -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+READ -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 33}
+RECORD -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+RENAME -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+RUN -> {0, 1, 7, 8, 9, 10, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 33}
+SENDTO -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+SHARE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+VIDEO -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+VOICE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+WEBMAIL -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+WRITE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+Subject-Group Mappings:
+0 -> {0, 1}
+1 -> {3, 4, 5, 11, 16}
+2 -> {3, 4, 5, 11, 16}
+3 -> {3, 4, 5, 11, 12, 16}
+4 -> {3, 4, 5, 11, 16}
+6 -> {1, 3, 4, 5, 7, 9, 11, 16}
+7 -> {3, 4, 5, 11, 16}
+8 -> {6, 16}
+9 -> {0, 3, 4, 5, 10, 11, 16, 17}
+10 -> {3, 6, 7, 8, 16}
+11 -> {3, 4, 5, 11, 16}
+14 -> {4, 5, 11, 16}
+15 -> {6, 16}
+16 -> {6, 16}
+17 -> {6, 16}
+18 -> {6, 16}
+19 -> {6, 16}
+20 -> {6, 16}
+21 -> {6, 16}
+22 -> {3, 6, 14}
+23 -> {6, 16}
+24 -> {6, 16}
+25 -> {6, 16}
+26 -> {6, 16}
+27 -> {6, 16}
+28 -> {6, 16}
+29 -> {4, 5, 11, 16}
+30 -> {2, 3, 4, 5, 11, 16}
+31 -> {2, 3, 6, 16}
+32 -> {6, 16}
+33 -> {6, 16}
+34 -> {6, 16}
+35 -> {6, 16}
+36 -> {6, 16}
+38 -> {3, 4, 5, 11, 16}
+39 -> {6, 16}
+40 -> {3, 4, 5, 11, 13, 16}
+41 -> {3, 4, 5, 11, 15, 16}
+42 -> {0}
+43 -> {6, 16}
+44 -> {6, 16}
+45 -> {6, 16}
+46 -> {6, 16}
+47 -> {2}
+48 -> {1}
+49 -> {3, 6, 16}
+Subject keys:
+(null):0:0:f7513948613aa6b5eb31fbb0726147833630e5d2 (application-appFingerPrint) -> 0
+admin@nextlabs.com (user-mail) -> 1
+ahan@bluejungle.com (user-mail) -> 2
+ahan@nextlabs.com (user-mail) -> 2
+alan.morgan@bluejungle.com (user-mail) -> 3
+alan.morgan@nextlabs.com (user-mail) -> 3
+allen.yuen@bluejungle.com (user-mail) -> 4
+allen.yuen@nextlabs.com (user-mail) -> 4
+amorgan@bluejungle.com (user-mail) -> 3
+amorgan@nextlabs.com (user-mail) -> 3
+andy.han@bluejungle.com (user-mail) -> 2
+andy.han@nextlabs.com (user-mail) -> 2
+ayuen@bluejungle.com (user-mail) -> 4
+ayuen@nextlabs.com (user-mail) -> 4
+badministrator@bluejungle.com (user-mail) -> 1
+badministrator@nextlabs.com (user-mail) -> 1
+bclinton@test.bluejungle.com (user-mail) -> 5
+bill.clinton@test.bluejungle.com (user-mail) -> 5
+bmeng@bluejungle.com (user-mail) -> 6
+bmeng@nextlabs.com (user-mail) -> 6
+bmoon@bluejungle.com (user-mail) -> 7
+bmoon@nextlabs.com (user-mail) -> 7
+bo.meng@bluejungle.com (user-mail) -> 6
+bo.meng@nextlabs.com (user-mail) -> 6
+bo.moon@bluejungle.com (user-mail) -> 7
+bo.moon@nextlabs.com (user-mail) -> 7
+builtin.administrator@bluejungle.com (user-mail) -> 1
+builtin.administrator@nextlabs.com (user-mail) -> 1
+ctlam (user-uniqueName) -> 8
+hchan@bluejungle.com (user-mail) -> 9
+hchan@nextlabs.com (user-mail) -> 9
+hchen@bluejungle.com (user-mail) -> 10
+hchen@nextlabs.com (user-mail) -> 10
+heidi.zhou@bluejungle.com (user-mail) -> 11
+heidi.zhou@nextlabs.com (user-mail) -> 11
+helena.chen@bluejungle.com (user-mail) -> 10
+helena.chen@nextlabs.com (user-mail) -> 10
+hor-kan.chan@bluejungle.com (user-mail) -> 9
+hor-kan.chan@nextlabs.com (user-mail) -> 9
+hzhou@bluejungle.com (user-mail) -> 11
+hzhou@nextlabs.com (user-mail) -> 11
+iannis.hanen@bluejungle.com (user-mail) -> 12
+iannis.hanen@nextlabs.com (user-mail) -> 12
+iannis@bluejungle.com (user-mail) -> 12
+ihanen@bluejungle.com (user-mail) -> 12
+ihanen@nextlabs.com (user-mail) -> 12
+ioana-cristina.sundius@bluejungle.com (user-mail) -> 13
+ioana-cristina.sundius@nextlabs.com (user-mail) -> 13
+ioana.sundius@bluejungle.com (user-mail) -> 13
+ioana.sundius@nextlabs.com (user-mail) -> 13
+isundius@bluejungle.com (user-mail) -> 13
+isundius@nextlabs.com (user-mail) -> 13
+jack.zhuang@bluejungle.com (user-mail) -> 14
+jack.zhuang@nextlabs.com (user-mail) -> 14
+jadams@test.bluejungle.com (user-mail) -> 15
+james.bond@bluejungle.com (user-mail) -> 16
+james.bond@nextlabs.com (user-mail) -> 16
+james.buchanan@test.bluejungle.com (user-mail) -> 17
+james.garfield@test.bluejungle.com (user-mail) -> 18
+james.madison@test.bluejungle.com (user-mail) -> 19
+james.monroe@test.bluejungle.com (user-mail) -> 20
+james.polk@test.bluejungle.com (user-uniqueName) -> 21
+james@bluejungle.com (user-mail) -> 16
+james@nextlabs.com (user-mail) -> 16
+jbond@bluejungle.com (user-mail) -> 16
+jbond@nextlabs.com (user-mail) -> 16
+jboulton2@bluejungle.com (user-mail) -> 22
+jboulton2@nextlabs.com (user-mail) -> 22
+jboulton@bluejungle.com (user-mail) -> 23
+jboulton@nextlabs.com (user-mail) -> 23
+jdebono@bluejungle.com (user-uniqueName) -> 24
+jed.boulton2@bluejungle.com (user-mail) -> 22
+jed.boulton2@nextlabs.com (user-mail) -> 22
+jed.boulton@bluejungle.com (user-mail) -> 23
+jed.boulton@nextlabs.com (user-mail) -> 23
+jed@bluejungle.com (user-mail) -> 23
+jed@dubious.com (user-mail) -> 22
+jed@nextlabs.com (user-mail) -> 23
+jeddubious.com@bluejungle.com (user-mail) -> 22
+jeddubious.com@nextlabs.com (user-mail) -> 22
+jgarfield@test.bluejungle.com (user-mail) -> 18
+jimmy.carter@test.bluejungle.com (user-mail) -> 25
+jkennedy@test.bluejungle.com (user-mail) -> 26
+john.adams@test.bluejungle.com (user-mail) -> 27
+john.kennedy@test.bluejungle.com (user-mail) -> 26
+john.tyler@test.bluejungle.com (user-mail) -> 28
+jzhang@bluejungle.com (user-uniqueName) -> 29
+jzhuang@bluejungle.com (user-mail) -> 14
+jzhuang@nextlabs.com (user-mail) -> 14
+keng.lim@bluejungle.com (user-mail) -> 30
+keng.lim@nextlabs.com (user-mail) -> 30
+keng@bluejungle.com (user-mail) -> 30
+keng@nextlabs.com (user-mail) -> 30
+kkendall@bluejungle.com (user-mail) -> 31
+kkendall@nextlabs.com (user-mail) -> 31
+klim@bluejungle.com (user-mail) -> 30
+klim@nextlabs.com (user-mail) -> 30
+krista.kendall@bluejungle.com (user-mail) -> 31
+krista.kendall@nextlabs.com (user-mail) -> 31
+ldapuser1@linuxtest.bluejungle.com (user-mail) -> 32
+ldapuser2@linuxtest.bluejungle.com (user-mail) -> 33
+ldapuser3@linuxtest.bluejungle.com (user-mail) -> 34
+ldapuser4@linuxtest.bluejungle.com (user-mail) -> 35
+Network Crash Dump user (user-uniqueName) -> 36
+richard.nixon@test.bluejungle.com (user-mail) -> 37
+rlin@bluejungle.com (user-mail) -> 38
+rlin@nextlabs.com (user-mail) -> 38
+robert.lin@bluejungle.com (user-mail) -> 38
+robert.lin@nextlabs.com (user-mail) -> 38
+root (user-uniqueName) -> 39
+S-1-5-21-668023798-3031861066-1043980994-1114 (user-windowsSid) -> 30
+S-1-5-21-668023798-3031861066-1043980994-1140 (user-windowsSid) -> 12
+S-1-5-21-668023798-3031861066-1043980994-1149 (user-windowsSid) -> 2
+S-1-5-21-668023798-3031861066-1043980994-1157 (user-windowsSid) -> 40
+S-1-5-21-668023798-3031861066-1043980994-2628 (user-windowsSid) -> 38
+S-1-5-21-668023798-3031861066-1043980994-2634 (user-windowsSid) -> 41
+S-1-5-21-668023798-3031861066-1043980994-3322 (user-windowsSid) -> 13
+S-1-5-21-668023798-3031861066-1043980994-3394 (user-windowsSid) -> 4
+S-1-5-21-668023798-3031861066-1043980994-3414 (user-windowsSid) -> 3
+S-1-5-21-668023798-3031861066-1043980994-3455 (user-windowsSid) -> 11
+S-1-5-21-668023798-3031861066-1043980994-3468 (user-windowsSid) -> 6
+S-1-5-21-668023798-3031861066-1043980994-3481 (user-windowsSid) -> 9
+S-1-5-21-668023798-3031861066-1043980994-3510 (user-windowsSid) -> 14
+S-1-5-21-668023798-3031861066-1043980994-5137 (host-windowsSid) -> 42
+S-1-5-21-830805687-550985140-3285839444-1164 (user-windowsSid) -> 25
+S-1-5-21-830805687-550985140-3285839444-1166 (user-windowsSid) -> 5
+S-1-5-21-830805687-550985140-3285839444-1171 (user-windowsSid) -> 18
+S-1-5-21-830805687-550985140-3285839444-1186 (user-windowsSid) -> 37
+S-1-5-21-830805687-550985140-3285839444-1188 (user-windowsSid) -> 21
+S-1-5-32-544 (user-windowsSid) -> 1
+savaii.bluejungle.com (host-uniqueName) -> 42
+savaii.bluejungle.com (host-uniqueName) -> 42
+scott.goldstein@bluejungle.com (user-mail) -> 41
+scott.goldstein@nextlabs.com (user-mail) -> 41
+sergey.kalinichenko@bluejungle.com (user-mail) -> 40
+sergey.kalinichenko@nextlabs.com (user-mail) -> 40
+sergey@bluejungle.com (user-mail) -> 40
+sergey@nextlabs.com (user-mail) -> 40
+sgoldstein@bluejungle.com (user-mail) -> 41
+sgoldstein@nextlabs.com (user-mail) -> 41
+skalinichenko@bluejungle.com (user-mail) -> 40
+skalinichenko@nextlabs.com (user-mail) -> 40
+test1 (user-uniqueName) -> 43
+test2 (user-uniqueName) -> 44
+test3 (user-uniqueName) -> 45
+test4 (user-uniqueName) -> 46
+theadmin@bluejungle.com (user-mail) -> 1
+{UNKNOWN-APP} (application-builtin) -> 47
+{UNKNOWN-HOST} (host-builtin) -> 48
+{UNKNOWN-USER} (user-builtin) -> 49

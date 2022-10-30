@@ -1,0 +1,7 @@
+POLICY CommunicationPolicy03
+    FOR resource.name = "c:\\communication_policy"
+    ON EMAIL
+    SENT_TO USER.FIRSTNAME="k*"
+    BY *
+    DO DENY
+    ON DENY DO policy03

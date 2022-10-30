@@ -1,0 +1,11 @@
+<Obligation>
+    <DisplayName>Log Decision</DisplayName>
+    <RunAt>PEP</RunAt>
+    <Name>LOGDECISION</Name>
+    <Arguments>
+        <Argument>
+            <Name>Cookie</Name>
+            <Value>$CESerializedLog</Value>
+        </Argument>
+    </Arguments>
+</Obligation>

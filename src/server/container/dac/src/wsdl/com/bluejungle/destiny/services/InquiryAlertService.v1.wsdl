@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://bluejungle.com/destiny/services/inquiry_alert/v1" 
+				  xmlns:tns="http://bluejungle.com/destiny/services/inquiry_alert/v1"
+				  xmlns:bindings="http://bluejungle.com/destiny/bindings/inquiry_alert/v1"
+				  xmlns:xs="http://www.w3.org/1999/XMLSchema" 
+				  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+				  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+
+   <wsdl:import namespace="http://bluejungle.com/destiny/bindings/inquiry_alert/v1" location="../bindings/InquiryAlertBindings.v1.wsdl"/> 
+   
+   <wsdl:service name="InquiryAlertService">
+      <wsdl:port binding="bindings:InquiryAlertServiceIFBinding" name="InquiryAlertService">
+         <soap:address location="http://localhost:8080/dac/services/InquiryAlertService"/>
+      </wsdl:port>
+   </wsdl:service>
+
+</wsdl:definitions>

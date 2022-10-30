@@ -1,0 +1,8 @@
+POLICY SmallFiles
+    DESCRIPTION "Denies all access of small (<1024) files in a particular directory."
+    FOR resource.name = "c:\\smallfiles\\**" and resource.size < 1024
+    ON *
+    BY PRINCIPAL.USER.NAME = "hchan@bluejungle.com"
+    DO DENY
+    ON ALLOW DO log
+    deployed to agent.type = desktop

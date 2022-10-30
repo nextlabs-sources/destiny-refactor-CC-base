@@ -1,0 +1,1 @@
+resource owner_ldap_test = resource.owner_ldap_group = "BLUEJUNGLE.COM:Groups:engineering" and resource.name = "**owner_ldap.test"

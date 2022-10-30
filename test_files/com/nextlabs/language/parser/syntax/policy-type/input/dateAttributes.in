@@ -1,0 +1,10 @@
+context dateAttributes0
+    name0 date
+
+context dateAttributes1
+    name1 date
+,   name2 date
+
+context dateAttributes2 extends dateAttributes1
+    name3 date
+,   name4 date

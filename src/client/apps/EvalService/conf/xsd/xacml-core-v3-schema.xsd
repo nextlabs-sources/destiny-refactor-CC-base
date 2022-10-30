@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright OASIS Open 2010. All Rights Reserved. -->
+<xs:schema xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+<!-- <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/> -->	
+	   <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+                      schemaLocation="http://www.w3.org/2009/01/xml.xsd"/>
+	<xs:element name="Request" type="xacml:RequestType"/>
+	<xs:complexType name="RequestType">
+		<xs:sequence>
+			<xs:element ref="xacml:RequestDefaults" minOccurs="0"/>
+			<xs:element ref="xacml:Attributes" maxOccurs="unbounded"/>
+			<xs:element ref="xacml:MultiRequests" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="ReturnPolicyIdList" type="xs:boolean" use="required" />
+		<xs:attribute name="CombinedDecision" type="xs:boolean" use="required" />
+	</xs:complexType>
+
+	<xs:element name="RequestDefaults" type="xacml:RequestDefaultsType"/>
+	<xs:complexType name="RequestDefaultsType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element ref="xacml:XPathVersion"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="Response" type="xacml:ResponseType"/>
+	<xs:complexType name="ResponseType">
+		<xs:sequence>
+			<xs:element ref="xacml:Result" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="Content" type="xacml:ContentType"/>
+	<xs:complexType name="ContentType" mixed="true">
+		<xs:sequence>
+			<xs:any namespace="##any" processContents="lax"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="Result" type="xacml:ResultType"/>
+	<xs:complexType name="ResultType">
+		<xs:sequence>
+			<xs:element ref="xacml:Decision"/>
+			<xs:element ref="xacml:Status" minOccurs="0"/>
+			<xs:element ref="xacml:Obligations" minOccurs="0"/>
+			<xs:element ref="xacml:AssociatedAdvice" minOccurs="0"/>
+			<xs:element ref="xacml:Attributes" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="xacml:PolicyIdentifierList" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="PolicyIdentifierList" type="xacml:PolicyIdentifierListType"/>
+	<xs:complexType name="PolicyIdentifierListType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element ref="xacml:PolicyIdReference"/>
+			<xs:element ref="xacml:PolicySetIdReference"/>
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:element name="Decision" type="xacml:DecisionType"/>
+	<xs:simpleType name="DecisionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Permit"/>
+			<xs:enumeration value="Deny"/>
+			<xs:enumeration value="Indeterminate"/>
+			<xs:enumeration value="NotApplicable"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element name="Status" type="xacml:StatusType"/>
+	<xs:complexType name="StatusType">
+		<xs:sequence>
+			<xs:element ref="xacml:StatusCode"/>
+			<xs:element ref="xacml:StatusMessage" minOccurs="0"/>
+			<xs:element ref="xacml:StatusDetail" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="StatusCode" type="xacml:StatusCodeType"/>
+	<xs:complexType name="StatusCodeType">
+		<xs:sequence>
+			<xs:element ref="xacml:StatusCode" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="Value" type="xs:anyURI" use="required"/>
+	</xs:complexType>
+
+	<xs:element name="StatusMessage" type="xs:string"/>
+
+	<xs:element name="StatusDetail" type="xacml:StatusDetailType"/>
+	<xs:complexType name="StatusDetailType">
+		<xs:sequence>
+			<xs:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="MissingAttributeDetail" type="xacml:MissingAttributeDetailType"/>
+	<xs:complexType name="MissingAttributeDetailType">
+		<xs:sequence>
+			<xs:element ref="xacml:AttributeValue" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="Category" type="xs:anyURI" use="required"/>
+		<xs:attribute name="AttributeId" type="xs:anyURI" use="required"/>
+		<xs:attribute name="DataType" type="xs:anyURI" use="required"/>
+		<xs:attribute name="Issuer" type="xs:string" use="optional"/>
+	</xs:complexType>
+
+	<xs:element name="Attributes" type="xacml:AttributesType"/>
+	<xs:complexType name="AttributesType">
+		<xs:sequence>
+			<xs:element ref="xacml:Content" minOccurs="0"/>
+			<xs:element ref="xacml:Attribute" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="Category" type="xs:anyURI" use="required"/>
+	<!-- <xs:attribute ref="xml:ID" use="optional"/> -->	
+	</xs:complexType>
+
+	<xs:element name="Attribute" type="xacml:AttributeType"/>
+	<xs:complexType name="AttributeType">
+		<xs:sequence>
+			<xs:element ref="xacml:AttributeValue" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="AttributeId" type="xs:anyURI" use="required"/>
+		<xs:attribute name="Issuer" type="xs:string" use="optional"/>
+		<xs:attribute name="IncludeInResult" type="xs:boolean" use="required"/>
+	</xs:complexType>
+
+	<xs:element name="MultiRequests" type="xacml:MultiRequestsType"/>
+	<xs:complexType name="MultiRequestsType">
+		<xs:sequence>
+			<xs:element ref="xacml:RequestReference" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="RequestReference" type="xacml:RequestReferenceType"/>
+	<xs:complexType name="RequestReferenceType">
+		<xs:sequence>
+			<xs:element ref="xacml:AttributesReference" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="AttributesReference" type="xacml:AttributesReferenceType"/>
+	<xs:complexType name="AttributesReferenceType">
+		<xs:attribute name="ReferenceId" type="xs:IDREF" use="required" />
+	</xs:complexType>
+	
+	<xs:element name="Obligations" type="xacml:ObligationsType"/>
+	<xs:complexType name="ObligationsType">
+		<xs:sequence>
+			<xs:element ref="xacml:Obligation" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="AssociatedAdvice" type="xacml:AssociatedAdviceType"/>
+	<xs:complexType name="AssociatedAdviceType">
+		<xs:sequence>
+			<xs:element ref="xacml:Advice" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="Obligation" type="xacml:ObligationType"/>
+	<xs:complexType name="ObligationType">
+		<xs:sequence>
+			<xs:element ref="xacml:AttributeAssignment" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="ObligationId" type="xs:anyURI" use="required"/>
+	</xs:complexType>
+
+	<xs:element name="Advice" type="xacml:AdviceType"/>
+	<xs:complexType name="AdviceType">
+		<xs:sequence>
+			<xs:element ref="xacml:AttributeAssignment" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="AdviceId" type="xs:anyURI" use="required"/>
+	</xs:complexType>
+
+	<xs:element name="AttributeAssignment" type="xacml:AttributeAssignmentType"/>
+	<xs:complexType name="AttributeAssignmentType" mixed="true">
+		<xs:complexContent mixed="true">
+			<xs:extension base="xacml:AttributeValueType">
+				<xs:attribute name="AttributeId" type="xs:anyURI" use="required"/>
+				<xs:attribute name="Category" type="xs:anyURI" use="optional"/>
+				<xs:attribute name="Issuer" type="xs:string" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:element name="PolicySetIdReference" type="xacml:IdReferenceType"/>
+	<xs:element name="PolicyIdReference" type="xacml:IdReferenceType"/>
+
+	<xs:element name="XPathVersion" type="xs:anyURI"/>
+
+	<xs:complexType name="IdReferenceType">
+		<xs:simpleContent>
+			<xs:extension base="xs:anyURI">
+				<xs:attribute name="Version" type="xacml:VersionMatchType" use="optional"/>
+				<xs:attribute name="EarliestVersion" type="xacml:VersionMatchType" use="optional"/>
+				<xs:attribute name="LatestVersion" type="xacml:VersionMatchType" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:simpleType name="VersionType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="(\d+\.)*\d+"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="VersionMatchType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="((\d+|\*)\.)*(\d+|\*|\+)"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element name="Description" type="xs:string"/>
+
+	<xs:element name="Expression" type="xacml:ExpressionType" abstract="true"/>
+	<xs:complexType name="ExpressionType" abstract="true"/>
+
+	<xs:element name="VariableReference" type="xacml:VariableReferenceType" substitutionGroup="xacml:Expression"/>
+	<xs:complexType name="VariableReferenceType">
+		<xs:complexContent>
+			<xs:extension base="xacml:ExpressionType">
+				<xs:attribute name="VariableId" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:element name="AttributeValue" type="xacml:AttributeValueType" substitutionGroup="xacml:Expression"/>
+	<xs:complexType name="AttributeValueType" mixed="true">
+		<xs:complexContent mixed="true">
+			<xs:extension base="xacml:ExpressionType">
+				<xs:sequence>
+					<xs:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+				<xs:attribute name="DataType" type="xs:anyURI" use="required"/>
+				<xs:anyAttribute namespace="##any" processContents="lax"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+</xs:schema>

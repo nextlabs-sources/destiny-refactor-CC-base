@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://nextlabs.com/destiny/services/keymanagement/types" 
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+			xmlns:common="http://nextlabs.com/destiny/framework/types"
+			xmlns:types="http://nextlabs.com/destiny/services/keymanagement/types">
+
+	<xsd:import
+			namespace="http://bluejungle.com/destiny/framework/types" 
+			schemaLocation="../../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicTypes.xsd"/>
+
+	
+	<xsd:complexType name="KeyIdDTO">
+		<xsd:sequence>
+			<xsd:element name="hash" type="xsd:hexBinary" />
+			<xsd:element name="timestamp" type="xsd:long" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="KeyDTO">
+		<xsd:sequence>
+			<xsd:element name="version" type="xsd:int" />
+			<xsd:element name="keyId" type="types:KeyIdDTO" />
+			<xsd:element name="key" type="xsd:hexBinary" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="KeysDTO">
+		<xsd:sequence>
+			<xsd:element name="keys" type="types:KeyDTO" minOccurs="0" maxOccurs="unlimited" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+			
+	<xsd:complexType name="KeyRingDTO">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string" />
+			<xsd:element name="keyIds" type="types:KeyIdDTO" minOccurs="0" maxOccurs="unlimited" />
+			<xsd:element name="createDate" type="xsd:long" />
+			<xsd:element name="lastModifiedDate" type="xsd:long" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="KeyRingWithKeysDTO">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string" />
+			<xsd:element name="keys" type="types:KeyDTO" minOccurs="0" maxOccurs="unlimited" />
+			<xsd:element name="createDate" type="xsd:long" />
+			<xsd:element name="lastModifiedDate" type="xsd:long" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="KeyRingsWithKeysDTO">
+		<xsd:sequence>
+			<xsd:element name="keyRings" type="types:KeyRingWithKeysDTO" minOccurs="0" maxOccurs="unlimited" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	
+	<xsd:complexType name="KeyRingNamesDTO">
+		<xsd:sequence>
+			<xsd:element name="keyRingNames" type="xsd:string" minOccurs="0" maxOccurs="unlimited" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	
+</xsd:schema>

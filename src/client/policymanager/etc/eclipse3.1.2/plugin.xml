@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?eclipse version="3.0"?>
+<plugin id="com.bluejungle.destiny.policymanager" name="Policy Author Plug-in" version="1.0.0"
+	provider-name="NextLabs, Inc." class="com.bluejungle.destiny.policymanager.Activator">
+	<runtime>
+		<library name="policymanager.jar">
+			<export name="*" />
+		</library>
+	</runtime>
+	<requires>
+		<import plugin="org.eclipse.core.runtime" />
+		<import plugin="org.eclipse.ui" />
+		<import plugin="com.bluejungle.destiny.policydepend" />
+	</requires>
+	<extension-point id="layout" name="PolicyAuthor Layout" schema="schema/layout.exsd" />
+	<extension-point id="profile" name="Policy User Profile" schema="schema/profile.exsd"/>
+	<extension id="PolicyManagerApplication" name="Policy Manager" point="org.eclipse.core.runtime.applications">
+		<application>
+			<run class="com.bluejungle.destiny.policymanager.ui.RcpApplication"></run>
+		</application>
+	</extension>
+	<extension point="org.eclipse.ui.perspectives">
+		<perspective class="com.bluejungle.destiny.policymanager.ui.RcpPerspective" icon="resources/images/policy.gif"
+			id="com.bluejungle.destiny.policymanager.ui.RcpPerspective" name="Policy Manager"></perspective>
+	</extension>
+	<extension point="org.eclipse.ui.views">
+		<category name="Status Bar" id="com.bluejungle.destiny.policymanager.ui.StatusPart" />
+		<view allowMultiple="false" icon="resources/images/policy.gif" class="com.bluejungle.destiny.policymanager.ui.StatusPart"
+			category="com.bluejungle.destiny.policymanager.ui.StatusPart" name="StatusPart" id="com.bluejungle.destiny.policymanager.ui.StatusPart" />
+	</extension>
+	<extension point="org.eclipse.ui.views">
+		<category name="Destiny Policy Manager" id="com.bluejungle.destiny.policymanager.ui.PolicyManagerCategory" />
+		<view allowMultiple="false" icon="resources/images/policy.gif" class="com.bluejungle.destiny.policymanager.ui.SampleView"
+			category="com.bluejungle.destiny.policymanager.ui.PolicyManagerCategory" name="Policy Manager"
+			id="com.bluejungle.destiny.policymanager.ui.SampleView" />
+	</extension>
+	<extension point="org.eclipse.ui.views">
+		<category name="Destiny Component Preview" id="com.bluejungle.destiny.policymanager.ui.PreviewView" />
+		<view allowMultiple="false" icon="resources/images/policy.gif" class="com.bluejungle.destiny.policymanager.ui.PreviewView"
+			category="com.bluejungle.destiny.policymanager.ui.PreviewView" name="Preview" id="com.bluejungle.destiny.policymanager.ui.PreviewView" />
+	</extension>
+	<extension point="org.eclipse.ui.editors">
+		<editor id="com.bluejungle.destiny.policymanager.editor.DomainObjectEditor" name="Domain Object Editor"
+			icon="resources/images/policy.gif" extensions="bjdo" class="com.bluejungle.destiny.policymanager.editor.DomainObjectEditor"
+			default="true"></editor>
+	</extension>
+	<extension point="org.eclipse.ui.editors">
+		<editor id="com.bluejungle.destiny.policymanager.ui.AboutPart" name="About" icon="resources/images/policy.gif"
+			extensions="bjabout" class="com.bluejungle.destiny.policymanager.ui.AboutPart" default="true"></editor>
+	</extension>
+	<extension id="policyauthor" point="org.eclipse.core.runtime.products">
+		<product application="com.bluejungle.destiny.policymanager.PolicyManagerApplication" name="policyauthor" />
+	</extension>
+	<extension point="com.bluejungle.destiny.policymanager.layout">
+		<tabfolder name="Subjects">
+			<tab name="Users" class="com.bluejungle.destiny.policymanager.ui.usergroup.UserListPanel" />
+			<tab name="Computers" class="com.bluejungle.destiny.policymanager.ui.usergroup.DesktopListPanel" />
+			<tab name="Applications" class="com.bluejungle.destiny.policymanager.ui.usergroup.ApplicationListPanel" />
+		</tabfolder>
+		<tabfolder name="Actions">
+			<tab name="Actions" class="com.bluejungle.destiny.policymanager.ui.usergroup.ActionListPanel" />
+		</tabfolder>
+		<tabfolder name="Documents">
+			<tab name="Documents" class="com.bluejungle.destiny.policymanager.ui.usergroup.ResourceListPanel" />
+		</tabfolder>
+		<tabfolder name="Portal">
+			<tab name="Portal" class="com.bluejungle.destiny.policymanager.ui.usergroup.PortalListPanel" />
+		</tabfolder>
+	</extension>
+	<extension point="com.bluejungle.destiny.policymanager.profile">
+    <profile name="corporate"/>
+	</extension>
+</plugin>

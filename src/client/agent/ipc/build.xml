@@ -1,0 +1,38 @@
+<project name="agentipc" default="build">
+
+	<var name="nlbuildroot" value="${basedir}/../../../.." />
+	<property name="common.build.script.dir" value="${nlbuildroot}/build_scripts" />
+	<property file="${basedir}/build.properties" />
+
+  <import file="${common.build.script.dir}/java_build.xml" />
+  <import file="${common.build.script.dir}/jni_build.xml" />
+
+  <property name="src.stub.dir" value="${basedir}/src/java/stub" />
+  <property name="build.stub.classes.dir" value="${build.dir}/stub/classes" />
+
+  <!-- <target name="compile" depends="java_build.compile, jni_build.compile" /> -->
+
+  <target name="compile" depends="java_build.compile, jni_build.compile">
+    <mkdir dir="${build.stub.classes.dir}"/>
+
+    <javac srcdir="${src.stub.dir}" destdir="${build.stub.classes.dir}"  source="${compile.source}" target="${compile.target}" executable="${compile.executable}" bootclasspath="${compile.bootclasspath}">
+      <classpath>
+        <path refid="main.classpath"/>
+        <path location="${build.main.classes.dir}"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="package" depends="copy_resource, compile">
+	<jar destfile="${build.dir}/agent-ipc.jar">
+	  <fileset dir="${build.main.classes.dir}" />
+	</jar>
+
+        <jar destfile="${build.dir}/agent-ipc-stub.jar">
+          <fileset dir="${build.main.classes.dir}" excludes="**/OSWrapper.class"/>
+          <fileset dir="${build.stub.classes.dir}"/>
+        </jar>
+
+	<copy file="${build.main.jni.include.dir}/com_bluejungle_destiny_agent_ipc_OSWrapper.h" todir="${build.dir}" />
+  </target>
+</project>

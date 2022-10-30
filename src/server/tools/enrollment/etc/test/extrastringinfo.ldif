@@ -1,0 +1,10 @@
+dn: CN=John Tyler,OU=extrainfo,dc=nextlabs,dc=com
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: user
+cn: John Tyler
+objectGUID: 9000001
+objectSid: 9000001
+userPrincipalName: john.tyler@linuxtest.bluejungle.com
+extrastringinfo: extrainf0

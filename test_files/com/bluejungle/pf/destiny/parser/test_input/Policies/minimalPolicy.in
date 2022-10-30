@@ -1,0 +1,12 @@
+policy first_policy
+    description "this policy is simple"
+    FOR * ON * BY *
+    DO DENY
+
+policy first_policy_v2
+    description "this policy is also trivial"
+    attribute governance
+    DO CONFIRM "Possible jail time: 10 years"
+    FOR * ON * TO * BY *
+    ON DENY DO LOG "Access denied", DONOTLOG
+    ON ALLOW DO LOG "Access granted", DONOTLOG

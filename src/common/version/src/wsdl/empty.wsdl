@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://nextlabs.com/empty"
+				  xmlns:tns="http://nextlabs.com/empty"
+				  xmlns:versionTypes="http://bluejungle.com/destiny/version/types" 
+				  xmlns:xs="http://www.w3.org/1999/XMLSchema" 
+				  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+				  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" > 
+				  
+	<wsdl:types>
+		<xs:schema targetNamespace="http://nextlabs.com/empty">
+			<xs:import namespace="http://bluejungle.com/destiny/version/types" schemaLocation="../xsd/com/bluejungle/version/types/Version.xsd"/>	
+		</xs:schema>
+	</wsdl:types>
+
+</wsdl:definitions>	

@@ -1,0 +1,268 @@
+ID null POLICY remote_1
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    WHERE ENVIRONMENT.REMOTE_ACCESS > 1
+    DO deny
+ID null POLICY remote_2
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    WHERE ENVIRONMENT.REMOTE_ACCESS > "1"
+    DO deny
+ID null POLICY remote_3
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    WHERE ENVIRONMENT.REMOTE_ACCESS = 0
+    DO deny
+ID null POLICY remote_4
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    WHERE ENVIRONMENT.REMOTE_ACCESS < 1
+    DO deny
+ID null POLICY remote_1a
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    WHERE ENVIRONMENT.REMOTE_ACCESS > 1
+    DO deny
+ID null POLICY remote_2a
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    WHERE ENVIRONMENT.REMOTE_ACCESS > "1"
+    DO deny
+ID null POLICY remote_3a
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    WHERE ENVIRONMENT.REMOTE_ACCESS = 0
+    DO deny
+ID null POLICY remote_4a
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    WHERE ENVIRONMENT.REMOTE_ACCESS < 1
+    DO deny
+
+
+================ Re-parsed PQL =================
+
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "policy": 'POLICY'
+        IDENTIFIER: 'remote_1'
+        TARGET: ''
+            FROM: ''
+                RESOURCE_EXPR: ''
+                    "false": 'FALSE'
+            ACTION_EXPR: ''
+                "false": 'FALSE'
+            SUBJECT_EXPR: ''
+                "false": 'FALSE'
+        "where": 'WHERE'
+            RELATION_OP: '>'
+                DOT_EXPRESSION: ''
+                    IDENTIFIER: 'ENVIRONMENT'
+                    IDENTIFIER: 'REMOTE_ACCESS'
+                INTEGER: '1'
+        EFFECT_CLAUSE: 'DO'
+            EFFECT_TYPE: 'deny'
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "policy": 'POLICY'
+        IDENTIFIER: 'remote_2'
+        TARGET: ''
+            FROM: ''
+                RESOURCE_EXPR: ''
+                    "false": 'FALSE'
+            ACTION_EXPR: ''
+                "false": 'FALSE'
+            SUBJECT_EXPR: ''
+                "false": 'FALSE'
+        "where": 'WHERE'
+            RELATION_OP: '>'
+                DOT_EXPRESSION: ''
+                    IDENTIFIER: 'ENVIRONMENT'
+                    IDENTIFIER: 'REMOTE_ACCESS'
+                QUOTED_STRING: '1'
+        EFFECT_CLAUSE: 'DO'
+            EFFECT_TYPE: 'deny'
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "policy": 'POLICY'
+        IDENTIFIER: 'remote_3'
+        TARGET: ''
+            FROM: ''
+                RESOURCE_EXPR: ''
+                    "false": 'FALSE'
+            ACTION_EXPR: ''
+                "false": 'FALSE'
+            SUBJECT_EXPR: ''
+                "false": 'FALSE'
+        "where": 'WHERE'
+            RELATION_OP: '='
+                DOT_EXPRESSION: ''
+                    IDENTIFIER: 'ENVIRONMENT'
+                    IDENTIFIER: 'REMOTE_ACCESS'
+                INTEGER: '0'
+        EFFECT_CLAUSE: 'DO'
+            EFFECT_TYPE: 'deny'
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "policy": 'POLICY'
+        IDENTIFIER: 'remote_4'
+        TARGET: ''
+            FROM: ''
+                RESOURCE_EXPR: ''
+                    "false": 'FALSE'
+            ACTION_EXPR: ''
+                "false": 'FALSE'
+            SUBJECT_EXPR: ''
+                "false": 'FALSE'
+        "where": 'WHERE'
+            RELATION_OP: '<'
+                DOT_EXPRESSION: ''
+                    IDENTIFIER: 'ENVIRONMENT'
+                    IDENTIFIER: 'REMOTE_ACCESS'
+                INTEGER: '1'
+        EFFECT_CLAUSE: 'DO'
+            EFFECT_TYPE: 'deny'
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "policy": 'POLICY'
+        IDENTIFIER: 'remote_1a'
+        TARGET: ''
+            FROM: ''
+                RESOURCE_EXPR: ''
+                    "false": 'FALSE'
+            ACTION_EXPR: ''
+                "false": 'FALSE'
+            SUBJECT_EXPR: ''
+                "false": 'FALSE'
+        "where": 'WHERE'
+            RELATION_OP: '>'
+                DOT_EXPRESSION: ''
+                    IDENTIFIER: 'ENVIRONMENT'
+                    IDENTIFIER: 'REMOTE_ACCESS'
+                INTEGER: '1'
+        EFFECT_CLAUSE: 'DO'
+            EFFECT_TYPE: 'deny'
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "policy": 'POLICY'
+        IDENTIFIER: 'remote_2a'
+        TARGET: ''
+            FROM: ''
+                RESOURCE_EXPR: ''
+                    "false": 'FALSE'
+            ACTION_EXPR: ''
+                "false": 'FALSE'
+            SUBJECT_EXPR: ''
+                "false": 'FALSE'
+        "where": 'WHERE'
+            RELATION_OP: '>'
+                DOT_EXPRESSION: ''
+                    IDENTIFIER: 'ENVIRONMENT'
+                    IDENTIFIER: 'REMOTE_ACCESS'
+                QUOTED_STRING: '1'
+        EFFECT_CLAUSE: 'DO'
+            EFFECT_TYPE: 'deny'
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "policy": 'POLICY'
+        IDENTIFIER: 'remote_3a'
+        TARGET: ''
+            FROM: ''
+                RESOURCE_EXPR: ''
+                    "false": 'FALSE'
+            ACTION_EXPR: ''
+                "false": 'FALSE'
+            SUBJECT_EXPR: ''
+                "false": 'FALSE'
+        "where": 'WHERE'
+            RELATION_OP: '='
+                DOT_EXPRESSION: ''
+                    IDENTIFIER: 'ENVIRONMENT'
+                    IDENTIFIER: 'REMOTE_ACCESS'
+                INTEGER: '0'
+        EFFECT_CLAUSE: 'DO'
+            EFFECT_TYPE: 'deny'
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "policy": 'POLICY'
+        IDENTIFIER: 'remote_4a'
+        TARGET: ''
+            FROM: ''
+                RESOURCE_EXPR: ''
+                    "false": 'FALSE'
+            ACTION_EXPR: ''
+                "false": 'FALSE'
+            SUBJECT_EXPR: ''
+                "false": 'FALSE'
+        "where": 'WHERE'
+            RELATION_OP: '<'
+                DOT_EXPRESSION: ''
+                    IDENTIFIER: 'ENVIRONMENT'
+                    IDENTIFIER: 'REMOTE_ACCESS'
+                INTEGER: '1'
+        EFFECT_CLAUSE: 'DO'
+            EFFECT_TYPE: 'deny'

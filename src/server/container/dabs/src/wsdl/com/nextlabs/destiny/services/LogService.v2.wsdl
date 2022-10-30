@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+					xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+					xmlns:bindings="http://nextlabs.com/destiny/bindings/log/v2"
+					xmlns:tns="http://nextlabs.com/destiny/services/log/v2" 
+					targetNamespace="http://nextlabs.com/destiny/services/log/v2" 
+					name="LogService">
+
+	<wsdl:import 	namespace="http://nextlabs.com/destiny/bindings/log/v2" 
+					location="../bindings/LogServiceBindings.v2.wsdl"/> 
+			
+	<wsdl:service name="LogService.v2">
+		<wsdl:port name="LogServiceIFPort.v2" binding="bindings:LogServiceIFBinding">
+			<soap:address location="http://localhost:8080/dabs/services/LogServiceIFPort.v2"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

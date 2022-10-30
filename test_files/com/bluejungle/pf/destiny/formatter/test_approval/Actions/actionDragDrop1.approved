@@ -1,0 +1,20 @@
+ID null STATUS EMPTY COMPONENT DragNDrop = GROUP="Read"
+
+
+================ Re-parsed PQL =================
+
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'EMPTY'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "component": 'COMPONENT'
+        IDENTIFIER: 'DragNDrop'
+        COMPONENT_EXPR: ''
+            RELATION_OP: '='
+                IDENTIFIER: 'GROUP'
+                QUOTED_STRING: 'Read'

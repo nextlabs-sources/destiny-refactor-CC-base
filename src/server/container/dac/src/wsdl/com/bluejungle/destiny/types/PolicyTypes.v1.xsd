@@ -1,0 +1,71 @@
+<xs:schema 	targetNamespace="http://bluejungle.com/destiny/types/policies/v1" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:types="http://bluejungle.com/destiny/types/policies/v1"
+			xmlns:basicTypes="http://bluejungle.com/destiny/types/basic/v1">
+	
+	<xs:complexType name="Policy">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="folderName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="PolicyQueryFieldName">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Name"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="PolicyQuerySpec">
+		<xs:sequence>
+			<xs:element name="searchSpec" type="types:PolicyQueryTermList" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="sortSpec" type="types:PolicySortTermList" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="limit" type="xs:positiveInteger" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PolicyQueryTerm">
+		<xs:sequence>
+			<xs:element name="fieldName" type="types:PolicyQueryFieldName" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="expression" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="PolicyQueryTermList">
+		<xs:sequence>
+			<xs:element name="terms" type="types:PolicyQueryTerm" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="PolicySortFieldName">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Name"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="PolicySortSpec">
+		<xs:sequence>
+			<xs:element name="fieldName" type="types:PolicySortFieldName" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="direction" type="basicTypes:SortDirection" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="PolicySortTerm">
+		<xs:sequence>
+			<xs:element name="fieldName" type="types:PolicySortFieldName" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="direction" type="basicTypes:SortDirection" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="PolicySortTermList">
+		<xs:sequence>
+			<xs:element name="terms" type="types:PolicySortTerm" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PolicyList">
+		<xs:sequence>
+			<xs:element name="policies" type="types:Policy" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

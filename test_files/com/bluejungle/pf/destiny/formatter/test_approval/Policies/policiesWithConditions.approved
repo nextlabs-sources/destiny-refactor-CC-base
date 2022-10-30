@@ -1,0 +1,136 @@
+ID null POLICY identical_with_condition1
+    FOR TRUE
+    ON TRUE
+    BY TRUE
+    WHERE CURRENT_TIME.date > 12345678
+    DO deny
+ID null POLICY identical_with_condition2
+    FOR TRUE
+    ON TRUE
+    BY TRUE
+    WHERE CURRENT_TIME.day_in_month > 12345678
+    DO deny
+ID null POLICY identical_with_condition1a
+    FOR TRUE
+    ON TRUE
+    BY TRUE
+    WHERE CURRENT_TIME.date > 12345678
+    DO deny
+ID null POLICY identical_with_condition2a
+    FOR TRUE
+    ON TRUE
+    BY TRUE
+    WHERE CURRENT_TIME.day_in_month > 12345678
+    DO deny
+
+
+================ Re-parsed PQL =================
+
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "policy": 'POLICY'
+        IDENTIFIER: 'identical_with_condition1'
+        TARGET: ''
+            FROM: ''
+                RESOURCE_EXPR: ''
+                    "true": 'TRUE'
+            ACTION_EXPR: ''
+                "true": 'TRUE'
+            SUBJECT_EXPR: ''
+                "true": 'TRUE'
+        "where": 'WHERE'
+            RELATION_OP: '>'
+                DOT_EXPRESSION: ''
+                    IDENTIFIER: 'CURRENT_TIME'
+                    IDENTIFIER: 'date'
+                INTEGER: '12345678'
+        EFFECT_CLAUSE: 'DO'
+            EFFECT_TYPE: 'deny'
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "policy": 'POLICY'
+        IDENTIFIER: 'identical_with_condition2'
+        TARGET: ''
+            FROM: ''
+                RESOURCE_EXPR: ''
+                    "true": 'TRUE'
+            ACTION_EXPR: ''
+                "true": 'TRUE'
+            SUBJECT_EXPR: ''
+                "true": 'TRUE'
+        "where": 'WHERE'
+            RELATION_OP: '>'
+                DOT_EXPRESSION: ''
+                    IDENTIFIER: 'CURRENT_TIME'
+                    IDENTIFIER: 'day_in_month'
+                INTEGER: '12345678'
+        EFFECT_CLAUSE: 'DO'
+            EFFECT_TYPE: 'deny'
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "policy": 'POLICY'
+        IDENTIFIER: 'identical_with_condition1a'
+        TARGET: ''
+            FROM: ''
+                RESOURCE_EXPR: ''
+                    "true": 'TRUE'
+            ACTION_EXPR: ''
+                "true": 'TRUE'
+            SUBJECT_EXPR: ''
+                "true": 'TRUE'
+        "where": 'WHERE'
+            RELATION_OP: '>'
+                DOT_EXPRESSION: ''
+                    IDENTIFIER: 'CURRENT_TIME'
+                    IDENTIFIER: 'date'
+                INTEGER: '12345678'
+        EFFECT_CLAUSE: 'DO'
+            EFFECT_TYPE: 'deny'
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "policy": 'POLICY'
+        IDENTIFIER: 'identical_with_condition2a'
+        TARGET: ''
+            FROM: ''
+                RESOURCE_EXPR: ''
+                    "true": 'TRUE'
+            ACTION_EXPR: ''
+                "true": 'TRUE'
+            SUBJECT_EXPR: ''
+                "true": 'TRUE'
+        "where": 'WHERE'
+            RELATION_OP: '>'
+                DOT_EXPRESSION: ''
+                    IDENTIFIER: 'CURRENT_TIME'
+                    IDENTIFIER: 'day_in_month'
+                INTEGER: '12345678'
+        EFFECT_CLAUSE: 'DO'
+            EFFECT_TYPE: 'deny'

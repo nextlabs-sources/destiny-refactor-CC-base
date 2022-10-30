@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+					xmlns:interfaces="http://bluejungle.com/destiny/interfaces/report/v1" 
+					targetNamespace="http://bluejungle.com/destiny/bindings/report/v1">
+
+	<wsdl:import 	namespace="http://bluejungle.com/destiny/interfaces/report/v1" 
+					location="../interfaces/ReportExecutionInterface.v1.wsdl"/>
+	
+	<wsdl:binding name="ReportExecutionIFBinding" type="interfaces:reportExecutionIF">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+		<wsdl:operation name="executeReport">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="report maxNbResults nbRows" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="reportResponse" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="AccessDeniedFault">
+				<soap:fault name="AccessDeniedFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ExecutionFault">
+				<soap:fault name="ExecutionFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="InvalidArgumentFault">
+				<soap:fault name="InvalidArgumentFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getNextResultSet">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="reportState nbRows" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="result" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="AccessDeniedFault">
+				<soap:fault name="AccessDeniedFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ExecutionFault">
+				<soap:fault name="ExecutionFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getLogDetail">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="report recordId" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="logResult" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="AccessDeniedFault">
+				<soap:fault name="AccessDeniedFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ExecutionFault">
+				<soap:fault name="ExecutionFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="terminateReportExecution">
+			<wsdl:input>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" parts="state" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body namespace="http://bluejungle.com/destiny/services/dac" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="AccessDeniedFault">
+				<soap:fault name="AccessDeniedFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ExecutionFault">
+				<soap:fault name="ExecutionFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>		
+	</wsdl:binding>
+</wsdl:definitions>

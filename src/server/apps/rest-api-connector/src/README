@@ -1,0 +1,99 @@
+#-----------------------------------------------------------------------------------------------
+#
+#                                          REST-API Connector
+#                                               READ ME
+#
+#-----------------------------------------------------------------------------------------------
+
+Software Requirements :
+-----------------------
+    Java 1.7
+    Apache Tomcat 8.0.15
+
+
+Project Libraries
+-----------------
+	
+	agent-controlmanager.jar
+	common-framework.jar
+	common-pf.jar
+	nlJavaSDK2.jar
+	
+	gson-2.4.jar
+	jaxb-jxc.jar
+	jaxb-xjc.jar
+	commons-lang3-3.3.2.jar
+	commons-logging-1.1.1.jar
+	rest-api-xmlbeans.jar
+	httpclient-4.3.3.jar
+	httpcore-4.3.3.jar
+	jaxb-api.jar
+	jaxb-core.jar
+	jaxb-impl.jar
+	servlet-api.jar
+	
+	
+Build Project
+-------------
+    Configure the scripts/build.properties
+    ant -f scripts/build.xml package
+	
+	To generate xsd source and jar
+	------------------------------
+    Modify the scripts/build.xml to run the targets "generate-xsd-source" and/or "create-xsd-jar"
+    
+Package Contents
+----------------
+	rest-api-xmlbeans.jar
+	rest-api-connector.properties
+	rest-api.jar
+	rest-api.war
+	rest-apiTest.jar
+	web.xml
+         
+	
+Deploy on Tomcat (as a separate application)
+--------------------------------------------
+
+    Copy rest-api.war to webapps folder
+    extract the war file and modify the 'rest-api-connector.properties'
+    
+      - Specify the Policy controller connection api mode
+            pdp.connector.api.mode=RMI
+            
+      - Policy controller RMI host name or IP address
+            pdp.connector.api.rmi.host=    
+            
+      - Policy controller RMI Port(Default = 1099)    
+            pdp.connector.api.rmi.port=   
+            
+            
+Deploy as Embedded version
+-------------------------
+   - Copy src/build/rest-api/lib files to dpc.war/WEB-INF/libs folder
+   - Copy src/build/rest-api.jar to dpc.war/WEB-INF/libs folder
+   - Copy src/build/rest-api/rest-api-connector.properties to dpc.war/WEB-INF/
+   - Modify rest-api-connector.properties with appropriate values
+   - Add the following lines to dpc.war/WEB-INF/web.xml
+      <servlet>
+	    <servlet-name>evaluationRequest</servlet-name>
+	    <servlet-class>com.nextlabs.evaluationconnector.listeners.EvaluationRequestServlet</servlet-class>
+	    <load-on-startup>1</load-on-startup>
+	  </servlet>
+	  <servlet-mapping>
+	    <servlet-name>evaluationRequest</servlet-name>
+	    <url-pattern>/authorization/*</url-pattern>
+	  </servlet-mapping>
+	  <context-param>
+	    <param-name>PropertiesFile</param-name>
+	    <param-value>/WEB-INF/rest-api-connector.properties</param-value>
+	  </context-param> 
+      
+      
+   
+ 
+
+                 
+              
+              	
+	

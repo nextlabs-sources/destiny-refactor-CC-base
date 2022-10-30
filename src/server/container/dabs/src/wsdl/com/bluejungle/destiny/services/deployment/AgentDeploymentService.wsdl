@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+					xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+					xmlns:common="http://bluejungle.com/destiny/framework/types"
+					xmlns:types="http://bluejungle.com/destiny/services/deployment/types" 
+					xmlns:tns="http://bluejungle.com/destiny/services/deployment" 
+					targetNamespace="http://bluejungle.com/destiny/services/deployment" 
+					name="AgentDeploymentService">
+
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://bluejungle.com/destiny/services/agent" xmlns:types="http://bluejungle.com/destiny/services/deployment/types">
+			<xsd:import namespace="http://bluejungle.com/destiny/services/deployment/types" schemaLocation="types/agentDeploy.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/framework/types" 
+						schemaLocation="../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicFaults.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="deployAgentRequest">
+		<wsdl:part name="agentId" type="xsd:long"/>
+		<wsdl:part name="hostName" type="xsd:string"/>
+	</wsdl:message>
+	<wsdl:message name="deployAgentResponse">
+		<wsdl:part name="deployStatus" type="types:AgentDeployResult"/>
+	</wsdl:message>
+	
+	<wsdl:message name="undeployAgentRequest">
+		<wsdl:part name="agentId" type="xsd:long"/>
+		<wsdl:part name="hostName" type="xsd:string"/>
+	</wsdl:message>
+	<wsdl:message name="undeployAgentResponse">
+		<wsdl:part name="undeployStatus" type="types:AgentDeployResult"/>
+	</wsdl:message>
+
+	<wsdl:message name="ServiceNotReadyFault">
+		<wsdl:part name="ServiceNotReadyFault" type="common:ServiceNotReadyFault"/>
+	</wsdl:message>
+	
+	<wsdl:message name="UnauthorizedCallerFault">
+		<wsdl:part name="UnauthorizedCallerFault" type="common:UnauthorizedCallerFault"/>
+	</wsdl:message>
+			
+	<wsdl:portType name="AgentDeploymentServiceIF">
+		<wsdl:operation name="deployAgent">
+			<wsdl:input message="tns:deployAgentRequest"/>
+			<wsdl:output message="tns:deployAgentResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="undeployAgent">
+			<wsdl:input message="tns:undeployAgentRequest"/>
+			<wsdl:output message="tns:undeployAgentResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="AgentDeploymentServiceIFBinding" type="tns:AgentDeploymentServiceIF">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	
+		<wsdl:operation name="deployAgent">
+			<wsdl:input>
+				<soap:body parts="agentId hostName" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="deployStatus" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>			
+		</wsdl:operation>
+		
+		<wsdl:operation name="undeployAgent">
+			<wsdl:input>
+				<soap:body parts="agentId hostName" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="undeployStatus" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>		
+	</wsdl:binding>
+	
+	<wsdl:service name="AgentDeploymentService">
+		<wsdl:port name="AgentDeploymentServiceIFPort" binding="tns:AgentDeploymentServiceIFBinding">
+			<soap:address location="http://localhost:8080/dabs/services/AgentDeploymentServiceIFPort"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,3 @@
+policy PredicatesWithIds is FileSystemPolicy
+    on id 1 or id -2 or id +3 or null > 5 or "" > 3.5
+do  allow by default

@@ -1,0 +1,1 @@
+principal subj_expr = principal.email= "1" and user.email = "2" and host.email="3" and principal.host.email = 4 and application.email = "5" and principal.application.email = "6"

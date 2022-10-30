@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+		xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+		xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+		xmlns:basicfaults="http://bluejungle.com/destiny/framework/types"
+		xmlns:tns="http://nextlabs.com/destiny/services/keymanagement"
+		xmlns:types="http://nextlabs.com/destiny/services/keymanagement/types"
+		targetNamespace="http://nextlabs.com/destiny/services/keymanagement"
+>
+
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://nextlabs.com/destiny/services/keymanagement">
+			<xsd:import namespace="http://nextlabs.com/destiny/services/keymanagement/types" schemaLocation="../types/KeyManagementTypes.xsd"/>
+			<xsd:import namespace="http://nextlabs.com/destiny/services/keymanagement/types" schemaLocation="../types/KeyManagementFaults.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/framework/types" schemaLocation="../../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicFaults.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	
+	<!-- Fault messages -->
+	<wsdl:message name="ServiceNotReadyFault">
+		<wsdl:part name="ServiceNotReadyFault" type="basicfaults:ServiceNotReadyFault"/>
+	</wsdl:message>
+
+	<wsdl:message name="UnauthorizedCallerFault">
+		<wsdl:part name="UnauthorizedCallerFault" type="basicfaults:UnauthorizedCallerFault"/>
+	</wsdl:message>
+	
+	<wsdl:message name="KeyManagementFault">
+		<wsdl:part name="KeyManagementFault" type="types:KeyManagementFault"/>
+	</wsdl:message>
+	
+	
+	
+	
+	
+	<!-- begin keyring request/response -->
+	
+	<wsdl:message name="createKeyRingRequest">
+		<wsdl:part name="keyRingName" type="xsd:string"/>
+	</wsdl:message>
+
+	<wsdl:message name="createKeyRingResponse">
+		<wsdl:part name="keyRing" type="types:KeyRingDTO"/>
+	</wsdl:message>
+	
+	
+	<wsdl:message name="getKeyRingNamesRequest">
+	</wsdl:message>
+
+	<wsdl:message name="getKeyRingNamesResponse">
+		<wsdl:part name="keyRingNames" type="types:KeyRingNamesDTO"/>
+	</wsdl:message>
+	
+	
+	<wsdl:message name="getKeyRingRequest">
+		<wsdl:part name="keyRingName" type="xsd:string"/>
+	</wsdl:message>
+
+	<wsdl:message name="getKeyRingResponse">
+		<wsdl:part name="keyRing" type="types:KeyRingDTO"/>
+	</wsdl:message>
+		
+	
+	<wsdl:message name="getKeyRingWithKeysRequest">
+		<wsdl:part name="keyRingName" type="xsd:string"/>
+	</wsdl:message>
+
+	<wsdl:message name="getKeyRingWithKeysResponse">
+	<wsdl:part name="keyRingWithKeys" type="types:KeyRingWithKeysDTO"/>
+	</wsdl:message>
+	
+	
+	<wsdl:message name="deleteKeyRingRequest">
+		<wsdl:part name="keyRingName" type="xsd:string"/>
+	</wsdl:message>
+
+	<wsdl:message name="deleteKeyRingResponse">
+	</wsdl:message>
+	
+	<!-- end keyring request/response -->
+	
+	
+	
+	<!-- being key request/response -->
+	
+	<wsdl:message name="generateKeyRequest">
+		<wsdl:part name="keyRingName" type="xsd:string"/>
+		<wsdl:part name="keyLength" type="xsd:int"/>
+	</wsdl:message>
+
+	<wsdl:message name="generateKeyResponse">
+		<wsdl:part name="keyId" type="types:KeyIdDTO"/>
+	</wsdl:message>
+	
+	
+	<wsdl:message name="setKeyRequest">
+		<wsdl:part name="keyRingName" type="xsd:string"/>
+		<wsdl:part name="key" type="types:KeyDTO"/>
+	</wsdl:message>
+
+	<wsdl:message name="setKeyResponse">
+	</wsdl:message>
+	
+	
+	<wsdl:message name="getKeyRequest">
+		<wsdl:part name="keyRingName" type="xsd:string"/>
+		<wsdl:part name="keyId" type="types:KeyIdDTO"/>
+	</wsdl:message>
+
+	<wsdl:message name="getKeyResponse">
+		<wsdl:part name="keyId" type="types:KeyDTO"/>
+	</wsdl:message>
+	
+	
+	<wsdl:message name="deleteKeyRequest">
+		<wsdl:part name="keyRingName" type="xsd:string"/>
+		<wsdl:part name="keyId" type="types:KeyIdDTO"/>
+	</wsdl:message>
+
+	<wsdl:message name="deleteKeyResponse">
+	</wsdl:message>
+	
+	<!-- end key request/response -->
+	
+	
+	
+	<!-- being other request/response -->
+	
+	<wsdl:message name="getAllLatestModifiedDateRequest">
+	</wsdl:message>
+
+	<wsdl:message name="getAllLatestModifiedDateResponse">
+		<wsdl:part name="lastModifitedDate" type="xsd:long"/>
+	</wsdl:message>
+	
+	
+	<wsdl:message name="getAllKeyRingsWithKeysRequest">
+	</wsdl:message>
+
+	<wsdl:message name="getAllKeyRingsWithKeysResponse">
+		<wsdl:part name="allKeyRingsWithKeys" type="types:KeyRingsWithKeysDTO"/>
+	</wsdl:message>
+	
+	<!-- end other request/response -->
+	
+	
+	<wsdl:portType name="KeyManagementDCCIF">
+	
+		<!-- begin keyring operations -->
+		
+		<wsdl:operation name="createKeyRing">
+			<wsdl:input message="tns:createKeyRingRequest"/>
+			<wsdl:output message="tns:createKeyRingResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="KeyManagementFault" message="tns:KeyManagementFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getKeyRingNames">
+			<wsdl:input message="tns:getKeyRingNamesRequest"/>
+			<wsdl:output message="tns:getKeyRingNamesResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="KeyManagementFault" message="tns:KeyManagementFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getKeyRing">
+			<wsdl:input message="tns:getKeyRingRequest"/>
+			<wsdl:output message="tns:getKeyRingResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="KeyManagementFault" message="tns:KeyManagementFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getKeyRingWithKeys">
+			<wsdl:input message="tns:getKeyRingWithKeysRequest"/>
+			<wsdl:output message="tns:getKeyRingWithKeysResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="KeyManagementFault" message="tns:KeyManagementFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="deleteKeyRing">
+			<wsdl:input message="tns:deleteKeyRingRequest"/>
+			<wsdl:output message="tns:deleteKeyRingResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="KeyManagementFault" message="tns:KeyManagementFault"/>
+		</wsdl:operation>
+		
+		<!-- end keyring operations -->
+		
+		
+		<!-- begin key operations -->
+		
+		<wsdl:operation name="generateKey">
+			<wsdl:input message="tns:generateKeyRequest"/>
+			<wsdl:output message="tns:generateKeyResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="KeyManagementFault" message="tns:KeyManagementFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="setKey">
+			<wsdl:input message="tns:setKeyRequest"/>
+			<wsdl:output message="tns:setKeyResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="KeyManagementFault" message="tns:KeyManagementFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getKey">
+			<wsdl:input message="tns:getKeyRequest"/>
+			<wsdl:output message="tns:getKeyResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="KeyManagementFault" message="tns:KeyManagementFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="deleteKey">
+			<wsdl:input message="tns:deleteKeyRequest"/>
+			<wsdl:output message="tns:deleteKeyResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="KeyManagementFault" message="tns:KeyManagementFault"/>
+		</wsdl:operation>
+		
+		<!-- end key operations -->
+		
+		
+		<!-- begin other operations -->
+		
+		<wsdl:operation name="getAllLatestModifiedDate">
+			<wsdl:input message="tns:getAllLatestModifiedDateRequest"/>
+			<wsdl:output message="tns:getAllLatestModifiedDateResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="KeyManagementFault" message="tns:KeyManagementFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getAllKeyRingsWithKeys">
+			<wsdl:input message="tns:getAllKeyRingsWithKeysRequest"/>
+			<wsdl:output message="tns:getAllKeyRingsWithKeysResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="KeyManagementFault" message="tns:KeyManagementFault"/>
+		</wsdl:operation>
+		
+		<!-- end other operations -->
+		
+	</wsdl:portType>
+</wsdl:definitions>

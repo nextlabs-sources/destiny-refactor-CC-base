@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<!-- This is just a placeholder, so that we can use a hibernate data source, even though
+	we're not actually using hibernate for O/R. Look for PolicyActivityLogEntryWrapper
+        to find the code that actually does the persisting -->
+<hibernate-mapping package="com.bluejungle.domain.log">
+	
+	<class name="PolicyActivityLogEntry" table="POLICY_ACTIVITY_LOG">
+		
+		<id name="uid" column="id">
+			<generator class="assigned"/>
+		</id>
+	</class>
+</hibernate-mapping>

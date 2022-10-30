@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.inquirymgr.hibernateimpl">
+	
+	<class name="UserGroupMemberDO" table="CACHED_USERGROUP_MEMBER">
+	
+		<!-- Unique sequence id -->
+		<id type="long">
+			<generator class="native">
+				<param name="sequence">cached_table_sequence</param>
+			</generator>
+		</id>
+
+		<property name="groupId" type="long" not-null="true" unique="false" index="user_group_group_id_index"/>	
+		<property name="userId" type="long" not-null="true" unique="false">
+			<column name="userId" index="user_group_member_index"/> 
+		</property>
+		
+		<property name="timeRelation" type="com.bluejungle.framework.datastore.hibernate.usertypes.TimeRelationUserType" not-null="true" unique="false" update="true" insert="true">
+		  <!-- index is remove from active_from and active_to columns since Hibernate2 doesn't support a single field with multi indexes.
+		      If the active_from and active_to is using again in the future, we need to design how to put the indexes back 
+		  -->
+		  <column name="active_from"/> 
+		  <column name="active_to"/> 
+		</property>	
+	</class>
+</hibernate-mapping>

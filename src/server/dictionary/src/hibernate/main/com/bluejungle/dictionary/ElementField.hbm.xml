@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping package="com.bluejungle.dictionary">
+    <class name="ElementField" table="DICT_TYPE_FIELDS" dynamic-update="false">
+        <id name="id" column="ID" access="field">
+            <generator class="native"/>
+        </id>
+        <version name="version" column="VERSION" access="field"/>
+
+        <property name="name" access="field" type="string">
+            <column name="name" length="128" not-null="true"/>
+        </property>
+        <property name="nameUpper" access="field" type="string">
+            <column name="name_upper" length="128" not-null="true" unique-key="UniqueFieldNameAndTypeInAType"/>
+        </property>
+        <property name="type" access="field" type="com.bluejungle.dictionary.ElementField$FieldTypeUserType">
+            <column name="type" length="2" not-null="true" unique-key="UniqueFieldNameAndTypeInAType"/>
+        </property>
+        <property name="label" length="128" access="field" type="string"/>
+        <property name="deleted" access="field" type="yes_no"/>
+        <property name="mapping" type="string">
+            <column name="mapping" length="16" not-null="true"/>
+        </property>
+        <many-to-one name="parentType" class="ElementType" outer-join="true" access="field">
+            <column name="PARENT_TYPE_ID" not-null="true" unique-key="UniqueFieldNameAndTypeInAType"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

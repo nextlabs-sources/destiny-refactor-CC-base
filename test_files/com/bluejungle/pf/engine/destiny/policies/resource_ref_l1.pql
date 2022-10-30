@@ -1,0 +1,1 @@
+resource ref_l1 = ref_l2 and resource.name = "**subref.test"

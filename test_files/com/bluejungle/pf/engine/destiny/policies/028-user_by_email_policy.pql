@@ -1,0 +1,6 @@
+POLICY UserByEmail
+    FOR resource.name = "c:\\userbyemail"
+    ON EDIT
+    BY user.mail="sgoldstein@bluejungle.com"
+    DO DENY
+    ON DENY DO byemail

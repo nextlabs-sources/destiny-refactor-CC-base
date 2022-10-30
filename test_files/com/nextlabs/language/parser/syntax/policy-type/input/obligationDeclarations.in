@@ -1,0 +1,13 @@
+obligation noArgObligation1
+
+obligation multiArgumentObligation(
+    a string
+,   b case sensitive string
+,   c case insensitive string
+,   d boolean
+,   e date
+,   f double
+,   g code
+,   h code("a", "b", "c")
+,   i references User
+)

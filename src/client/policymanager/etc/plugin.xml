@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="com.bluejungle.destiny.policymanager"
+   name="Policymanagerplugin Plug-in"
+   version="1.0.0"
+   provider-name="Blue Jungle Inc">
+
+   <runtime>
+      <library name="policymanager.jar">
+         <export name="*"/>
+      </library>
+      <library name="common-framework.jar">
+         <export name="*"/>
+      </library>
+      <library name="common-pf.jar">
+         <export name="*"/>
+      </library>
+      <library name="common-res.jar">
+         <export name="*"/>
+      </library>
+      <library name="server-shared-types.jar">
+         <export name="*"/>
+      </library>
+      <library name="app-framework.jar">
+         <export name="*"/>
+      </library>
+      <library name="policy-types.jar">
+         <export name="*"/>
+      </library>
+      <library name="client-pf.jar">
+         <export name="*"/>
+      </library>
+      <library name="agent-ipc.jar">
+         <export name="*"/>
+      </library>
+      <library name="ehcache-1.1.jar">
+         <export name="*"/>
+      </library>
+      <library name="commons-collections-2.1.1.jar">
+         <export name="*"/>
+      </library>
+      <library name="policy-services.jar">
+         <export name="*"/>
+      </library>
+      <library name="common-domain.jar">
+         <export name="*"/>
+      </library>
+      <library name="commons-logging.jar">
+         <export name="*"/>
+      </library>
+      <library name="common-framework-types.jar">
+          <export name="*"/>
+      </library>
+      <library name="axis.jar">
+         <export name="*"/>
+      </library>
+      <library name="jaxrpc.jar">
+         <export name="*"/>
+      </library>
+      <library name="commons-discovery-0.2.jar">
+         <export name="*"/>
+      </library>
+      <library name="saaj.jar">
+         <export name="*"/>
+      </library>
+      <library name="wsdl4j-1.5.1.jar">
+         <export name="*"/>
+      </library>
+      <library name="antlr.jar">
+         <export name="*"/>
+      </library>
+      <library name="mail.jar">
+         <export name="*"/>
+      </library>      
+      <library name="swt-datepicker.jar">
+         <export name="*"/>
+      </library>
+      <library name="client-security-config.jar">
+         <export name="*"/>
+      </library>
+      <library name="server-shared-services.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui"/>
+   </requires>
+    <extension
+          id="PolicyManagerApplication"
+          name="Policy Manager"
+          point="org.eclipse.core.runtime.applications">
+        <application>
+            <run
+                class="com.bluejungle.destiny.policymanager.ui.RcpApplication">
+            </run>
+        </application>
+    </extension>
+    <extension
+        point="org.eclipse.ui.perspectives">
+        <perspective
+            name="Policy Manager"
+            class="com.bluejungle.destiny.policymanager.ui.RcpPerspective"
+            id="com.bluejungle.destiny.policymanager.ui.RcpPerspective">
+        </perspective>
+    </extension>
+
+    <extension
+          point="org.eclipse.ui.views">
+       <category
+             name="Status Bar"
+             id="com.bluejungle.destiny.policymanager.ui.StatusPart"/>
+       <view
+             allowMultiple="false"
+             icon="icons/sample.gif"
+             class="com.bluejungle.destiny.policymanager.ui.StatusPart"
+             category="com.bluejungle.destiny.policymanager.ui.StatusPart"
+             name="StatusPart"
+             id="com.bluejungle.destiny.policymanager.ui.StatusPart"/>
+    </extension>
+    <extension
+          point="org.eclipse.ui.views">
+       <category
+             name="Destiny Policy Manager"
+             id="com.bluejungle.destiny.policymanager.ui.PolicyManagerCategory"/>
+       <view
+             allowMultiple="false"
+             icon="icons/sample.gif"
+             class="com.bluejungle.destiny.policymanager.ui.SampleView"
+             category="com.bluejungle.destiny.policymanager.ui.PolicyManagerCategory"
+             name="Policy Manager"
+             id="com.bluejungle.destiny.policymanager.ui.SampleView"/>
+    </extension>
+    <extension
+          point="org.eclipse.ui.views">
+       <category
+             name="Destiny Component Preview"
+             id="com.bluejungle.destiny.policymanager.ui.PreviewView"/>
+       <view
+             allowMultiple="false"
+             icon="icons/sample.gif"
+             class="com.bluejungle.destiny.policymanager.ui.PreviewView"
+             category="com.bluejungle.destiny.policymanager.ui.PreviewView"
+             name="Preview"
+             id="com.bluejungle.destiny.policymanager.ui.PreviewView"/>
+    </extension>
+    <extension point="org.eclipse.ui.editors"> 
+      <editor 
+         id="com.bluejungle.destiny.policymanager.editor.DomainObjectEditor" 
+         name="Domain Object Editor" 
+         icon="./icons/sample.gif" 
+         extensions="bjdo" 
+         class="com.bluejungle.destiny.policymanager.editor.DomainObjectEditor" 
+	 default="true"> 
+      </editor> 
+   </extension> 
+    <extension
+          point="org.eclipse.ui.editors">
+	  <editor 
+            id="com.bluejungle.destiny.policymanager.ui.AboutPart" 
+	    name="About" 
+	    icon="./icons/sample.gif" 
+	    extensions="bjabout" 
+	    class="com.bluejungle.destiny.policymanager.ui.AboutPart"
+	    default="true"> 
+          </editor> 
+    </extension>
+</plugin>

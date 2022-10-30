@@ -1,0 +1,15 @@
+resource r01 = ALL_FILE_SERVERS
+resource r02 = ALL_FILES
+resource r03 = EXCEL_DOCS
+resource r04 = HOME_DIRECTORY
+resource r05 = LOCAL_FILES
+resource r06 = MEDIA_FILES
+resource r07 = OFFICE_DOCS
+resource r08 = PPT_DOCS
+resource r09 = REMOTE_FILES
+resource r10 = REMOVABLE_DEVICE
+resource r11 = REMOVABLE_MEDIA
+resource r12 = WORD_DOCS
+resource r13 = *
+resource r14 = EMPTY
+resource r15 = ID 98765

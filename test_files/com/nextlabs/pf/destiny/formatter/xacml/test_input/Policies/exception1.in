@@ -1,0 +1,20 @@
+policy "policy_with_exceptions"
+FOR resource.fso.name = "*.txt"
+ON *
+BY *
+SUBPOLICY allow_overrides "allow_ringo", "allow_paul"
+DO deny
+
+policy "allow_ringo"
+attribute policy_exception
+FOR *
+ON *
+BY user.name="Ringo Starr"
+DO allow
+
+policy "allow_paul"
+attribute policy_exception
+FOR *
+ON *
+BY user.name="Paul McCartney"
+DO allow

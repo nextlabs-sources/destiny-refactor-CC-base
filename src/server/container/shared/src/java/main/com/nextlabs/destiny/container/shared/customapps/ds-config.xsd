@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+		targetNamespace="http://nextlabs.com/customapps/v1" 
+		attributeFormDefault="unqualified" 
+		elementFormDefault="qualified" 
+		xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		xmlns:ca="http://nextlabs.com/customapps/v1"
+>
+  <xs:element name="file">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string"/>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="title" type="xs:string"/>
+  <xs:element name="description" type="xs:string"/>
+  <xs:element name="design">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ca:file" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="report">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ca:title"/>
+        <xs:element ref="ca:description"/>
+        <xs:element ref="ca:design">
+          <xs:annotation>
+            <xs:documentation>
+                Report design files located in content/custom directory. 
+                Note that this can contain multiple files for drill-down  
+                report design files located in content/custom directory
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="custom-reports">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ca:report" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="name" type="xs:string"/>
+  <xs:element name="version" type="xs:string"/>
+  <xs:element name="policy-application">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ca:name"/>
+        <xs:element ref="ca:version"/>
+        <xs:element ref="ca:description"/>
+        <xs:element ref="ca:custom-reports"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

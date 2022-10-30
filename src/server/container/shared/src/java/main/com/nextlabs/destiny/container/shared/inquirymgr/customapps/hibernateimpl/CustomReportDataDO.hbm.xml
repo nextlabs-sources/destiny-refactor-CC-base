@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.nextlabs.destiny.container.shared.inquirymgr.customapps.hibernateimpl">
+	
+	<class name="CustomReportDataDO" table="REPORT_CUSTOM_APP">		
+		
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		
+		<property name="customAppId" type="long">
+            <column name="app_ref_id"  not-null="true"/>
+        </property>
+        
+	    <property name="title" type="string">
+			<column name="title"  not-null="true"/>
+		</property>
+		
+		<property name="description" type="string">
+			<column name="description"/>
+		</property>
+		
+        <list name="reportDesignFiles"  cascade="all"  inverse="true" >
+	        <key column="custom_report_id"/>
+	        <index column="position"/>
+	        <one-to-many class="CustomReportFileDO"/>
+        </list>
+	</class>
+</hibernate-mapping>

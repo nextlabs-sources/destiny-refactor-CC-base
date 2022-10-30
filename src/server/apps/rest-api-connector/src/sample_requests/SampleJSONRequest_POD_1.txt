@@ -1,0 +1,119 @@
+{
+    "Request": {
+        "ReturnPolicyIdList": "true",
+        "Category": [
+            {
+                "CategoryId": "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
+                "Attribute": [
+                    {
+                        "AttributeId": "urn:oasis:names:tc:xacml:1.0:subject:subject-id",
+                        "Value": "Amila",
+                        "IncludeInResult": "false"
+                    }
+                ]
+            },
+            {
+                "CategoryId": "urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+                "Attribute": [
+                    {
+                        "DataType": "http://www.w3.org/2001/XMLSchema#anyURI",
+                        "AttributeId": "urn:oasis:names:tc:xacml:1.0:resource:resource-id",
+                        "Value": "C:/Temp/Names.txt",
+                        "IncludeInResult": "false"
+                    },
+                    {
+                        "DataType": "http://www.w3.org/2001/XMLSchema#anyURI",
+                        "AttributeId": "urn:nextlabs:names:evalsvc:1.0:resource:resource-type",
+                        "Value": "fso",
+                        "IncludeInResult": "false"
+                    }
+                ]
+            },
+            {
+                "CategoryId": "urn:oasis:names:tc:xacml:3.0:attribute-category:action",
+                "Attribute": [
+                    {
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+                        "AttributeId": "urn:oasis:names:tc:xacml:1.0:action:action-id",
+                        "Value": "COPY",
+                        "IncludeInResult": "false"
+                    }
+                ]
+            },
+            {
+                "CategoryId": "urn:nextlabs:names:evalsvc:1.0:attribute-category:application",
+                "Attribute": [
+                    {
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+                        "AttributeId": "urn:nextlabs:names:evalsvc:1.0:application:application-id",
+                        "Value": "MSExcel",
+                        "IncludeInResult": "false"
+                    }
+                ]
+            }, 
+            {
+                "CategoryId": "urn:nextlabs:names:evalsvc:1.0:attribute-category:pod",
+                "Attribute": [
+                    {
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+                        "AttributeId": "urn:nextlabs:names:evalsvc:1.0:pod:pod-id",
+						"Value": "ID 51 STATUS APPROVED CREATOR \"0\" 
+							ACCESS_POLICY
+							ACCESS_CONTROL
+							    PBAC 
+							        FOR TRUE
+							        ON ADMIN
+							        BY appuser.did = 0
+							        DO allow
+							    PBAC 
+							        FOR TRUE
+							        ON APPROVE
+							        BY appuser.did = 0
+							        DO allow
+							    PBAC 
+							        FOR TRUE
+							        ON DELETE
+							        BY appuser.did = 0
+							        DO allow
+							    PBAC 
+							        FOR TRUE
+							        ON DEPLOY
+							        BY appuser.did = 0
+							        DO allow
+							    PBAC 
+							        FOR TRUE
+							        ON READ
+							        BY appuser.did = 0
+							        DO allow
+							    PBAC 
+							        FOR TRUE
+							        ON WRITE
+							        BY appuser.did = 0
+							        DO allow
+							ALLOWED_ENTITIES 
+							POLICY \"test/allow-all\"
+							    ATTRIBUTE DOCUMENT_POLICY
+							    FOR (TRUE AND TRUE)
+							    ON (TRUE AND TRUE)
+							    TO (TRUE AND TRUE)
+							    BY ((TRUE AND TRUE) AND (TRUE AND TRUE) AND (TRUE AND TRUE))
+							    WHERE (TRUE AND (TRUE AND user.name = \"Amila\"))
+							    DO allow
+							    ON allow DO log
+							    ON deny DO log
+							    DEPLOYED TO (((FALSE OR AGENT.ID = 37) WITH AGENT.TYPE = \"FILE_SERVER\") , ((FALSE OR FALSE) WITH AGENT.TYPE = \"DESKTOP\") , ((FALSE OR FALSE) WITH AGENT.TYPE = \"PORTAL\") , ((FALSE OR FALSE) WITH AGENT.TYPE = \"ACTIVE_DIRECTORY\"))",
+                        "IncludeInResult": "false"
+                    },
+                    {
+                        "DataType": "http://www.w3.org/2001/XMLSchema#string",
+                        "AttributeId": "urn:nextlabs:names:evalsvc:1.0:pod:pod-ignore-built-in",
+                        "Value": "true",
+                        "IncludeInResult": "false"
+                    }
+                ]
+            }
+           
+            
+        ]
+    }
+}

@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.org/mapping.dtd">
+
+<mapping>
+<description>Mapping file for import/export</description>
+
+<class name="com.nextlabs.pf.destiny.importexport.ExportFile">
+  <field name="version" type="string" />
+  <field name="exportEntities" type="com.nextlabs.pf.destiny.importexport.ExportEntity" collection="collection" />
+  <field name="users" type="com.nextlabs.pf.destiny.importexport.mapping.User" collection="collection" />
+  <field name="hosts" type="com.nextlabs.pf.destiny.importexport.mapping.Host" collection="collection" />
+  <field name="apps" type="com.nextlabs.pf.destiny.importexport.mapping.App" collection="collection" />
+  <field name="usergroups" type="com.nextlabs.pf.destiny.importexport.mapping.Usergroup" collection="collection" />
+  <field name="hostgroups" type="com.nextlabs.pf.destiny.importexport.mapping.Hostgroup" collection="collection" />
+</class>
+
+<class name="com.nextlabs.pf.destiny.importexport.ExportEntity">
+  <field name="name">
+    <bind-xml name="name" node="attribute" />
+  </field>
+  <field name="type" type="string"/>
+  <field name="pql" type="string"/>
+</class>
+
+<class name="com.nextlabs.pf.destiny.importexport.mapping.User">
+  <field name="name" type="string" />
+  <field name="login" type="string" />
+  <field name="sid" type="string" />
+  <field name="id" type="long" />
+</class>
+<class name="com.nextlabs.pf.destiny.importexport.mapping.Host">
+  <field name="name" type="string" />
+  <field name="login" type="string" />
+  <field name="sid" type="string" />
+  <field name="id" type="long" />
+</class>
+<class name="com.nextlabs.pf.destiny.importexport.mapping.App">
+  <field name="name" type="string" />
+  <field name="login" type="string" />
+  <field name="sid" type="string" />
+  <field name="id" type="long" />
+</class>
+<class name="com.nextlabs.pf.destiny.importexport.mapping.Usergroup">
+  <field name="name" type="string" />
+  <field name="login" type="string" />
+  <field name="sid" type="string" />
+  <field name="id" type="long" />
+</class>
+<class name="com.nextlabs.pf.destiny.importexport.mapping.Hostgroup">
+  <field name="name" type="string" />
+  <field name="login" type="string" />
+  <field name="sid" type="string" />
+  <field name="id" type="long" />
+</class>
+</mapping>

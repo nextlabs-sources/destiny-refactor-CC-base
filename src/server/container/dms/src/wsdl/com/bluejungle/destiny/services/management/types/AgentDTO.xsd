@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 	targetNamespace="http://bluejungle.com/destiny/services/management/types" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:types="http://bluejungle.com/destiny/services/management/types"
+			xmlns:common="http://bluejungle.com/destiny/framework/types"
+			xmlns:domainTypes="http://bluejungle.com/domain/types"
+			xmlns:frameworkTypes="http://bluejungle.com/destiny/framework/types">
+	
+	<xs:import namespace="http://bluejungle.com/destiny/framework/types" 
+			   schemaLocation="../../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/Search.xsd"/>
+			   
+	<xs:import namespace="http://bluejungle.com/domain/types" 
+			   schemaLocation="../../../../../../../../../../../common/domain/src/xsd/com/bluejungle/domain/types/AgentType.xsd"/>
+	
+	<!--
+		The Data Transfer object for policy assembly status
+	-->
+	<xs:complexType name="AgentPolicyAssemblyStatusDTO">
+		<xs:sequence>
+			<xs:element name="lastPolicyUpdate" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- 
+		The Data Transfer Object for the agent type
+	-->
+	<xs:complexType name="AgentTypeDTO">
+		<xs:sequence>
+			<xs:element name="id" type="xs:string" minOccurs="1" />
+			<xs:element name="title" type="xs:string" minOccurs="1" />
+			<xs:element name="actions" type="types:ActionTypeDTOList" minOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="AgentTypeDTOList">
+		<xs:sequence>
+			<xs:element name="agentTypes" type="types:AgentTypeDTO" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>	
+	</xs:complexType>
+	
+	<!-- 
+		The Data Transfer Object for the agent type
+	-->
+	<xs:complexType name="ActionTypeDTO">
+		<xs:sequence>
+			<xs:element name="id" type="xs:string" minOccurs="1" />
+			<xs:element name="title" type="xs:string" minOccurs="1" />
+			<xs:element name="activityJournalingAuditLevel" type="types:ActivityJournalingAuditLevelDTO" minOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ActivityJournalingAuditLevelDTO">
+		<xs:sequence>
+			<xs:element name="id" type="xs:string" minOccurs="1" />
+			<xs:element name="title" type="xs:string" minOccurs="1" />
+			<xs:element name="ordinal" type="xs:unsignedShort" minOccurs="1" />
+		</xs:sequence>	
+	</xs:complexType>	
+
+	<xs:complexType name="ActionTypeDTOList">
+		<xs:sequence>
+			<xs:element name="actionTypes" type="types:ActionTypeDTO" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>	
+	</xs:complexType>
+				
+	<!--
+		The Data Transfer Object for agent information
+	-->
+	<xs:complexType name="AgentDTO">
+		<xs:sequence>
+			<xs:element name="id" type="common:ID" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="type" type="types:AgentTypeDTO" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="host" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="isOnline" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="pushPort" type="xs:unsignedShort" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="isPushReady" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="lastHeartbeat" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="policyAssemblyStatus" type="types:AgentPolicyAssemblyStatusDTO" minOccurs="0" maxOccurs="1"/>	
+			<xs:element name="commProfileID" type="common:ID" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="commProfileName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!--
+		This type represents a list of agent records
+	-->
+	<xs:complexType name="AgentDTOList">
+		<xs:sequence>
+			<xs:element name="agents" type="types:AgentDTO" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!--
+		This enum represents the sortable fields on agents
+	-->
+	<xs:simpleType name="AgentDTOSortTermField">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="HOST"/>
+			<xs:enumeration value="TYPE"/>
+			<xs:enumeration value="LAST_HEARTBEAT"/>
+			<xs:enumeration value="LAST_POLICY_UPDATE"/>
+			<xs:enumeration value="PROFILE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="AgentDTOQueryField">
+		<xs:annotation>
+			<xs:documentation> 
+				Represents an enumeration of fields used to query for a list of Agents 
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="COMM_PROFILE_ID"/>
+			<xs:enumeration value="COMM_PROFILE_NAME"/>
+			<xs:enumeration value="HOST"/>
+			<xs:enumeration value="ID"/>
+			<xs:enumeration value="ONLINE"/>
+			<xs:enumeration value="POLICY_UP_TO_DATE"/>
+			<xs:enumeration value="REGISTERED"/>
+			<xs:enumeration value="TYPE"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="AgentDTOQuerySpec">
+		<xs:sequence>
+			<xs:element name="searchSpec" type="types:AgentDTOQueryTermList"/>
+			<xs:element name="sortSpec" type="types:AgentDTOSortTermList"/>
+			<xs:element name="limit" type="xs:int"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="AgentDTOQueryTerm" abstract="true">
+	</xs:complexType>
+	
+	<xs:complexType name="ConcreteAgentDTOQueryTerm">
+		<xs:complexContent>
+			<xs:extension base="types:AgentDTOQueryTerm">
+				<xs:sequence>
+					<xs:element name="agentDTOQueryField" type="types:AgentDTOQueryField"/>
+					<xs:element name="operator" type="frameworkTypes:RelationalOpDTO" />
+					<xs:element name="value" type="xs:anyType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="ORCompositeAgentDTOQueryTerm">
+		<xs:complexContent>
+			<xs:extension base="types:AgentDTOQueryTerm">
+				<xs:sequence>
+					<xs:element name="agentDTOQueryTerms" type="types:AgentDTOQueryTermList" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="AgentDTOQueryTermList">
+		<xs:sequence>
+			<xs:element name="agentDTOQueryTerms" type="types:AgentDTOQueryTerm" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="AgentDTOSortTerm">
+		<xs:sequence>
+			<xs:element name="field" type="types:AgentDTOSortTermField" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="ascending" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>	
+
+	<xs:complexType name="AgentDTOSortTermList">
+		<xs:sequence>
+			<xs:element name="agentDTOSortTerms" type="types:AgentDTOSortTerm" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>	
+
+	<xs:complexType name="AgentQueryResultsDTO">
+		<xs:sequence>
+			<xs:element name="agentList" type="types:AgentDTOList" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="policyStatus" type="types:AgentPolicyAssemblyStatusDTO" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

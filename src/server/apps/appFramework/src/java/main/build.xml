@@ -1,0 +1,41 @@
+<project name="App Framework" default="build">
+
+	<var name="nlbuildroot" value="${basedir}/../../../../../../.." />
+	<property name="src.dir"      value="${basedir}"/>
+	<property name="doc.dest"   value="${build.root.dir}/appFramework/doc"/>
+    <property name="build.dest"   value="${build.root.dir}/appFramework/classes"/>
+
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	<path id="compile.appFmwk.classpath">
+		<path refid="compile.classpath"/>
+	    <pathelement path="${build.dest}"/>
+	    <pathelement path="${build.root.dir}/common-domain.jar"/>
+		<pathelement path="${build.root.dir}/common-framework.jar"/>
+		<pathelement path="${build.root.dir}/server-shared-types.jar"/>      
+        <pathelement path="${build.root.dir}/server-shared-services.jar"/>            
+        <pathelement path="${xlib_jar_dir}/axis.jar"/>            
+	</path>
+		
+	<target name="pre-build">
+		<mkdir dir="${build.dest}"/>
+		<mkdir dir="${doc.dest}"/>
+		<mkdir dir="${build.temp.metainf}/services"/>
+	</target>
+	
+    <target name="doc" depends="pre-build">
+    	<javadoc sourcepath="${src.dir}" destdir="${doc.dest}" linksource="yes" 
+    		classpathref="compile.appFmwk.classpath" source="${compile.source}" >
+    		<packageset dir="${src.dir}"/>
+    	</javadoc>
+    </target>
+		
+	<target name="compile" depends="pre-build">
+		<javac srcdir="${src.dir}" destdir="${build.dest}" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+			<classpath refid="compile.appFmwk.classpath"/>
+        </javac>
+	</target>
+			
+	<target name="build" depends="compile">
+	</target>
+</project>

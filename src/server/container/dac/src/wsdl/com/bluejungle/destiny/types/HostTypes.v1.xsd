@@ -1,0 +1,63 @@
+<xs:schema 	targetNamespace="http://bluejungle.com/destiny/types/hosts/v1" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns:types="http://bluejungle.com/destiny/types/hosts/v1"
+			xmlns:basicTypes="http://bluejungle.com/destiny/types/basic/v1">
+	
+	<xs:complexType name="Host">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+		
+	<xs:complexType name="HostList">
+		<xs:sequence>
+			<xs:element name="hosts" type="types:Host" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="HostQueryFieldName">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="name"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="HostQuerySpec">
+		<xs:sequence>
+			<xs:element name="searchSpec" type="types:HostQueryTermList" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="sortSpec" type="types:HostSortTermList" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="limit" type="xs:positiveInteger" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="HostQueryTerm">
+		<xs:sequence>
+			<xs:element name="fieldName" type="types:HostQueryFieldName" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="expression" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="HostQueryTermList">
+		<xs:sequence>
+			<xs:element name="terms" type="types:HostQueryTerm" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="HostSortFieldName">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="name"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="HostSortTerm">
+		<xs:sequence>
+			<xs:element name="fieldName" type="types:HostSortFieldName" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="direction" type="basicTypes:SortDirection" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="HostSortTermList">
+		<xs:sequence>
+			<xs:element name="terms" type="types:HostSortTerm" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

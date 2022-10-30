@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.inquirymgr.hibernateimpl">
+	
+	<!-- This mapping file needs to be kept in sync with inquiry center activityLog mapping file and DABS log mapping files-->
+	<class name="TestTrackingActivityLogEntryDO" table="TRACKING_ACTIVITY_LOG">
+		
+		<id name="id" column="id">
+			<generator class="assigned"/>
+		</id>
+
+		<property name="timestamp" type="com.bluejungle.framework.datastore.hibernate.usertypes.TimeDetailsUserType">
+			<column name="time" index="trackingActivityTimeIndex" not-null="true"/>
+			<column name="month_nb" not-null="true"/>
+			<column name="day_nb" not-null="true"/>
+		</property>
+		<property name="hostId" column="host_id" not-null="true"/>
+		<property name="hostIPAddress">
+			<column name="host_ip" not-null="false"/>
+		</property>
+		<property name="hostName">
+			<column name="host_name" not-null="false"/>
+		</property>		
+		<property name="userId">
+			<column name="user_id" not-null="true" index="trackingActivityUserIndex"/>
+		</property>
+		<property name="userName">
+			<column name="user_name" not-null="true" index="trackingActivityUserIndex"/>
+		</property>
+		<property name="applicationId" column="application_id" not-null="true"/>
+		<property name="applicationName" column="application_name" not-null="false"/>
+		<property name="action" type="com.bluejungle.domain.action.hibernateimpl.ActionEnumUserType">		
+    		<column name="action" sql-type="char(2)" length="2" not-null="true"/>
+		</property>
+		<property name="level" column="log_level" not-null="true"/>		
+		<component name="fromResourceInfo" class="FromResourceInformationDO">
+			<property name="name">
+				<column name="fromResourceName" index="trackingActivityFromResourceIndex" length="512"/>
+			</property>
+			<property name="size" column="fromResourceSize"/>
+			<property name="ownerId" column="fromResourceOwnerId" length="128"/>
+			<property name="createdDate" column="fromResourceCreatedDate" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType"/>
+			<property name="modifiedDate" column="fromResourceModifiedDate" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType"/>
+		</component>
+		<component name="toResourceInfo" class="ToResourceInformationDO">
+			<property name="name">
+				<column name="toResourceName" index="trackingActivityToResourceIndex" length="512"/>
+			</property>
+		</component>
+	</class>
+</hibernate-mapping>

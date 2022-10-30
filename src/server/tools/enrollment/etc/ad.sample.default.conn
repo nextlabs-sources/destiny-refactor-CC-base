@@ -1,0 +1,51 @@
+# This is the connection file for a default Active Directory enrollment. 
+
+server      linuxad01.linuxtest.bluejungle.com
+port        389
+login       CN=Administrator,CN=Users,DC=linuxtest,DC=bluejungle,DC=com
+
+# Secure Transport Option.  Only SSL can be used. 
+#                           Not setting it uses standard LDAP protocol.
+#Uncomment the following line to use SSL Secure Mode for the Directory transport
+#secure.transport.mode SSL
+
+# LDAP server password parameter: You can save the password in clear text in 
+# this file ( you have to remove '#' from password line to make it effect )
+# But if you want to encrypt the password, you can leave the parameter out of 
+# this file altogether, and provide the password when prompted when you run 
+# enrollment manager
+password    123blue!
+
+# User can put multiple roots with "\n\" at the end of each line, for example:
+# roots       ou=branch1,dc=test,dc=bluejungle,dc=com   \n\
+#             ou=branch2,dc=test,dc=bluejungle,dc=com   \n\
+#             ou=branch3,dc=test,dc=bluejungle,dc=com 
+
+roots       OU=Presidents,DC=linuxtest,DC=bluejungle,DC=com
+
+# The LDAP filter to query from LDAP server
+filter      objectclass=*
+
+#-------------------------------------------------------------------------------
+# The flag indicates LDAP paging control is supported by the LDAP server
+#-------------------------------------------------------------------------------
+IsPagingEnabled                  true
+
+
+#-------------------------------------------------------------------------------
+# The flag indicates LDAP DirSync control is supported by the LDAP server
+# If users want to enroll changes from Active Directory server, there are special
+# permission required for the user account connecting to Active Directory server
+# Please refer to: http://support.microsoft.com/?kbid=891995
+#-------------------------------------------------------------------------------
+EnableADDirChgReplication        false
+
+#-------------------------------------------------------------------------------
+# The start time and pull interval for automatic sync 
+# The format of ScheduledSyncTime must be format of "Oct 4, 2006 8:14 PM"
+# The ScheduledSyncInterv is a positive number in minutes. 
+# Zero value of ScheduledSyncInterv means auto-sync is disabled
+#-------------------------------------------------------------------------------
+ScheduledSyncTime                Sep 27, 2006 8:14 AM
+ScheduledSyncInterv              0
+ScheduledSyncTimeFormat		 dd-MMM-yyyy HH:mm

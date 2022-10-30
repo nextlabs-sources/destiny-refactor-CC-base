@@ -1,0 +1,195 @@
+<project name="dkms" default="build">
+
+	<var name="nlbuildroot" value="${basedir}/../../../.." />
+	<property name="src.dir"           value="${basedir}"/>
+	<property name="etc.src.dir"       value="${src.dir}/src/etc"/>
+	<property name="hibernate.src.dir" value="${src.dir}/src/hibernate"/>
+	<property name="java.main.src.dir" value="${src.dir}/src/java/main"/>
+
+	<property name="servicesbase.dir"  value="com/nextlabs/destiny/"/>
+	<property name="src.wsdl.dir"      value="${src.dir}/src/wsdl"/>
+	<property name="server.base.dir"   value="${src.root.dir}/server/base/"/>
+
+	<property name="build.webapp"        value="${build.root.dir}/server/container/dkms"/>
+	<property name="build.gendest"       value="${build.webapp}/genclasses"/>
+	<property name="build.webinf"        value="${build.webapp}/WEB-INF"/>
+	<property name="build.webconf"       value="${build.webinf}/conf"/>
+	<property name="build.weblib"        value="${build.webinf}/lib"/>
+	<property name="build.dest"          value="${build.webinf}/classes"/>
+
+	<property name="build.webconf"              value="${build.webinf}/conf"/>
+	<property name="services.keymanagement.dir" value="com/nextlabs/destiny/services/keymanagement"/>
+	<property name="web.dkms.dir"               value="com/nextlabs/destiny/container/dkms"/>
+	<property name="services.secure.dir"        value="com/bluejungle/destiny/services/secure_session" />
+
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	<path id="compile.dkms.classpath">
+		<path refid="compile.classpath"/>
+		<pathelement path="${build.root.dir}/common-domain.jar"/>
+		<pathelement path="${build.root.dir}/common-framework.jar"/>
+		<pathelement path="${build.root.dir}/common-dictionary.jar"/>
+		<pathelement path="${build.root.dir}/common-pf.jar"/>
+		<pathelement path="${build.root.dir}/crypt.jar"/>
+		<pathelement path="${build.root.dir}/management-types.jar"/>
+		<pathelement path="${build.root.dir}/secure-session.jar"/>
+		<pathelement path="${build.root.dir}/server-base.jar"/>
+		<pathelement path="${build.root.dir}/server-framework.jar"/>
+		<pathelement path="${build.root.dir}/server-datasource.jar"/>
+		<pathelement path="${build.root.dir}/server-dictionary.jar"/>
+		<pathelement path="${build.root.dir}/server-dcsf.jar"/>
+		<pathelement path="${build.root.dir}/server-shared-applicationusers.jar"/>
+		<pathelement path="${build.root.dir}/server-shared-types.jar"/>
+		<pathelement path="${build.root.dir}/server-shared-utils.jar"/>
+		<pathelement path="${build.root.dir}/server-pf.jar"/>
+		<pathelement path="${build.dest}"/>
+		<pathelement path="${build.gendest}"/>
+	</path>
+
+
+	<target name="build" depends="setup-war"/>
+
+	<target name="pre-build" description="Prepares required directory">
+		<mkdir dir="${build.dest}"/>
+		<mkdir dir="${build.gendest}"/>
+	</target>
+
+	<target name="compile" depends="pre-build" description="builds the source code">
+		<javac 
+				srcdir="${java.main.src.dir}" 
+				destdir="${build.dest}" 
+				debug="${compile.debug}" 
+				verbose="${compile.verbose}"
+		source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}"
+		>
+			<classpath refid="compile.dkms.classpath"/>
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile" description="Prepares the jar files">
+	</target>
+
+	<target name="setup-datasources">
+		<mkdir dir="${build.weblib}"/>
+		<copy toDir="${build.weblib}" failonerror="true">
+			<fileset refid="hibernate.lib"/>
+		</copy>
+		<copy file="${xlib_jar_dir}/hibernate2.jar" todir="${build.weblib}" failonerror="true"/>
+	</target>
+
+	<target name="setup-webapp" depends="jar, setup-datasources" description="Sets up the web app files">
+		<copy todir="${build.dest}" failonerror="true">
+			<fileset dir="${java.main.src.dir}">
+				<include name="**/*.hbm.xml"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${build.weblib}" failonerror="true" flatten="true">
+			<fileset dir="${build.root.dir}">
+				<include name="common-dictionary.jar" />
+				<include name="common-dictionary.jar"/>
+				<include name="common-domain.jar"/>
+				<include name="common-framework-types.jar"/>
+				<include name="common-framework.jar"/>
+				<include name="common-pf.jar" />
+				<include name="common-version-impl.jar"/>
+				<include name="crypt.jar"/>
+				<include name="dcsf-types.jar"/>
+				<include name="keymanagement-service.jar"/>
+				<include name="keymanagement-dcc-service.jar"/>
+				<include name="keymanagement-types.jar"/>
+				<include name="inquiry-manager-shared.jar"/>
+				<include name="policy-services.jar" />
+				<include name="policy-types.jar" />
+				<include name="secure-session-types.jar" />
+				<include name="secure-session.jar"/>
+				<include name="server-axis-security.jar"/>
+				<include name="server-datasource.jar"/>
+				<include name="server-dcsf.jar"/>
+				<include name="server-dictionary.jar" />
+				<include name="server-framework.jar"/>
+				<include name="server-pf.jar"/>
+				<include name="server-shared-applicationusers.jar"/>
+				<include name="server-shared-keymanagement.jar"/>
+				<include name="server-shared-pf.jar"/>
+				<include name="server-shared-services-impl.jar" />
+				<include name="server-shared-services.jar" />
+				<include name="server-shared-types.jar" />
+				<include name="server-shared-utils.jar" />
+				<include name="version.jar"/>
+			</fileset>
+			<fileset refid="axis.jars"/>
+			<fileset refid="xerces.jars"/>
+			<fileset refid="hibernate.lib"/>
+			<path>
+                <!-- PQL parsing -->
+                <pathelement path="${xlib_jar_dir}/antlr.jar"/>
+
+                <pathelement path="${xlib_jar_dir}/activation.jar"/>
+                <pathelement path="${xlib_jar_dir}/commons-httpclient-3.0-rc2.jar"/>
+				<pathelement path="${xlib_jar_dir}/mail.jar"/>
+
+            </path>
+		</copy>
+
+		<copy file="${etc.src.dir}/web.xml" todir="${build.webinf}" failonerror="true"/>
+		<copy file="${etc.src.dir}/index.html" todir="${build.webapp}" failonerror="true"/>
+
+		
+		<!-- Copy hibernate files -->
+		<copy file="${server.base.dir}/resource/main/common.repository.properties" todir="${build.webconf}" failonerror="true"/>
+		<copy file="${hibernate.src.dir}/activity.repository.xml" todir="${build.webconf}" failonerror="true" />
+		<copy file="${hibernate.src.dir}/policyframework.repository.xml" todir="${build.webconf}" failonerror="true" />
+		<copy file="${hibernate.src.dir}/management.repository.xml" todir="${build.webconf}" failonerror="true" />
+		<copy file="${hibernate.src.dir}/keymanagement.repository.xml" todir="${build.webconf}" failonerror="true"/>
+
+		<!-- For Md5 Digests -->
+		<copy file="${xlib_jar_dir}/commons-codec-1.8.jar" todir="${build.weblib}" failonerror="true"/>
+		
+		<!-- Copy the JLDAP jar -->
+		<copy file="${xlib_jar_dir}/ldap.jar" todir="${build.weblib}" failonerror="true"/>
+
+		<!-- Copy empty axis config file -->
+		<copy file="${wsdd.template.dir}/server-config.wsdd" todir="${build.webinf}" failonerror="true"/>
+
+		<!-- Install the keymanagement service -->
+		<java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+			<arg value="server"/>
+			<arg value="${gen.dir}/${services.keymanagement.dir}/deploy-KeyManagementService.wsdd"/>
+			<classpath refid="compile.dkms.classpath"/>
+		</java>
+		
+		<java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+			<arg value="server"/>
+			<arg value="${gen.dir}/${services.keymanagement.dir}/deploy-KeyManagementDCCService.wsdd"/>
+			<classpath refid="compile.dkms.classpath"/>
+		</java>
+
+		<!-- Install secure session service -->
+		<java failonerror="true" classname="org.apache.axis.utils.Admin" dir="${build.webinf}" fork="true">
+			<arg value="server" />
+			<arg value="${gen.dir}/secureService/dkms/${services.secure.dir}/v1/deploy-SecureSessionService.wsdd" />
+			<classpath refid="compile.dkms.classpath" />
+		</java>
+
+	</target>
+
+	<target name="wsdl-compile">
+		<ant dir="${src.wsdl.dir}" target="wsdl-compile" inheritrefs="true"/>
+	</target>
+
+	<target name="wsdl-generate">
+		<ant dir="${src.wsdl.dir}" target="wsdl-generate" inheritrefs="true"/>
+	</target>
+
+	<target name="wsdl-jar">
+		<ant dir="${src.wsdl.dir}" target="wsdl-jar" inheritrefs="true"/>
+	</target>
+
+	<target name="setup-war" depends="setup-webapp">
+		<war destfile="${war.dir}/dkms.war" basedir="${build.webapp}" webxml="${build.webinf}/web.xml"/>
+	</target>
+
+	<target name="doc"/>
+
+</project>

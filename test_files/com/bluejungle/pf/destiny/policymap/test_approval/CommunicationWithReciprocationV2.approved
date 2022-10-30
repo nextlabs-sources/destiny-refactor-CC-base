@@ -1,0 +1,217 @@
+Deployment Bundle:
+Deployment entities:
+ID # STATUS EMPTY POLICY CommunicationWithReciprocation
+    DESCRIPTION "This policy is excluded by the backward compatibility checker."
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    DO deny
+ID # STATUS APPROVED LOCATION localhost = "10.0.0.0/8"
+Policies that apply to all users: {}
+Policies that apply to all hosts: {0}
+Policies that apply to all applications: {0}
+Subject-Policy Mappings:
+0 -> {0}
+1 -> {0}
+2 -> {0}
+3 -> {0}
+4 -> {0}
+5 -> {0}
+6 -> {0}
+7 -> {0}
+8 -> {0}
+9 -> {0}
+10 -> {0}
+11 -> {0}
+12 -> {0}
+13 -> {0}
+14 -> {0}
+16 -> {}
+17 -> {}
+18 -> {}
+19 -> {}
+20 -> {}
+21 -> {}
+22 -> {}
+23 -> {}
+24 -> {}
+25 -> {}
+26 -> {}
+Action-Policy Mappings:
+0 -> {0}
+1 -> {0}
+2 -> {0}
+3 -> {0}
+4 -> {0}
+5 -> {0}
+6 -> {0}
+7 -> {0}
+8 -> {0}
+9 -> {0}
+10 -> {0}
+11 -> {0}
+12 -> {0}
+13 -> {0}
+14 -> {0}
+15 -> {0}
+16 -> {0}
+17 -> {0}
+18 -> {0}
+19 -> {0}
+20 -> {0}
+21 -> {0}
+22 -> {0}
+23 -> {0}
+24 -> {0}
+25 -> {0}
+26 -> {0}
+27 -> {0}
+28 -> {0}
+29 -> {0}
+30 -> {0}
+31 -> {0}
+32 -> {0}
+33 -> {0}
+34 -> {0}
+35 -> {0}
+36 -> {0}
+37 -> {0}
+Subject-Group Mappings:
+0 -> {0}
+1 -> {0}
+2 -> {0}
+3 -> {0}
+4 -> {0}
+5 -> {0}
+6 -> {0}
+7 -> {0}
+8 -> {0}
+9 -> {0}
+10 -> {0}
+11 -> {0}
+12 -> {0}
+13 -> {0}
+14 -> {0}
+16 -> {1}
+17 -> {1}
+18 -> {1}
+19 -> {1}
+20 -> {1}
+21 -> {1}
+22 -> {1}
+23 -> {1}
+24 -> {}
+25 -> {}
+26 -> {}
+Subject keys:
+jack.zhuang@bluejungle.com (user-mail) -> 0
+jack.zhuang@nextlabs.com (user-mail) -> 0
+jadams@test.bluejungle.com (user-mail) -> 1
+james.bond@bluejungle.com (user-mail) -> 2
+james.bond@nextlabs.com (user-mail) -> 2
+james.buchanan@test.bluejungle.com (user-mail) -> 3
+james.garfield@test.bluejungle.com (user-mail) -> 4
+james.madison@test.bluejungle.com (user-mail) -> 5
+james.monroe@test.bluejungle.com (user-mail) -> 6
+james.polk@test.bluejungle.com (user-uniqueName) -> 7
+james@bluejungle.com (user-mail) -> 2
+james@nextlabs.com (user-mail) -> 2
+jbond@bluejungle.com (user-mail) -> 2
+jbond@nextlabs.com (user-mail) -> 2
+jboulton@bluejungle.com (user-mail) -> 8
+jboulton@nextlabs.com (user-mail) -> 8
+jdebono@bluejungle.com (user-uniqueName) -> 9
+jed.boulton@bluejungle.com (user-mail) -> 8
+jed.boulton@nextlabs.com (user-mail) -> 8
+jed@bluejungle.com (user-mail) -> 8
+jed@nextlabs.com (user-mail) -> 8
+jgarfield@test.bluejungle.com (user-mail) -> 4
+jimmy.carter@test.bluejungle.com (user-mail) -> 10
+jkennedy@test.bluejungle.com (user-mail) -> 11
+john.adams@test.bluejungle.com (user-mail) -> 12
+john.kennedy@test.bluejungle.com (user-mail) -> 11
+john.tyler@test.bluejungle.com (user-mail) -> 13
+jzhang@bluejungle.com (user-uniqueName) -> 14
+jzhuang@bluejungle.com (user-mail) -> 0
+jzhuang@nextlabs.com (user-mail) -> 0
+keng.lim@bluejungle.com (user-mail) -> 15
+keng.lim@nextlabs.com (user-mail) -> 15
+keng@bluejungle.com (user-mail) -> 15
+keng@nextlabs.com (user-mail) -> 15
+klim@bluejungle.com (user-mail) -> 15
+klim@nextlabs.com (user-mail) -> 15
+S-1-5-21-668023798-3031861066-1043980994-1114 (user-windowsSid) -> 15
+scott.goldstein@bluejungle.com (user-mail) -> 16
+scott.goldstein@nextlabs.com (user-mail) -> 16
+sergey.kalinichenko@bluejungle.com (user-mail) -> 17
+sergey.kalinichenko@nextlabs.com (user-mail) -> 17
+sergey@bluejungle.com (user-mail) -> 17
+sergey@nextlabs.com (user-mail) -> 17
+sgoldstein@bluejungle.com (user-mail) -> 16
+sgoldstein@nextlabs.com (user-mail) -> 16
+shobha.savio@bluejungle.com (user-mail) -> 18
+shobha.savio@nextlabs.com (user-mail) -> 18
+shweta.joshi@bluejungle.com (user-mail) -> 19
+shweta.joshi@nextlabs.com (user-mail) -> 19
+sip:jack.zhuang@bluejungle.com (user-mail) -> 0
+sip:jadams@test.bluejungle.com (user-mail) -> 1
+sip:james.buchanan@test.bluejungle.com (user-mail) -> 3
+sip:james.garfield@test.bluejungle.com (user-mail) -> 4
+sip:james.madison@test.bluejungle.com (user-mail) -> 5
+sip:james.monroe@test.bluejungle.com (user-mail) -> 6
+sip:jed.boulton@bluejungle.com (user-mail) -> 8
+sip:jimmy.carter@test.bluejungle.com (user-mail) -> 10
+sip:john.adams@test.bluejungle.com (user-mail) -> 12
+sip:john.kennedy@test.bluejungle.com (user-mail) -> 11
+sip:john.tyler@test.bluejungle.com (user-mail) -> 13
+sip:keng.lim@bluejungle.com (user-mail) -> 15
+sip:scott.goldstein@bluejungle.com (user-mail) -> 16
+sip:sergey.kalinichenko@bluejungle.com (user-mail) -> 17
+sip:shobha.savio@bluejungle.com (user-mail) -> 18
+sip:shweta.joshi@bluejungle.com (user-mail) -> 19
+sip:stephen.sykes@bluejungle.com (user-mail) -> 20
+sip:sucharitha.sudhati@bluejungle.com (user-mail) -> 21
+sjoshi@bluejungle.com (user-mail) -> 19
+sjoshi@nextlabs.com (user-mail) -> 19
+skalinichenko@bluejungle.com (user-mail) -> 17
+skalinichenko@nextlabs.com (user-mail) -> 17
+slowden@bluejungle.com (user-uniqueName) -> 22
+ssavio@bluejungle.com (user-mail) -> 18
+ssavio@nextlabs.com (user-mail) -> 18
+ssudhati@bluejungle.com (user-mail) -> 21
+ssudhati@nextlabs.com (user-mail) -> 21
+ssykes@bluejungle.com (user-mail) -> 20
+ssykes@nextlabs.com (user-mail) -> 20
+stephen.sykes@bluejungle.com (user-mail) -> 20
+stephen.sykes@nextlabs.com (user-mail) -> 20
+steve.tsui@bluejungle.com (user-mail) -> 23
+steve.tsui@nextlabs.com (user-mail) -> 23
+stsui@bluejungle.com (user-mail) -> 23
+stsui@nextlabs.com (user-mail) -> 23
+sucharitha.sudhati@bluejungle.com (user-mail) -> 21
+sucharitha.sudhati@nextlabs.com (user-mail) -> 21
+x400:c=us;a= ;p=first organizati;o=exchange;s=bond;g=james; (user-mail) -> 2
+x400:c=us;a= ;p=first organizati;o=exchange;s=boulton;g=jed; (user-mail) -> 8
+x400:c=us;a= ;p=first organizati;o=exchange;s=goldstein;g=scott; (user-mail) -> 16
+x400:c=us;a= ;p=first organizati;o=exchange;s=james; (user-mail) -> 2
+x400:c=us;a= ;p=first organizati;o=exchange;s=joshi;g=shweta; (user-mail) -> 19
+x400:c=us;a= ;p=first organizati;o=exchange;s=kalinichenko;g=sergey; (user-mail) -> 17
+x400:c=us;a= ;p=first organizati;o=exchange;s=lim;g=keng; (user-mail) -> 15
+x400:c=us;a= ;p=first organizati;o=exchange;s=savio;g=shobha; (user-mail) -> 18
+x400:c=us;a= ;p=first organizati;o=exchange;s=sudhati;g=sucharitha; (user-mail) -> 21
+x400:c=us;a= ;p=first organizati;o=exchange;s=sykes;g=stephen; (user-mail) -> 20
+x400:c=us;a= ;p=first organizati;o=exchange;s=tsui;g=steve; (user-mail) -> 23
+x400:c=us;a= ;p=first organizati;o=exchange;s=zhuang;g=jack; (user-mail) -> 0
+x400:c=us;a= ;p=test;o=exchange;s=adams2;g=john; (user-mail) -> 1
+x400:c=us;a= ;p=test;o=exchange;s=adams;g=john; (user-mail) -> 12
+x400:c=us;a= ;p=test;o=exchange;s=buchanan;g=james; (user-mail) -> 3
+x400:c=us;a= ;p=test;o=exchange;s=carter;g=jimmy; (user-mail) -> 10
+x400:c=us;a= ;p=test;o=exchange;s=garfield;g=james; (user-mail) -> 4
+x400:c=us;a= ;p=test;o=exchange;s=kennedy;g=john;i=f; (user-mail) -> 11
+x400:c=us;a= ;p=test;o=exchange;s=madison;g=james; (user-mail) -> 5
+x400:c=us;a= ;p=test;o=exchange;s=monroe;g=james; (user-mail) -> 6
+x400:c=us;a= ;p=test;o=exchange;s=tyler;g=john; (user-mail) -> 13
+{UNKNOWN-APP} (application-builtin) -> 24
+{UNKNOWN-HOST} (host-builtin) -> 25
+{UNKNOWN-USER} (user-builtin) -> 26
+

@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping package="com.bluejungle.dictionary">
+    <joined-subclass
+        name="LeafElement"
+        extends="com.bluejungle.dictionary.DictionaryElementBase"
+        table="DICT_LEAF_ELEMENTS"
+        dynamic-update="true"
+    >
+        <key column="ELEMENT_ID"/>
+
+        <many-to-one
+            name="type"
+            class="ElementType"
+            column="TYPE_ID"
+            not-null="true"
+            index="leaf_elem_type_idx"
+            outer-join="true"
+            cascade="none"
+        />
+
+        <property name="String00" type="string" length="4000" not-null="false" index="leaf_elem_str00_idx" />
+        <property name="String01" type="string" length="4000" not-null="false" index="leaf_elem_str01_idx" />
+        <property name="String02" type="string" length="4000" not-null="false"/>
+        <property name="String03" type="string" length="4000" not-null="false"/>
+        <property name="String04" type="string" length="4000" not-null="false"/>
+        <property name="String05" type="string" length="4000" not-null="false"/>
+        <property name="String06" type="string" length="4000" not-null="false"/>
+        <property name="String07" type="string" length="4000" not-null="false"/>
+        <property name="String08" type="string" length="4000" not-null="false"/>
+        <property name="String09" type="string" length="4000" not-null="false"/>
+        <property name="String10" type="string" length="4000" not-null="false"/>
+        <property name="String11" type="string" length="4000" not-null="false"/>
+        <property name="String12" type="string" length="4000" not-null="false"/>
+        <property name="String13" type="string" length="4000" not-null="false"/>
+        <property name="String14" type="string" length="4000" not-null="false"/>
+        <property name="String15" type="string" length="4000" not-null="false"/>
+        <property name="String16" type="string" length="4000" not-null="false"/>
+        <property name="String17" type="string" length="4000" not-null="false"/>
+        <property name="String18" type="string" length="4000" not-null="false"/>
+        <property name="String19" type="string" length="4000" not-null="false"/>
+        <!-- If you extend types to have more than 19, 
+             update bounds check in ElementField.java CTOR to match. -->
+
+        <property name="Number00" type="long" not-null="false"/>
+        <property name="Number01" type="long" not-null="false"/>
+        <property name="Number02" type="long" not-null="false"/>
+        <property name="Number03" type="long" not-null="false"/>
+        <property name="Number04" type="long" not-null="false"/>
+        <property name="Number05" type="long" not-null="false"/>
+        <property name="Number06" type="long" not-null="false"/>
+        <property name="Number07" type="long" not-null="false"/>
+        <property name="Number08" type="long" not-null="false"/>
+        <property name="Number09" type="long" not-null="false"/>
+        <property name="Number10" type="long" not-null="false"/>
+        <property name="Number11" type="long" not-null="false"/>
+        <property name="Number12" type="long" not-null="false"/>
+        <property name="Number13" type="long" not-null="false"/>
+        <property name="Number14" type="long" not-null="false"/>
+        <property name="Number15" type="long" not-null="false"/>
+        <property name="Number16" type="long" not-null="false"/>
+        <property name="Number17" type="long" not-null="false"/>
+        <property name="Number18" type="long" not-null="false"/>
+        <property name="Number19" type="long" not-null="false"/>
+
+        <property name="Date00" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+        <property name="Date01" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+        <property name="Date02" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+        <property name="Date03" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+        <property name="Date04" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+        <property name="Date05" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+        <property name="Date06" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+        <property name="Date07" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+        <property name="Date08" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+        <property name="Date09" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+        <property name="Date10" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+        <property name="Date11" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+        <property name="Date12" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+        <property name="Date13" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+        <property name="Date14" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+        <property name="Date15" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+        <property name="Date16" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+        <property name="Date17" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+        <property name="Date18" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+        <property name="Date19" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false"/>
+
+        <property name="NumArray00" type="com.bluejungle.framework.datastore.hibernate.usertypes.LongArrayAsString" not-null="false">
+            <column name="NUMARRAY00" length="2048"/>
+        </property>
+        <property name="NumArray01" type="com.bluejungle.framework.datastore.hibernate.usertypes.LongArrayAsString" not-null="false">
+            <column name="NUMARRAY01" length="2048"/>
+        </property>
+        <property name="NumArray02" type="com.bluejungle.framework.datastore.hibernate.usertypes.LongArrayAsString" not-null="false">
+            <column name="NUMARRAY02" length="2048"/>
+        </property>
+        <property name="NumArray03" type="com.bluejungle.framework.datastore.hibernate.usertypes.LongArrayAsString" not-null="false">
+            <column name="NUMARRAY03" length="2048"/>
+        </property>
+        
+        <!--
+        <property name="LongString00" type="string" length="4000" not-null="false"/>
+        <property name="LongString01" type="string" length="4000" not-null="false"/>
+        <property name="LongString02" type="string" length="4000" not-null="false"/>
+        <property name="LongString03" type="string" length="4000" not-null="false"/>
+        <property name="LongString04" type="string" length="4000" not-null="false"/>
+        
+        <property name="LongString00" type="com.bluejungle.framework.datastore.hibernate.usertypes.ClobAsStringUserType" not-null="false"/>
+        <property name="LongString01" type="com.bluejungle.framework.datastore.hibernate.usertypes.ClobAsStringUserType" not-null="false"/>
+        <property name="LongString02" type="com.bluejungle.framework.datastore.hibernate.usertypes.ClobAsStringUserType" not-null="false"/>
+        <property name="LongString03" type="com.bluejungle.framework.datastore.hibernate.usertypes.ClobAsStringUserType" not-null="false"/>
+        <property name="LongString04" type="com.bluejungle.framework.datastore.hibernate.usertypes.ClobAsStringUserType" not-null="false"/>
+        -->
+    </joined-subclass>
+</hibernate-mapping>

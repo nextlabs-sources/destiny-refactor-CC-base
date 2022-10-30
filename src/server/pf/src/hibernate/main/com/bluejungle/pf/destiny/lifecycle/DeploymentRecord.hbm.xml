@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping package="com.bluejungle.pf.destiny.lifecycle">
+    <class name="DeploymentRecord" table="deployment_records">
+        <id name="id">
+            <generator class="native"/>
+        </id>
+        <property name="deploymentActionType" type="com.bluejungle.pf.destiny.lifecycle.LifecycleManager$UserTypeForDeploymentActionType">
+            <column name="action_type" sql-type="char(2)" not-null="true"/>        
+        </property>
+        <property name="deploymentType" type="com.bluejungle.pf.destiny.lifecycle.LifecycleManager$UserTypeForDeploymentType">
+            <column name="deployment_type" sql-type="char(2)" not-null="true"/>
+        </property>        
+        <property name="asOf" column="as_of" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="true" />
+        <property name="whenRequested" column="when_requested" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="true" />
+        <property name="whenCancelled" column="when_cancelled" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false" />
+        <property name="hidden" column="hidden" type="yes_no" not-null="false" />
+        <property name="deployer" type="long" not-null="false"/>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,73 @@
+Deployment Bundle:
+Deployment entities:
+ID # STATUS EMPTY POLICY SubjWithOnlyDynamicAttributes
+    FOR TRUE
+    ON EMAIL
+    SENT_TO TRUE
+    BY user.mail_domain = "dynamic.com"
+    DO deny
+ID # STATUS APPROVED LOCATION localhost = "10.0.0.0/8"
+Policies that apply to all users: {0}
+Policies that apply to all hosts: {0}
+Policies that apply to all applications: {0}
+Subject-Policy Mappings:
+1 -> {}
+2 -> {}
+3 -> {}
+Action-Policy Mappings:
+0 -> {}
+1 -> {}
+2 -> {}
+3 -> {}
+4 -> {}
+5 -> {}
+6 -> {}
+7 -> {}
+8 -> {}
+9 -> {}
+10 -> {}
+11 -> {}
+12 -> {}
+13 -> {}
+14 -> {}
+15 -> {0}
+16 -> {}
+17 -> {}
+18 -> {}
+19 -> {}
+20 -> {}
+21 -> {}
+22 -> {}
+23 -> {}
+24 -> {}
+25 -> {}
+26 -> {}
+27 -> {}
+28 -> {}
+29 -> {}
+30 -> {}
+31 -> {}
+32 -> {}
+33 -> {}
+34 -> {}
+35 -> {}
+36 -> {}
+37 -> {}
+Subject-Group Mappings:
+1 -> {}
+2 -> {}
+3 -> {}
+Subject keys:
+keng.lim@bluejungle.com (user-mail) -> 0
+keng.lim@nextlabs.com (user-mail) -> 0
+keng@bluejungle.com (user-mail) -> 0
+keng@nextlabs.com (user-mail) -> 0
+klim@bluejungle.com (user-mail) -> 0
+klim@nextlabs.com (user-mail) -> 0
+S-1-5-21-668023798-3031861066-1043980994-1114 (user-windowsSid) -> 0
+sip:keng.lim@bluejungle.com (user-mail) -> 0
+x400:c=us;a= ;p=first organizati;o=exchange;s=lim;g=keng; (user-mail) -> 0
+{UNKNOWN-APP} (application-builtin) -> 1
+{UNKNOWN-HOST} (host-builtin) -> 2
+{UNKNOWN-USER} (user-builtin) -> 3
+

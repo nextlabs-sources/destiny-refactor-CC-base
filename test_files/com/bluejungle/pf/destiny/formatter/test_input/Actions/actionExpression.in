@@ -1,0 +1,1 @@
+action ACTION_EXPRESSION = action = "ABC" and NOT action.group="DEF" aNd NOT (action ="GHI" and group == "JKL" and action== "MNO")

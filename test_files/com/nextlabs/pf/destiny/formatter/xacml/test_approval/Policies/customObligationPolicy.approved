@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PolicySet xmlns="urn:oasis:names:tc:xacml:1.0:policy"
+           PolicySetId="Exported NextLabs Policies"
+           PolicyCombiningAlgId="urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:deny-overrides">
+  <Policy
+      xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17
+                          http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+      PolicyId="urn:nextlabs:customObligationPolicy"
+      Version="1.0"
+      RuleCombiningAlgId="identifier:rule-combining-algorithm:deny-overrides">
+    <Target>
+    </Target>
+    <Rule Effect="Permit" RuleId="customObligationPolicy">
+      <Description>this policy is also trivial</Description>
+      <Condition FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+      </Condition>
+    </Rule>
+    <AssociatedAdvice>
+      <AdviceExpression AdviceId="urn:nextlabs:CUSTOM6" AppliesTo="Permit">
+        <AttributeAssignmentExpression AttributeId="arg1">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">x</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="arg2">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">y</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="arg3">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">z</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="arg4">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">1</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="arg5">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">2.3</AttributeValue>
+        </AttributeAssignmentExpression>
+        <AttributeAssignmentExpression AttributeId="arg6">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">0.4</AttributeValue>
+        </AttributeAssignmentExpression>
+      </AdviceExpression>
+      <AdviceExpression AdviceId="urn:nextlabs:CUSTOM0" AppliesTo="Deny">
+      </AdviceExpression>
+    </AssociatedAdvice>
+  </Policy>
+<PolicySet>

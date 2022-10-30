@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="1.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation=
+                  "http://incubator.apache.org/ivy/schemas/ivy.xsd">
+    <info organisation="nextlabs"
+          module="common-framework"
+		  revision="2.0"/>
+    <configurations>
+	    <conf name="main" visibility="public" />
+		<conf name="test" visibility="public" />
+		<conf name="report" visibility="private" />
+	</configurations>
+	<publications>
+	    <artifact conf="main" name="common-framework" />
+	    <artifact conf="main" name="common-framework-types" />
+	    <artifact conf="main" name="BasicFaults" type="xsd" />
+	    <artifact conf="main" name="BasicTypes" type="xsd" />
+<!--	    <artifact conf="main" name="BasicTypes.v1" type="xsd" />
+	    <artifact conf="main" name="BasicFaults.v1" type="xsd" /> -->
+	    <artifact conf="main" name="Search" type="xsd" />
+	    <artifact conf="main" name="crypt" />
+		<artifact conf="main" name="cli" />
+	    <artifact conf="main" name="com_bluejungle_framework_utils_NetworkUtils" type="h"/>
+	    <artifact conf="main" name="random" />
+	    <artifact conf="test" name="common-framework-test" />
+		<artifact conf="report" type="xml" name="test/TEST-com.bluejungle.framework.test.CommonFrameworkTestSuite" />
+	</publications>
+</ivy-module>

@@ -1,0 +1,1 @@
+user with_groups1 = user.ldapgroup = "ldap1" or user.ldapgroup = "ldap2"

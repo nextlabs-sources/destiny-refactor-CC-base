@@ -1,0 +1,2534 @@
+Deployment Bundle:
+Deployment entities:
+ID 0 STATUS APPROVED POLICY AllowPolicyOnFuad
+    DESCRIPTION "Policy that allows Hor-Kan access to *.java while on localhost and to Bo Meng while using small.exe and denies it to everyone else."
+    FOR resource.fso.name = "?c:\\**.java"
+    ON TRUE
+    BY ((user.GROUP has 0 AND host.GROUP has 0) OR (user.GROUP has 1 AND application.GROUP has 0))
+    DO allow
+    BY DEFAULT DO deny
+    ON allow DO log
+ID 1 STATUS APPROVED POLICY DenyAutorun
+    DESCRIPTION "Denies run based on application name"
+    FOR TRUE
+    ON RUN
+    BY application.name = "autorun.exe"
+    DO deny
+ID 2 STATUS APPROVED POLICY DenyBasedOnURL
+    DESCRIPTION "Denies run based on application name"
+    FOR resource.fso.name = "c:\\deny_url.txt"
+    ON OPEN
+    BY application.url = "http://mail.google.com/**"
+    DO deny
+ID 3 STATUS APPROVED POLICY CommunicationPolicy01
+    FOR resource.fso.name = "c:\\communication_policy"
+    ON EMAIL
+    SENT_TO user.mail = "keng.lim@bluejungle.com"
+    BY TRUE
+    DO deny
+    ON deny DO policy01
+ID 4 STATUS APPROVED POLICY CommunicationPolicy02
+    FOR resource.fso.name = "c:\\communication_policy"
+    ON EMAIL
+    SENT_TO user.mail_domain = "gs.com;ml.com;equity.gs.com;"
+    BY TRUE
+    DO deny
+    ON deny DO policy02
+ID 5 STATUS APPROVED POLICY CommunicationPolicy03
+    FOR resource.fso.name = "c:\\communication_policy"
+    ON EMAIL
+    SENT_TO user.GROUP has 2
+    BY TRUE
+    DO deny
+    ON deny DO policy03
+ID 6 STATUS APPROVED POLICY CommunicationPolicyNot
+    FOR resource.fso.name = "c:\\communication_policy_not"
+    ON EMAIL
+    SENT_TO user.GROUP has 3
+    BY host.GROUP has 1
+    DO deny
+    ON deny DO policyNOT
+ID 7 STATUS APPROVED POLICY destiny_group_policy
+    FOR (resource.fso.owner_ldap_group has 4 AND resource.fso.name = "**owner_destiny.test")
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 8 STATUS APPROVED POLICY FinanceDeny
+    DESCRIPTION "Applies to everyone, doing anything, on finance documents."
+    FOR resource.fso.name = "?c:\\finance\\*.txt"
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 9 STATUS APPROVED POLICY LdapPolicy
+    DESCRIPTION "Policy that allows engineers access to Java files and denies it to everyone else"
+    FOR resource.fso.name = "?c:\\**.ldap"
+    ON TRUE
+    BY (user.GROUP has 5 AND application.GROUP has 1)
+    DO allow
+    BY DEFAULT DO deny
+    ON allow DO log
+ID 10 STATUS APPROVED POLICY deny_localhost
+    DESCRIPTION "denies access to c:\\foofoo.doc for any request for localhost"
+    FOR resource.fso.name = "c:\\foofoo.doc"
+    ON TRUE
+    BY host.location = localhost
+    DO deny
+ID 11 STATUS APPROVED POLICY "Not Engineering Copy"
+    ATTRIBUTE USAGE
+    FOR resource.fso.name = "**negated_ldap_group.test"
+    ON COPY
+    TO TRUE
+    BY user.GROUP has 6
+    DO deny
+    ON deny DO log
+ID 12 STATUS APPROVED POLICY TestDirOpenIsAlwaysOK
+    DESCRIPTION "c:\\windows is a directory; opening it should work, anything else should fail."
+    FOR resource.fso.name = "C:\\WINDOWS"
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 13 STATUS APPROVED POLICY Obligations01
+    FOR resource.fso.name = "c:\\verify.obligations"
+    ON TRUE
+    BY user.GROUP has 7
+    DO allow
+    BY DEFAULT DO deny
+    ON allow DO log
+ID 14 STATUS APPROVED POLICY Obligations02
+    FOR resource.fso.name = "c:\\verify.obligations"
+    ON TRUE
+    BY user.GROUP has 8
+    DO allow
+    BY DEFAULT DO deny
+    ON dontcare DO log
+ID 15 STATUS APPROVED POLICY Obligations03
+    FOR resource.fso.name = "c:\\verify.obligations"
+    ON TRUE
+    BY user.GROUP has 9
+    DO deny
+    ON deny DO log
+    ON dontcare DO log
+ID 16 STATUS APPROVED POLICY testpolicy2
+    ATTRIBUTE USAGE
+    FOR resource.fso.name = "c:\\testfolder2\\*"
+    ON READ
+    TO TRUE
+    BY TRUE
+    DO deny
+ID 17 STATUS APPROVED POLICY Policy1
+    ATTRIBUTE USAGE
+    FOR resource.fso.name = "c:\\financepa\\**"
+    ON TRUE
+    TO TRUE
+    BY user.GROUP has 10
+    DO deny
+ID 18 STATUS APPROVED POLICY deny_remoterun
+    DESCRIPTION "denies run of any applications when connected remotely"
+    FOR TRUE
+    ON RUN
+    BY host.location != localhost
+    WHERE ENVIRONMENT.REMOTE_ACCESS = 1
+    DO deny
+    BY DEFAULT DO allow
+    ON allow DO log, display( "allow" )
+    ON deny DO display( "deny" )
+ID 19 STATUS APPROVED POLICY resource_created_date
+    FOR (resource.fso.created_date < "01/01/3007" AND resource.fso.name = "**resource_date.pql")
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 20 STATUS APPROVED POLICY resource_owner_ldap_test
+    FOR (resource.fso.owner_ldap_group has 11 AND resource.fso.name = "**owner_ldap.test")
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 21 STATUS APPROVED POLICY resource_owner_test
+    FOR (resource.fso.owner = user.uid AND resource.fso.name = "**owner.test")
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 22 STATUS APPROVED POLICY subref_test_policy
+    FOR (resource.fso.name = "**ref**" AND resource.fso.name = "**subref.test")
+    ON TRUE
+    BY user.GROUP has 12
+    DO deny
+ID 23 STATUS APPROVED POLICY TrackingPolicy
+    DESCRIPTION "This policy is excluded because its deployment target does not match the agent"
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    DO allow
+ID 24 STATUS APPROVED POLICY UnknownOwner
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    DO deny
+ID 25 STATUS APPROVED POLICY EmailToContact
+    FOR resource.fso.name = "c:\\emailcontact"
+    ON EMAIL
+    SENT_TO user.GROUP has 14
+    BY user.GROUP has 13
+    DO deny
+    BY DEFAULT DO allow
+    ON allow DO emc_allow
+    ON deny DO emc_deny
+ID 26 STATUS APPROVED POLICY EmailToNotContact
+    FOR resource.fso.name = "c:\\emailcontact"
+    ON EMAIL
+    SENT_TO user.GROUP has 16
+    BY user.GROUP has 15
+    DO deny
+    BY DEFAULT DO allow
+    ON allow DO emNc_allow
+    ON deny DO emNc_deny
+ID 27 STATUS APPROVED POLICY UserByEmail
+    FOR resource.fso.name = "c:\\userbyemail"
+    ON EDIT
+    BY user.mail = "sgoldstein@bluejungle.com"
+    DO deny
+    ON deny DO byemail
+ID 28 STATUS APPROVED POLICY UserByEmailDomain
+    FOR resource.fso.name = "c:\\userbyemaildomain"
+    ON EDIT
+    BY user.mail_domain = "bluejungle.com"
+    DO deny
+    ON deny DO byemaildomain
+ID 29 STATUS APPROVED POLICY NegatedAppPolicy
+    FOR resource.fso.name = "c:\\negatedapp"
+    ON OPEN
+    BY application.GROUP has 2
+    DO deny
+ID 30 STATUS APPROVED POLICY misdirected_email_policy
+    FOR (resource.fso.name = "misdirected*.txt" AND resource.fso.client_id != null)
+    ON EMAIL
+    SENT_TO (user.client_id != null AND user.client_id != resource.fso.client_id)
+    BY TRUE
+    DO allow
+    ON allow DO misdirected
+ID 31 STATUS APPROVED POLICY multiclient_email_policy
+    FOR resource.fso.name = "multiclient.txt"
+    ON EMAIL
+    SENT_TO user.sent_to_client_count > 1
+    BY TRUE
+    DO allow
+    ON allow DO multiclient
+ID 32 STATUS APPROVED POLICY unset_attribute_policy
+    FOR (resource.fso.name = "unset_attribute*.txt" AND resource.fso.client_id = null)
+    ON EMAIL
+    SENT_TO TRUE
+    BY TRUE
+    DO allow
+    ON allow DO unset_attribute
+ID 33 STATUS APPROVED POLICY SmallFiles
+    DESCRIPTION "This policy is excluded because its deployment target does not match the agent"
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    DO deny
+ID 34 STATUS APPROVED POLICY MyTestPolicy
+    DESCRIPTION "This policy is excluded because its deployment target does not match the agent"
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    DO deny
+    BY DEFAULT DO allow
+ID 35 STATUS APPROVED LOCATION localhost = "10.0.0.0/8"
+Policies that apply to all users: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 16, 18, 19, 20, 21, 23, 27, 28, 29, 30, 31, 32}
+Policies that apply to all hosts: {0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34}
+Policies that apply to all applications: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 30, 31, 32, 33, 34}
+Subject-Policy Mappings:
+0 -> {}
+1 -> {11}
+2 -> {11}
+3 -> {11}
+4 -> {11}
+5 -> {11}
+6 -> {11}
+7 -> {11}
+8 -> {11}
+9 -> {11}
+10 -> {11}
+11 -> {11}
+99 -> {}
+103 -> {}
+104 -> {25}
+109 -> {11}
+114 -> {}
+115 -> {26, 34}
+117 -> {11}
+121 -> {11}
+140 -> {}
+141 -> {}
+142 -> {11}
+143 -> {22}
+150 -> {}
+153 -> {11}
+154 -> {}
+155 -> {15}
+159 -> {17, 33}
+173 -> {}
+182 -> {}
+191 -> {11}
+192 -> {11}
+195 -> {11}
+198 -> {11}
+205 -> {11}
+215 -> {11}
+217 -> {11}
+219 -> {11}
+222 -> {11}
+229 -> {11}
+233 -> {}
+234 -> {29}
+235 -> {6}
+236 -> {11}
+Action-Policy Mappings:
+ADMIN -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+APPROVE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+ATTACH -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+AVDCALL -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+BATCH -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+BURN -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+CHANGE_ATTRIBUTES -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+CHANGE_SECURITY -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+COPY -> {0, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+CREATE_NEW -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+CUT_PASTE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+DELETE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+DEPLOY -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+EDIT -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 27, 28, 33, 34}
+EDIT_COPY -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+EMAIL -> {0, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 25, 26, 30, 31, 32, 33, 34}
+EMBED -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+EXPORT -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+IM -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+JOIN -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+MEETING -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+MOVE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+NOP -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+OPEN -> {0, 2, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 29, 33, 34}
+PASTE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+PRESENCE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+PRINT -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+QUESTION -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+READ -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 33, 34}
+RECORD -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+RENAME -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+RUN -> {0, 1, 7, 8, 9, 10, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 33, 34}
+SENDTO -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+SHARE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+VIDEO -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+VOICE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+WEBMAIL -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+WRITE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+Subject-Group Mappings:
+0 -> {0, 1}
+1 -> {6, 16}
+2 -> {6, 16}
+3 -> {6, 16}
+4 -> {6, 16}
+5 -> {6, 16}
+6 -> {6, 16}
+7 -> {6, 16}
+8 -> {6, 16}
+9 -> {6, 16}
+10 -> {6, 16}
+11 -> {6, 16}
+99 -> {2, 3, 4, 5, 11, 16}
+103 -> {3, 4, 5, 11, 16}
+104 -> {3, 4, 5, 11, 13, 16}
+109 -> {6, 16}
+114 -> {3, 4, 5, 11, 16}
+115 -> {3, 4, 5, 11, 15, 16, 18}
+117 -> {6, 16}
+121 -> {3, 6, 7, 8, 16}
+140 -> {3, 4, 5, 11, 16}
+141 -> {4, 5, 11, 16}
+142 -> {2, 3, 6, 16}
+143 -> {3, 4, 5, 11, 12, 16}
+150 -> {3, 4, 5, 11, 16}
+153 -> {6, 16}
+154 -> {3, 4, 5, 11, 16}
+155 -> {1, 3, 4, 5, 7, 9, 11, 16}
+159 -> {0, 3, 4, 5, 10, 11, 16, 17}
+173 -> {4, 5, 11, 16}
+182 -> {0}
+191 -> {6, 16}
+192 -> {6, 16}
+195 -> {6, 16}
+198 -> {6, 16}
+205 -> {6, 16}
+215 -> {6, 16}
+217 -> {6, 16}
+219 -> {6, 16}
+222 -> {6, 16}
+229 -> {6, 16}
+233 -> {3, 4, 5, 11, 16}
+234 -> {2}
+235 -> {1}
+236 -> {3, 6, 16}
+Subject keys:
+(null):0:0:f7513948613aa6b5eb31fbb0726147833630e5d2 (application-appFingerPrint) -> 0
+0 (user-unixId) -> 1
+10000 (user-unixId) -> 2
+10001 (user-unixId) -> 3
+10002 (user-unixId) -> 4
+10003 (user-unixId) -> 5
+100050 (user-unixId) -> 6
+34 (user-unixId) -> 7
+501 (user-unixId) -> 8
+502 (user-unixId) -> 9
+503 (user-unixId) -> 10
+504 (user-unixId) -> 11
+ACKLINS.bluejungle.com (host-uniqueName) -> 12
+ACKLINS.bluejungle.com (host-uniqueName) -> 12
+adentro.bluejungle.com (host-uniqueName) -> 13
+adentro.bluejungle.com (host-uniqueName) -> 13
+ANDROS.bluejungle.com (host-uniqueName) -> 14
+ANDROS.bluejungle.com (host-uniqueName) -> 14
+ANGEL.bluejungle.com (host-uniqueName) -> 15
+ANGEL.bluejungle.com (host-uniqueName) -> 15
+ATIU.bluejungle.com (host-uniqueName) -> 16
+ATIU.bluejungle.com (host-uniqueName) -> 16
+azores.bluejungle.com (host-uniqueName) -> 17
+azores.bluejungle.com (host-uniqueName) -> 17
+BAIXO.bluejungle.com (host-uniqueName) -> 18
+BAIXO.bluejungle.com (host-uniqueName) -> 18
+BAKER.bluejungle.com (host-uniqueName) -> 19
+BAKER.bluejungle.com (host-uniqueName) -> 19
+beaver.bluejungle.com (host-uniqueName) -> 20
+beaver.bluejungle.com (host-uniqueName) -> 20
+BIKINI.bluejungle.com (host-uniqueName) -> 21
+BIKINI.bluejungle.com (host-uniqueName) -> 21
+BILL-XP.bluejungle.com (host-uniqueName) -> 22
+BILL-XP.bluejungle.com (host-uniqueName) -> 22
+BLOCK.bluejungle.com (host-uniqueName) -> 23
+BLOCK.bluejungle.com (host-uniqueName) -> 23
+BOHOL.bluejungle.com (host-uniqueName) -> 24
+BOHOL.bluejungle.com (host-uniqueName) -> 24
+borabora.bluejungle.com (host-uniqueName) -> 25
+borabora.bluejungle.com (host-uniqueName) -> 25
+BORDUY.bluejungle.com (host-uniqueName) -> 26
+BORDUY.bluejungle.com (host-uniqueName) -> 26
+bouvet.bluejungle.com (host-uniqueName) -> 27
+bouvet.bluejungle.com (host-uniqueName) -> 27
+BRAC.bluejungle.com (host-uniqueName) -> 28
+BRAC.bluejungle.com (host-uniqueName) -> 28
+BUILD-STAGING.bluejungle.com (host-uniqueName) -> 29
+BUILD-STAGING.bluejungle.com (host-uniqueName) -> 29
+CAYMAN.bluejungle.com (host-uniqueName) -> 30
+CAYMAN.bluejungle.com (host-uniqueName) -> 30
+CEBU.bluejungle.com (host-uniqueName) -> 31
+CEBU.bluejungle.com (host-uniqueName) -> 31
+CF.bluejungle.com (host-uniqueName) -> 32
+CF.bluejungle.com (host-uniqueName) -> 32
+CHOISEUI.bluejungle.com (host-uniqueName) -> 33
+CHOISEUI.bluejungle.com (host-uniqueName) -> 33
+CHUUK.bluejungle.com (host-uniqueName) -> 34
+CHUUK.bluejungle.com (host-uniqueName) -> 34
+CICIA.bluejungle.com (host-uniqueName) -> 35
+CICIA.bluejungle.com (host-uniqueName) -> 35
+CORFU.bluejungle.com (host-uniqueName) -> 36
+CORFU.bluejungle.com (host-uniqueName) -> 36
+cuba.bluejungle.com (host-uniqueName) -> 37
+cuba.bluejungle.com (host-uniqueName) -> 37
+DESTRUCTION.bluejungle.com (host-uniqueName) -> 38
+DESTRUCTION.bluejungle.com (host-uniqueName) -> 38
+DOKOS.bluejungle.com (host-uniqueName) -> 39
+DOKOS.bluejungle.com (host-uniqueName) -> 39
+DOMINICA.bluejungle.com (host-uniqueName) -> 40
+DOMINICA.bluejungle.com (host-uniqueName) -> 40
+DOMINICATPM1.bluejungle.com (host-uniqueName) -> 41
+DOMINICATPM1.bluejungle.com (host-uniqueName) -> 41
+DOMINICATPM2.bluejungle.com (host-uniqueName) -> 42
+DOMINICATPM2.bluejungle.com (host-uniqueName) -> 42
+EASTER.bluejungle.com (host-uniqueName) -> 43
+EASTER.bluejungle.com (host-uniqueName) -> 43
+EFATE.bluejungle.com (host-uniqueName) -> 44
+EFATE.bluejungle.com (host-uniqueName) -> 44
+ellis.bluejungle.com (host-uniqueName) -> 45
+ellis.bluejungle.com (host-uniqueName) -> 45
+ENGDEV01.bluejungle.com (host-uniqueName) -> 46
+ENGDEV01.bluejungle.com (host-uniqueName) -> 46
+ENGDEV02.bluejungle.com (host-uniqueName) -> 47
+ENGDEV02.bluejungle.com (host-uniqueName) -> 47
+EVIA.bluejungle.com (host-uniqueName) -> 48
+EVIA.bluejungle.com (host-uniqueName) -> 48
+EVIA2.bluejungle.com (host-uniqueName) -> 49
+EVIA2.bluejungle.com (host-uniqueName) -> 49
+FAGO.bluejungle.com (host-uniqueName) -> 50
+FAGO.bluejungle.com (host-uniqueName) -> 50
+FUTUNA.bluejungle.com (host-uniqueName) -> 51
+FUTUNA.bluejungle.com (host-uniqueName) -> 51
+grande.bluejungle.com (host-uniqueName) -> 52
+grande.bluejungle.com (host-uniqueName) -> 52
+guadalupe.bluejungle.com (host-uniqueName) -> 53
+guadalupe.bluejungle.com (host-uniqueName) -> 53
+GUAM.bluejungle.com (host-uniqueName) -> 54
+GUAM.bluejungle.com (host-uniqueName) -> 54
+GUERNSEY.bluejungle.com (host-uniqueName) -> 55
+GUERNSEY.bluejungle.com (host-uniqueName) -> 55
+HAINAN.bluejungle.com (host-uniqueName) -> 56
+HAINAN.bluejungle.com (host-uniqueName) -> 56
+herm.bluejungle.com (host-uniqueName) -> 57
+herm.bluejungle.com (host-uniqueName) -> 57
+HESTUR.bluejungle.com (host-uniqueName) -> 58
+HESTUR.bluejungle.com (host-uniqueName) -> 58
+INTEGRATION01.bluejungle.com (host-uniqueName) -> 59
+INTEGRATION01.bluejungle.com (host-uniqueName) -> 59
+ISCHIA.bluejungle.com (host-uniqueName) -> 60
+ISCHIA.bluejungle.com (host-uniqueName) -> 60
+JERSEY.bluejungle.com (host-uniqueName) -> 61
+JERSEY.bluejungle.com (host-uniqueName) -> 61
+KALSOY.bluejungle.com (host-uniqueName) -> 62
+KALSOY.bluejungle.com (host-uniqueName) -> 62
+KEA.bluejungle.com (host-uniqueName) -> 63
+KEA.bluejungle.com (host-uniqueName) -> 63
+KING.bluejungle.com (host-uniqueName) -> 64
+KING.bluejungle.com (host-uniqueName) -> 64
+KingXP.bluejungle.com (host-uniqueName) -> 65
+KingXP.bluejungle.com (host-uniqueName) -> 65
+KIOA.bluejungle.com (host-uniqueName) -> 66
+KIOA.bluejungle.com (host-uniqueName) -> 66
+kirkwood.bluejungle.com (host-uniqueName) -> 67
+kirkwood.bluejungle.com (host-uniqueName) -> 67
+kiska.bluejungle.com (host-uniqueName) -> 68
+kiska.bluejungle.com (host-uniqueName) -> 68
+KORO.bluejungle.com (host-uniqueName) -> 69
+KORO.bluejungle.com (host-uniqueName) -> 69
+LAKEBA.bluejungle.com (host-uniqueName) -> 70
+LAKEBA.bluejungle.com (host-uniqueName) -> 70
+langkawi.bluejungle.com (host-uniqueName) -> 71
+langkawi.bluejungle.com (host-uniqueName) -> 71
+liberty.bluejungle.com (host-uniqueName) -> 72
+liberty.bluejungle.com (host-uniqueName) -> 72
+MAHE.bluejungle.com (host-uniqueName) -> 73
+MAHE.bluejungle.com (host-uniqueName) -> 73
+MAIO.bluejungle.com (host-uniqueName) -> 74
+MAIO.bluejungle.com (host-uniqueName) -> 74
+MARE.bluejungle.com (host-uniqueName) -> 75
+MARE.bluejungle.com (host-uniqueName) -> 75
+MARTINIQUE.bluejungle.com (host-uniqueName) -> 76
+MARTINIQUE.bluejungle.com (host-uniqueName) -> 76
+MAUI.bluejungle.com (host-uniqueName) -> 77
+MAUI.bluejungle.com (host-uniqueName) -> 77
+MAYOTTE.bluejungle.com (host-uniqueName) -> 78
+MAYOTTE.bluejungle.com (host-uniqueName) -> 78
+mini-cedros.bluejungle.com (host-uniqueName) -> 79
+mini-cedros.bluejungle.com (host-uniqueName) -> 79
+MOLOKAI.bluejungle.com (host-uniqueName) -> 80
+MOLOKAI.bluejungle.com (host-uniqueName) -> 80
+NASSAU.bluejungle.com (host-uniqueName) -> 81
+NASSAU.bluejungle.com (host-uniqueName) -> 81
+NAURU.bluejungle.com (host-uniqueName) -> 82
+NAURU.bluejungle.com (host-uniqueName) -> 82
+navassa.bluejungle.com (host-uniqueName) -> 83
+navassa.bluejungle.com (host-uniqueName) -> 83
+naviti.bluejungle.com (host-uniqueName) -> 84
+naviti.bluejungle.com (host-uniqueName) -> 84
+NEVIS.bluejungle.com (host-uniqueName) -> 85
+NEVIS.bluejungle.com (host-uniqueName) -> 85
+NXTL-IS02.bluejungle.com (host-uniqueName) -> 86
+NXTL-IS02.bluejungle.com (host-uniqueName) -> 86
+ORACLE-TEST.bluejungle.com (host-uniqueName) -> 87
+ORACLE-TEST.bluejungle.com (host-uniqueName) -> 87
+PALAU.bluejungle.com (host-uniqueName) -> 88
+PALAU.bluejungle.com (host-uniqueName) -> 88
+PAROS.bluejungle.com (host-uniqueName) -> 89
+PAROS.bluejungle.com (host-uniqueName) -> 89
+PEACHTREE-CL.bluejungle.com (host-uniqueName) -> 90
+PEACHTREE-CL.bluejungle.com (host-uniqueName) -> 90
+PEACHTREE-TS.bluejungle.com (host-uniqueName) -> 91
+PEACHTREE-TS.bluejungle.com (host-uniqueName) -> 91
+PEMBA.bluejungle.com (host-uniqueName) -> 92
+PEMBA.bluejungle.com (host-uniqueName) -> 92
+PHILIP.bluejungle.com (host-uniqueName) -> 93
+PHILIP.bluejungle.com (host-uniqueName) -> 93
+PICO.bluejungle.com (host-uniqueName) -> 94
+PICO.bluejungle.com (host-uniqueName) -> 94
+pm-vista.bluejungle.com (host-uniqueName) -> 95
+pm-vista.bluejungle.com (host-uniqueName) -> 95
+RASPBERRY.bluejungle.com (host-uniqueName) -> 96
+RASPBERRY.bluejungle.com (host-uniqueName) -> 96
+RENDANG.bluejungle.com (host-uniqueName) -> 97
+RENDANG.bluejungle.com (host-uniqueName) -> 97
+ROATAN.bluejungle.com (host-uniqueName) -> 98
+ROATAN.bluejungle.com (host-uniqueName) -> 98
+S-1-5-21-668023798-3031861066-1043980994-1113 (host-windowsSid) -> 45
+S-1-5-21-668023798-3031861066-1043980994-1114 (user-windowsSid) -> 99
+S-1-5-21-668023798-3031861066-1043980994-1117 (user-windowsSid) -> 100
+S-1-5-21-668023798-3031861066-1043980994-1138 (host-windowsSid) -> 101
+S-1-5-21-668023798-3031861066-1043980994-1140 (user-windowsSid) -> 102
+S-1-5-21-668023798-3031861066-1043980994-1145 (host-windowsSid) -> 35
+S-1-5-21-668023798-3031861066-1043980994-1149 (user-windowsSid) -> 103
+S-1-5-21-668023798-3031861066-1043980994-1157 (user-windowsSid) -> 104
+S-1-5-21-668023798-3031861066-1043980994-1159 (user-windowsSid) -> 105
+S-1-5-21-668023798-3031861066-1043980994-1170 (user-windowsSid) -> 106
+S-1-5-21-668023798-3031861066-1043980994-1172 (host-windowsSid) -> 107
+S-1-5-21-668023798-3031861066-1043980994-1181 (host-windowsSid) -> 65
+S-1-5-21-668023798-3031861066-1043980994-1182 (host-windowsSid) -> 71
+S-1-5-21-668023798-3031861066-1043980994-1185 (user-windowsSid) -> 108
+S-1-5-21-668023798-3031861066-1043980994-1187 (user-windowsSid) -> 109
+S-1-5-21-668023798-3031861066-1043980994-1198 (host-windowsSid) -> 48
+S-1-5-21-668023798-3031861066-1043980994-1205 (user-windowsSid) -> 110
+S-1-5-21-668023798-3031861066-1043980994-1206 (user-windowsSid) -> 111
+S-1-5-21-668023798-3031861066-1043980994-1220 (user-windowsSid) -> 112
+S-1-5-21-668023798-3031861066-1043980994-1225 (host-windowsSid) -> 52
+S-1-5-21-668023798-3031861066-1043980994-2110 (host-windowsSid) -> 37
+S-1-5-21-668023798-3031861066-1043980994-2112 (user-windowsSid) -> 113
+S-1-5-21-668023798-3031861066-1043980994-2628 (user-windowsSid) -> 114
+S-1-5-21-668023798-3031861066-1043980994-2634 (user-windowsSid) -> 115
+S-1-5-21-668023798-3031861066-1043980994-2644 (host-windowsSid) -> 85
+S-1-5-21-668023798-3031861066-1043980994-2650 (host-windowsSid) -> 18
+S-1-5-21-668023798-3031861066-1043980994-3130 (host-windowsSid) -> 17
+S-1-5-21-668023798-3031861066-1043980994-3135 (user-windowsSid) -> 116
+S-1-5-21-668023798-3031861066-1043980994-3136 (host-windowsSid) -> 80
+S-1-5-21-668023798-3031861066-1043980994-3153 (host-windowsSid) -> 57
+S-1-5-21-668023798-3031861066-1043980994-3156 (host-windowsSid) -> 73
+S-1-5-21-668023798-3031861066-1043980994-3164 (user-windowsSid) -> 117
+S-1-5-21-668023798-3031861066-1043980994-3213 (host-windowsSid) -> 118
+S-1-5-21-668023798-3031861066-1043980994-3225 (host-windowsSid) -> 43
+S-1-5-21-668023798-3031861066-1043980994-3226 (host-windowsSid) -> 77
+S-1-5-21-668023798-3031861066-1043980994-3230 (host-windowsSid) -> 25
+S-1-5-21-668023798-3031861066-1043980994-3238 (host-windowsSid) -> 119
+S-1-5-21-668023798-3031861066-1043980994-3240 (host-windowsSid) -> 60
+S-1-5-21-668023798-3031861066-1043980994-3241 (host-windowsSid) -> 120
+S-1-5-21-668023798-3031861066-1043980994-3243 (user-windowsSid) -> 121
+S-1-5-21-668023798-3031861066-1043980994-3248 (host-windowsSid) -> 97
+S-1-5-21-668023798-3031861066-1043980994-3252 (host-windowsSid) -> 92
+S-1-5-21-668023798-3031861066-1043980994-3263 (user-windowsSid) -> 122
+S-1-5-21-668023798-3031861066-1043980994-3269 (user-windowsSid) -> 123
+S-1-5-21-668023798-3031861066-1043980994-3270 (user-windowsSid) -> 124
+S-1-5-21-668023798-3031861066-1043980994-3271 (user-windowsSid) -> 125
+S-1-5-21-668023798-3031861066-1043980994-3273 (host-windowsSid) -> 50
+S-1-5-21-668023798-3031861066-1043980994-3277 (host-windowsSid) -> 126
+S-1-5-21-668023798-3031861066-1043980994-3280 (host-windowsSid) -> 127
+S-1-5-21-668023798-3031861066-1043980994-3282 (user-windowsSid) -> 128
+S-1-5-21-668023798-3031861066-1043980994-3285 (host-windowsSid) -> 16
+S-1-5-21-668023798-3031861066-1043980994-3290 (host-windowsSid) -> 67
+S-1-5-21-668023798-3031861066-1043980994-3313 (user-windowsSid) -> 129
+S-1-5-21-668023798-3031861066-1043980994-3317 (user-windowsSid) -> 130
+S-1-5-21-668023798-3031861066-1043980994-3320 (host-windowsSid) -> 19
+S-1-5-21-668023798-3031861066-1043980994-3322 (user-windowsSid) -> 131
+S-1-5-21-668023798-3031861066-1043980994-3323 (user-windowsSid) -> 132
+S-1-5-21-668023798-3031861066-1043980994-3325 (host-windowsSid) -> 54
+S-1-5-21-668023798-3031861066-1043980994-3329 (host-windowsSid) -> 26
+S-1-5-21-668023798-3031861066-1043980994-3330 (host-windowsSid) -> 23
+S-1-5-21-668023798-3031861066-1043980994-3331 (host-windowsSid) -> 89
+S-1-5-21-668023798-3031861066-1043980994-3334 (host-windowsSid) -> 56
+S-1-5-21-668023798-3031861066-1043980994-3335 (user-windowsSid) -> 133
+S-1-5-21-668023798-3031861066-1043980994-3346 (host-windowsSid) -> 70
+S-1-5-21-668023798-3031861066-1043980994-3349 (user-windowsSid) -> 134
+S-1-5-21-668023798-3031861066-1043980994-3356 (user-windowsSid) -> 135
+S-1-5-21-668023798-3031861066-1043980994-3357 (host-windowsSid) -> 78
+S-1-5-21-668023798-3031861066-1043980994-3359 (host-windowsSid) -> 136
+S-1-5-21-668023798-3031861066-1043980994-3362 (host-windowsSid) -> 81
+S-1-5-21-668023798-3031861066-1043980994-3367 (host-windowsSid) -> 39
+S-1-5-21-668023798-3031861066-1043980994-3368 (host-windowsSid) -> 34
+S-1-5-21-668023798-3031861066-1043980994-3369 (host-windowsSid) -> 94
+S-1-5-21-668023798-3031861066-1043980994-3371 (user-windowsSid) -> 137
+S-1-5-21-668023798-3031861066-1043980994-3373 (host-windowsSid) -> 28
+S-1-5-21-668023798-3031861066-1043980994-3378 (host-windowsSid) -> 138
+S-1-5-21-668023798-3031861066-1043980994-3379 (host-windowsSid) -> 93
+S-1-5-21-668023798-3031861066-1043980994-3383 (host-windowsSid) -> 63
+S-1-5-21-668023798-3031861066-1043980994-3384 (host-windowsSid) -> 20
+S-1-5-21-668023798-3031861066-1043980994-3393 (user-windowsSid) -> 139
+S-1-5-21-668023798-3031861066-1043980994-3394 (user-windowsSid) -> 140
+S-1-5-21-668023798-3031861066-1043980994-3395 (user-windowsSid) -> 141
+S-1-5-21-668023798-3031861066-1043980994-3397 (host-windowsSid) -> 42
+S-1-5-21-668023798-3031861066-1043980994-3398 (host-windowsSid) -> 41
+S-1-5-21-668023798-3031861066-1043980994-3399 (host-windowsSid) -> 46
+S-1-5-21-668023798-3031861066-1043980994-3400 (host-windowsSid) -> 49
+S-1-5-21-668023798-3031861066-1043980994-3412 (user-windowsSid) -> 142
+S-1-5-21-668023798-3031861066-1043980994-3414 (user-windowsSid) -> 143
+S-1-5-21-668023798-3031861066-1043980994-3416 (host-windowsSid) -> 75
+S-1-5-21-668023798-3031861066-1043980994-3417 (host-windowsSid) -> 61
+S-1-5-21-668023798-3031861066-1043980994-3419 (host-windowsSid) -> 15
+S-1-5-21-668023798-3031861066-1043980994-3421 (host-windowsSid) -> 31
+S-1-5-21-668023798-3031861066-1043980994-3422 (host-windowsSid) -> 62
+S-1-5-21-668023798-3031861066-1043980994-3423 (host-windowsSid) -> 59
+S-1-5-21-668023798-3031861066-1043980994-3425 (host-windowsSid) -> 88
+S-1-5-21-668023798-3031861066-1043980994-3427 (host-windowsSid) -> 144
+S-1-5-21-668023798-3031861066-1043980994-3430 (host-windowsSid) -> 145
+S-1-5-21-668023798-3031861066-1043980994-3436 (host-windowsSid) -> 36
+S-1-5-21-668023798-3031861066-1043980994-3440 (host-windowsSid) -> 22
+S-1-5-21-668023798-3031861066-1043980994-3441 (host-windowsSid) -> 87
+S-1-5-21-668023798-3031861066-1043980994-3445 (host-windowsSid) -> 76
+S-1-5-21-668023798-3031861066-1043980994-3446 (host-windowsSid) -> 146
+S-1-5-21-668023798-3031861066-1043980994-3447 (host-windowsSid) -> 12
+S-1-5-21-668023798-3031861066-1043980994-3448 (host-windowsSid) -> 40
+S-1-5-21-668023798-3031861066-1043980994-3449 (host-windowsSid) -> 51
+S-1-5-21-668023798-3031861066-1043980994-3452 (host-windowsSid) -> 147
+S-1-5-21-668023798-3031861066-1043980994-3453 (user-windowsSid) -> 148
+S-1-5-21-668023798-3031861066-1043980994-3454 (user-windowsSid) -> 149
+S-1-5-21-668023798-3031861066-1043980994-3455 (user-windowsSid) -> 150
+S-1-5-21-668023798-3031861066-1043980994-3458 (user-windowsSid) -> 151
+S-1-5-21-668023798-3031861066-1043980994-3459 (host-windowsSid) -> 152
+S-1-5-21-668023798-3031861066-1043980994-3460 (user-windowsSid) -> 153
+S-1-5-21-668023798-3031861066-1043980994-3461 (user-windowsSid) -> 154
+S-1-5-21-668023798-3031861066-1043980994-3463 (host-windowsSid) -> 47
+S-1-5-21-668023798-3031861066-1043980994-3464 (host-windowsSid) -> 74
+S-1-5-21-668023798-3031861066-1043980994-3465 (host-windowsSid) -> 33
+S-1-5-21-668023798-3031861066-1043980994-3467 (host-windowsSid) -> 55
+S-1-5-21-668023798-3031861066-1043980994-3468 (user-windowsSid) -> 155
+S-1-5-21-668023798-3031861066-1043980994-3470 (host-windowsSid) -> 156
+S-1-5-21-668023798-3031861066-1043980994-3471 (host-windowsSid) -> 29
+S-1-5-21-668023798-3031861066-1043980994-3473 (host-windowsSid) -> 157
+S-1-5-21-668023798-3031861066-1043980994-3477 (host-windowsSid) -> 79
+S-1-5-21-668023798-3031861066-1043980994-3479 (user-windowsSid) -> 158
+S-1-5-21-668023798-3031861066-1043980994-3481 (user-windowsSid) -> 159
+S-1-5-21-668023798-3031861066-1043980994-3482 (host-windowsSid) -> 14
+S-1-5-21-668023798-3031861066-1043980994-3485 (user-windowsSid) -> 160
+S-1-5-21-668023798-3031861066-1043980994-3486 (user-windowsSid) -> 161
+S-1-5-21-668023798-3031861066-1043980994-3490 (host-windowsSid) -> 162
+S-1-5-21-668023798-3031861066-1043980994-3491 (host-windowsSid) -> 163
+S-1-5-21-668023798-3031861066-1043980994-3492 (host-windowsSid) -> 164
+S-1-5-21-668023798-3031861066-1043980994-3494 (host-windowsSid) -> 165
+S-1-5-21-668023798-3031861066-1043980994-3495 (user-windowsSid) -> 166
+S-1-5-21-668023798-3031861066-1043980994-3496 (user-windowsSid) -> 167
+S-1-5-21-668023798-3031861066-1043980994-3497 (host-windowsSid) -> 168
+S-1-5-21-668023798-3031861066-1043980994-3498 (host-windowsSid) -> 83
+S-1-5-21-668023798-3031861066-1043980994-3499 (host-windowsSid) -> 169
+S-1-5-21-668023798-3031861066-1043980994-3500 (host-windowsSid) -> 96
+S-1-5-21-668023798-3031861066-1043980994-3502 (host-windowsSid) -> 170
+S-1-5-21-668023798-3031861066-1043980994-3503 (host-windowsSid) -> 21
+S-1-5-21-668023798-3031861066-1043980994-3504 (host-windowsSid) -> 171
+S-1-5-21-668023798-3031861066-1043980994-3505 (host-windowsSid) -> 66
+S-1-5-21-668023798-3031861066-1043980994-3506 (host-windowsSid) -> 38
+S-1-5-21-668023798-3031861066-1043980994-3508 (host-windowsSid) -> 172
+S-1-5-21-668023798-3031861066-1043980994-3509 (host-windowsSid) -> 84
+S-1-5-21-668023798-3031861066-1043980994-3510 (user-windowsSid) -> 173
+S-1-5-21-668023798-3031861066-1043980994-3511 (user-windowsSid) -> 174
+S-1-5-21-668023798-3031861066-1043980994-3513 (host-windowsSid) -> 175
+S-1-5-21-668023798-3031861066-1043980994-3514 (user-windowsSid) -> 176
+S-1-5-21-668023798-3031861066-1043980994-3610 (host-windowsSid) -> 177
+S-1-5-21-668023798-3031861066-1043980994-5111 (host-windowsSid) -> 98
+S-1-5-21-668023798-3031861066-1043980994-5112 (host-windowsSid) -> 178
+S-1-5-21-668023798-3031861066-1043980994-5114 (host-windowsSid) -> 68
+S-1-5-21-668023798-3031861066-1043980994-5115 (host-windowsSid) -> 44
+S-1-5-21-668023798-3031861066-1043980994-5118 (host-windowsSid) -> 179
+S-1-5-21-668023798-3031861066-1043980994-5119 (host-windowsSid) -> 82
+S-1-5-21-668023798-3031861066-1043980994-5120 (host-windowsSid) -> 30
+S-1-5-21-668023798-3031861066-1043980994-5121 (host-windowsSid) -> 13
+S-1-5-21-668023798-3031861066-1043980994-5122 (host-windowsSid) -> 91
+S-1-5-21-668023798-3031861066-1043980994-5123 (host-windowsSid) -> 90
+S-1-5-21-668023798-3031861066-1043980994-5124 (host-windowsSid) -> 95
+S-1-5-21-668023798-3031861066-1043980994-5128 (host-windowsSid) -> 32
+S-1-5-21-668023798-3031861066-1043980994-5130 (host-windowsSid) -> 72
+S-1-5-21-668023798-3031861066-1043980994-5132 (user-windowsSid) -> 180
+S-1-5-21-668023798-3031861066-1043980994-5133 (user-windowsSid) -> 181
+S-1-5-21-668023798-3031861066-1043980994-5137 (host-windowsSid) -> 182
+S-1-5-21-668023798-3031861066-1043980994-5138 (host-windowsSid) -> 27
+S-1-5-21-668023798-3031861066-1043980994-5140 (host-windowsSid) -> 53
+S-1-5-21-668023798-3031861066-1043980994-5141 (host-windowsSid) -> 24
+S-1-5-21-668023798-3031861066-1043980994-5142 (host-windowsSid) -> 58
+S-1-5-21-668023798-3031861066-1043980994-5145 (host-windowsSid) -> 64
+S-1-5-21-668023798-3031861066-1043980994-5147 (user-windowsSid) -> 183
+S-1-5-21-668023798-3031861066-1043980994-5148 (user-windowsSid) -> 184
+S-1-5-21-668023798-3031861066-1043980994-5149 (user-windowsSid) -> 185
+S-1-5-21-668023798-3031861066-1043980994-5150 (user-windowsSid) -> 186
+S-1-5-21-668023798-3031861066-1043980994-5151 (user-windowsSid) -> 187
+S-1-5-21-668023798-3031861066-1043980994-5152 (host-windowsSid) -> 86
+S-1-5-21-668023798-3031861066-1043980994-5153 (host-windowsSid) -> 69
+S-1-5-21-668023798-3031861066-1043980994-5154 (host-windowsSid) -> 188
+S-1-5-21-668023798-3031861066-1043980994-5155 (host-windowsSid) -> 189
+S-1-5-21-668023798-3031861066-1043980994-5156 (host-windowsSid) -> 190
+S-1-5-21-830805687-550985140-3285839444-1156 (user-windowsSid) -> 191
+S-1-5-21-830805687-550985140-3285839444-1158 (user-windowsSid) -> 192
+S-1-5-21-830805687-550985140-3285839444-1159 (user-windowsSid) -> 193
+S-1-5-21-830805687-550985140-3285839444-1160 (user-windowsSid) -> 194
+S-1-5-21-830805687-550985140-3285839444-1161 (user-windowsSid) -> 195
+S-1-5-21-830805687-550985140-3285839444-1162 (user-windowsSid) -> 196
+S-1-5-21-830805687-550985140-3285839444-1163 (user-windowsSid) -> 197
+S-1-5-21-830805687-550985140-3285839444-1164 (user-windowsSid) -> 198
+S-1-5-21-830805687-550985140-3285839444-1165 (user-windowsSid) -> 199
+S-1-5-21-830805687-550985140-3285839444-1166 (user-windowsSid) -> 200
+S-1-5-21-830805687-550985140-3285839444-1167 (user-windowsSid) -> 201
+S-1-5-21-830805687-550985140-3285839444-1168 (user-windowsSid) -> 202
+S-1-5-21-830805687-550985140-3285839444-1169 (user-windowsSid) -> 203
+S-1-5-21-830805687-550985140-3285839444-1170 (user-windowsSid) -> 204
+S-1-5-21-830805687-550985140-3285839444-1171 (user-windowsSid) -> 205
+S-1-5-21-830805687-550985140-3285839444-1172 (user-windowsSid) -> 206
+S-1-5-21-830805687-550985140-3285839444-1173 (user-windowsSid) -> 207
+S-1-5-21-830805687-550985140-3285839444-1174 (user-windowsSid) -> 208
+S-1-5-21-830805687-550985140-3285839444-1175 (user-windowsSid) -> 209
+S-1-5-21-830805687-550985140-3285839444-1176 (user-windowsSid) -> 210
+S-1-5-21-830805687-550985140-3285839444-1177 (user-windowsSid) -> 211
+S-1-5-21-830805687-550985140-3285839444-1178 (user-windowsSid) -> 212
+S-1-5-21-830805687-550985140-3285839444-1179 (user-windowsSid) -> 213
+S-1-5-21-830805687-550985140-3285839444-1180 (user-windowsSid) -> 214
+S-1-5-21-830805687-550985140-3285839444-1181 (user-windowsSid) -> 215
+S-1-5-21-830805687-550985140-3285839444-1182 (user-windowsSid) -> 216
+S-1-5-21-830805687-550985140-3285839444-1183 (user-windowsSid) -> 217
+S-1-5-21-830805687-550985140-3285839444-1184 (user-windowsSid) -> 218
+S-1-5-21-830805687-550985140-3285839444-1185 (user-windowsSid) -> 219
+S-1-5-21-830805687-550985140-3285839444-1186 (user-windowsSid) -> 220
+S-1-5-21-830805687-550985140-3285839444-1187 (user-windowsSid) -> 221
+S-1-5-21-830805687-550985140-3285839444-1188 (user-windowsSid) -> 222
+S-1-5-21-830805687-550985140-3285839444-1189 (user-windowsSid) -> 223
+S-1-5-21-830805687-550985140-3285839444-1190 (user-windowsSid) -> 224
+S-1-5-21-830805687-550985140-3285839444-1191 (user-windowsSid) -> 225
+S-1-5-21-830805687-550985140-3285839444-1192 (user-windowsSid) -> 226
+S-1-5-21-830805687-550985140-3285839444-1193 (user-windowsSid) -> 227
+S-1-5-21-830805687-550985140-3285839444-1194 (user-windowsSid) -> 228
+S-1-5-21-830805687-550985140-3285839444-1195 (user-windowsSid) -> 229
+S-1-5-21-830805687-550985140-3285839444-1196 (user-windowsSid) -> 230
+S-1-5-21-830805687-550985140-3285839444-1197 (user-windowsSid) -> 231
+S-1-5-21-830805687-550985140-3285839444-1198 (user-windowsSid) -> 232
+S-1-5-32-544 (user-windowsSid) -> 233
+SABA.bluejungle.com (host-uniqueName) -> 136
+SABA.bluejungle.com (host-uniqueName) -> 136
+SANDOY.bluejungle.com (host-uniqueName) -> 146
+SANDOY.bluejungle.com (host-uniqueName) -> 146
+SARK.bluejungle.com (host-uniqueName) -> 171
+SARK.bluejungle.com (host-uniqueName) -> 171
+savaii.bluejungle.com (host-uniqueName) -> 182
+savaii.bluejungle.com (host-uniqueName) -> 182
+SHAG.bluejungle.com (host-uniqueName) -> 126
+SHAG.bluejungle.com (host-uniqueName) -> 126
+shikoku.bluejungle.com (host-uniqueName) -> 188
+shikoku.bluejungle.com (host-uniqueName) -> 188
+SIPURA.bluejungle.com (host-uniqueName) -> 147
+SIPURA.bluejungle.com (host-uniqueName) -> 147
+STBARTS.bluejungle.com (host-uniqueName) -> 120
+STBARTS.bluejungle.com (host-uniqueName) -> 120
+sumba.bluejungle.com (host-uniqueName) -> 165
+sumba.bluejungle.com (host-uniqueName) -> 165
+SVALBARD.bluejungle.com (host-uniqueName) -> 169
+SVALBARD.bluejungle.com (host-uniqueName) -> 169
+SWANS.bluejungle.com (host-uniqueName) -> 172
+SWANS.bluejungle.com (host-uniqueName) -> 172
+SYMANTEC01.bluejungle.com (host-uniqueName) -> 175
+SYMANTEC01.bluejungle.com (host-uniqueName) -> 175
+TARAWA.bluejungle.com (host-uniqueName) -> 163
+TARAWA.bluejungle.com (host-uniqueName) -> 163
+TASMANIA.bluejungle.com (host-uniqueName) -> 162
+TASMANIA.bluejungle.com (host-uniqueName) -> 162
+TIMOR-XP-x64.bluejungle.com (host-uniqueName) -> 127
+TIMOR-XP-x64.bluejungle.com (host-uniqueName) -> 127
+timor.bluejungle.com (host-uniqueName) -> 168
+timor.bluejungle.com (host-uniqueName) -> 168
+TINOS.bluejungle.com (host-uniqueName) -> 152
+TINOS.bluejungle.com (host-uniqueName) -> 152
+tioman.bluejungle.com (host-uniqueName) -> 118
+tioman.bluejungle.com (host-uniqueName) -> 118
+tioman2.bluejungle.com (host-uniqueName) -> 101
+tioman2.bluejungle.com (host-uniqueName) -> 101
+TOBAGO.bluejungle.com (host-uniqueName) -> 119
+TOBAGO.bluejungle.com (host-uniqueName) -> 119
+TONGA.bluejungle.com (host-uniqueName) -> 156
+TONGA.bluejungle.com (host-uniqueName) -> 156
+TREASURE.bluejungle.com (host-uniqueName) -> 177
+TREASURE.bluejungle.com (host-uniqueName) -> 177
+trinidad.bluejungle.com (host-uniqueName) -> 170
+trinidad.bluejungle.com (host-uniqueName) -> 170
+TS01.bluejungle.com (host-uniqueName) -> 189
+TS01.bluejungle.com (host-uniqueName) -> 189
+TZIA.bluejungle.com (host-uniqueName) -> 164
+TZIA.bluejungle.com (host-uniqueName) -> 164
+VAGAR.bluejungle.com (host-uniqueName) -> 157
+VAGAR.bluejungle.com (host-uniqueName) -> 157
+Vista-PC.bluejungle.com (host-uniqueName) -> 144
+Vista-PC.bluejungle.com (host-uniqueName) -> 144
+VPN02.bluejungle.com (host-uniqueName) -> 145
+VPN02.bluejungle.com (host-uniqueName) -> 145
+vulcano.bluejungle.com (host-uniqueName) -> 179
+vulcano.bluejungle.com (host-uniqueName) -> 179
+xp-pro-jed.bluejungle.com (host-uniqueName) -> 178
+xp-pro-jed.bluejungle.com (host-uniqueName) -> 178
+YASAWA.bluejungle.com (host-uniqueName) -> 190
+YASAWA.bluejungle.com (host-uniqueName) -> 190
+zante.bluejungle.com (host-uniqueName) -> 138
+zante.bluejungle.com (host-uniqueName) -> 138
+ZEMBRA.bluejungle.com (host-uniqueName) -> 107
+ZEMBRA.bluejungle.com (host-uniqueName) -> 107
+{UNKNOWN-APP} (application-builtin) -> 234
+{UNKNOWN-HOST} (host-builtin) -> 235
+{UNKNOWN-USER} (user-builtin) -> 236
+Deployment Bundle:
+Deployment entities:
+ID 0 STATUS APPROVED POLICY AllowPolicyOnFuad
+    DESCRIPTION "Policy that allows Hor-Kan access to *.java while on localhost and to Bo Meng while using small.exe and denies it to everyone else."
+    FOR resource.fso.name = "?c:\\**.java"
+    ON TRUE
+    BY ((user.GROUP has 0 AND host.GROUP has 0) OR (user.GROUP has 1 AND application.GROUP has 0))
+    DO allow
+    BY DEFAULT DO deny
+    ON allow DO log
+ID 1 STATUS APPROVED POLICY DenyAutorun
+    DESCRIPTION "Denies run based on application name"
+    FOR TRUE
+    ON RUN
+    BY application.name = "autorun.exe"
+    DO deny
+ID 2 STATUS APPROVED POLICY DenyBasedOnURL
+    DESCRIPTION "Denies run based on application name"
+    FOR resource.fso.name = "c:\\deny_url.txt"
+    ON OPEN
+    BY application.url = "http://mail.google.com/**"
+    DO deny
+ID 3 STATUS APPROVED POLICY CommunicationPolicy01
+    FOR resource.fso.name = "c:\\communication_policy"
+    ON EMAIL
+    SENT_TO user.mail = "keng.lim@bluejungle.com"
+    BY TRUE
+    DO deny
+    ON deny DO policy01
+ID 4 STATUS APPROVED POLICY CommunicationPolicy02
+    FOR resource.fso.name = "c:\\communication_policy"
+    ON EMAIL
+    SENT_TO user.mail_domain = "gs.com;ml.com;equity.gs.com;"
+    BY TRUE
+    DO deny
+    ON deny DO policy02
+ID 5 STATUS APPROVED POLICY CommunicationPolicy03
+    FOR resource.fso.name = "c:\\communication_policy"
+    ON EMAIL
+    SENT_TO user.GROUP has 2
+    BY TRUE
+    DO deny
+    ON deny DO policy03
+ID 6 STATUS APPROVED POLICY CommunicationPolicyNot
+    FOR resource.fso.name = "c:\\communication_policy_not"
+    ON EMAIL
+    SENT_TO user.GROUP has 3
+    BY host.GROUP has 1
+    DO deny
+    ON deny DO policyNOT
+ID 7 STATUS APPROVED POLICY destiny_group_policy
+    FOR (resource.fso.owner_ldap_group has 4 AND resource.fso.name = "**owner_destiny.test")
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 8 STATUS APPROVED POLICY FinanceDeny
+    DESCRIPTION "Applies to everyone, doing anything, on finance documents."
+    FOR resource.fso.name = "?c:\\finance\\*.txt"
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 9 STATUS APPROVED POLICY LdapPolicy
+    DESCRIPTION "Policy that allows engineers access to Java files and denies it to everyone else"
+    FOR resource.fso.name = "?c:\\**.ldap"
+    ON TRUE
+    BY (user.GROUP has 5 AND application.GROUP has 1)
+    DO allow
+    BY DEFAULT DO deny
+    ON allow DO log
+ID 10 STATUS APPROVED POLICY deny_localhost
+    DESCRIPTION "denies access to c:\\foofoo.doc for any request for localhost"
+    FOR resource.fso.name = "c:\\foofoo.doc"
+    ON TRUE
+    BY host.location = localhost
+    DO deny
+ID 11 STATUS APPROVED POLICY "Not Engineering Copy"
+    ATTRIBUTE USAGE
+    FOR resource.fso.name = "**negated_ldap_group.test"
+    ON COPY
+    TO TRUE
+    BY user.GROUP has 6
+    DO deny
+    ON deny DO log
+ID 12 STATUS APPROVED POLICY TestDirOpenIsAlwaysOK
+    DESCRIPTION "c:\\windows is a directory; opening it should work, anything else should fail."
+    FOR resource.fso.name = "C:\\WINDOWS"
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 13 STATUS APPROVED POLICY Obligations01
+    FOR resource.fso.name = "c:\\verify.obligations"
+    ON TRUE
+    BY user.GROUP has 7
+    DO allow
+    BY DEFAULT DO deny
+    ON allow DO log
+ID 14 STATUS APPROVED POLICY Obligations02
+    FOR resource.fso.name = "c:\\verify.obligations"
+    ON TRUE
+    BY user.GROUP has 8
+    DO allow
+    BY DEFAULT DO deny
+    ON dontcare DO log
+ID 15 STATUS APPROVED POLICY Obligations03
+    FOR resource.fso.name = "c:\\verify.obligations"
+    ON TRUE
+    BY user.GROUP has 9
+    DO deny
+    ON deny DO log
+    ON dontcare DO log
+ID 16 STATUS APPROVED POLICY testpolicy2
+    ATTRIBUTE USAGE
+    FOR resource.fso.name = "c:\\testfolder2\\*"
+    ON READ
+    TO TRUE
+    BY TRUE
+    DO deny
+ID 17 STATUS APPROVED POLICY Policy1
+    ATTRIBUTE USAGE
+    FOR resource.fso.name = "c:\\financepa\\**"
+    ON TRUE
+    TO TRUE
+    BY user.GROUP has 10
+    DO deny
+ID 18 STATUS APPROVED POLICY deny_remoterun
+    DESCRIPTION "denies run of any applications when connected remotely"
+    FOR TRUE
+    ON RUN
+    BY host.location != localhost
+    WHERE ENVIRONMENT.REMOTE_ACCESS = 1
+    DO deny
+    BY DEFAULT DO allow
+    ON allow DO log, display( "allow" )
+    ON deny DO display( "deny" )
+ID 19 STATUS APPROVED POLICY resource_created_date
+    FOR (resource.fso.created_date < "01/01/3007" AND resource.fso.name = "**resource_date.pql")
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 20 STATUS APPROVED POLICY resource_owner_ldap_test
+    FOR (resource.fso.owner_ldap_group has 11 AND resource.fso.name = "**owner_ldap.test")
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 21 STATUS APPROVED POLICY resource_owner_test
+    FOR (resource.fso.owner = user.uid AND resource.fso.name = "**owner.test")
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 22 STATUS APPROVED POLICY subref_test_policy
+    FOR (resource.fso.name = "**ref**" AND resource.fso.name = "**subref.test")
+    ON TRUE
+    BY user.GROUP has 12
+    DO deny
+ID 23 STATUS APPROVED POLICY TrackingPolicy
+    DESCRIPTION "This policy is excluded because its deployment target does not match the agent"
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    DO allow
+ID 24 STATUS APPROVED POLICY UnknownOwner
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    DO deny
+ID 25 STATUS APPROVED POLICY EmailToContact
+    FOR resource.fso.name = "c:\\emailcontact"
+    ON EMAIL
+    SENT_TO user.GROUP has 14
+    BY user.GROUP has 13
+    DO deny
+    BY DEFAULT DO allow
+    ON allow DO emc_allow
+    ON deny DO emc_deny
+ID 26 STATUS APPROVED POLICY EmailToNotContact
+    FOR resource.fso.name = "c:\\emailcontact"
+    ON EMAIL
+    SENT_TO user.GROUP has 16
+    BY user.GROUP has 15
+    DO deny
+    BY DEFAULT DO allow
+    ON allow DO emNc_allow
+    ON deny DO emNc_deny
+ID 27 STATUS APPROVED POLICY UserByEmail
+    FOR resource.fso.name = "c:\\userbyemail"
+    ON EDIT
+    BY user.mail = "sgoldstein@bluejungle.com"
+    DO deny
+    ON deny DO byemail
+ID 28 STATUS APPROVED POLICY UserByEmailDomain
+    FOR resource.fso.name = "c:\\userbyemaildomain"
+    ON EDIT
+    BY user.mail_domain = "bluejungle.com"
+    DO deny
+    ON deny DO byemaildomain
+ID 29 STATUS APPROVED POLICY NegatedAppPolicy
+    FOR resource.fso.name = "c:\\negatedapp"
+    ON OPEN
+    BY application.GROUP has 2
+    DO deny
+ID 30 STATUS APPROVED POLICY misdirected_email_policy
+    FOR (resource.fso.name = "misdirected*.txt" AND resource.fso.client_id != null)
+    ON EMAIL
+    SENT_TO (user.client_id != null AND user.client_id != resource.fso.client_id)
+    BY TRUE
+    DO allow
+    ON allow DO misdirected
+ID 31 STATUS APPROVED POLICY multiclient_email_policy
+    FOR resource.fso.name = "multiclient.txt"
+    ON EMAIL
+    SENT_TO user.sent_to_client_count > 1
+    BY TRUE
+    DO allow
+    ON allow DO multiclient
+ID 32 STATUS APPROVED POLICY unset_attribute_policy
+    FOR (resource.fso.name = "unset_attribute*.txt" AND resource.fso.client_id = null)
+    ON EMAIL
+    SENT_TO TRUE
+    BY TRUE
+    DO allow
+    ON allow DO unset_attribute
+ID 33 STATUS APPROVED POLICY SmallFiles
+    DESCRIPTION "This policy is excluded because its deployment target does not match the agent"
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    DO deny
+ID 34 STATUS APPROVED POLICY MyTestPolicy
+    DESCRIPTION "This policy is excluded because its deployment target does not match the agent"
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    DO deny
+    BY DEFAULT DO allow
+ID 35 STATUS APPROVED LOCATION localhost = "10.0.0.0/8"
+Policies that apply to all users: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 16, 18, 19, 20, 21, 23, 27, 28, 29, 30, 31, 32}
+Policies that apply to all hosts: {0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34}
+Policies that apply to all applications: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 30, 31, 32, 33, 34}
+Subject-Policy Mappings:
+0 -> {}
+1 -> {11}
+2 -> {11}
+3 -> {11}
+4 -> {11}
+5 -> {11}
+6 -> {11}
+7 -> {11}
+8 -> {11}
+9 -> {11}
+10 -> {11}
+11 -> {11}
+99 -> {}
+103 -> {}
+104 -> {25}
+109 -> {11}
+114 -> {}
+115 -> {26, 34}
+117 -> {11}
+121 -> {11}
+140 -> {}
+141 -> {}
+142 -> {11}
+143 -> {22}
+150 -> {}
+153 -> {11}
+154 -> {}
+155 -> {15}
+159 -> {17, 33}
+173 -> {}
+182 -> {}
+191 -> {11}
+192 -> {11}
+195 -> {11}
+198 -> {11}
+205 -> {11}
+215 -> {11}
+217 -> {11}
+219 -> {11}
+222 -> {11}
+229 -> {11}
+233 -> {}
+234 -> {29}
+235 -> {6}
+236 -> {11}
+Action-Policy Mappings:
+ADMIN -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+APPROVE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+ATTACH -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+AVDCALL -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+BATCH -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+BURN -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+CHANGE_ATTRIBUTES -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+CHANGE_SECURITY -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+COPY -> {0, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+CREATE_NEW -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+CUT_PASTE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+DELETE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+DEPLOY -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+EDIT -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 27, 28, 33, 34}
+EDIT_COPY -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+EMAIL -> {0, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 25, 26, 30, 31, 32, 33, 34}
+EMBED -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+EXPORT -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+IM -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+JOIN -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+MEETING -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+MOVE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+NOP -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+OPEN -> {0, 2, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 29, 33, 34}
+PASTE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+PRESENCE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+PRINT -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+QUESTION -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+READ -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 33, 34}
+RECORD -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+RENAME -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+RUN -> {0, 1, 7, 8, 9, 10, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 33, 34}
+SENDTO -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+SHARE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+VIDEO -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+VOICE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+WEBMAIL -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+WRITE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33, 34}
+Subject-Group Mappings:
+0 -> {0, 1}
+1 -> {6, 16}
+2 -> {6, 16}
+3 -> {6, 16}
+4 -> {6, 16}
+5 -> {6, 16}
+6 -> {6, 16}
+7 -> {6, 16}
+8 -> {6, 16}
+9 -> {6, 16}
+10 -> {6, 16}
+11 -> {6, 16}
+99 -> {2, 3, 4, 5, 11, 16}
+103 -> {3, 4, 5, 11, 16}
+104 -> {3, 4, 5, 11, 13, 16}
+109 -> {6, 16}
+114 -> {3, 4, 5, 11, 16}
+115 -> {3, 4, 5, 11, 15, 16, 18}
+117 -> {6, 16}
+121 -> {3, 6, 7, 8, 16}
+140 -> {3, 4, 5, 11, 16}
+141 -> {4, 5, 11, 16}
+142 -> {2, 3, 6, 16}
+143 -> {3, 4, 5, 11, 12, 16}
+150 -> {3, 4, 5, 11, 16}
+153 -> {6, 16}
+154 -> {3, 4, 5, 11, 16}
+155 -> {1, 3, 4, 5, 7, 9, 11, 16}
+159 -> {0, 3, 4, 5, 10, 11, 16, 17}
+173 -> {4, 5, 11, 16}
+182 -> {0}
+191 -> {6, 16}
+192 -> {6, 16}
+195 -> {6, 16}
+198 -> {6, 16}
+205 -> {6, 16}
+215 -> {6, 16}
+217 -> {6, 16}
+219 -> {6, 16}
+222 -> {6, 16}
+229 -> {6, 16}
+233 -> {3, 4, 5, 11, 16}
+234 -> {2}
+235 -> {1}
+236 -> {3, 6, 16}
+Subject keys:
+(null):0:0:f7513948613aa6b5eb31fbb0726147833630e5d2 (application-appFingerPrint) -> 0
+0 (user-unixId) -> 1
+10000 (user-unixId) -> 2
+10001 (user-unixId) -> 3
+10002 (user-unixId) -> 4
+10003 (user-unixId) -> 5
+100050 (user-unixId) -> 6
+34 (user-unixId) -> 7
+501 (user-unixId) -> 8
+502 (user-unixId) -> 9
+503 (user-unixId) -> 10
+504 (user-unixId) -> 11
+ACKLINS.bluejungle.com (host-uniqueName) -> 12
+ACKLINS.bluejungle.com (host-uniqueName) -> 12
+adentro.bluejungle.com (host-uniqueName) -> 13
+adentro.bluejungle.com (host-uniqueName) -> 13
+ANDROS.bluejungle.com (host-uniqueName) -> 14
+ANDROS.bluejungle.com (host-uniqueName) -> 14
+ANGEL.bluejungle.com (host-uniqueName) -> 15
+ANGEL.bluejungle.com (host-uniqueName) -> 15
+ATIU.bluejungle.com (host-uniqueName) -> 16
+ATIU.bluejungle.com (host-uniqueName) -> 16
+azores.bluejungle.com (host-uniqueName) -> 17
+azores.bluejungle.com (host-uniqueName) -> 17
+BAIXO.bluejungle.com (host-uniqueName) -> 18
+BAIXO.bluejungle.com (host-uniqueName) -> 18
+BAKER.bluejungle.com (host-uniqueName) -> 19
+BAKER.bluejungle.com (host-uniqueName) -> 19
+beaver.bluejungle.com (host-uniqueName) -> 20
+beaver.bluejungle.com (host-uniqueName) -> 20
+BIKINI.bluejungle.com (host-uniqueName) -> 21
+BIKINI.bluejungle.com (host-uniqueName) -> 21
+BILL-XP.bluejungle.com (host-uniqueName) -> 22
+BILL-XP.bluejungle.com (host-uniqueName) -> 22
+BLOCK.bluejungle.com (host-uniqueName) -> 23
+BLOCK.bluejungle.com (host-uniqueName) -> 23
+BOHOL.bluejungle.com (host-uniqueName) -> 24
+BOHOL.bluejungle.com (host-uniqueName) -> 24
+borabora.bluejungle.com (host-uniqueName) -> 25
+borabora.bluejungle.com (host-uniqueName) -> 25
+BORDUY.bluejungle.com (host-uniqueName) -> 26
+BORDUY.bluejungle.com (host-uniqueName) -> 26
+bouvet.bluejungle.com (host-uniqueName) -> 27
+bouvet.bluejungle.com (host-uniqueName) -> 27
+BRAC.bluejungle.com (host-uniqueName) -> 28
+BRAC.bluejungle.com (host-uniqueName) -> 28
+BUILD-STAGING.bluejungle.com (host-uniqueName) -> 29
+BUILD-STAGING.bluejungle.com (host-uniqueName) -> 29
+CAYMAN.bluejungle.com (host-uniqueName) -> 30
+CAYMAN.bluejungle.com (host-uniqueName) -> 30
+CEBU.bluejungle.com (host-uniqueName) -> 31
+CEBU.bluejungle.com (host-uniqueName) -> 31
+CF.bluejungle.com (host-uniqueName) -> 32
+CF.bluejungle.com (host-uniqueName) -> 32
+CHOISEUI.bluejungle.com (host-uniqueName) -> 33
+CHOISEUI.bluejungle.com (host-uniqueName) -> 33
+CHUUK.bluejungle.com (host-uniqueName) -> 34
+CHUUK.bluejungle.com (host-uniqueName) -> 34
+CICIA.bluejungle.com (host-uniqueName) -> 35
+CICIA.bluejungle.com (host-uniqueName) -> 35
+CORFU.bluejungle.com (host-uniqueName) -> 36
+CORFU.bluejungle.com (host-uniqueName) -> 36
+cuba.bluejungle.com (host-uniqueName) -> 37
+cuba.bluejungle.com (host-uniqueName) -> 37
+DESTRUCTION.bluejungle.com (host-uniqueName) -> 38
+DESTRUCTION.bluejungle.com (host-uniqueName) -> 38
+DOKOS.bluejungle.com (host-uniqueName) -> 39
+DOKOS.bluejungle.com (host-uniqueName) -> 39
+DOMINICA.bluejungle.com (host-uniqueName) -> 40
+DOMINICA.bluejungle.com (host-uniqueName) -> 40
+DOMINICATPM1.bluejungle.com (host-uniqueName) -> 41
+DOMINICATPM1.bluejungle.com (host-uniqueName) -> 41
+DOMINICATPM2.bluejungle.com (host-uniqueName) -> 42
+DOMINICATPM2.bluejungle.com (host-uniqueName) -> 42
+EASTER.bluejungle.com (host-uniqueName) -> 43
+EASTER.bluejungle.com (host-uniqueName) -> 43
+EFATE.bluejungle.com (host-uniqueName) -> 44
+EFATE.bluejungle.com (host-uniqueName) -> 44
+ellis.bluejungle.com (host-uniqueName) -> 45
+ellis.bluejungle.com (host-uniqueName) -> 45
+ENGDEV01.bluejungle.com (host-uniqueName) -> 46
+ENGDEV01.bluejungle.com (host-uniqueName) -> 46
+ENGDEV02.bluejungle.com (host-uniqueName) -> 47
+ENGDEV02.bluejungle.com (host-uniqueName) -> 47
+EVIA.bluejungle.com (host-uniqueName) -> 48
+EVIA.bluejungle.com (host-uniqueName) -> 48
+EVIA2.bluejungle.com (host-uniqueName) -> 49
+EVIA2.bluejungle.com (host-uniqueName) -> 49
+FAGO.bluejungle.com (host-uniqueName) -> 50
+FAGO.bluejungle.com (host-uniqueName) -> 50
+FUTUNA.bluejungle.com (host-uniqueName) -> 51
+FUTUNA.bluejungle.com (host-uniqueName) -> 51
+grande.bluejungle.com (host-uniqueName) -> 52
+grande.bluejungle.com (host-uniqueName) -> 52
+guadalupe.bluejungle.com (host-uniqueName) -> 53
+guadalupe.bluejungle.com (host-uniqueName) -> 53
+GUAM.bluejungle.com (host-uniqueName) -> 54
+GUAM.bluejungle.com (host-uniqueName) -> 54
+GUERNSEY.bluejungle.com (host-uniqueName) -> 55
+GUERNSEY.bluejungle.com (host-uniqueName) -> 55
+HAINAN.bluejungle.com (host-uniqueName) -> 56
+HAINAN.bluejungle.com (host-uniqueName) -> 56
+herm.bluejungle.com (host-uniqueName) -> 57
+herm.bluejungle.com (host-uniqueName) -> 57
+HESTUR.bluejungle.com (host-uniqueName) -> 58
+HESTUR.bluejungle.com (host-uniqueName) -> 58
+INTEGRATION01.bluejungle.com (host-uniqueName) -> 59
+INTEGRATION01.bluejungle.com (host-uniqueName) -> 59
+ISCHIA.bluejungle.com (host-uniqueName) -> 60
+ISCHIA.bluejungle.com (host-uniqueName) -> 60
+JERSEY.bluejungle.com (host-uniqueName) -> 61
+JERSEY.bluejungle.com (host-uniqueName) -> 61
+KALSOY.bluejungle.com (host-uniqueName) -> 62
+KALSOY.bluejungle.com (host-uniqueName) -> 62
+KEA.bluejungle.com (host-uniqueName) -> 63
+KEA.bluejungle.com (host-uniqueName) -> 63
+KING.bluejungle.com (host-uniqueName) -> 64
+KING.bluejungle.com (host-uniqueName) -> 64
+KingXP.bluejungle.com (host-uniqueName) -> 65
+KingXP.bluejungle.com (host-uniqueName) -> 65
+KIOA.bluejungle.com (host-uniqueName) -> 66
+KIOA.bluejungle.com (host-uniqueName) -> 66
+kirkwood.bluejungle.com (host-uniqueName) -> 67
+kirkwood.bluejungle.com (host-uniqueName) -> 67
+kiska.bluejungle.com (host-uniqueName) -> 68
+kiska.bluejungle.com (host-uniqueName) -> 68
+KORO.bluejungle.com (host-uniqueName) -> 69
+KORO.bluejungle.com (host-uniqueName) -> 69
+LAKEBA.bluejungle.com (host-uniqueName) -> 70
+LAKEBA.bluejungle.com (host-uniqueName) -> 70
+langkawi.bluejungle.com (host-uniqueName) -> 71
+langkawi.bluejungle.com (host-uniqueName) -> 71
+liberty.bluejungle.com (host-uniqueName) -> 72
+liberty.bluejungle.com (host-uniqueName) -> 72
+MAHE.bluejungle.com (host-uniqueName) -> 73
+MAHE.bluejungle.com (host-uniqueName) -> 73
+MAIO.bluejungle.com (host-uniqueName) -> 74
+MAIO.bluejungle.com (host-uniqueName) -> 74
+MARE.bluejungle.com (host-uniqueName) -> 75
+MARE.bluejungle.com (host-uniqueName) -> 75
+MARTINIQUE.bluejungle.com (host-uniqueName) -> 76
+MARTINIQUE.bluejungle.com (host-uniqueName) -> 76
+MAUI.bluejungle.com (host-uniqueName) -> 77
+MAUI.bluejungle.com (host-uniqueName) -> 77
+MAYOTTE.bluejungle.com (host-uniqueName) -> 78
+MAYOTTE.bluejungle.com (host-uniqueName) -> 78
+mini-cedros.bluejungle.com (host-uniqueName) -> 79
+mini-cedros.bluejungle.com (host-uniqueName) -> 79
+MOLOKAI.bluejungle.com (host-uniqueName) -> 80
+MOLOKAI.bluejungle.com (host-uniqueName) -> 80
+NASSAU.bluejungle.com (host-uniqueName) -> 81
+NASSAU.bluejungle.com (host-uniqueName) -> 81
+NAURU.bluejungle.com (host-uniqueName) -> 82
+NAURU.bluejungle.com (host-uniqueName) -> 82
+navassa.bluejungle.com (host-uniqueName) -> 83
+navassa.bluejungle.com (host-uniqueName) -> 83
+naviti.bluejungle.com (host-uniqueName) -> 84
+naviti.bluejungle.com (host-uniqueName) -> 84
+NEVIS.bluejungle.com (host-uniqueName) -> 85
+NEVIS.bluejungle.com (host-uniqueName) -> 85
+NXTL-IS02.bluejungle.com (host-uniqueName) -> 86
+NXTL-IS02.bluejungle.com (host-uniqueName) -> 86
+ORACLE-TEST.bluejungle.com (host-uniqueName) -> 87
+ORACLE-TEST.bluejungle.com (host-uniqueName) -> 87
+PALAU.bluejungle.com (host-uniqueName) -> 88
+PALAU.bluejungle.com (host-uniqueName) -> 88
+PAROS.bluejungle.com (host-uniqueName) -> 89
+PAROS.bluejungle.com (host-uniqueName) -> 89
+PEACHTREE-CL.bluejungle.com (host-uniqueName) -> 90
+PEACHTREE-CL.bluejungle.com (host-uniqueName) -> 90
+PEACHTREE-TS.bluejungle.com (host-uniqueName) -> 91
+PEACHTREE-TS.bluejungle.com (host-uniqueName) -> 91
+PEMBA.bluejungle.com (host-uniqueName) -> 92
+PEMBA.bluejungle.com (host-uniqueName) -> 92
+PHILIP.bluejungle.com (host-uniqueName) -> 93
+PHILIP.bluejungle.com (host-uniqueName) -> 93
+PICO.bluejungle.com (host-uniqueName) -> 94
+PICO.bluejungle.com (host-uniqueName) -> 94
+pm-vista.bluejungle.com (host-uniqueName) -> 95
+pm-vista.bluejungle.com (host-uniqueName) -> 95
+RASPBERRY.bluejungle.com (host-uniqueName) -> 96
+RASPBERRY.bluejungle.com (host-uniqueName) -> 96
+RENDANG.bluejungle.com (host-uniqueName) -> 97
+RENDANG.bluejungle.com (host-uniqueName) -> 97
+ROATAN.bluejungle.com (host-uniqueName) -> 98
+ROATAN.bluejungle.com (host-uniqueName) -> 98
+S-1-5-21-668023798-3031861066-1043980994-1113 (host-windowsSid) -> 45
+S-1-5-21-668023798-3031861066-1043980994-1114 (user-windowsSid) -> 99
+S-1-5-21-668023798-3031861066-1043980994-1117 (user-windowsSid) -> 100
+S-1-5-21-668023798-3031861066-1043980994-1138 (host-windowsSid) -> 101
+S-1-5-21-668023798-3031861066-1043980994-1140 (user-windowsSid) -> 102
+S-1-5-21-668023798-3031861066-1043980994-1145 (host-windowsSid) -> 35
+S-1-5-21-668023798-3031861066-1043980994-1149 (user-windowsSid) -> 103
+S-1-5-21-668023798-3031861066-1043980994-1157 (user-windowsSid) -> 104
+S-1-5-21-668023798-3031861066-1043980994-1159 (user-windowsSid) -> 105
+S-1-5-21-668023798-3031861066-1043980994-1170 (user-windowsSid) -> 106
+S-1-5-21-668023798-3031861066-1043980994-1172 (host-windowsSid) -> 107
+S-1-5-21-668023798-3031861066-1043980994-1181 (host-windowsSid) -> 65
+S-1-5-21-668023798-3031861066-1043980994-1182 (host-windowsSid) -> 71
+S-1-5-21-668023798-3031861066-1043980994-1185 (user-windowsSid) -> 108
+S-1-5-21-668023798-3031861066-1043980994-1187 (user-windowsSid) -> 109
+S-1-5-21-668023798-3031861066-1043980994-1198 (host-windowsSid) -> 48
+S-1-5-21-668023798-3031861066-1043980994-1205 (user-windowsSid) -> 110
+S-1-5-21-668023798-3031861066-1043980994-1206 (user-windowsSid) -> 111
+S-1-5-21-668023798-3031861066-1043980994-1220 (user-windowsSid) -> 112
+S-1-5-21-668023798-3031861066-1043980994-1225 (host-windowsSid) -> 52
+S-1-5-21-668023798-3031861066-1043980994-2110 (host-windowsSid) -> 37
+S-1-5-21-668023798-3031861066-1043980994-2112 (user-windowsSid) -> 113
+S-1-5-21-668023798-3031861066-1043980994-2628 (user-windowsSid) -> 114
+S-1-5-21-668023798-3031861066-1043980994-2634 (user-windowsSid) -> 115
+S-1-5-21-668023798-3031861066-1043980994-2644 (host-windowsSid) -> 85
+S-1-5-21-668023798-3031861066-1043980994-2650 (host-windowsSid) -> 18
+S-1-5-21-668023798-3031861066-1043980994-3130 (host-windowsSid) -> 17
+S-1-5-21-668023798-3031861066-1043980994-3135 (user-windowsSid) -> 116
+S-1-5-21-668023798-3031861066-1043980994-3136 (host-windowsSid) -> 80
+S-1-5-21-668023798-3031861066-1043980994-3153 (host-windowsSid) -> 57
+S-1-5-21-668023798-3031861066-1043980994-3156 (host-windowsSid) -> 73
+S-1-5-21-668023798-3031861066-1043980994-3164 (user-windowsSid) -> 117
+S-1-5-21-668023798-3031861066-1043980994-3213 (host-windowsSid) -> 118
+S-1-5-21-668023798-3031861066-1043980994-3225 (host-windowsSid) -> 43
+S-1-5-21-668023798-3031861066-1043980994-3226 (host-windowsSid) -> 77
+S-1-5-21-668023798-3031861066-1043980994-3230 (host-windowsSid) -> 25
+S-1-5-21-668023798-3031861066-1043980994-3238 (host-windowsSid) -> 119
+S-1-5-21-668023798-3031861066-1043980994-3240 (host-windowsSid) -> 60
+S-1-5-21-668023798-3031861066-1043980994-3241 (host-windowsSid) -> 120
+S-1-5-21-668023798-3031861066-1043980994-3243 (user-windowsSid) -> 121
+S-1-5-21-668023798-3031861066-1043980994-3248 (host-windowsSid) -> 97
+S-1-5-21-668023798-3031861066-1043980994-3252 (host-windowsSid) -> 92
+S-1-5-21-668023798-3031861066-1043980994-3263 (user-windowsSid) -> 122
+S-1-5-21-668023798-3031861066-1043980994-3269 (user-windowsSid) -> 123
+S-1-5-21-668023798-3031861066-1043980994-3270 (user-windowsSid) -> 124
+S-1-5-21-668023798-3031861066-1043980994-3271 (user-windowsSid) -> 125
+S-1-5-21-668023798-3031861066-1043980994-3273 (host-windowsSid) -> 50
+S-1-5-21-668023798-3031861066-1043980994-3277 (host-windowsSid) -> 126
+S-1-5-21-668023798-3031861066-1043980994-3280 (host-windowsSid) -> 127
+S-1-5-21-668023798-3031861066-1043980994-3282 (user-windowsSid) -> 128
+S-1-5-21-668023798-3031861066-1043980994-3285 (host-windowsSid) -> 16
+S-1-5-21-668023798-3031861066-1043980994-3290 (host-windowsSid) -> 67
+S-1-5-21-668023798-3031861066-1043980994-3313 (user-windowsSid) -> 129
+S-1-5-21-668023798-3031861066-1043980994-3317 (user-windowsSid) -> 130
+S-1-5-21-668023798-3031861066-1043980994-3320 (host-windowsSid) -> 19
+S-1-5-21-668023798-3031861066-1043980994-3322 (user-windowsSid) -> 131
+S-1-5-21-668023798-3031861066-1043980994-3323 (user-windowsSid) -> 132
+S-1-5-21-668023798-3031861066-1043980994-3325 (host-windowsSid) -> 54
+S-1-5-21-668023798-3031861066-1043980994-3329 (host-windowsSid) -> 26
+S-1-5-21-668023798-3031861066-1043980994-3330 (host-windowsSid) -> 23
+S-1-5-21-668023798-3031861066-1043980994-3331 (host-windowsSid) -> 89
+S-1-5-21-668023798-3031861066-1043980994-3334 (host-windowsSid) -> 56
+S-1-5-21-668023798-3031861066-1043980994-3335 (user-windowsSid) -> 133
+S-1-5-21-668023798-3031861066-1043980994-3346 (host-windowsSid) -> 70
+S-1-5-21-668023798-3031861066-1043980994-3349 (user-windowsSid) -> 134
+S-1-5-21-668023798-3031861066-1043980994-3356 (user-windowsSid) -> 135
+S-1-5-21-668023798-3031861066-1043980994-3357 (host-windowsSid) -> 78
+S-1-5-21-668023798-3031861066-1043980994-3359 (host-windowsSid) -> 136
+S-1-5-21-668023798-3031861066-1043980994-3362 (host-windowsSid) -> 81
+S-1-5-21-668023798-3031861066-1043980994-3367 (host-windowsSid) -> 39
+S-1-5-21-668023798-3031861066-1043980994-3368 (host-windowsSid) -> 34
+S-1-5-21-668023798-3031861066-1043980994-3369 (host-windowsSid) -> 94
+S-1-5-21-668023798-3031861066-1043980994-3371 (user-windowsSid) -> 137
+S-1-5-21-668023798-3031861066-1043980994-3373 (host-windowsSid) -> 28
+S-1-5-21-668023798-3031861066-1043980994-3378 (host-windowsSid) -> 138
+S-1-5-21-668023798-3031861066-1043980994-3379 (host-windowsSid) -> 93
+S-1-5-21-668023798-3031861066-1043980994-3383 (host-windowsSid) -> 63
+S-1-5-21-668023798-3031861066-1043980994-3384 (host-windowsSid) -> 20
+S-1-5-21-668023798-3031861066-1043980994-3393 (user-windowsSid) -> 139
+S-1-5-21-668023798-3031861066-1043980994-3394 (user-windowsSid) -> 140
+S-1-5-21-668023798-3031861066-1043980994-3395 (user-windowsSid) -> 141
+S-1-5-21-668023798-3031861066-1043980994-3397 (host-windowsSid) -> 42
+S-1-5-21-668023798-3031861066-1043980994-3398 (host-windowsSid) -> 41
+S-1-5-21-668023798-3031861066-1043980994-3399 (host-windowsSid) -> 46
+S-1-5-21-668023798-3031861066-1043980994-3400 (host-windowsSid) -> 49
+S-1-5-21-668023798-3031861066-1043980994-3412 (user-windowsSid) -> 142
+S-1-5-21-668023798-3031861066-1043980994-3414 (user-windowsSid) -> 143
+S-1-5-21-668023798-3031861066-1043980994-3416 (host-windowsSid) -> 75
+S-1-5-21-668023798-3031861066-1043980994-3417 (host-windowsSid) -> 61
+S-1-5-21-668023798-3031861066-1043980994-3419 (host-windowsSid) -> 15
+S-1-5-21-668023798-3031861066-1043980994-3421 (host-windowsSid) -> 31
+S-1-5-21-668023798-3031861066-1043980994-3422 (host-windowsSid) -> 62
+S-1-5-21-668023798-3031861066-1043980994-3423 (host-windowsSid) -> 59
+S-1-5-21-668023798-3031861066-1043980994-3425 (host-windowsSid) -> 88
+S-1-5-21-668023798-3031861066-1043980994-3427 (host-windowsSid) -> 144
+S-1-5-21-668023798-3031861066-1043980994-3430 (host-windowsSid) -> 145
+S-1-5-21-668023798-3031861066-1043980994-3436 (host-windowsSid) -> 36
+S-1-5-21-668023798-3031861066-1043980994-3440 (host-windowsSid) -> 22
+S-1-5-21-668023798-3031861066-1043980994-3441 (host-windowsSid) -> 87
+S-1-5-21-668023798-3031861066-1043980994-3445 (host-windowsSid) -> 76
+S-1-5-21-668023798-3031861066-1043980994-3446 (host-windowsSid) -> 146
+S-1-5-21-668023798-3031861066-1043980994-3447 (host-windowsSid) -> 12
+S-1-5-21-668023798-3031861066-1043980994-3448 (host-windowsSid) -> 40
+S-1-5-21-668023798-3031861066-1043980994-3449 (host-windowsSid) -> 51
+S-1-5-21-668023798-3031861066-1043980994-3452 (host-windowsSid) -> 147
+S-1-5-21-668023798-3031861066-1043980994-3453 (user-windowsSid) -> 148
+S-1-5-21-668023798-3031861066-1043980994-3454 (user-windowsSid) -> 149
+S-1-5-21-668023798-3031861066-1043980994-3455 (user-windowsSid) -> 150
+S-1-5-21-668023798-3031861066-1043980994-3458 (user-windowsSid) -> 151
+S-1-5-21-668023798-3031861066-1043980994-3459 (host-windowsSid) -> 152
+S-1-5-21-668023798-3031861066-1043980994-3460 (user-windowsSid) -> 153
+S-1-5-21-668023798-3031861066-1043980994-3461 (user-windowsSid) -> 154
+S-1-5-21-668023798-3031861066-1043980994-3463 (host-windowsSid) -> 47
+S-1-5-21-668023798-3031861066-1043980994-3464 (host-windowsSid) -> 74
+S-1-5-21-668023798-3031861066-1043980994-3465 (host-windowsSid) -> 33
+S-1-5-21-668023798-3031861066-1043980994-3467 (host-windowsSid) -> 55
+S-1-5-21-668023798-3031861066-1043980994-3468 (user-windowsSid) -> 155
+S-1-5-21-668023798-3031861066-1043980994-3470 (host-windowsSid) -> 156
+S-1-5-21-668023798-3031861066-1043980994-3471 (host-windowsSid) -> 29
+S-1-5-21-668023798-3031861066-1043980994-3473 (host-windowsSid) -> 157
+S-1-5-21-668023798-3031861066-1043980994-3477 (host-windowsSid) -> 79
+S-1-5-21-668023798-3031861066-1043980994-3479 (user-windowsSid) -> 158
+S-1-5-21-668023798-3031861066-1043980994-3481 (user-windowsSid) -> 159
+S-1-5-21-668023798-3031861066-1043980994-3482 (host-windowsSid) -> 14
+S-1-5-21-668023798-3031861066-1043980994-3485 (user-windowsSid) -> 160
+S-1-5-21-668023798-3031861066-1043980994-3486 (user-windowsSid) -> 161
+S-1-5-21-668023798-3031861066-1043980994-3490 (host-windowsSid) -> 162
+S-1-5-21-668023798-3031861066-1043980994-3491 (host-windowsSid) -> 163
+S-1-5-21-668023798-3031861066-1043980994-3492 (host-windowsSid) -> 164
+S-1-5-21-668023798-3031861066-1043980994-3494 (host-windowsSid) -> 165
+S-1-5-21-668023798-3031861066-1043980994-3495 (user-windowsSid) -> 166
+S-1-5-21-668023798-3031861066-1043980994-3496 (user-windowsSid) -> 167
+S-1-5-21-668023798-3031861066-1043980994-3497 (host-windowsSid) -> 168
+S-1-5-21-668023798-3031861066-1043980994-3498 (host-windowsSid) -> 83
+S-1-5-21-668023798-3031861066-1043980994-3499 (host-windowsSid) -> 169
+S-1-5-21-668023798-3031861066-1043980994-3500 (host-windowsSid) -> 96
+S-1-5-21-668023798-3031861066-1043980994-3502 (host-windowsSid) -> 170
+S-1-5-21-668023798-3031861066-1043980994-3503 (host-windowsSid) -> 21
+S-1-5-21-668023798-3031861066-1043980994-3504 (host-windowsSid) -> 171
+S-1-5-21-668023798-3031861066-1043980994-3505 (host-windowsSid) -> 66
+S-1-5-21-668023798-3031861066-1043980994-3506 (host-windowsSid) -> 38
+S-1-5-21-668023798-3031861066-1043980994-3508 (host-windowsSid) -> 172
+S-1-5-21-668023798-3031861066-1043980994-3509 (host-windowsSid) -> 84
+S-1-5-21-668023798-3031861066-1043980994-3510 (user-windowsSid) -> 173
+S-1-5-21-668023798-3031861066-1043980994-3511 (user-windowsSid) -> 174
+S-1-5-21-668023798-3031861066-1043980994-3513 (host-windowsSid) -> 175
+S-1-5-21-668023798-3031861066-1043980994-3514 (user-windowsSid) -> 176
+S-1-5-21-668023798-3031861066-1043980994-3610 (host-windowsSid) -> 177
+S-1-5-21-668023798-3031861066-1043980994-5111 (host-windowsSid) -> 98
+S-1-5-21-668023798-3031861066-1043980994-5112 (host-windowsSid) -> 178
+S-1-5-21-668023798-3031861066-1043980994-5114 (host-windowsSid) -> 68
+S-1-5-21-668023798-3031861066-1043980994-5115 (host-windowsSid) -> 44
+S-1-5-21-668023798-3031861066-1043980994-5118 (host-windowsSid) -> 179
+S-1-5-21-668023798-3031861066-1043980994-5119 (host-windowsSid) -> 82
+S-1-5-21-668023798-3031861066-1043980994-5120 (host-windowsSid) -> 30
+S-1-5-21-668023798-3031861066-1043980994-5121 (host-windowsSid) -> 13
+S-1-5-21-668023798-3031861066-1043980994-5122 (host-windowsSid) -> 91
+S-1-5-21-668023798-3031861066-1043980994-5123 (host-windowsSid) -> 90
+S-1-5-21-668023798-3031861066-1043980994-5124 (host-windowsSid) -> 95
+S-1-5-21-668023798-3031861066-1043980994-5128 (host-windowsSid) -> 32
+S-1-5-21-668023798-3031861066-1043980994-5130 (host-windowsSid) -> 72
+S-1-5-21-668023798-3031861066-1043980994-5132 (user-windowsSid) -> 180
+S-1-5-21-668023798-3031861066-1043980994-5133 (user-windowsSid) -> 181
+S-1-5-21-668023798-3031861066-1043980994-5137 (host-windowsSid) -> 182
+S-1-5-21-668023798-3031861066-1043980994-5138 (host-windowsSid) -> 27
+S-1-5-21-668023798-3031861066-1043980994-5140 (host-windowsSid) -> 53
+S-1-5-21-668023798-3031861066-1043980994-5141 (host-windowsSid) -> 24
+S-1-5-21-668023798-3031861066-1043980994-5142 (host-windowsSid) -> 58
+S-1-5-21-668023798-3031861066-1043980994-5145 (host-windowsSid) -> 64
+S-1-5-21-668023798-3031861066-1043980994-5147 (user-windowsSid) -> 183
+S-1-5-21-668023798-3031861066-1043980994-5148 (user-windowsSid) -> 184
+S-1-5-21-668023798-3031861066-1043980994-5149 (user-windowsSid) -> 185
+S-1-5-21-668023798-3031861066-1043980994-5150 (user-windowsSid) -> 186
+S-1-5-21-668023798-3031861066-1043980994-5151 (user-windowsSid) -> 187
+S-1-5-21-668023798-3031861066-1043980994-5152 (host-windowsSid) -> 86
+S-1-5-21-668023798-3031861066-1043980994-5153 (host-windowsSid) -> 69
+S-1-5-21-668023798-3031861066-1043980994-5154 (host-windowsSid) -> 188
+S-1-5-21-668023798-3031861066-1043980994-5155 (host-windowsSid) -> 189
+S-1-5-21-668023798-3031861066-1043980994-5156 (host-windowsSid) -> 190
+S-1-5-21-830805687-550985140-3285839444-1156 (user-windowsSid) -> 191
+S-1-5-21-830805687-550985140-3285839444-1158 (user-windowsSid) -> 192
+S-1-5-21-830805687-550985140-3285839444-1159 (user-windowsSid) -> 193
+S-1-5-21-830805687-550985140-3285839444-1160 (user-windowsSid) -> 194
+S-1-5-21-830805687-550985140-3285839444-1161 (user-windowsSid) -> 195
+S-1-5-21-830805687-550985140-3285839444-1162 (user-windowsSid) -> 196
+S-1-5-21-830805687-550985140-3285839444-1163 (user-windowsSid) -> 197
+S-1-5-21-830805687-550985140-3285839444-1164 (user-windowsSid) -> 198
+S-1-5-21-830805687-550985140-3285839444-1165 (user-windowsSid) -> 199
+S-1-5-21-830805687-550985140-3285839444-1166 (user-windowsSid) -> 200
+S-1-5-21-830805687-550985140-3285839444-1167 (user-windowsSid) -> 201
+S-1-5-21-830805687-550985140-3285839444-1168 (user-windowsSid) -> 202
+S-1-5-21-830805687-550985140-3285839444-1169 (user-windowsSid) -> 203
+S-1-5-21-830805687-550985140-3285839444-1170 (user-windowsSid) -> 204
+S-1-5-21-830805687-550985140-3285839444-1171 (user-windowsSid) -> 205
+S-1-5-21-830805687-550985140-3285839444-1172 (user-windowsSid) -> 206
+S-1-5-21-830805687-550985140-3285839444-1173 (user-windowsSid) -> 207
+S-1-5-21-830805687-550985140-3285839444-1174 (user-windowsSid) -> 208
+S-1-5-21-830805687-550985140-3285839444-1175 (user-windowsSid) -> 209
+S-1-5-21-830805687-550985140-3285839444-1176 (user-windowsSid) -> 210
+S-1-5-21-830805687-550985140-3285839444-1177 (user-windowsSid) -> 211
+S-1-5-21-830805687-550985140-3285839444-1178 (user-windowsSid) -> 212
+S-1-5-21-830805687-550985140-3285839444-1179 (user-windowsSid) -> 213
+S-1-5-21-830805687-550985140-3285839444-1180 (user-windowsSid) -> 214
+S-1-5-21-830805687-550985140-3285839444-1181 (user-windowsSid) -> 215
+S-1-5-21-830805687-550985140-3285839444-1182 (user-windowsSid) -> 216
+S-1-5-21-830805687-550985140-3285839444-1183 (user-windowsSid) -> 217
+S-1-5-21-830805687-550985140-3285839444-1184 (user-windowsSid) -> 218
+S-1-5-21-830805687-550985140-3285839444-1185 (user-windowsSid) -> 219
+S-1-5-21-830805687-550985140-3285839444-1186 (user-windowsSid) -> 220
+S-1-5-21-830805687-550985140-3285839444-1187 (user-windowsSid) -> 221
+S-1-5-21-830805687-550985140-3285839444-1188 (user-windowsSid) -> 222
+S-1-5-21-830805687-550985140-3285839444-1189 (user-windowsSid) -> 223
+S-1-5-21-830805687-550985140-3285839444-1190 (user-windowsSid) -> 224
+S-1-5-21-830805687-550985140-3285839444-1191 (user-windowsSid) -> 225
+S-1-5-21-830805687-550985140-3285839444-1192 (user-windowsSid) -> 226
+S-1-5-21-830805687-550985140-3285839444-1193 (user-windowsSid) -> 227
+S-1-5-21-830805687-550985140-3285839444-1194 (user-windowsSid) -> 228
+S-1-5-21-830805687-550985140-3285839444-1195 (user-windowsSid) -> 229
+S-1-5-21-830805687-550985140-3285839444-1196 (user-windowsSid) -> 230
+S-1-5-21-830805687-550985140-3285839444-1197 (user-windowsSid) -> 231
+S-1-5-21-830805687-550985140-3285839444-1198 (user-windowsSid) -> 232
+S-1-5-32-544 (user-windowsSid) -> 233
+SABA.bluejungle.com (host-uniqueName) -> 136
+SABA.bluejungle.com (host-uniqueName) -> 136
+SANDOY.bluejungle.com (host-uniqueName) -> 146
+SANDOY.bluejungle.com (host-uniqueName) -> 146
+SARK.bluejungle.com (host-uniqueName) -> 171
+SARK.bluejungle.com (host-uniqueName) -> 171
+savaii.bluejungle.com (host-uniqueName) -> 182
+savaii.bluejungle.com (host-uniqueName) -> 182
+SHAG.bluejungle.com (host-uniqueName) -> 126
+SHAG.bluejungle.com (host-uniqueName) -> 126
+shikoku.bluejungle.com (host-uniqueName) -> 188
+shikoku.bluejungle.com (host-uniqueName) -> 188
+SIPURA.bluejungle.com (host-uniqueName) -> 147
+SIPURA.bluejungle.com (host-uniqueName) -> 147
+STBARTS.bluejungle.com (host-uniqueName) -> 120
+STBARTS.bluejungle.com (host-uniqueName) -> 120
+sumba.bluejungle.com (host-uniqueName) -> 165
+sumba.bluejungle.com (host-uniqueName) -> 165
+SVALBARD.bluejungle.com (host-uniqueName) -> 169
+SVALBARD.bluejungle.com (host-uniqueName) -> 169
+SWANS.bluejungle.com (host-uniqueName) -> 172
+SWANS.bluejungle.com (host-uniqueName) -> 172
+SYMANTEC01.bluejungle.com (host-uniqueName) -> 175
+SYMANTEC01.bluejungle.com (host-uniqueName) -> 175
+TARAWA.bluejungle.com (host-uniqueName) -> 163
+TARAWA.bluejungle.com (host-uniqueName) -> 163
+TASMANIA.bluejungle.com (host-uniqueName) -> 162
+TASMANIA.bluejungle.com (host-uniqueName) -> 162
+TIMOR-XP-x64.bluejungle.com (host-uniqueName) -> 127
+TIMOR-XP-x64.bluejungle.com (host-uniqueName) -> 127
+timor.bluejungle.com (host-uniqueName) -> 168
+timor.bluejungle.com (host-uniqueName) -> 168
+TINOS.bluejungle.com (host-uniqueName) -> 152
+TINOS.bluejungle.com (host-uniqueName) -> 152
+tioman.bluejungle.com (host-uniqueName) -> 118
+tioman.bluejungle.com (host-uniqueName) -> 118
+tioman2.bluejungle.com (host-uniqueName) -> 101
+tioman2.bluejungle.com (host-uniqueName) -> 101
+TOBAGO.bluejungle.com (host-uniqueName) -> 119
+TOBAGO.bluejungle.com (host-uniqueName) -> 119
+TONGA.bluejungle.com (host-uniqueName) -> 156
+TONGA.bluejungle.com (host-uniqueName) -> 156
+TREASURE.bluejungle.com (host-uniqueName) -> 177
+TREASURE.bluejungle.com (host-uniqueName) -> 177
+trinidad.bluejungle.com (host-uniqueName) -> 170
+trinidad.bluejungle.com (host-uniqueName) -> 170
+TS01.bluejungle.com (host-uniqueName) -> 189
+TS01.bluejungle.com (host-uniqueName) -> 189
+TZIA.bluejungle.com (host-uniqueName) -> 164
+TZIA.bluejungle.com (host-uniqueName) -> 164
+VAGAR.bluejungle.com (host-uniqueName) -> 157
+VAGAR.bluejungle.com (host-uniqueName) -> 157
+Vista-PC.bluejungle.com (host-uniqueName) -> 144
+Vista-PC.bluejungle.com (host-uniqueName) -> 144
+VPN02.bluejungle.com (host-uniqueName) -> 145
+VPN02.bluejungle.com (host-uniqueName) -> 145
+vulcano.bluejungle.com (host-uniqueName) -> 179
+vulcano.bluejungle.com (host-uniqueName) -> 179
+xp-pro-jed.bluejungle.com (host-uniqueName) -> 178
+xp-pro-jed.bluejungle.com (host-uniqueName) -> 178
+YASAWA.bluejungle.com (host-uniqueName) -> 190
+YASAWA.bluejungle.com (host-uniqueName) -> 190
+zante.bluejungle.com (host-uniqueName) -> 138
+zante.bluejungle.com (host-uniqueName) -> 138
+ZEMBRA.bluejungle.com (host-uniqueName) -> 107
+ZEMBRA.bluejungle.com (host-uniqueName) -> 107
+{UNKNOWN-APP} (application-builtin) -> 234
+{UNKNOWN-HOST} (host-builtin) -> 235
+{UNKNOWN-USER} (user-builtin) -> 236
+Deployment Bundle:
+Deployment entities:
+ID 0 STATUS APPROVED POLICY AllowPolicyOnFuad
+    DESCRIPTION "Policy that allows Hor-Kan access to *.java while on localhost and to Bo Meng while using small.exe and denies it to everyone else."
+    FOR resource.fso.name = "?c:\\**.java"
+    ON TRUE
+    BY ((user.GROUP has 0 AND host.GROUP has 0) OR (user.GROUP has 1 AND application.GROUP has 0))
+    DO allow
+    BY DEFAULT DO deny
+    ON allow DO log
+ID 1 STATUS APPROVED POLICY DenyAutorun
+    DESCRIPTION "Denies run based on application name"
+    FOR TRUE
+    ON RUN
+    BY application.name = "autorun.exe"
+    DO deny
+ID 2 STATUS APPROVED POLICY DenyBasedOnURL
+    DESCRIPTION "Denies run based on application name"
+    FOR resource.fso.name = "c:\\deny_url.txt"
+    ON OPEN
+    BY application.url = "http://mail.google.com/**"
+    DO deny
+ID 3 STATUS APPROVED POLICY CommunicationPolicy01
+    FOR resource.fso.name = "c:\\communication_policy"
+    ON EMAIL
+    SENT_TO user.mail = "keng.lim@bluejungle.com"
+    BY TRUE
+    DO deny
+    ON deny DO policy01
+ID 4 STATUS APPROVED POLICY CommunicationPolicy02
+    FOR resource.fso.name = "c:\\communication_policy"
+    ON EMAIL
+    SENT_TO user.mail_domain = "gs.com;ml.com;equity.gs.com;"
+    BY TRUE
+    DO deny
+    ON deny DO policy02
+ID 5 STATUS APPROVED POLICY CommunicationPolicy03
+    FOR resource.fso.name = "c:\\communication_policy"
+    ON EMAIL
+    SENT_TO user.GROUP has 2
+    BY TRUE
+    DO deny
+    ON deny DO policy03
+ID 6 STATUS APPROVED POLICY CommunicationPolicyNot
+    FOR resource.fso.name = "c:\\communication_policy_not"
+    ON EMAIL
+    SENT_TO user.GROUP has 3
+    BY host.GROUP has 1
+    DO deny
+    ON deny DO policyNOT
+ID 7 STATUS APPROVED POLICY destiny_group_policy
+    FOR (resource.fso.owner_ldap_group has 4 AND resource.fso.name = "**owner_destiny.test")
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 8 STATUS APPROVED POLICY FinanceDeny
+    DESCRIPTION "Applies to everyone, doing anything, on finance documents."
+    FOR resource.fso.name = "?c:\\finance\\*.txt"
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 9 STATUS APPROVED POLICY LdapPolicy
+    DESCRIPTION "Policy that allows engineers access to Java files and denies it to everyone else"
+    FOR resource.fso.name = "?c:\\**.ldap"
+    ON TRUE
+    BY (user.GROUP has 5 AND application.GROUP has 1)
+    DO allow
+    BY DEFAULT DO deny
+    ON allow DO log
+ID 10 STATUS APPROVED POLICY deny_localhost
+    DESCRIPTION "denies access to c:\\foofoo.doc for any request for localhost"
+    FOR resource.fso.name = "c:\\foofoo.doc"
+    ON TRUE
+    BY host.location = localhost
+    DO deny
+ID 11 STATUS APPROVED POLICY "Not Engineering Copy"
+    ATTRIBUTE USAGE
+    FOR resource.fso.name = "**negated_ldap_group.test"
+    ON COPY
+    TO TRUE
+    BY user.GROUP has 6
+    DO deny
+    ON deny DO log
+ID 12 STATUS APPROVED POLICY TestDirOpenIsAlwaysOK
+    DESCRIPTION "c:\\windows is a directory; opening it should work, anything else should fail."
+    FOR resource.fso.name = "C:\\WINDOWS"
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 13 STATUS APPROVED POLICY Obligations01
+    FOR resource.fso.name = "c:\\verify.obligations"
+    ON TRUE
+    BY user.GROUP has 7
+    DO allow
+    BY DEFAULT DO deny
+    ON allow DO log
+ID 14 STATUS APPROVED POLICY Obligations02
+    FOR resource.fso.name = "c:\\verify.obligations"
+    ON TRUE
+    BY user.GROUP has 8
+    DO allow
+    BY DEFAULT DO deny
+    ON dontcare DO log
+ID 15 STATUS APPROVED POLICY Obligations03
+    FOR resource.fso.name = "c:\\verify.obligations"
+    ON TRUE
+    BY user.GROUP has 9
+    DO deny
+    ON deny DO log
+    ON dontcare DO log
+ID 16 STATUS APPROVED POLICY testpolicy2
+    ATTRIBUTE USAGE
+    FOR resource.fso.name = "c:\\testfolder2\\*"
+    ON READ
+    TO TRUE
+    BY TRUE
+    DO deny
+ID 17 STATUS APPROVED POLICY Policy1
+    ATTRIBUTE USAGE
+    FOR resource.fso.name = "c:\\financepa\\**"
+    ON TRUE
+    TO TRUE
+    BY user.GROUP has 10
+    DO deny
+ID 18 STATUS APPROVED POLICY deny_remoterun
+    DESCRIPTION "denies run of any applications when connected remotely"
+    FOR TRUE
+    ON RUN
+    BY host.location != localhost
+    WHERE ENVIRONMENT.REMOTE_ACCESS = 1
+    DO deny
+    BY DEFAULT DO allow
+    ON allow DO log, display( "allow" )
+    ON deny DO display( "deny" )
+ID 19 STATUS APPROVED POLICY resource_created_date
+    FOR (resource.fso.created_date < "01/01/3007" AND resource.fso.name = "**resource_date.pql")
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 20 STATUS APPROVED POLICY resource_owner_ldap_test
+    FOR (resource.fso.owner_ldap_group has 11 AND resource.fso.name = "**owner_ldap.test")
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 21 STATUS APPROVED POLICY resource_owner_test
+    FOR (resource.fso.owner = user.uid AND resource.fso.name = "**owner.test")
+    ON TRUE
+    BY TRUE
+    DO deny
+ID 22 STATUS APPROVED POLICY subref_test_policy
+    FOR (resource.fso.name = "**ref**" AND resource.fso.name = "**subref.test")
+    ON TRUE
+    BY user.GROUP has 12
+    DO deny
+ID 23 STATUS APPROVED POLICY TrackingPolicy
+    DESCRIPTION "This policy is excluded because its deployment target does not match the agent"
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    DO allow
+ID 24 STATUS APPROVED POLICY UnknownOwner
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    DO deny
+ID 25 STATUS APPROVED POLICY EmailToContact
+    FOR resource.fso.name = "c:\\emailcontact"
+    ON EMAIL
+    SENT_TO user.GROUP has 14
+    BY user.GROUP has 13
+    DO deny
+    BY DEFAULT DO allow
+    ON allow DO emc_allow
+    ON deny DO emc_deny
+ID 26 STATUS APPROVED POLICY EmailToNotContact
+    FOR resource.fso.name = "c:\\emailcontact"
+    ON EMAIL
+    SENT_TO user.GROUP has 16
+    BY user.GROUP has 15
+    DO deny
+    BY DEFAULT DO allow
+    ON allow DO emNc_allow
+    ON deny DO emNc_deny
+ID 27 STATUS APPROVED POLICY UserByEmail
+    FOR resource.fso.name = "c:\\userbyemail"
+    ON EDIT
+    BY user.mail = "sgoldstein@bluejungle.com"
+    DO deny
+    ON deny DO byemail
+ID 28 STATUS APPROVED POLICY UserByEmailDomain
+    FOR resource.fso.name = "c:\\userbyemaildomain"
+    ON EDIT
+    BY user.mail_domain = "bluejungle.com"
+    DO deny
+    ON deny DO byemaildomain
+ID 29 STATUS APPROVED POLICY NegatedAppPolicy
+    FOR resource.fso.name = "c:\\negatedapp"
+    ON OPEN
+    BY application.GROUP has 2
+    DO deny
+ID 30 STATUS APPROVED POLICY misdirected_email_policy
+    FOR (resource.fso.name = "misdirected*.txt" AND resource.fso.client_id != null)
+    ON EMAIL
+    SENT_TO (user.client_id != null AND user.client_id != resource.fso.client_id)
+    BY TRUE
+    DO allow
+    ON allow DO misdirected
+ID 31 STATUS APPROVED POLICY multiclient_email_policy
+    FOR resource.fso.name = "multiclient.txt"
+    ON EMAIL
+    SENT_TO user.sent_to_client_count > 1
+    BY TRUE
+    DO allow
+    ON allow DO multiclient
+ID 32 STATUS APPROVED POLICY unset_attribute_policy
+    FOR (resource.fso.name = "unset_attribute*.txt" AND resource.fso.client_id = null)
+    ON EMAIL
+    SENT_TO TRUE
+    BY TRUE
+    DO allow
+    ON allow DO unset_attribute
+ID 33 STATUS APPROVED POLICY SmallFiles
+    DESCRIPTION "This policy is excluded because its deployment target does not match the agent"
+    FOR FALSE
+    ON FALSE
+    BY FALSE
+    DO deny
+ID 34 STATUS APPROVED LOCATION localhost = "10.0.0.0/8"
+Policies that apply to all users: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 16, 18, 19, 20, 21, 23, 27, 28, 29, 30, 31, 32}
+Policies that apply to all hosts: {0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 33}
+Policies that apply to all applications: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 30, 31, 32, 33}
+Subject-Policy Mappings:
+0 -> {}
+1 -> {11}
+2 -> {11}
+3 -> {11}
+4 -> {11}
+5 -> {11}
+6 -> {11}
+7 -> {11}
+8 -> {11}
+9 -> {11}
+10 -> {11}
+11 -> {11}
+99 -> {}
+103 -> {}
+104 -> {25}
+109 -> {11}
+114 -> {}
+115 -> {26}
+117 -> {11}
+121 -> {11}
+140 -> {}
+141 -> {}
+142 -> {11}
+143 -> {22}
+150 -> {}
+153 -> {11}
+154 -> {}
+155 -> {15}
+159 -> {17, 33}
+173 -> {}
+182 -> {}
+191 -> {11}
+192 -> {11}
+195 -> {11}
+198 -> {11}
+205 -> {11}
+215 -> {11}
+217 -> {11}
+219 -> {11}
+222 -> {11}
+229 -> {11}
+233 -> {}
+234 -> {29}
+235 -> {6}
+236 -> {11}
+Action-Policy Mappings:
+ADMIN -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+APPROVE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+ATTACH -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+AVDCALL -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+BATCH -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+BURN -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+CHANGE_ATTRIBUTES -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+CHANGE_SECURITY -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+COPY -> {0, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+CREATE_NEW -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+CUT_PASTE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+DELETE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+DEPLOY -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+EDIT -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 27, 28, 33}
+EDIT_COPY -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+EMAIL -> {0, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 25, 26, 30, 31, 32, 33}
+EMBED -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+EXPORT -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+IM -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+JOIN -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+MEETING -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+MOVE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+NOP -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+OPEN -> {0, 2, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 29, 33}
+PASTE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+PRESENCE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+PRINT -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+QUESTION -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+READ -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 33}
+RECORD -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+RENAME -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+RUN -> {0, 1, 7, 8, 9, 10, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 33}
+SENDTO -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+SHARE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+VIDEO -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+VOICE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+WEBMAIL -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+WRITE -> {0, 7, 8, 9, 10, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 33}
+Subject-Group Mappings:
+0 -> {0, 1}
+1 -> {6, 16}
+2 -> {6, 16}
+3 -> {6, 16}
+4 -> {6, 16}
+5 -> {6, 16}
+6 -> {6, 16}
+7 -> {6, 16}
+8 -> {6, 16}
+9 -> {6, 16}
+10 -> {6, 16}
+11 -> {6, 16}
+99 -> {2, 3, 4, 5, 11, 16}
+103 -> {3, 4, 5, 11, 16}
+104 -> {3, 4, 5, 11, 13, 16}
+109 -> {6, 16}
+114 -> {3, 4, 5, 11, 16}
+115 -> {3, 4, 5, 11, 15, 16}
+117 -> {6, 16}
+121 -> {3, 6, 7, 8, 16}
+140 -> {3, 4, 5, 11, 16}
+141 -> {4, 5, 11, 16}
+142 -> {2, 3, 6, 16}
+143 -> {3, 4, 5, 11, 12, 16}
+150 -> {3, 4, 5, 11, 16}
+153 -> {6, 16}
+154 -> {3, 4, 5, 11, 16}
+155 -> {1, 3, 4, 5, 7, 9, 11, 16}
+159 -> {0, 3, 4, 5, 10, 11, 16, 17}
+173 -> {4, 5, 11, 16}
+182 -> {0}
+191 -> {6, 16}
+192 -> {6, 16}
+195 -> {6, 16}
+198 -> {6, 16}
+205 -> {6, 16}
+215 -> {6, 16}
+217 -> {6, 16}
+219 -> {6, 16}
+222 -> {6, 16}
+229 -> {6, 16}
+233 -> {3, 4, 5, 11, 16}
+234 -> {2}
+235 -> {1}
+236 -> {3, 6, 16}
+Subject keys:
+(null):0:0:f7513948613aa6b5eb31fbb0726147833630e5d2 (application-appFingerPrint) -> 0
+0 (user-unixId) -> 1
+10000 (user-unixId) -> 2
+10001 (user-unixId) -> 3
+10002 (user-unixId) -> 4
+10003 (user-unixId) -> 5
+100050 (user-unixId) -> 6
+34 (user-unixId) -> 7
+501 (user-unixId) -> 8
+502 (user-unixId) -> 9
+503 (user-unixId) -> 10
+504 (user-unixId) -> 11
+ACKLINS.bluejungle.com (host-uniqueName) -> 12
+ACKLINS.bluejungle.com (host-uniqueName) -> 12
+adentro.bluejungle.com (host-uniqueName) -> 13
+adentro.bluejungle.com (host-uniqueName) -> 13
+ANDROS.bluejungle.com (host-uniqueName) -> 14
+ANDROS.bluejungle.com (host-uniqueName) -> 14
+ANGEL.bluejungle.com (host-uniqueName) -> 15
+ANGEL.bluejungle.com (host-uniqueName) -> 15
+ATIU.bluejungle.com (host-uniqueName) -> 16
+ATIU.bluejungle.com (host-uniqueName) -> 16
+azores.bluejungle.com (host-uniqueName) -> 17
+azores.bluejungle.com (host-uniqueName) -> 17
+BAIXO.bluejungle.com (host-uniqueName) -> 18
+BAIXO.bluejungle.com (host-uniqueName) -> 18
+BAKER.bluejungle.com (host-uniqueName) -> 19
+BAKER.bluejungle.com (host-uniqueName) -> 19
+beaver.bluejungle.com (host-uniqueName) -> 20
+beaver.bluejungle.com (host-uniqueName) -> 20
+BIKINI.bluejungle.com (host-uniqueName) -> 21
+BIKINI.bluejungle.com (host-uniqueName) -> 21
+BILL-XP.bluejungle.com (host-uniqueName) -> 22
+BILL-XP.bluejungle.com (host-uniqueName) -> 22
+BLOCK.bluejungle.com (host-uniqueName) -> 23
+BLOCK.bluejungle.com (host-uniqueName) -> 23
+BOHOL.bluejungle.com (host-uniqueName) -> 24
+BOHOL.bluejungle.com (host-uniqueName) -> 24
+borabora.bluejungle.com (host-uniqueName) -> 25
+borabora.bluejungle.com (host-uniqueName) -> 25
+BORDUY.bluejungle.com (host-uniqueName) -> 26
+BORDUY.bluejungle.com (host-uniqueName) -> 26
+bouvet.bluejungle.com (host-uniqueName) -> 27
+bouvet.bluejungle.com (host-uniqueName) -> 27
+BRAC.bluejungle.com (host-uniqueName) -> 28
+BRAC.bluejungle.com (host-uniqueName) -> 28
+BUILD-STAGING.bluejungle.com (host-uniqueName) -> 29
+BUILD-STAGING.bluejungle.com (host-uniqueName) -> 29
+CAYMAN.bluejungle.com (host-uniqueName) -> 30
+CAYMAN.bluejungle.com (host-uniqueName) -> 30
+CEBU.bluejungle.com (host-uniqueName) -> 31
+CEBU.bluejungle.com (host-uniqueName) -> 31
+CF.bluejungle.com (host-uniqueName) -> 32
+CF.bluejungle.com (host-uniqueName) -> 32
+CHOISEUI.bluejungle.com (host-uniqueName) -> 33
+CHOISEUI.bluejungle.com (host-uniqueName) -> 33
+CHUUK.bluejungle.com (host-uniqueName) -> 34
+CHUUK.bluejungle.com (host-uniqueName) -> 34
+CICIA.bluejungle.com (host-uniqueName) -> 35
+CICIA.bluejungle.com (host-uniqueName) -> 35
+CORFU.bluejungle.com (host-uniqueName) -> 36
+CORFU.bluejungle.com (host-uniqueName) -> 36
+cuba.bluejungle.com (host-uniqueName) -> 37
+cuba.bluejungle.com (host-uniqueName) -> 37
+DESTRUCTION.bluejungle.com (host-uniqueName) -> 38
+DESTRUCTION.bluejungle.com (host-uniqueName) -> 38
+DOKOS.bluejungle.com (host-uniqueName) -> 39
+DOKOS.bluejungle.com (host-uniqueName) -> 39
+DOMINICA.bluejungle.com (host-uniqueName) -> 40
+DOMINICA.bluejungle.com (host-uniqueName) -> 40
+DOMINICATPM1.bluejungle.com (host-uniqueName) -> 41
+DOMINICATPM1.bluejungle.com (host-uniqueName) -> 41
+DOMINICATPM2.bluejungle.com (host-uniqueName) -> 42
+DOMINICATPM2.bluejungle.com (host-uniqueName) -> 42
+EASTER.bluejungle.com (host-uniqueName) -> 43
+EASTER.bluejungle.com (host-uniqueName) -> 43
+EFATE.bluejungle.com (host-uniqueName) -> 44
+EFATE.bluejungle.com (host-uniqueName) -> 44
+ellis.bluejungle.com (host-uniqueName) -> 45
+ellis.bluejungle.com (host-uniqueName) -> 45
+ENGDEV01.bluejungle.com (host-uniqueName) -> 46
+ENGDEV01.bluejungle.com (host-uniqueName) -> 46
+ENGDEV02.bluejungle.com (host-uniqueName) -> 47
+ENGDEV02.bluejungle.com (host-uniqueName) -> 47
+EVIA.bluejungle.com (host-uniqueName) -> 48
+EVIA.bluejungle.com (host-uniqueName) -> 48
+EVIA2.bluejungle.com (host-uniqueName) -> 49
+EVIA2.bluejungle.com (host-uniqueName) -> 49
+FAGO.bluejungle.com (host-uniqueName) -> 50
+FAGO.bluejungle.com (host-uniqueName) -> 50
+FUTUNA.bluejungle.com (host-uniqueName) -> 51
+FUTUNA.bluejungle.com (host-uniqueName) -> 51
+grande.bluejungle.com (host-uniqueName) -> 52
+grande.bluejungle.com (host-uniqueName) -> 52
+guadalupe.bluejungle.com (host-uniqueName) -> 53
+guadalupe.bluejungle.com (host-uniqueName) -> 53
+GUAM.bluejungle.com (host-uniqueName) -> 54
+GUAM.bluejungle.com (host-uniqueName) -> 54
+GUERNSEY.bluejungle.com (host-uniqueName) -> 55
+GUERNSEY.bluejungle.com (host-uniqueName) -> 55
+HAINAN.bluejungle.com (host-uniqueName) -> 56
+HAINAN.bluejungle.com (host-uniqueName) -> 56
+herm.bluejungle.com (host-uniqueName) -> 57
+herm.bluejungle.com (host-uniqueName) -> 57
+HESTUR.bluejungle.com (host-uniqueName) -> 58
+HESTUR.bluejungle.com (host-uniqueName) -> 58
+INTEGRATION01.bluejungle.com (host-uniqueName) -> 59
+INTEGRATION01.bluejungle.com (host-uniqueName) -> 59
+ISCHIA.bluejungle.com (host-uniqueName) -> 60
+ISCHIA.bluejungle.com (host-uniqueName) -> 60
+JERSEY.bluejungle.com (host-uniqueName) -> 61
+JERSEY.bluejungle.com (host-uniqueName) -> 61
+KALSOY.bluejungle.com (host-uniqueName) -> 62
+KALSOY.bluejungle.com (host-uniqueName) -> 62
+KEA.bluejungle.com (host-uniqueName) -> 63
+KEA.bluejungle.com (host-uniqueName) -> 63
+KING.bluejungle.com (host-uniqueName) -> 64
+KING.bluejungle.com (host-uniqueName) -> 64
+KingXP.bluejungle.com (host-uniqueName) -> 65
+KingXP.bluejungle.com (host-uniqueName) -> 65
+KIOA.bluejungle.com (host-uniqueName) -> 66
+KIOA.bluejungle.com (host-uniqueName) -> 66
+kirkwood.bluejungle.com (host-uniqueName) -> 67
+kirkwood.bluejungle.com (host-uniqueName) -> 67
+kiska.bluejungle.com (host-uniqueName) -> 68
+kiska.bluejungle.com (host-uniqueName) -> 68
+KORO.bluejungle.com (host-uniqueName) -> 69
+KORO.bluejungle.com (host-uniqueName) -> 69
+LAKEBA.bluejungle.com (host-uniqueName) -> 70
+LAKEBA.bluejungle.com (host-uniqueName) -> 70
+langkawi.bluejungle.com (host-uniqueName) -> 71
+langkawi.bluejungle.com (host-uniqueName) -> 71
+liberty.bluejungle.com (host-uniqueName) -> 72
+liberty.bluejungle.com (host-uniqueName) -> 72
+MAHE.bluejungle.com (host-uniqueName) -> 73
+MAHE.bluejungle.com (host-uniqueName) -> 73
+MAIO.bluejungle.com (host-uniqueName) -> 74
+MAIO.bluejungle.com (host-uniqueName) -> 74
+MARE.bluejungle.com (host-uniqueName) -> 75
+MARE.bluejungle.com (host-uniqueName) -> 75
+MARTINIQUE.bluejungle.com (host-uniqueName) -> 76
+MARTINIQUE.bluejungle.com (host-uniqueName) -> 76
+MAUI.bluejungle.com (host-uniqueName) -> 77
+MAUI.bluejungle.com (host-uniqueName) -> 77
+MAYOTTE.bluejungle.com (host-uniqueName) -> 78
+MAYOTTE.bluejungle.com (host-uniqueName) -> 78
+mini-cedros.bluejungle.com (host-uniqueName) -> 79
+mini-cedros.bluejungle.com (host-uniqueName) -> 79
+MOLOKAI.bluejungle.com (host-uniqueName) -> 80
+MOLOKAI.bluejungle.com (host-uniqueName) -> 80
+NASSAU.bluejungle.com (host-uniqueName) -> 81
+NASSAU.bluejungle.com (host-uniqueName) -> 81
+NAURU.bluejungle.com (host-uniqueName) -> 82
+NAURU.bluejungle.com (host-uniqueName) -> 82
+navassa.bluejungle.com (host-uniqueName) -> 83
+navassa.bluejungle.com (host-uniqueName) -> 83
+naviti.bluejungle.com (host-uniqueName) -> 84
+naviti.bluejungle.com (host-uniqueName) -> 84
+NEVIS.bluejungle.com (host-uniqueName) -> 85
+NEVIS.bluejungle.com (host-uniqueName) -> 85
+NXTL-IS02.bluejungle.com (host-uniqueName) -> 86
+NXTL-IS02.bluejungle.com (host-uniqueName) -> 86
+ORACLE-TEST.bluejungle.com (host-uniqueName) -> 87
+ORACLE-TEST.bluejungle.com (host-uniqueName) -> 87
+PALAU.bluejungle.com (host-uniqueName) -> 88
+PALAU.bluejungle.com (host-uniqueName) -> 88
+PAROS.bluejungle.com (host-uniqueName) -> 89
+PAROS.bluejungle.com (host-uniqueName) -> 89
+PEACHTREE-CL.bluejungle.com (host-uniqueName) -> 90
+PEACHTREE-CL.bluejungle.com (host-uniqueName) -> 90
+PEACHTREE-TS.bluejungle.com (host-uniqueName) -> 91
+PEACHTREE-TS.bluejungle.com (host-uniqueName) -> 91
+PEMBA.bluejungle.com (host-uniqueName) -> 92
+PEMBA.bluejungle.com (host-uniqueName) -> 92
+PHILIP.bluejungle.com (host-uniqueName) -> 93
+PHILIP.bluejungle.com (host-uniqueName) -> 93
+PICO.bluejungle.com (host-uniqueName) -> 94
+PICO.bluejungle.com (host-uniqueName) -> 94
+pm-vista.bluejungle.com (host-uniqueName) -> 95
+pm-vista.bluejungle.com (host-uniqueName) -> 95
+RASPBERRY.bluejungle.com (host-uniqueName) -> 96
+RASPBERRY.bluejungle.com (host-uniqueName) -> 96
+RENDANG.bluejungle.com (host-uniqueName) -> 97
+RENDANG.bluejungle.com (host-uniqueName) -> 97
+ROATAN.bluejungle.com (host-uniqueName) -> 98
+ROATAN.bluejungle.com (host-uniqueName) -> 98
+S-1-5-21-668023798-3031861066-1043980994-1113 (host-windowsSid) -> 45
+S-1-5-21-668023798-3031861066-1043980994-1114 (user-windowsSid) -> 99
+S-1-5-21-668023798-3031861066-1043980994-1117 (user-windowsSid) -> 100
+S-1-5-21-668023798-3031861066-1043980994-1138 (host-windowsSid) -> 101
+S-1-5-21-668023798-3031861066-1043980994-1140 (user-windowsSid) -> 102
+S-1-5-21-668023798-3031861066-1043980994-1145 (host-windowsSid) -> 35
+S-1-5-21-668023798-3031861066-1043980994-1149 (user-windowsSid) -> 103
+S-1-5-21-668023798-3031861066-1043980994-1157 (user-windowsSid) -> 104
+S-1-5-21-668023798-3031861066-1043980994-1159 (user-windowsSid) -> 105
+S-1-5-21-668023798-3031861066-1043980994-1170 (user-windowsSid) -> 106
+S-1-5-21-668023798-3031861066-1043980994-1172 (host-windowsSid) -> 107
+S-1-5-21-668023798-3031861066-1043980994-1181 (host-windowsSid) -> 65
+S-1-5-21-668023798-3031861066-1043980994-1182 (host-windowsSid) -> 71
+S-1-5-21-668023798-3031861066-1043980994-1185 (user-windowsSid) -> 108
+S-1-5-21-668023798-3031861066-1043980994-1187 (user-windowsSid) -> 109
+S-1-5-21-668023798-3031861066-1043980994-1198 (host-windowsSid) -> 48
+S-1-5-21-668023798-3031861066-1043980994-1205 (user-windowsSid) -> 110
+S-1-5-21-668023798-3031861066-1043980994-1206 (user-windowsSid) -> 111
+S-1-5-21-668023798-3031861066-1043980994-1220 (user-windowsSid) -> 112
+S-1-5-21-668023798-3031861066-1043980994-1225 (host-windowsSid) -> 52
+S-1-5-21-668023798-3031861066-1043980994-2110 (host-windowsSid) -> 37
+S-1-5-21-668023798-3031861066-1043980994-2112 (user-windowsSid) -> 113
+S-1-5-21-668023798-3031861066-1043980994-2628 (user-windowsSid) -> 114
+S-1-5-21-668023798-3031861066-1043980994-2634 (user-windowsSid) -> 115
+S-1-5-21-668023798-3031861066-1043980994-2644 (host-windowsSid) -> 85
+S-1-5-21-668023798-3031861066-1043980994-2650 (host-windowsSid) -> 18
+S-1-5-21-668023798-3031861066-1043980994-3130 (host-windowsSid) -> 17
+S-1-5-21-668023798-3031861066-1043980994-3135 (user-windowsSid) -> 116
+S-1-5-21-668023798-3031861066-1043980994-3136 (host-windowsSid) -> 80
+S-1-5-21-668023798-3031861066-1043980994-3153 (host-windowsSid) -> 57
+S-1-5-21-668023798-3031861066-1043980994-3156 (host-windowsSid) -> 73
+S-1-5-21-668023798-3031861066-1043980994-3164 (user-windowsSid) -> 117
+S-1-5-21-668023798-3031861066-1043980994-3213 (host-windowsSid) -> 118
+S-1-5-21-668023798-3031861066-1043980994-3225 (host-windowsSid) -> 43
+S-1-5-21-668023798-3031861066-1043980994-3226 (host-windowsSid) -> 77
+S-1-5-21-668023798-3031861066-1043980994-3230 (host-windowsSid) -> 25
+S-1-5-21-668023798-3031861066-1043980994-3238 (host-windowsSid) -> 119
+S-1-5-21-668023798-3031861066-1043980994-3240 (host-windowsSid) -> 60
+S-1-5-21-668023798-3031861066-1043980994-3241 (host-windowsSid) -> 120
+S-1-5-21-668023798-3031861066-1043980994-3243 (user-windowsSid) -> 121
+S-1-5-21-668023798-3031861066-1043980994-3248 (host-windowsSid) -> 97
+S-1-5-21-668023798-3031861066-1043980994-3252 (host-windowsSid) -> 92
+S-1-5-21-668023798-3031861066-1043980994-3263 (user-windowsSid) -> 122
+S-1-5-21-668023798-3031861066-1043980994-3269 (user-windowsSid) -> 123
+S-1-5-21-668023798-3031861066-1043980994-3270 (user-windowsSid) -> 124
+S-1-5-21-668023798-3031861066-1043980994-3271 (user-windowsSid) -> 125
+S-1-5-21-668023798-3031861066-1043980994-3273 (host-windowsSid) -> 50
+S-1-5-21-668023798-3031861066-1043980994-3277 (host-windowsSid) -> 126
+S-1-5-21-668023798-3031861066-1043980994-3280 (host-windowsSid) -> 127
+S-1-5-21-668023798-3031861066-1043980994-3282 (user-windowsSid) -> 128
+S-1-5-21-668023798-3031861066-1043980994-3285 (host-windowsSid) -> 16
+S-1-5-21-668023798-3031861066-1043980994-3290 (host-windowsSid) -> 67
+S-1-5-21-668023798-3031861066-1043980994-3313 (user-windowsSid) -> 129
+S-1-5-21-668023798-3031861066-1043980994-3317 (user-windowsSid) -> 130
+S-1-5-21-668023798-3031861066-1043980994-3320 (host-windowsSid) -> 19
+S-1-5-21-668023798-3031861066-1043980994-3322 (user-windowsSid) -> 131
+S-1-5-21-668023798-3031861066-1043980994-3323 (user-windowsSid) -> 132
+S-1-5-21-668023798-3031861066-1043980994-3325 (host-windowsSid) -> 54
+S-1-5-21-668023798-3031861066-1043980994-3329 (host-windowsSid) -> 26
+S-1-5-21-668023798-3031861066-1043980994-3330 (host-windowsSid) -> 23
+S-1-5-21-668023798-3031861066-1043980994-3331 (host-windowsSid) -> 89
+S-1-5-21-668023798-3031861066-1043980994-3334 (host-windowsSid) -> 56
+S-1-5-21-668023798-3031861066-1043980994-3335 (user-windowsSid) -> 133
+S-1-5-21-668023798-3031861066-1043980994-3346 (host-windowsSid) -> 70
+S-1-5-21-668023798-3031861066-1043980994-3349 (user-windowsSid) -> 134
+S-1-5-21-668023798-3031861066-1043980994-3356 (user-windowsSid) -> 135
+S-1-5-21-668023798-3031861066-1043980994-3357 (host-windowsSid) -> 78
+S-1-5-21-668023798-3031861066-1043980994-3359 (host-windowsSid) -> 136
+S-1-5-21-668023798-3031861066-1043980994-3362 (host-windowsSid) -> 81
+S-1-5-21-668023798-3031861066-1043980994-3367 (host-windowsSid) -> 39
+S-1-5-21-668023798-3031861066-1043980994-3368 (host-windowsSid) -> 34
+S-1-5-21-668023798-3031861066-1043980994-3369 (host-windowsSid) -> 94
+S-1-5-21-668023798-3031861066-1043980994-3371 (user-windowsSid) -> 137
+S-1-5-21-668023798-3031861066-1043980994-3373 (host-windowsSid) -> 28
+S-1-5-21-668023798-3031861066-1043980994-3378 (host-windowsSid) -> 138
+S-1-5-21-668023798-3031861066-1043980994-3379 (host-windowsSid) -> 93
+S-1-5-21-668023798-3031861066-1043980994-3383 (host-windowsSid) -> 63
+S-1-5-21-668023798-3031861066-1043980994-3384 (host-windowsSid) -> 20
+S-1-5-21-668023798-3031861066-1043980994-3393 (user-windowsSid) -> 139
+S-1-5-21-668023798-3031861066-1043980994-3394 (user-windowsSid) -> 140
+S-1-5-21-668023798-3031861066-1043980994-3395 (user-windowsSid) -> 141
+S-1-5-21-668023798-3031861066-1043980994-3397 (host-windowsSid) -> 42
+S-1-5-21-668023798-3031861066-1043980994-3398 (host-windowsSid) -> 41
+S-1-5-21-668023798-3031861066-1043980994-3399 (host-windowsSid) -> 46
+S-1-5-21-668023798-3031861066-1043980994-3400 (host-windowsSid) -> 49
+S-1-5-21-668023798-3031861066-1043980994-3412 (user-windowsSid) -> 142
+S-1-5-21-668023798-3031861066-1043980994-3414 (user-windowsSid) -> 143
+S-1-5-21-668023798-3031861066-1043980994-3416 (host-windowsSid) -> 75
+S-1-5-21-668023798-3031861066-1043980994-3417 (host-windowsSid) -> 61
+S-1-5-21-668023798-3031861066-1043980994-3419 (host-windowsSid) -> 15
+S-1-5-21-668023798-3031861066-1043980994-3421 (host-windowsSid) -> 31
+S-1-5-21-668023798-3031861066-1043980994-3422 (host-windowsSid) -> 62
+S-1-5-21-668023798-3031861066-1043980994-3423 (host-windowsSid) -> 59
+S-1-5-21-668023798-3031861066-1043980994-3425 (host-windowsSid) -> 88
+S-1-5-21-668023798-3031861066-1043980994-3427 (host-windowsSid) -> 144
+S-1-5-21-668023798-3031861066-1043980994-3430 (host-windowsSid) -> 145
+S-1-5-21-668023798-3031861066-1043980994-3436 (host-windowsSid) -> 36
+S-1-5-21-668023798-3031861066-1043980994-3440 (host-windowsSid) -> 22
+S-1-5-21-668023798-3031861066-1043980994-3441 (host-windowsSid) -> 87
+S-1-5-21-668023798-3031861066-1043980994-3445 (host-windowsSid) -> 76
+S-1-5-21-668023798-3031861066-1043980994-3446 (host-windowsSid) -> 146
+S-1-5-21-668023798-3031861066-1043980994-3447 (host-windowsSid) -> 12
+S-1-5-21-668023798-3031861066-1043980994-3448 (host-windowsSid) -> 40
+S-1-5-21-668023798-3031861066-1043980994-3449 (host-windowsSid) -> 51
+S-1-5-21-668023798-3031861066-1043980994-3452 (host-windowsSid) -> 147
+S-1-5-21-668023798-3031861066-1043980994-3453 (user-windowsSid) -> 148
+S-1-5-21-668023798-3031861066-1043980994-3454 (user-windowsSid) -> 149
+S-1-5-21-668023798-3031861066-1043980994-3455 (user-windowsSid) -> 150
+S-1-5-21-668023798-3031861066-1043980994-3458 (user-windowsSid) -> 151
+S-1-5-21-668023798-3031861066-1043980994-3459 (host-windowsSid) -> 152
+S-1-5-21-668023798-3031861066-1043980994-3460 (user-windowsSid) -> 153
+S-1-5-21-668023798-3031861066-1043980994-3461 (user-windowsSid) -> 154
+S-1-5-21-668023798-3031861066-1043980994-3463 (host-windowsSid) -> 47
+S-1-5-21-668023798-3031861066-1043980994-3464 (host-windowsSid) -> 74
+S-1-5-21-668023798-3031861066-1043980994-3465 (host-windowsSid) -> 33
+S-1-5-21-668023798-3031861066-1043980994-3467 (host-windowsSid) -> 55
+S-1-5-21-668023798-3031861066-1043980994-3468 (user-windowsSid) -> 155
+S-1-5-21-668023798-3031861066-1043980994-3470 (host-windowsSid) -> 156
+S-1-5-21-668023798-3031861066-1043980994-3471 (host-windowsSid) -> 29
+S-1-5-21-668023798-3031861066-1043980994-3473 (host-windowsSid) -> 157
+S-1-5-21-668023798-3031861066-1043980994-3477 (host-windowsSid) -> 79
+S-1-5-21-668023798-3031861066-1043980994-3479 (user-windowsSid) -> 158
+S-1-5-21-668023798-3031861066-1043980994-3481 (user-windowsSid) -> 159
+S-1-5-21-668023798-3031861066-1043980994-3482 (host-windowsSid) -> 14
+S-1-5-21-668023798-3031861066-1043980994-3485 (user-windowsSid) -> 160
+S-1-5-21-668023798-3031861066-1043980994-3486 (user-windowsSid) -> 161
+S-1-5-21-668023798-3031861066-1043980994-3490 (host-windowsSid) -> 162
+S-1-5-21-668023798-3031861066-1043980994-3491 (host-windowsSid) -> 163
+S-1-5-21-668023798-3031861066-1043980994-3492 (host-windowsSid) -> 164
+S-1-5-21-668023798-3031861066-1043980994-3494 (host-windowsSid) -> 165
+S-1-5-21-668023798-3031861066-1043980994-3495 (user-windowsSid) -> 166
+S-1-5-21-668023798-3031861066-1043980994-3496 (user-windowsSid) -> 167
+S-1-5-21-668023798-3031861066-1043980994-3497 (host-windowsSid) -> 168
+S-1-5-21-668023798-3031861066-1043980994-3498 (host-windowsSid) -> 83
+S-1-5-21-668023798-3031861066-1043980994-3499 (host-windowsSid) -> 169
+S-1-5-21-668023798-3031861066-1043980994-3500 (host-windowsSid) -> 96
+S-1-5-21-668023798-3031861066-1043980994-3502 (host-windowsSid) -> 170
+S-1-5-21-668023798-3031861066-1043980994-3503 (host-windowsSid) -> 21
+S-1-5-21-668023798-3031861066-1043980994-3504 (host-windowsSid) -> 171
+S-1-5-21-668023798-3031861066-1043980994-3505 (host-windowsSid) -> 66
+S-1-5-21-668023798-3031861066-1043980994-3506 (host-windowsSid) -> 38
+S-1-5-21-668023798-3031861066-1043980994-3508 (host-windowsSid) -> 172
+S-1-5-21-668023798-3031861066-1043980994-3509 (host-windowsSid) -> 84
+S-1-5-21-668023798-3031861066-1043980994-3510 (user-windowsSid) -> 173
+S-1-5-21-668023798-3031861066-1043980994-3511 (user-windowsSid) -> 174
+S-1-5-21-668023798-3031861066-1043980994-3513 (host-windowsSid) -> 175
+S-1-5-21-668023798-3031861066-1043980994-3514 (user-windowsSid) -> 176
+S-1-5-21-668023798-3031861066-1043980994-3610 (host-windowsSid) -> 177
+S-1-5-21-668023798-3031861066-1043980994-5111 (host-windowsSid) -> 98
+S-1-5-21-668023798-3031861066-1043980994-5112 (host-windowsSid) -> 178
+S-1-5-21-668023798-3031861066-1043980994-5114 (host-windowsSid) -> 68
+S-1-5-21-668023798-3031861066-1043980994-5115 (host-windowsSid) -> 44
+S-1-5-21-668023798-3031861066-1043980994-5118 (host-windowsSid) -> 179
+S-1-5-21-668023798-3031861066-1043980994-5119 (host-windowsSid) -> 82
+S-1-5-21-668023798-3031861066-1043980994-5120 (host-windowsSid) -> 30
+S-1-5-21-668023798-3031861066-1043980994-5121 (host-windowsSid) -> 13
+S-1-5-21-668023798-3031861066-1043980994-5122 (host-windowsSid) -> 91
+S-1-5-21-668023798-3031861066-1043980994-5123 (host-windowsSid) -> 90
+S-1-5-21-668023798-3031861066-1043980994-5124 (host-windowsSid) -> 95
+S-1-5-21-668023798-3031861066-1043980994-5128 (host-windowsSid) -> 32
+S-1-5-21-668023798-3031861066-1043980994-5130 (host-windowsSid) -> 72
+S-1-5-21-668023798-3031861066-1043980994-5132 (user-windowsSid) -> 180
+S-1-5-21-668023798-3031861066-1043980994-5133 (user-windowsSid) -> 181
+S-1-5-21-668023798-3031861066-1043980994-5137 (host-windowsSid) -> 182
+S-1-5-21-668023798-3031861066-1043980994-5138 (host-windowsSid) -> 27
+S-1-5-21-668023798-3031861066-1043980994-5140 (host-windowsSid) -> 53
+S-1-5-21-668023798-3031861066-1043980994-5141 (host-windowsSid) -> 24
+S-1-5-21-668023798-3031861066-1043980994-5142 (host-windowsSid) -> 58
+S-1-5-21-668023798-3031861066-1043980994-5145 (host-windowsSid) -> 64
+S-1-5-21-668023798-3031861066-1043980994-5147 (user-windowsSid) -> 183
+S-1-5-21-668023798-3031861066-1043980994-5148 (user-windowsSid) -> 184
+S-1-5-21-668023798-3031861066-1043980994-5149 (user-windowsSid) -> 185
+S-1-5-21-668023798-3031861066-1043980994-5150 (user-windowsSid) -> 186
+S-1-5-21-668023798-3031861066-1043980994-5151 (user-windowsSid) -> 187
+S-1-5-21-668023798-3031861066-1043980994-5152 (host-windowsSid) -> 86
+S-1-5-21-668023798-3031861066-1043980994-5153 (host-windowsSid) -> 69
+S-1-5-21-668023798-3031861066-1043980994-5154 (host-windowsSid) -> 188
+S-1-5-21-668023798-3031861066-1043980994-5155 (host-windowsSid) -> 189
+S-1-5-21-668023798-3031861066-1043980994-5156 (host-windowsSid) -> 190
+S-1-5-21-830805687-550985140-3285839444-1156 (user-windowsSid) -> 191
+S-1-5-21-830805687-550985140-3285839444-1158 (user-windowsSid) -> 192
+S-1-5-21-830805687-550985140-3285839444-1159 (user-windowsSid) -> 193
+S-1-5-21-830805687-550985140-3285839444-1160 (user-windowsSid) -> 194
+S-1-5-21-830805687-550985140-3285839444-1161 (user-windowsSid) -> 195
+S-1-5-21-830805687-550985140-3285839444-1162 (user-windowsSid) -> 196
+S-1-5-21-830805687-550985140-3285839444-1163 (user-windowsSid) -> 197
+S-1-5-21-830805687-550985140-3285839444-1164 (user-windowsSid) -> 198
+S-1-5-21-830805687-550985140-3285839444-1165 (user-windowsSid) -> 199
+S-1-5-21-830805687-550985140-3285839444-1166 (user-windowsSid) -> 200
+S-1-5-21-830805687-550985140-3285839444-1167 (user-windowsSid) -> 201
+S-1-5-21-830805687-550985140-3285839444-1168 (user-windowsSid) -> 202
+S-1-5-21-830805687-550985140-3285839444-1169 (user-windowsSid) -> 203
+S-1-5-21-830805687-550985140-3285839444-1170 (user-windowsSid) -> 204
+S-1-5-21-830805687-550985140-3285839444-1171 (user-windowsSid) -> 205
+S-1-5-21-830805687-550985140-3285839444-1172 (user-windowsSid) -> 206
+S-1-5-21-830805687-550985140-3285839444-1173 (user-windowsSid) -> 207
+S-1-5-21-830805687-550985140-3285839444-1174 (user-windowsSid) -> 208
+S-1-5-21-830805687-550985140-3285839444-1175 (user-windowsSid) -> 209
+S-1-5-21-830805687-550985140-3285839444-1176 (user-windowsSid) -> 210
+S-1-5-21-830805687-550985140-3285839444-1177 (user-windowsSid) -> 211
+S-1-5-21-830805687-550985140-3285839444-1178 (user-windowsSid) -> 212
+S-1-5-21-830805687-550985140-3285839444-1179 (user-windowsSid) -> 213
+S-1-5-21-830805687-550985140-3285839444-1180 (user-windowsSid) -> 214
+S-1-5-21-830805687-550985140-3285839444-1181 (user-windowsSid) -> 215
+S-1-5-21-830805687-550985140-3285839444-1182 (user-windowsSid) -> 216
+S-1-5-21-830805687-550985140-3285839444-1183 (user-windowsSid) -> 217
+S-1-5-21-830805687-550985140-3285839444-1184 (user-windowsSid) -> 218
+S-1-5-21-830805687-550985140-3285839444-1185 (user-windowsSid) -> 219
+S-1-5-21-830805687-550985140-3285839444-1186 (user-windowsSid) -> 220
+S-1-5-21-830805687-550985140-3285839444-1187 (user-windowsSid) -> 221
+S-1-5-21-830805687-550985140-3285839444-1188 (user-windowsSid) -> 222
+S-1-5-21-830805687-550985140-3285839444-1189 (user-windowsSid) -> 223
+S-1-5-21-830805687-550985140-3285839444-1190 (user-windowsSid) -> 224
+S-1-5-21-830805687-550985140-3285839444-1191 (user-windowsSid) -> 225
+S-1-5-21-830805687-550985140-3285839444-1192 (user-windowsSid) -> 226
+S-1-5-21-830805687-550985140-3285839444-1193 (user-windowsSid) -> 227
+S-1-5-21-830805687-550985140-3285839444-1194 (user-windowsSid) -> 228
+S-1-5-21-830805687-550985140-3285839444-1195 (user-windowsSid) -> 229
+S-1-5-21-830805687-550985140-3285839444-1196 (user-windowsSid) -> 230
+S-1-5-21-830805687-550985140-3285839444-1197 (user-windowsSid) -> 231
+S-1-5-21-830805687-550985140-3285839444-1198 (user-windowsSid) -> 232
+S-1-5-32-544 (user-windowsSid) -> 233
+SABA.bluejungle.com (host-uniqueName) -> 136
+SABA.bluejungle.com (host-uniqueName) -> 136
+SANDOY.bluejungle.com (host-uniqueName) -> 146
+SANDOY.bluejungle.com (host-uniqueName) -> 146
+SARK.bluejungle.com (host-uniqueName) -> 171
+SARK.bluejungle.com (host-uniqueName) -> 171
+savaii.bluejungle.com (host-uniqueName) -> 182
+savaii.bluejungle.com (host-uniqueName) -> 182
+SHAG.bluejungle.com (host-uniqueName) -> 126
+SHAG.bluejungle.com (host-uniqueName) -> 126
+shikoku.bluejungle.com (host-uniqueName) -> 188
+shikoku.bluejungle.com (host-uniqueName) -> 188
+SIPURA.bluejungle.com (host-uniqueName) -> 147
+SIPURA.bluejungle.com (host-uniqueName) -> 147
+STBARTS.bluejungle.com (host-uniqueName) -> 120
+STBARTS.bluejungle.com (host-uniqueName) -> 120
+sumba.bluejungle.com (host-uniqueName) -> 165
+sumba.bluejungle.com (host-uniqueName) -> 165
+SVALBARD.bluejungle.com (host-uniqueName) -> 169
+SVALBARD.bluejungle.com (host-uniqueName) -> 169
+SWANS.bluejungle.com (host-uniqueName) -> 172
+SWANS.bluejungle.com (host-uniqueName) -> 172
+SYMANTEC01.bluejungle.com (host-uniqueName) -> 175
+SYMANTEC01.bluejungle.com (host-uniqueName) -> 175
+TARAWA.bluejungle.com (host-uniqueName) -> 163
+TARAWA.bluejungle.com (host-uniqueName) -> 163
+TASMANIA.bluejungle.com (host-uniqueName) -> 162
+TASMANIA.bluejungle.com (host-uniqueName) -> 162
+TIMOR-XP-x64.bluejungle.com (host-uniqueName) -> 127
+TIMOR-XP-x64.bluejungle.com (host-uniqueName) -> 127
+timor.bluejungle.com (host-uniqueName) -> 168
+timor.bluejungle.com (host-uniqueName) -> 168
+TINOS.bluejungle.com (host-uniqueName) -> 152
+TINOS.bluejungle.com (host-uniqueName) -> 152
+tioman.bluejungle.com (host-uniqueName) -> 118
+tioman.bluejungle.com (host-uniqueName) -> 118
+tioman2.bluejungle.com (host-uniqueName) -> 101
+tioman2.bluejungle.com (host-uniqueName) -> 101
+TOBAGO.bluejungle.com (host-uniqueName) -> 119
+TOBAGO.bluejungle.com (host-uniqueName) -> 119
+TONGA.bluejungle.com (host-uniqueName) -> 156
+TONGA.bluejungle.com (host-uniqueName) -> 156
+TREASURE.bluejungle.com (host-uniqueName) -> 177
+TREASURE.bluejungle.com (host-uniqueName) -> 177
+trinidad.bluejungle.com (host-uniqueName) -> 170
+trinidad.bluejungle.com (host-uniqueName) -> 170
+TS01.bluejungle.com (host-uniqueName) -> 189
+TS01.bluejungle.com (host-uniqueName) -> 189
+TZIA.bluejungle.com (host-uniqueName) -> 164
+TZIA.bluejungle.com (host-uniqueName) -> 164
+VAGAR.bluejungle.com (host-uniqueName) -> 157
+VAGAR.bluejungle.com (host-uniqueName) -> 157
+Vista-PC.bluejungle.com (host-uniqueName) -> 144
+Vista-PC.bluejungle.com (host-uniqueName) -> 144
+VPN02.bluejungle.com (host-uniqueName) -> 145
+VPN02.bluejungle.com (host-uniqueName) -> 145
+vulcano.bluejungle.com (host-uniqueName) -> 179
+vulcano.bluejungle.com (host-uniqueName) -> 179
+xp-pro-jed.bluejungle.com (host-uniqueName) -> 178
+xp-pro-jed.bluejungle.com (host-uniqueName) -> 178
+YASAWA.bluejungle.com (host-uniqueName) -> 190
+YASAWA.bluejungle.com (host-uniqueName) -> 190
+zante.bluejungle.com (host-uniqueName) -> 138
+zante.bluejungle.com (host-uniqueName) -> 138
+ZEMBRA.bluejungle.com (host-uniqueName) -> 107
+ZEMBRA.bluejungle.com (host-uniqueName) -> 107
+{UNKNOWN-APP} (application-builtin) -> 234
+{UNKNOWN-HOST} (host-builtin) -> 235
+{UNKNOWN-USER} (user-builtin) -> 236

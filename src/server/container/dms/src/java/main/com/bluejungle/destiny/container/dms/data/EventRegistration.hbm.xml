@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.dms.data">
+	
+	<class name="EventRegistration" table="EVENT_REGISTRATION">
+		<!-- Generic persisted properties -->
+		<id name="id">
+			<generator class="native"/>
+		</id>
+
+		<property name="lastModified" type="long" not-null="true"/>
+		<property name="isActive" type="boolean" not-null="true"/>
+		
+		<!-- Object-specific properties -->
+		<many-to-one
+			name="consumer"
+			column="COMPONENT_ID"
+			class="ComponentDO"
+			not-null="true"/>
+
+		<many-to-one
+			name="event"
+			class="EventDO">
+			<column name="EVENT_ID" not-null="true" index="EventRegistrationEventId"/>
+		</many-to-one>
+
+	</class>
+
+</hibernate-mapping>

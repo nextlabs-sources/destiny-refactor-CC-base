@@ -1,0 +1,7 @@
+id 123 status draft creator empty access_policy empty resource big_composite =
+    DESCRIPTION "blah blah blah"
+    NAME != "foo.txt" and NAME = "bar.doc"
+    OR  TYPE != "PERL" and TYPE == "JAVA"
+    OR  DIRectory != "FOO" and directory = "BAR"
+    OR  SIZE = 100 AND SIZE == 100 AND SIZE < 1000 AND SIZE > 10 AND SIZE <= 100 and SIZE >= 100 and custom != null
+    OR  trUE and False

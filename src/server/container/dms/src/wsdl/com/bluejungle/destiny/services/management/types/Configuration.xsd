@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://bluejungle.com/destiny/services/management/types" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:types="http://bluejungle.com/destiny/services/management/types"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+    <!-- Basic type definitions -->
+    <xs:complexType name="Property">
+        <xs:sequence>
+            <xs:element name="Name" type="xs:string"/>
+            <xs:element name="Value" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="PropertyList">
+        <xs:sequence>
+            <xs:element name="Property" type="types:Property" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="BaseConfiguration">
+        <xs:sequence>
+            <xs:element name="Properties" type="types:PropertyList" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Type definitions for Application User configuration -->
+    <xs:complexType name="UserRepositoryConfiguration">
+        <xs:sequence>
+            <xs:element name="ProviderClassName" type="xs:string"/>
+            <xs:element name="Properties" type="types:PropertyList" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="AuthenticatorConfiguration">
+        <xs:sequence>
+            <xs:element name="AuthenticatorClassName" type="xs:string"/>
+            <xs:element name="Properties" type="types:PropertyList"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="UserAccessConfiguration">
+        <xs:sequence>
+            <xs:element name="UserAccessProviderClassName" type="xs:string"/>
+            <xs:element name="Properties" type="types:PropertyList"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="ExternalDomainConfiguration">
+        <xs:sequence>
+            <xs:element name="DomainName" type="xs:string"/>
+            <xs:element name="AuthenticatorConfiguration" type="types:AuthenticatorConfiguration"/>
+            <xs:element name="UserAccessConfiguration" type="types:UserAccessConfiguration"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <!-- We support 3 authentication modes for app users -->
+    <xs:simpleType name="AuthenticationMode">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Local"/>
+            <xs:enumeration value="Remote"/>
+            <xs:enumeration value="Hybrid"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="ApplicationUserConfiguration">
+        <xs:sequence>
+            <xs:element name="AuthenticationMode" type="types:AuthenticationMode"/>
+            <xs:element name="UserRepositoryConfiguration" type="types:UserRepositoryConfiguration"/>
+            <xs:element name="ExternalDomainConfiguration" type="types:ExternalDomainConfiguration" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="MessageHandler">
+        <xs:sequence>
+            <xs:element name="Name" type="xs:string"/>
+            <xs:element name="ClassName" type="xs:string"/>
+            <xs:element name="Properties" type="types:PropertyList"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MessageHandlers">
+        <xs:sequence>
+            <xs:element name="MessageHandler" type="types:MessageHandler" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--
+        Repository/Connection Pool configuration list. This top level object is also sent to
+        DCC components on succesful registration.
+    -->
+    <xs:complexType name="RepositoryConfigurationList">
+        <xs:sequence>
+            <xs:element name="Repository" type="types:RepositoryConfiguration" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element name="ConnectionPools" type="types:ConnectionPoolConfigurationList" minOccurs="0" maxOccurs="1" nillable="true"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ConnectionPoolConfigurationList">
+        <xs:sequence>
+            <xs:element name="ConnectionPool" type="types:ConnectionPoolConfiguration" minOccurs="1" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--
+        This object is sent to registered DCC components.
+    -->
+    <xs:complexType name="ConnectionPoolConfiguration">
+        <xs:sequence>
+            <xs:element name="Name" type="xs:string"/>
+            <xs:element name="Username" type="xs:string"/>
+            <xs:element name="Password" type="xs:string"/>
+            <xs:element name="ConnectString" type="xs:anyURI"/>
+            <xs:element name="DriverClassName" type="xs:string"/>
+            <xs:element name="MaxPoolSize" type="xs:positiveInteger"/>
+            <xs:element name="Properties" type="types:PropertyList"  minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--
+        This object is sent to registered DCC components. At parse time,
+        "ConnectionPoolName" is specified, but before this information is
+        sent to the DCC components, this element is resolved to the actual
+        connection pool configuration, and that the "ConnectionPoolConfiguration"
+        element is piggy-backed instead of the "ConnectionPoolName".
+    -->
+    <xs:complexType name="RepositoryConfiguration">
+        <xs:sequence>
+            <xs:element name="Name" type="xs:string" />
+            <xs:choice>
+                <xs:element name="ConnectionPoolName" type="xs:string"/>
+                <xs:element name="ConnectionPoolConfiguration" type="types:ConnectionPoolConfiguration"/>
+            </xs:choice>
+            <xs:element name="Properties" type="types:PropertyList" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Trusted Domains Configuration -->
+    <xs:complexType name="TrustedDomainsConfiguration">
+        <xs:sequence>
+            <xs:element name="MutuallyTrusted" type="xs:string"  minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <!-- File System log Configuration -->
+    <xs:complexType name="FileSystemLogConfiguration">
+        <xs:all>
+            <xs:element name="ThreadPoolMaximumSize" type="xs:positiveInteger" nillable="true" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="ThreadPoolKeepAliveTime" type="xs:nonNegativeInteger" nillable="true" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="LogInsertTaskIdleTime" type="xs:nonNegativeInteger" nillable="true" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="LogTimeout" type="xs:nonNegativeInteger" nillable="true" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="TimeoutCheckerFrequency" type="xs:nonNegativeInteger" nillable="true" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="QueueManagerUploadSize" type="xs:positiveInteger" nillable="true" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="MaxHandleFileSizePerThread" type="xs:positiveInteger" nillable="true" minOccurs="0" maxOccurs="1"/>
+        </xs:all>
+    </xs:complexType>
+    
+    <xs:complexType name="DaysOfWeek">
+        <xs:sequence>
+            <xs:element name="DayOfWeek" type="xs:string"  minOccurs="1" maxOccurs="7" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:simpleType name="DayOfMonth">
+        <xs:restriction base="xs:byte">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="31"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:complexType name="DaysOfMonth">
+        <xs:sequence>
+            <xs:element name="DayOfMonth" type="types:DayOfMonth"  minOccurs="1" maxOccurs="31" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <!-- DCC Component configuration -->
+    
+    <xs:complexType name="SyncOperation">
+        <xs:sequence>
+            <xs:choice>
+                   <xs:element name="TimeOfDay" type="xs:string"/>
+                <xs:element name="TimeInterval" type="xs:nonNegativeInteger"/>
+            </xs:choice>
+            <xs:element name="TimeoutInMinutes" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="IndexesRebuildOperation">
+        <xs:sequence>
+            <xs:element name="TimeOfDay" type="xs:string"/>
+            <xs:choice  minOccurs="0" maxOccurs="1">
+                   <xs:element name="DaysOfWeek" type="types:DaysOfWeek"/>
+                   <xs:element name="DaysOfMonth" type="types:DaysOfMonth"/>
+            </xs:choice>
+            <xs:element name="AutoRebuildIndexes" type="xs:boolean"/>
+            <xs:element name="TimeoutInMinutes" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="ArchiveOperation">
+        <xs:sequence>
+               <xs:element name="TimeOfDay" type="xs:string"/>
+            <xs:choice minOccurs="0" maxOccurs="1">
+                   <xs:element name="DaysOfWeek" type="types:DaysOfWeek"/>
+                   <xs:element name="DaysOfMonth" type="types:DaysOfMonth"/>
+            </xs:choice>
+            <xs:element name="DaysOfDataToKeep" type="xs:int"/>
+            <xs:element name="AutoArchive" type="xs:boolean"/>
+            <xs:element name="TimeoutInMinutes" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="ActivityJournalSettingConfiguration">
+        <xs:all>
+            <xs:element name="SyncOperation" type="types:SyncOperation"/>
+            <xs:element name="IndexesRebuildOperation" type="types:IndexesRebuildOperation"/>
+            <xs:element name="ArchiveOperation" type="types:ArchiveOperation"/>
+        </xs:all>
+    </xs:complexType>
+    
+    <!-- Single Custom Obligation Configuration -->
+    <xs:complexType name="CustomObligation">
+        <xs:sequence>
+            <xs:element name="DisplayName" type="xs:string"/>
+            <xs:element name="RunAt" type="types:CustomObligationRunAt"/>
+            <xs:element name="RunBy" type="types:CustomObligationRunBy"  minOccurs="0" maxOccurs="1"/>
+            <xs:choice>
+              <xs:element name="Name" type="xs:string"  minOccurs="0" maxOccurs="1"/>
+              <xs:element name="ExecPath" type="xs:string"  minOccurs="0" maxOccurs="1"/>
+            </xs:choice>
+            <xs:element name="Arguments" type="types:CustomObligationArguments" nillable="true" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:simpleType name="CustomObligationRunAt">
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="PEP"/>
+        <xs:enumeration value="PDP"/>
+      </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="CustomObligationRunBy">
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="User"/>
+        <xs:enumeration value="System"/>
+      </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="CustomObligationArguments">
+        <xs:sequence>
+          <xs:element name="Argument" type="types:CustomObligationArgument"  minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CustomObligationArgument">
+        <xs:sequence>
+            <xs:element name="Name" type="xs:string"  minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Value" type="types:CustomObligationArgumentValue" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="usereditable" default="false" type="xs:boolean"/>
+        <xs:attribute name="hidden" default="false" type="xs:boolean"/>
+    </xs:complexType>
+
+    <xs:complexType name="CustomObligationArgumentValue">
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="default" default="true" type="xs:boolean"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+
+    <!-- All Custom Obligations Configuration -->
+    <xs:complexType name="CustomObligations">
+        <xs:sequence>
+            <xs:element name="Obligation" type="types:CustomObligation"  minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- List of Actions -->
+    <xs:complexType name="ActionListConfig">
+                <xs:sequence>
+                    <xs:element name="Action" type="types:ActionConfig"  minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+    </xs:complexType>
+
+    <!-- Action consists of name (e.g. "COPY"), display name (e.g. "Copy / Embed File"), short name (e.g. "Co"), and Category (e.g. "Transform") -->
+    <xs:complexType name="ActionConfig">
+        <xs:sequence>
+            <xs:element name="Name" type="xs:string"/>
+            <xs:element name="DisplayName" type="xs:string"/>
+            <xs:element name="ShortName" type="types:ActionShortNameType"/>
+            <xs:element name="Category" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Action's short name, e.g. "De" for DELETE, "Co" for COPY -->
+    <xs:simpleType name="ActionShortNameType">
+        <xs:restriction base="xs:string">
+            <xs:length value="2"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- DCC Component configuration -->
+    <xs:simpleType name="CriticalUpdateLagTime">
+        <xs:restriction base="xs:positiveInteger">
+            <xs:minInclusive value="15"/>
+            <xs:maxInclusive value="600"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:complexType name="DCCConfiguration" abstract="true">
+        <xs:complexContent>
+            <xs:extension base="types:BaseConfiguration">
+                <xs:sequence>
+                    <xs:element name="HeartbeatRate" type="types:CriticalUpdateLagTime" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="DABSConfiguration">
+        <xs:complexContent>
+            <xs:extension base="types:DCCConfiguration">
+                <xs:sequence>
+                    <xs:element name="TrustedDomainsConfiguration" type="types:TrustedDomainsConfiguration"/>
+                    <xs:element name="FileSystemLogConfiguration" type="types:FileSystemLogConfiguration"/>
+                    <xs:element name="Regexps" type="types:RegularExpressions" nillable="true" minOccurs="0" maxOccurs="1"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="DACConfiguration">
+        <xs:complexContent>
+            <xs:extension base="types:DCCConfiguration">
+                <xs:sequence>
+                    <xs:element name="ActivityJournalSettingConfiguration" type="types:ActivityJournalSettingConfiguration"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>    
+
+    <xs:complexType name="DCSFConfiguration">
+        <xs:complexContent>
+            <xs:extension base="types:DCCConfiguration">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="DEMConfiguration">
+        <xs:complexContent>
+            <xs:extension base="types:DCCConfiguration">
+                <xs:sequence>
+                    <xs:element name="ReporterCacheRefreshRate" type="xs:positiveInteger" nillable="true" minOccurs="0" maxOccurs="1"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>    
+
+    <xs:complexType name="DMSConfiguration">
+        <xs:complexContent>
+            <xs:extension base="types:DCCConfiguration">
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="DPSConfiguration">
+        <xs:complexContent>
+            <xs:extension base="types:DCCConfiguration">
+                <xs:sequence>
+                    <xs:element name="LifecycleManagerGraceWindow" type="xs:integer"  minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="DeploymentTime" type="xs:string"  minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="CustomAttributes" type="types:CustomAttributes" nillable="true" minOccurs="0" maxOccurs="1"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- A List of regular expression definitions -->
+    <xs:complexType name="RegularExpressions">
+        <xs:sequence>
+            <xs:element name="Regexp" type="types:RegularExpressionDef" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RegularExpressionDef">
+        <xs:sequence>
+            <xs:element name="Name" type="xs:string"/>
+            <xs:element name="Value" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- A List of resource attributes -->
+    <xs:complexType name="CustomAttributes">
+        <xs:sequence>
+            <xs:element name="ResourceAttribute" type="types:ResourceAttributeDef"  minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Resource Attribute Configuration -->
+    <xs:complexType name="ResourceAttributeDef">
+        <xs:sequence>
+            <xs:element name="Group" type="xs:string"  minOccurs="0" maxOccurs="1"/>
+            <xs:element name="DisplayName" type="xs:string"/>
+            <xs:element name="Name" type="xs:string"/>
+            <xs:element name="Type" type="xs:string"/>
+            <xs:element name="Attribute" type="xs:string"  minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="Value" type="xs:string"  minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="MgmtConsoleConfiguration">
+        <xs:complexContent>
+            <xs:extension base="types:DCCConfiguration" />
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="ReporterConfiguration">
+        <xs:complexContent>
+            <xs:extension base="types:DCCConfiguration">
+                <xs:sequence>
+                    <xs:element name="ShowSharePointReports" type="xs:nonNegativeInteger" nillable="true" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="ReportGenerationFrequency" type="xs:nonNegativeInteger" nillable="true" minOccurs="0" maxOccurs="1"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="GenericConfiguration">
+
+        <xs:complexContent>
+            <xs:extension base="types:DCCConfiguration">
+                <xs:attribute name="name" type="xs:string" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+
+    </xs:complexType>
+
+    <xs:complexType name="GenericConfigurations">
+        <xs:sequence>
+            <xs:element name="GenericComponent" type="types:GenericConfiguration" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        
+    </xs:complexType>
+    
+
+    <!-- This element is the Master configuration store -->
+    <xs:complexType name="DestinyConfiguration">
+        <xs:all>
+            <xs:element name="ApplicationUserConfiguration" type="types:ApplicationUserConfiguration"/>
+            <xs:element name="MessageHandlers" type="types:MessageHandlers"/>
+            <xs:element name="Obligations" type="types:CustomObligations" nillable="true" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="ActionList" type="types:ActionListConfig" nillable="true" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="DMS" type="types:DMSConfiguration"/>
+            <xs:element name="DCSF" type="types:DCSFConfiguration"/>
+            <xs:element name="DABS" type="types:DABSConfiguration"/>
+            <xs:element name="DPS" type="types:DPSConfiguration"/>
+            <xs:element name="DAC" type="types:DACConfiguration"/>
+            <xs:element name="DEM" type="types:DEMConfiguration"/>
+            <xs:element name="ManagementConsole" type="types:MgmtConsoleConfiguration"/>
+            <xs:element name="Reporter" type="types:ReporterConfiguration"/>
+            <xs:element name="Repositories" type="types:RepositoryConfigurationList"/>
+            <xs:element name="GenericComponents" type="types:GenericConfigurations" nillable="true" minOccurs="0" maxOccurs="1"/>
+        </xs:all>
+    </xs:complexType>
+
+    <!-- Global Elements -->
+    <xs:element name="DestinyConfiguration" type="types:DestinyConfiguration"/>
+
+</xs:schema> 

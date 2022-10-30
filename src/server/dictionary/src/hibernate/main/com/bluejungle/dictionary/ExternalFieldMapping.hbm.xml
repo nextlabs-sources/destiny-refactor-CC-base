@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping package="com.bluejungle.dictionary">
+    <class name="ExternalFieldMapping" table="DICT_FIELD_MAPPINGS" dynamic-update="false">
+        <id name="id" column="ID" access="field">
+            <generator class="native"/>
+        </id>
+        <version name="version" column="VERSION" access="field"/>
+        <many-to-one name="enrollment" class="Enrollment" outer-join="true" access="field">
+            <column name="enrollment_id" not-null="true" unique-key="UniqueExternalMappingNames"/>
+        </many-to-one>
+        <many-to-one name="field" class="ElementField" outer-join="true" access="field">
+            <column name="field" not-null="true" unique-key="UniqueExternalMappingNames" />
+        </many-to-one>
+        <many-to-one name="fieldType" class="ElementType" outer-join="true" access="field">
+            <column name="field_type" not-null="true"/>
+        </many-to-one>
+        <property name="externalName" access="field" type="string">
+            <column name="external_name" length="128" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

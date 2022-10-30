@@ -1,0 +1,7 @@
+POLICY Obligations02
+    FOR resource.name = "c:\\verify.obligations"
+    ON *
+    BY PRINCIPAL.USER.NAME = "hchen@bluejungle.com"
+    DO ALLOW
+    BY DEFAULT DO DENY
+    ON DONTCARE DO log

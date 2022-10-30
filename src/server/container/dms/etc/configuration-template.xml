@@ -1,0 +1,480 @@
+<?xml version="1.0"?>
+
+<DestinyConfiguration xmlns="http://bluejungle.com/destiny/services/management/types">
+    <!-- 
+         Application User component configuration
+    -->
+    <ApplicationUserConfiguration>
+        <AuthenticationMode>[AUTH_MODE]</AuthenticationMode>
+        <UserRepositoryConfiguration>
+            <ProviderClassName>com.bluejungle.destiny.container.shared.applicationusers.repository.hibernateimpl.HibernateApplicationUserRepository</ProviderClassName>
+        </UserRepositoryConfiguration>
+        
+        <!--[EXTERNAL_DOMAIN_SWITCH_BEGIN]-->
+        <ExternalDomainConfiguration>
+            <DomainName>[DOMAIN_NAME]</DomainName>
+            <AuthenticatorConfiguration>
+                <AuthenticatorClassName>com.bluejungle.destiny.container.shared.applicationusers.auth.jaas.KrbAuthMgrImpl</AuthenticatorClassName>
+                <Properties>
+                    <Property>
+                        <Name>java.security.krb5.kdc</Name>
+                        <Value>[DOMAIN_CONTROLLER]</Value>
+                    </Property>
+                    <Property>
+                        <Name>java.security.krb5.realm</Name>
+                        <Value>[DOMAIN_NAME]</Value>
+                    </Property>
+                </Properties>
+            </AuthenticatorConfiguration>
+            
+            <UserAccessConfiguration>
+                <UserAccessProviderClassName>com.bluejungle.destiny.container.shared.applicationusers.external.ldapimpl.LDAPAccessProvider</UserAccessProviderClassName>
+                <Properties>
+                    <Property>
+                        <Name>server.name</Name>
+                        <Value>[DOMAIN_CONTROLLER]</Value>
+                    </Property>
+                    <Property>
+                        <Name>server.port</Name>
+                        <Value>[DOMAIN_CONTROLLER_DIRECTORY_PORT]</Value>
+                    </Property>
+                    <Property>
+                        <Name>useSSL</Name>
+                        <Value>false</Value>
+                    </Property>
+                    <Property>
+                        <Name>root.dn</Name>
+                        <Value>[WINDOWS_USERS_ROOT_DN]</Value>
+                    </Property>
+                    <Property>
+                        <Name>login.dn</Name>
+                        <Value>[WINDOWS_USERS_LOGIN_DN]</Value>
+                    </Property>
+                    <Property>
+                        <Name>login.password</Name>
+                        <Value>[WINDOWS_USERS_PASSWORD]</Value>
+                    </Property>
+                    <Property>
+                        <Name>user.attributefor.firstname</Name>
+                        <Value>givenName</Value>
+                    </Property>
+                    <Property>
+                        <Name>user.attributefor.lastname</Name>
+                        <Value>sn</Value>
+                    </Property>
+                    <Property>
+                        <Name>user.attributefor.login</Name>
+                        <Value>sAMAccountName</Value>
+                    </Property>
+                    <Property>
+                        <Name>user.searchspec</Name>
+                        <Value>(&amp;(objectClass=user)(!(objectClass=computer)))</Value>
+                    </Property>
+                    <Property>
+                        <Name>attributefor.globallyuniqueidentifier</Name>
+                        <Value>objectGUID</Value>
+                    </Property>
+                    <Property>
+                        <Name>structural.group.searchspec1</Name>
+                        <Value>(objectClass=organization)</Value>
+                    </Property>
+                    <Property>
+                        <Name>structural.group.attributefor.title1</Name>
+                        <Value>o</Value>
+                    </Property>
+                    <Property>
+                        <Name>structural.group.searchspec2</Name>
+                        <Value>(objectClass=organizationalUnit)</Value>
+                    </Property>
+                    <Property>
+                        <Name>structural.group.attributefor.title2</Name>
+                        <Value>ou</Value>
+                    </Property>
+                    <Property>
+                        <Name>enumerated.group.searchspec1</Name>
+                        <Value>(objectClass=group)</Value>
+                    </Property>
+                    <Property>
+                        <Name>enumerated.group.attributefor.title1</Name>
+                        <Value>cn</Value>
+                    </Property>
+                    <Property>
+                        <Name>enumerated.group.attributefor.membership1</Name>
+                        <Value>member</Value>
+                    </Property>
+                </Properties>
+            </UserAccessConfiguration>
+        </ExternalDomainConfiguration>
+        <!--[EXTERNAL_DOMAIN_SWITCH_END]-->
+    </ApplicationUserConfiguration>
+    
+    <!-- 
+         Message Handler component configuraiton
+    -->
+    <MessageHandlers>
+        <!--[DEFAULT_EMAIL_HANDLER_BEGIN]-->
+        <MessageHandler>
+            <Name>DefaultEmailHandler</Name>
+            <ClassName>com.nextlabs.framework.messaging.handlers.EmailMessageHandler</ClassName>
+            <Properties>
+                <Property>
+                    <Name>server</Name>
+                    <Value>[SMTP_SERVER_HOST]</Value>
+                </Property>
+                <Property>
+                    <Name>port</Name>
+                    <Value>[SMTP_SERVER_PORT]</Value>
+                </Property>
+                <Property>
+                    <Name>username</Name>
+                    <Value>[SMTP_SERVER_USERNAME]</Value>
+                </Property>
+                <Property>
+                    <Name>password</Name>
+                    <Value>[SMTP_SERVER_PASSWORD]</Value>
+                </Property>
+                <Property>
+                    <Name>default_from</Name>
+                    <Value>[SMTP_FROM_ADDRESS]</Value>
+                </Property>
+                <Property>
+                    <Name>default_to</Name>
+                    <Value>[SMTP_TO_ADDRESSES]</Value>
+                </Property>
+            </Properties>
+        </MessageHandler>
+        <!--[DEFAULT_EMAIL_HANDLER_END]-->
+    </MessageHandlers>
+    
+    <Obligations>
+    </Obligations>
+    
+    <ActionList>
+    </ActionList>
+    
+    <!-- 
+         DMS configuration
+    -->
+    <DMS>
+        <HeartbeatRate>60</HeartbeatRate>
+    </DMS>
+    
+    <!-- 
+         DCSF configuration
+    -->
+    <DCSF>
+        <HeartbeatRate>30</HeartbeatRate>
+    </DCSF>
+    
+    <!-- 
+         DABS configuration
+    -->
+    <DABS>
+        <HeartbeatRate>30</HeartbeatRate>
+        <TrustedDomainsConfiguration>
+            <MutuallyTrusted>
+                <!-- 
+                     Replace this comment with a comma-separated list
+                     of domains with mutual trust relations, for example:
+                     bluejungle.com,qa.bluejungle.com,eng.bluejungle.com
+                     Add more <MutuallyTrusted> elements as necessary. 
+                -->
+            </MutuallyTrusted>
+        </TrustedDomainsConfiguration>
+        <FileSystemLogConfiguration>
+            <ThreadPoolMaximumSize>8</ThreadPoolMaximumSize>
+            <QueueManagerUploadSize>1048576</QueueManagerUploadSize>
+        </FileSystemLogConfiguration>
+        <Regexps>
+            <Regexp>
+                <Name>RegexType_CCN</Name>
+                <Value>\b\d{4}(\s|[-]){0,1}\d{4}(\s|[-]){0,1}\d{2}(\s|[-]){0,1}\d{2}(\s|[-]){0,1}\d{1,4}\b</Value>
+            </Regexp>
+            <Regexp>
+                <Name>RegexType_CurrencyValue</Name>
+                <Value>([\x{0024}\x{00a2}-\x{00a5}\x{20a1}-\x{20cf}])(\s)*((([-(]){0,1}\d{1,3}([,.]\d{3})*([,.]\d{1,2}){0,1}[)]{0,1})|([,.]\d{1,2}))</Value>
+            </Regexp>
+            <Regexp>
+                <Name>RegexType_PhoneNumber</Name>
+                <Value>(([(]{0,1}\d{3}([).-]|\s)\s{0,10}\d{3}([-.]|\s)\d{4})|(\b\d{3}([.-]|\s)\d{4}))\b</Value>
+            </Regexp>
+            <Regexp>
+                <Name>RegexType_SSN</Name>
+                <Value>\b\d{3}([- ]){0,1}\d{2}([- ]){0,1}\d{4}\b</Value>
+            </Regexp>
+            <Regexp>
+                <Name>RegexType_IPv4Address</Name>
+                <Value>\b((2[0-4]\d)|(25[0-5])|(1{0,1}\d{1,2}))([.]((2[0-4]\d)|(25[0-5])|(1{0,1}\d{1,2}))){3}(/\d{1,2}){0,1}\b</Value>
+            </Regexp>
+            <Regexp>
+                <Name>RegexType_EmailAddress</Name>
+                <Value>\b\w(\w|[.+#$!-])*@(\w+\.){1,3}\w{2,6}\b</Value>
+            </Regexp>
+            <Regexp>
+                <Name>RegexType_DOB</Name>
+                <Value>\b\d{1,2}\s*/\s*\d{1,2}\s*/\s*(\d{4}|\d{2})|((Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w{0,6}(\s)+\d{1,2}(st|nd|rd|th){0,1}(\s)*([,]){0,1}\s*\d{4})|(\d{1,2}(st|nd|rd|th){0,1}(\s)*(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w{0,6}\s*[,]{0,1}\s*\d{4})\b</Value>
+            </Regexp>
+            <Regexp>
+                <Name>RegexType_MailingAddress</Name>
+                <Value>\b(AL|AK|AS|AZ|AR|CA|CO|CT|DE|DC|FM|FL|GA|GU|HI|ID|IL|IN|IA|KS|KY|LA|ME|MH|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|MP|OH|OK|OR|PW|PA|PR|RI|SC|SD|TN|TX|UT|VT|VI|VA|WA|WV|WI|WY)(\s)*\d{5}(\s|[-]\d{4}){0,1}\b</Value>
+            </Regexp>
+        </Regexps>
+    </DABS>
+    
+    <!-- 
+         DPS configuration
+    -->
+    <DPS>
+        <HeartbeatRate>60</HeartbeatRate>
+        <CustomAttributes>
+            <ResourceAttribute>
+                <Group>With Content</Group>
+                <DisplayName>Content Type</DisplayName>
+                <Name>ContentType</Name>
+                <Type>ENUM</Type>
+                <Value>Email Subject</Value>
+                <Value>Email Body</Value>
+            </ResourceAttribute>
+            <ResourceAttribute>
+                <Group>With Content</Group>
+                <DisplayName>Contains Content</DisplayName>
+                <Name>content</Name>
+                <Type>ENUM</Type>
+                <Value>RegexType_CCN:Credit Card Numbers</Value>
+                <Value>RegexType_CurrencyValue:Currency Value</Value>
+                <Value>RegexType_PhoneNumber:Phone Number</Value>
+                <Value>RegexType_SSN:Social Security Number</Value>
+                <Value>RegexType_IPv4Address:IPv4 Address</Value>
+                <Value>RegexType_EmailAddress:Email Address</Value>
+                <Value>RegexType_DOB:Date of Birth (DOB)</Value>
+                <Value>RegexType_MailingAddress:Mailing Address</Value>
+                <Value>Keyword(s)</Value>
+            </ResourceAttribute>
+        </CustomAttributes>
+    </DPS>
+
+    <!-- 
+         DAC configuration
+    -->
+    <DAC>
+        <Properties>
+            <Property>
+                <Name>numberOfExtendedAttrs</Name>
+                <Value>99</Value>
+            </Property>
+        </Properties>
+        
+        <HeartbeatRate>60</HeartbeatRate>
+        <ActivityJournalSettingConfiguration>
+            <SyncOperation>
+                <!-- Sync time can be either TimeInterval or TimeOfDay -->
+                
+                <!-- sync time interval in minutes -->
+                <TimeInterval>15</TimeInterval>
+                
+                <!-- sync time interval as TimeOfDay -->
+                <!-- The time must be in 24 hours format, such as 23:00 (without second)
+                     or 23:00:00 (with second) -->
+                <!--  <TimeOfDay>23:30</TimeOfDay> -->
+                
+                <!-- Maximum running time of sync operation: duration in minutes.
+                     For large data sets, once the operation reaches this duration,
+                     it commits the current data sync and stops. Any remaining data
+                     is synched during the next operation 
+                -->
+                <TimeoutInMinutes>120</TimeoutInMinutes>
+            </SyncOperation>
+            <IndexesRebuildOperation>
+                <!-- index rebuild TimeOfDay -->
+                <TimeOfDay>23:00</TimeOfDay>
+
+                <!--  DayOfWeek should be specified in uppercase. Standard abbreviations (MON for MONDAY) are acceptable -->
+                <!--  If <DaysOfWeek/> is omitted, operations will run every day -->
+
+                <!--
+                <DaysOfWeek>
+                    <DayOfWeek>day1</DayOfWeek>
+                    <DayOfWeek>day2</DayOfWeek>
+                    <DayOfWeek>day3</DayOfWeek>
+                </DaysOfWeek>
+                -->
+                
+                <!--  true if indexes will be rebuilt at the scheduled time -->
+                <AutoRebuildIndexes>true</AutoRebuildIndexes>
+                
+                <TimeoutInMinutes>120</TimeoutInMinutes>
+            </IndexesRebuildOperation>
+            <ArchiveOperation>
+                <!-- archive TimeOfDay -->
+                <TimeOfDay>01:30</TimeOfDay>
+                
+                <DaysOfDataToKeep>90</DaysOfDataToKeep>
+                
+                <!--  true if archive will be executed at the scheduled time -->
+                <AutoArchive>true</AutoArchive>
+                
+                <TimeoutInMinutes>180</TimeoutInMinutes>
+            </ArchiveOperation>
+        </ActivityJournalSettingConfiguration>
+    </DAC>
+    
+    <!-- 
+         DEM configuration
+    -->
+    <DEM>
+        <HeartbeatRate>60</HeartbeatRate>
+    </DEM>
+    
+    <!-- 
+         Management Console configuration
+    -->
+    <ManagementConsole>
+        <HeartbeatRate>60</HeartbeatRate>    
+    </ManagementConsole>
+    
+    <!-- 
+         Reporter configuration
+    -->
+    <Reporter>
+        <Properties>
+            <Property>
+                <Name>use.past.data.for.monitoring</Name>
+                <Value>false</Value>
+            </Property>
+            <Property>
+                <Name>monitorExecutionInterval</Name>
+                <Value>5</Value>
+            </Property>
+        </Properties>   
+        <HeartbeatRate>60</HeartbeatRate>
+        <ShowSharePointReports>0</ShowSharePointReports>
+    </Reporter>
+    
+    <GenericComponents>
+        <GenericComponent name="DKMS">
+            <Properties>
+                <Property>
+                    <Name>keystore.password</Name>
+                    <Value>[KM_KEYSTORE_PASSWORD]</Value>
+                </Property>
+                <Property>
+                    <Name>keydb.hibernate.dialect</Name>
+                    <Value>[KM_DATABASE_DIALECT]</Value>
+                </Property>
+                <Property>
+                    <Name>keydb.username</Name>
+                    <Value>[KM_DATABASE_USERNAME]</Value>
+                </Property>
+                <Property>
+                    <Name>keydb.password</Name>
+                    <Value>[KM_DATABASE_PASSWORD]</Value>
+                </Property>
+                <Property>
+                    <Name>keydb.url</Name>
+                    <Value>[KM_DATABASE_CONNECTSTRING]</Value>
+                </Property>
+                <Property>
+                    <Name>keydb.driver</Name>
+                    <Value>[KM_DATABASE_DRIVER]</Value>
+                </Property>
+            </Properties>
+            <HeartbeatRate>60</HeartbeatRate>
+        </GenericComponent>
+        <GenericComponent name="DPC">
+            <Properties>
+                <Property>
+                    <Name>AgentType</Name>
+                    <Value>FILE_SERVER</Value>   <!-- DESKTOP, PORTAL -->
+                </Property>
+                <Property>
+                    <Name>RootDirectory</Name>
+                    <Value>../dpc</Value>
+                </Property>
+            </Properties>
+            <HeartbeatRate>60</HeartbeatRate>
+        </GenericComponent>
+        <GenericComponent name="DDAC">
+            <HeartbeatRate>60</HeartbeatRate>
+        </GenericComponent>
+    </GenericComponents>
+    
+    <!--
+        Repository & Connection Pool configuration
+    -->
+    <Repositories>
+        <Repository>
+            <Name>management.repository</Name>
+            <ConnectionPoolName>management.connection.pool</ConnectionPoolName>
+            <Properties>
+                <Property>
+                    <Name>hibernate.dialect</Name>
+                    <Value>[MGMT_DATABASE_DIALECT]</Value>
+                </Property>
+            </Properties>
+        </Repository>
+        <Repository>
+            <Name>activity.repository</Name>
+            <ConnectionPoolName>activity.connection.pool</ConnectionPoolName>
+            <Properties>
+                <Property>
+                    <Name>hibernate.dialect</Name>
+                    <Value>[ACTIVITY_DATABASE_DIALECT]</Value>
+                </Property>
+            </Properties>
+        </Repository>
+        <Repository>
+            <Name>policyframework.repository</Name>
+            <ConnectionPoolName>policyframework.connection.pool</ConnectionPoolName>
+            <Properties>
+                <Property>
+                    <Name>hibernate.dialect</Name>
+                    <Value>[PF_DATABASE_DIALECT]</Value>
+                </Property>
+            </Properties>
+        </Repository>
+        <Repository>
+            <Name>dictionary.repository</Name>
+            <ConnectionPoolName>dictionary.connection.pool</ConnectionPoolName>
+            <Properties>
+                <Property>
+                    <Name>hibernate.dialect</Name>
+                    <Value>[DICT_DATABASE_DIALECT]</Value>
+                </Property>
+            </Properties>
+        </Repository>
+        <ConnectionPools>
+            <ConnectionPool>
+                <Name>policyframework.connection.pool</Name>
+                <Username>[PF_DATABASE_USERNAME]</Username>
+                <Password>[PF_DATABASE_PASSWORD]</Password>
+                <ConnectString>[PF_DATABASE_CONNECTSTRING]</ConnectString>
+                <DriverClassName>[PF_DATABASE_DRIVER]</DriverClassName>
+                <MaxPoolSize>8</MaxPoolSize>
+            </ConnectionPool>
+            <ConnectionPool>
+                <Name>dictionary.connection.pool</Name>
+                <Username>[DICT_DATABASE_USERNAME]</Username>
+                <Password>[DICT_DATABASE_PASSWORD]</Password>
+                <ConnectString>[DICT_DATABASE_CONNECTSTRING]</ConnectString>
+                <DriverClassName>[DICT_DATABASE_DRIVER]</DriverClassName>
+                <MaxPoolSize>14</MaxPoolSize>
+            </ConnectionPool>
+            <ConnectionPool>
+                <Name>activity.connection.pool</Name>
+                <Username>[ACTIVITY_DATABASE_USERNAME]</Username>
+                <Password>[ACTIVITY_DATABASE_PASSWORD]</Password>
+                <ConnectString>[ACTIVITY_DATABASE_CONNECTSTRING]</ConnectString>
+                <DriverClassName>[ACTIVITY_DATABASE_DRIVER]</DriverClassName>
+                <MaxPoolSize>20</MaxPoolSize>
+            </ConnectionPool>
+            <ConnectionPool>
+                <Name>management.connection.pool</Name>
+                <Username>[MGMT_DATABASE_USERNAME]</Username>
+                <Password>[MGMT_DATABASE_PASSWORD]</Password>
+                <ConnectString>[MGMT_DATABASE_CONNECTSTRING]</ConnectString>
+                <DriverClassName>[MGMT_DATABASE_DRIVER]</DriverClassName>
+                <MaxPoolSize>8</MaxPoolSize>
+            </ConnectionPool>
+        </ConnectionPools>
+    </Repositories>
+</DestinyConfiguration>

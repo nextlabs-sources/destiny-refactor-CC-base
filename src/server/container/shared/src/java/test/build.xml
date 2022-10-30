@@ -1,0 +1,202 @@
+<project name="server_shared_tests" default="build">
+
+	<property name="src.dir"      value="${basedir}"/>
+	<property name="build.dest"   value="${build.root.dir}/server/container/shared/classes/test"/>
+	<property name="build.main.dest"   value="${build.root.dir}/server/container/shared/classes/main"/>
+
+	<fileset id="destiny.jars" dir="${build.root.dir}">
+		<include name="agent-manager.jar" />
+		<include name="agent-types.jar"/>
+		<include name="common-dictionary.jar" />
+		<include name="common-domain-types.jar"/>
+		<include name="common-domain.jar" />
+		<include name="common-framework-test.jar" />
+		<include name="common-framework-types.jar" />
+		<include name="common-framework.jar" />
+		<include name="common-ind.jar"/>
+		<include name="common-pf.jar"/>
+		<include name="common-version-impl.jar" />
+		<include name="common-version.jar" />
+		<include name="crypt.jar" />
+		<include name="dcsf-types.jar"/>
+		<include name="enrollment-service.jar"/>
+		<include name="ind-sharepoint.jar"/>
+		<include name="inquiry-manager-shared.jar"/>
+		<include name="management-types.jar"/>
+		<include name="policy-deploy-manager.jar"/>
+		<include name="policy-services.jar"/>
+		<include name="policy-types.jar"/>
+		<include name="profile-manager.jar"/>
+		<include name="server-base.jar"/>
+		<include name="server-datasource.jar" />
+		<include name="server-dcsf-test.jar"/>
+		<include name="server-dcsf.jar"/>
+		<include name="server-dictionary-tests.jar"/>
+		<include name="server-dictionary.jar"/>
+		<include name="server-framework.jar" />
+		<include name="server-pf-tests.jar"/>
+		<include name="server-pf.jar"/>
+		<include name="server-shared-enrollment.jar"/>
+		<include name="server-shared-enumerations.jar"/>
+		<include name="server-shared-services.jar"/>
+		<include name="server-shared-types.jar"/>
+		<include name="storedResults-shared.jar"/>
+	</fileset>
+
+	<fileset id="external.jars" dir="${xlib_jar_dir}">
+		<include name="xml-apis.jar" />
+		<include name="xercesImpl.jar" />
+		<include name="hibernate2.jar" />
+		<include name="commons-collections-2.1.1.jar" />
+		<include name="jta.jar" />
+		<include name="commons-lang-2.6.jar" />
+		<include name="dom4j-1.4.jar"/>
+		<include name="odmg-3.0.jar"/>
+		<include name="cglib-full-2.0.2.jar"/>
+		<include name="axis.jar" />
+		<include name="saaj.jar" />
+		<include name="jaxrpc.jar" />
+		<include name="commons-discovery-0.2.jar" />
+		<include name="wsdl4j-1.5.1.jar" />
+		<include name="commons-httpclient-3.0-rc2.jar" />
+		<include name="ldap.jar" />
+		<include name="commons-logging.jar" />
+		<include name="ehcache-1.1.jar" />
+		<include name="castor-0.9.5.4.jar" />
+		<include name="antlr.jar" />
+		<include name="junit-3.8.1.jar" />
+		<include name="mail.jar"/>
+		<include name="sharepoint-services.jar"/>
+	</fileset>
+	
+	<path id="compile.server_shared.classpath">
+        <fileset refid="destiny.jars"/>
+        <fileset refid="external.jars"/>
+        <pathelement path="${build.dest}"/>
+        <pathelement path="${build.main.dest}"/>
+		<pathelement path="${xlib_jar_dir}/commons-beanutils.jar"/>
+	</path>
+	
+	<fileset id="test.jars" dir="${build.root.dir}">
+		<include name="server-pf-tests.jar"/>
+		<include name="server-shared-tests.jar"/>
+	</fileset>
+
+    <path id="compile.server_shared.test.classpath">
+        <path refid="compile.server_shared.classpath"/>
+    </path>
+
+    <path id="run.server_shared.test.classpath">
+        <path refid="compile.server_shared.classpath"/>
+        <fileset refid="test.jars"/>
+        <!-- Currently, the DMS and DAC data sources configuration are used for testing.  
+   	       Therefore, the DMS and DAC classpath are required -->
+        <pathelement path="${build.root.dir}/server/container/dms/WEB-INF/classes"/>
+        <pathelement path="${build.root.dir}/server/container/dac/WEB-INF/classes"/>
+        <pathelement path="${src.root.dir}/etc/junit" />
+        <pathelement path="${xlib_jar_dir}/commons-codec-1.8.jar"/> 
+        <pathelement path="${xlib_jar_dir}/commons-digester.jar"/> 
+        <pathelement path="${xlib_jar_dir}/commons-beanutils.jar"/>
+        <pathelement path="${xlib_jar_dir}/sharepoint-services.jar"/>
+        <pathelement path="${xlib_jar_dir}/commons-httpclient-3.0-rc2.jar" />
+        <pathelement path="${xlib_jar_dir}/postgresql-9.2-1002.jdbc4.jar" />
+        <pathelement path="${oracle.jdbc}"/>
+        <pathelement path="${xlib_jar_dir}/db2jcc.jar"/>
+        <pathelement path="${xlib_jar_dir}/db2jcc_license_cu.jar"/>
+        <pathelement path="${xlib_jar_dir}/sqljdbc4.jar"/>
+        <pathelement path="${xlib_jar_dir}/jtds-1.2.2.jar"/>
+    </path>
+
+	
+	<target name="pre-build">
+		<mkdir dir="${build.dest}"/>
+	</target>
+
+	<target name="compile" depends="pre-build">
+		<javac srcdir="${src.dir}" destdir="${build.dest}" debug="${compile.debug}" verbose="${compile.verbose}" >
+			<classpath refid="compile.server_shared.test.classpath"/>
+			<!-- FIXME don't include junit4 tests for now -->
+			<exclude name="com/bluejungle/destiny/container/shared/dictionary/enrollment/enroller/util/TestLDAPEnrollmentHelper.java"/>
+		</javac>
+	</target>
+
+	<!--
+		Create jar files for the different components
+	-->
+	<target name="jar" depends="compile, setup-data-sources">
+		<jar destfile="${build.root.dir}/server-shared-tests.jar">
+			<fileset dir="${build.dest}"/>
+		</jar>
+	</target>
+
+	<target name="build" depends="jar">
+	</target>
+
+	<target name="run-tests-ui">
+		<java fork="yes" classname="junit.swingui.TestRunner" dir="${build.dest}"
+            taskname="junit" failonerror="true">
+			<sysproperty key="build.root.dir" value="${build.root.dir}" />
+			<arg value="com.bluejungle.destiny.container.shared.test.ContainerSharedTestSuite"/>
+			<classpath refid="run.server_shared.test.classpath"/>
+		</java>
+	</target>
+
+	<target name="setup-data-sources">
+		<copy todir="${build.dest}" failonerror="true">
+			<fileset dir="${src.dir}">
+				<include name="**/*.hbm.xml"/>
+				<exclude name="*" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="standalone-tests">
+		<junit printsummary="withOutAndErr" showoutput="yes" haltonfailure="${junit.haltonfailure}" failureproperty="junit.fail" fork="true" maxmemory="1024M">
+			<formatter type="xml"/>
+			<sysproperty key="build.root.dir" value="${build.root.dir}" />
+			<test name="com.bluejungle.destiny.container.shared.test.ContainerSharedTestSuite" todir="${log.dir}/tests"/>
+			<classpath refid="run.server_shared.test.classpath"/>
+		</junit>
+		<junit printsummary="on" showoutput="no" haltonfailure="${junit.haltonfailure}" failureproperty="junit.fail" fork="true" maxmemory="1024M">
+			<formatter type="xml"/>
+			<sysproperty key="build.root.dir" value="${build.root.dir}" />
+			<test name="com.bluejungle.destiny.container.shared.inquirymgr.InquiryCenterTestSuite" todir="${log.dir}/tests"/>
+			<classpath refid="run.server_shared.test.classpath"/>
+		</junit>
+    	<antcall target="test-enrollment" inheritRefs="true"/>
+	</target>
+
+	<target name="tests">
+		<junit printsummary="withOutAndErr" showoutput="yes" haltonfailure="${junit.haltonfailure}" failureproperty="junit.fail" fork="true">
+			<formatter type="xml"/>
+			<test name="com.bluejungle.destiny.container.shared.test.ContainerSharedServicesTestSuite" todir="${log.dir}/tests"/>
+			<classpath refid="run.server_shared.test.classpath"/>
+		</junit>
+	</target>
+
+	<target name="test-enrollment" depends="build">
+		<property name="tools.enrollment.etc.dir"  value="${src.root.dir}/server/tools/enrollment/etc"/>
+		<junit printsummary="on" showoutput="no" haltonfailure="${junit.haltonfailure}" failureproperty="junit.fail" fork="true" maxmemory="512m" >
+			<formatter type="xml"/>
+			<sysproperty key="src.root.dir" value="${src.root.dir}" />
+         	<sysproperty key="build.root.dir" value="${build.root.dir}" />
+            <sysproperty key="test_files.dir " value="${src.root.dir}/../test_files/" />     
+			<test name="com.bluejungle.destiny.container.shared.dictionary.enrollment.EnrollmentTestSuite" todir="${log.dir}/tests"/>
+			<classpath refid="run.server_shared.test.classpath"/>
+		</junit>
+	</target>
+
+	<target name="refresh-local-enrollment" depends="build">
+		<property name="tools.enrollment.etc.dir"  value="${src.root.dir}/server/tools/enrollment/etc"/>
+		<junit printsummary="withOutAndErr" showoutput="no" haltonfailure="${junit.haltonfailure}" failureproperty="junit.fail" fork="true">
+			<formatter type="xml"/>
+			<sysproperty key="src.root.dir" value="${src.root.dir}" />
+			<sysproperty key="build.root.dir" value="${build.root.dir}" />
+			<!-- test name="com.bluejungle.destiny.container.shared.dictionary.enrollment.tools.LocalDestinyDataEnroller" todir="${log.dir}/tests"/ -->
+			<!-- test name="com.bluejungle.destiny.container.shared.dictionary.enrollment.enroller.sharepoint.TestSharePointEnroller" todir="${log.dir}/tests"/ -->
+      <test name="com.bluejungle.destiny.container.shared.dictionary.enrollment.tools.TestFixedDestinyDataEnroller" todir="${log.dir}/tests"/>     
+			<classpath refid="run.server_shared.test.classpath"/>
+		</junit>
+	</target>
+
+</project>

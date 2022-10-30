@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.policydeploymentmgr.hibernateimpl">
+	
+	<class name="TargetHostDO" table="TARGET_HOST">
+
+		<!-- Generic persisted properties -->
+		<id name="id">
+			<generator class="native"/>
+		</id>
+
+		<!-- Object-specific properties -->
+		<property name="hostname" type="string" not-null="true" length="128"/>
+		<property name="statusId" type="long" not-null="true"/>
+		
+		<!-- Active / online / push-enabled agents running on that host -->
+		<list name="agents" 
+			 inverse="true" 
+			 lazy="true" 
+			 batch-size="5"
+			 cascade="all-delete-orphan">
+			<key column="host_id"/>
+			<index column="id"/>
+			<one-to-many class="TargetAgentDO"/>
+		</list>
+		
+		<!-- All hosts are related to one deployment request -->
+		<many-to-one name="deploymentRequest" 
+					 class="DeploymentRequestDO">
+			 <column name="deployment_request_id" not-null="true" index="TargetHostDeploymentReqId"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,26 @@
+<Obligation>
+  <DisplayName>TagOnUsage</DisplayName>
+  <RunAt>PDP</RunAt>
+  <RunBy>User</RunBy> 
+  <ExecPath>C:\Program Files\NextLabs\Policy Controller\obligations\Tag on Usage\addTags.exe</ExecPath>
+  <Arguments>
+    <Argument>
+      <Name>-tags</Name>
+    </Argument>
+    <Argument>
+      <Name>-tagPromptLabel</Name>
+    </Argument>
+    <Argument>
+      <Name>-file</Name>
+      <Value>$CESource</Value>
+    </Argument>
+    <Argument>
+      <Name>-app</Name>
+      <Value>$CEApplication</Value>
+    </Argument>
+    <Argument>
+      <Name>-action</Name>
+      <Value>$CEAction</Value>
+    </Argument>
+  </Arguments>
+</Obligation>

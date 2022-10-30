@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping package="com.bluejungle.pf.destiny.lifecycle">
+    <class name="DeploymentEntity" table="deployment_entities" dynamic-update="true">
+        <id name="id">
+            <generator class="native"/>
+        </id>
+        <version name="version" column="version"/>
+        <many-to-one name="developmentEntity" class="DevelopmentEntity" column="development_id" not-null="true" outer-join="true" cascade="none"/>
+        <many-to-one name="deploymentRecord" class="DeploymentRecord" column="dep_record_id" not-null="true" outer-join="true"/>        
+        <property name="name" type="string" length="800" not-null="true"/>
+        <property name="description" type="text" not-null="false">
+            <column name="description" length="1024" not-null="false"/>
+        </property>
+        <property name="pql" type="text">
+            <column name="pql" length="8192" not-null="false"/>
+        </property>
+        <property name="processedPQL" type="text">
+            <column name="processedpql" length="8192" not-null="false"/>
+        </property>
+        <property name="overrideCount" column="override_cnt" type="integer"/>
+        <property name="timeRelation" type="com.bluejungle.framework.datastore.hibernate.usertypes.TimeRelationUserType">
+            <column name="active_from"/>
+            <column name="active_to"/>
+        </property>
+        <property name="hidden" column="hidden" type="yes_no" not-null="false" />
+        <property name="originalVersion" column="original_version" type="integer" not-null="true"/>
+        <property name="lastModified" column="last_modified" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="true" />
+        <property name="modifier" type="long" not-null="false"/>
+        <property name="submittedTime" column="submitted_time" type="com.bluejungle.framework.datastore.hibernate.usertypes.DateToLongUserType" not-null="false" />
+        <property name="submitter" type="long" not-null="false"/>
+       
+    </class>
+</hibernate-mapping>

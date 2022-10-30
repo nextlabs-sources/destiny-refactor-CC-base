@@ -1,0 +1,3 @@
+DESKTOP
+id 0 user testuser = user.did=$keng@bluejungle.com$ or host.did=$savaii.bluejungle.com$ or user.cid=$boogie@dubious.com$ or application.did=$small$
+id 1 POLICY TestPolicy FOR * ON * BY id 0 DO deny

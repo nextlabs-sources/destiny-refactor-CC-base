@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping package="com.bluejungle.destiny.container.shared.policydeploymentmgr.hibernateimpl">
+	
+	<class name="DeploymentRequestDO" table="DEPLOYMENT_REQUEST">
+
+		<!-- Generic persisted properties -->
+		<id name="id">
+			<generator class="native"/>
+		</id>
+
+		<!-- Object-specific properties -->
+		<property name="executed" type="boolean" not-null="true"/>
+		<property name="time" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType"/>
+		<property name="scheduleTime" type="com.bluejungle.framework.datastore.hibernate.usertypes.CalendarToLongUserType"/>
+		
+		<!-- List of hosts where the deployment should occur -->
+		<list name="targetHosts" 
+			 table="TARGET_HOST" 
+			 lazy="true" 
+			 batch-size="5" 
+			 inverse="true">
+				<key column="deployment_request_id"/>
+				<index column="id"/>
+				<one-to-many class="TargetHostDO"/>
+		</list>
+	</class>
+</hibernate-mapping>

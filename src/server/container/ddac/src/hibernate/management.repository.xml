@@ -1,0 +1,23 @@
+<!DOCTYPE hibernate-configuration PUBLIC 
+	"-//Hibernate/Hibernate Configuration DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-2.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<!--
+			Persisted object class mappings
+		-->
+		<mapping resource="com/bluejungle/destiny/container/shared/agentmgr/hibernateimpl/AgentDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/agentmgr/hibernateimpl/AgentRegistrationDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/policydeploymentmgr/hibernateimpl/AgentProcessorDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/policydeploymentmgr/hibernateimpl/DeploymentRequestDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/policydeploymentmgr/hibernateimpl/TargetAgentDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/policydeploymentmgr/hibernateimpl/TargetHostDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/profilemgr/hibernateimpl/UserProfileDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/profilemgr/hibernateimpl/CommProfileDO.hbm.xml"/>
+        <mapping resource="com/bluejungle/destiny/container/shared/profilemgr/hibernateimpl/CommProfileSeedDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/profilemgr/hibernateimpl/ActivityJournalingSettingsDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/profilemgr/hibernateimpl/AgentProfileDO.hbm.xml"/>
+		<mapping resource="com/bluejungle/destiny/container/shared/agentmgr/hibernateimpl/HeartbeatRecordDO.hbm.xml"/>
+	</session-factory>
+</hibernate-configuration>

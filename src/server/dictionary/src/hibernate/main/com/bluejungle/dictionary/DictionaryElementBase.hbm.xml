@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping package="com.bluejungle.dictionary">
+    <class name="DictionaryElementBase" table="DICT_ELEMENTS" dynamic-update="false">
+        <id name="id" column="ID" access="field">
+            <generator class="native"/>
+        </id>
+
+        <version name="version" column="VERSION" access="field"/>
+
+        <property name="originalId" access="field">
+            <column name="ORIGINAL_ID" not-null="false" unique="false" index="original_id_index" unique-key="active_unique_key"/>
+        </property>
+
+        <many-to-one name="enrollment" class="Enrollment" outer-join="true" cascade="none" access="field">
+            <column name="ENROLLMENT_ID" not-null="true"  index="enrollment_index" unique-key="active_unique_key"/>
+        </many-to-one>
+
+        <property name="keyData" type="com.bluejungle.framework.datastore.hibernate.usertypes.BinaryAsString">
+            <column name="DICTIONARY_KEY" length="900" unique-key="active_unique_key"/>
+        </property>
+
+        <property name="uniqueName" access="field" type="string">
+            <column name="UNIQUE_NAME" length="128" not-null="false" index="unique_name_index"/>
+        </property>
+
+        <property name="displayName" length="128" access="field" type="string"/>
+
+        <property name="path" access="field" type="com.bluejungle.dictionary.PathUserType">
+            <column name="PATH" length="900" not-null="true" index="path_index"/>
+            <column name="PATH_HASH" not-null="true" index="path_hash_index"/>
+        </property>
+
+        <!-- TODO (sergey) remove this attribute when we start using views in reporter. -->
+        <property name="isReparented" type="yes_no" not-null="true" access="field">
+            <column name="REPARENTED"/>
+        </property>
+        
+        <property name="timeRelation" access="field" type="com.bluejungle.framework.datastore.hibernate.usertypes.TimeRelationUserType">
+            <column name="ACTIVE_FROM" not-null="true" index="active_from_index" unique-key="active_unique_key"/>
+            <column name="ACTIVE_TO" not-null="true" index="active_to_index" unique-key="active_unique_key"/>
+        </property>
+
+    </class>
+</hibernate-mapping>

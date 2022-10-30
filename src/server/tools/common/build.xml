@@ -1,0 +1,78 @@
+<project name="tools-common" default="build" basedir=".">
+
+	<var name="nlbuildroot" value="${basedir}/../../../.." />
+	<property name="src.main.dir"   value="src/java/main"/>
+    <property name="tools.common.lib"    value="${build.root.dir}/tools/common/lib"/>
+    <property name="build.dest"   value="${build.root.dir}/server/tools/common/classes"/>
+
+	<property file="${nlbuildroot}/src/build-scripts/etc/build.properties" />
+
+	<path id="compile.commmontools.classpath">
+        <path refid="compile.classpath"/>
+        <pathelement path="${build.root.dir}/app-framework.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-types.jar"/>
+        <pathelement path="${build.root.dir}/server-shared-services.jar"/>
+    </path>
+
+    <target name="build" depends="jar"/>
+
+    <target name="compile-main" depends="prepare">
+        <javac srcdir="${src.main.dir}" destdir="${build.dest}" debug="${compile.debug}" verbose="${compile.verbose}" source="${compile.source}" target="${compile.target}" bootclasspath="${compile.bootclasspath}">
+            <classpath refid="compile.commmontools.classpath"/>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile-main" description="Creates the tools common jar">
+        <jar destfile="${build.root.dir}/server-tools-common.jar">
+            <fileset dir="${build.dest}">
+                <include name="**/*"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="prepare">
+        <mkdir dir="${build.dest}"/>
+        <mkdir dir="${tools.common.lib}"/>
+    </target>
+
+    <target name="setup-tool" depends="prepare, build">
+        <copy todir="${tools.common.lib}">
+            <fileset dir="${build.root.dir}">
+                <include name="agent-ipc.jar"/>
+                <include name="common-domain.jar"/>
+                <include name="common-framework.jar"/>
+                <include name="ddif-tools.jar"/>
+                <include name="mail.jar"/>
+                <include name="server-base.jar"/>
+                <include name="server-dcsf.jar"/>
+                <include name="server-datasource.jar"/>
+                <include name="server-framework.jar"/>
+                <include name="server-pf.jar"/>
+                <include name="server-shared-enumerations.jar"/>
+                <include name="server-shared-types.jar"/>
+                <include name="server-tools-common.jar"/>
+            </fileset>
+        </copy>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/activation.jar" failonerror="true"/>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/axis.jar" failonerror="true"/>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/jaxrpc.jar" failonerror="true"/>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/antlr.jar" failonerror="true"/>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/commons-discovery-0.2.jar" failonerror="true"/>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/cglib-full-2.0.2.jar" failonerror="true"/>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/commons-collections-3.2.jar" failonerror="true"/>
+        <copy tofile="${tools.common.lib}/commons-logging.jar" file="${xlib_jar_dir}/commons-logging-1.0.4.jar" failonerror="true"/>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/dom4j-1.4.jar" failonerror="true"/>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/ehcache-1.1.jar" failonerror="true"/>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/jargs.jar" failonerror="true"/>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/hibernate2.jar" failonerror="true"/>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/jta.jar" failonerror="true"/>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/postgresql-9.2-1002.jdbc4.jar" failonerror="true"/>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/db2jcc.jar" failonerror="true"/>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/db2jcc_license_cu.jar" failonerror="true"/>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/sqljdbc4.jar" failonerror="true"/>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/jtds-1.2.2.jar" failonerror="true"/>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/odmg-3.0.jar" failonerror="true"/>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/saaj.jar" failonerror="true"/>
+        <copy todir="${tools.common.lib}" file="${xlib_jar_dir}/wsdl4j-1.5.1.jar" failonerror="true"/>
+    </target>
+</project>

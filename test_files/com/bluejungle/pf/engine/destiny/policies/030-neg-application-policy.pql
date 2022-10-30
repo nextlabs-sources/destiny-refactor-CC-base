@@ -1,0 +1,2 @@
+POLICY NegatedAppPolicy FOR resource.fso.name = "c:\\negatedapp" ON OPEN BY NOT(PRINCIPAL.APPLICATION.DISPLAYNAME = "small") DO deny
+

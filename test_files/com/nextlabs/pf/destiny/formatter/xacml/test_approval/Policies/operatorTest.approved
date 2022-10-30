@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PolicySet xmlns="urn:oasis:names:tc:xacml:1.0:policy"
+           PolicySetId="Exported NextLabs Policies"
+           PolicyCombiningAlgId="urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:deny-overrides">
+  <Policy
+      xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17
+                          http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+      PolicyId="urn:nextlabs:operatorTest"
+      Version="1.0"
+      RuleCombiningAlgId="identifier:rule-combining-algorithm:deny-overrides">
+    <Target>
+    </Target>
+    <Rule Effect="Permit" RuleId="operatorTest">
+      <Description>test operators</Description>
+      <Condition FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+        <!-- start FROM RESOURCE -->
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:or">
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+            <Apply FunctionId="urn:nextlabs:builtin:string-equal">
+              <AttributeDesignator MustBePresent="true"
+                                   Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                   AttributeId="a"
+                                   DataType="http://www.w3.org/2001/XMLSchema#string"/>
+              <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">a</AttributeValue>
+            </Apply>
+            <Apply FunctionId="urn:nextlabs:builtin:string-equal">
+              <AttributeDesignator MustBePresent="true"
+                                   Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                   AttributeId="b"
+                                   DataType="http://www.w3.org/2001/XMLSchema#string"/>
+              <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">b</AttributeValue>
+            </Apply>
+          </Apply>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not">
+            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+              <Apply FunctionId="urn:nextlabs:builtin:string-equal">
+                <AttributeDesignator MustBePresent="true"
+                                     Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                     AttributeId="c"
+                                     DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">c</AttributeValue>
+              </Apply>
+              <Apply FunctionId="urn:nextlabs:builtin:string-equal">
+                <AttributeDesignator MustBePresent="true"
+                                     Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                     AttributeId="d"
+                                     DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">d</AttributeValue>
+              </Apply>
+            </Apply>
+          </Apply>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+            <Apply FunctionId="urn:nextlabs:builtin:string-equal">
+              <AttributeDesignator MustBePresent="true"
+                                   Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                   AttributeId="e"
+                                   DataType="http://www.w3.org/2001/XMLSchema#string"/>
+              <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">e</AttributeValue>
+            </Apply>
+            <Apply FunctionId="urn:nextlabs:builtin:string-equal">
+              <AttributeDesignator MustBePresent="true"
+                                   Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+                                   AttributeId="f"
+                                   DataType="http://www.w3.org/2001/XMLSchema#string"/>
+              <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">f</AttributeValue>
+            </Apply>
+          </Apply>
+        </Apply>
+        <!-- end FROM RESOURCE -->
+      </Condition>
+    </Rule>
+    <AssociatedAdvice>
+    </AssociatedAdvice>
+  </Policy>
+<PolicySet>

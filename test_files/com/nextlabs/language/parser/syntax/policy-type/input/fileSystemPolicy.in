@@ -1,0 +1,48 @@
+context User
+    SID unique case sensitive string
+,   FirstName case insensitive string
+,   LastName case insensitive string
+,   DateOfBirth date
+,   DateOfHire date
+,   isTerminated boolean
+,   employmentCode code ("permanent", "contractor")
+
+context Computer
+    SID unique case sensitive string
+,   OS code ("Windows", "Linux", "Mac", "Solaris", "Other")
+,   fullName unique case insensitive string
+,   utilization code ("desktop", "server")
+,   address case sensitive string
+
+context Application
+    fingerprint unique case sensitive string
+,   name case insensitive string
+
+context FileAction
+    name unique code
+
+context FileAccessAction
+    name unique code ("open", "write", "delete")
+
+context FileUsageAction
+    name unique code ("copy", "move", "distribute")
+
+context FileResource
+    name case insensitive string
+,   size integer
+,   modified date
+,   created date
+,   isDirectory boolean
+,   owner references User
+
+context Environment
+    currentTime date
+,   remoteAccess boolean
+,   remoteAddress case sensitive string
+
+policy type FileSystemPolicy
+    required FileAction as ON
+,   required FileResource as FOR
+,   optional User, Computer, Application as BY
+,   optional FileResource as TO
+uses Environment

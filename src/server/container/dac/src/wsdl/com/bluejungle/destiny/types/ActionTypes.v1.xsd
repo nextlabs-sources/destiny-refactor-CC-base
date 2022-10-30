@@ -1,0 +1,16 @@
+<xs:schema
+	targetNamespace="http://bluejungle.com/destiny/types/actions/v1"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:types="http://bluejungle.com/destiny/types/actions/v1">
+
+	<xs:simpleType name="ActionType">
+		<xs:restriction base="xs:string"></xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="ActionList">
+		<xs:sequence>
+			<xs:element name="actions" type="types:ActionType"
+				minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

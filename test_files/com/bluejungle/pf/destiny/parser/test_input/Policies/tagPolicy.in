@@ -1,0 +1,5 @@
+POLICY policyWithTag
+    description "this policy has a tag"
+    TAG key="value"
+    FOR * ON * BY *
+    DO DENY

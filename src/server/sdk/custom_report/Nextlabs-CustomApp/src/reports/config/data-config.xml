@@ -1,0 +1,37 @@
+<policy-application xmlns="http://nextlabs.com/customapps/v1">
+
+	<name>Sample Report Application</name>
+	<version>1.0</version>
+	<description>Contains sample custom reports and actions</description>
+
+	<custom-reports>      
+		<report>
+			<!-- entry in the Report List Panel -->
+			<title>Parameter DrillDown Sample</title>
+
+			<!-- entry in the Report Description Panel -->
+			<description>This sample contains 2-level drill-down reports with parameters</description>
+
+			<!-- report design files located in content/custom directory -->
+			<!-- note that this can contain multiple files for drill-down -->
+			<design>
+				<file>SampleTopLevel.rptdesign</file>
+				<file>SampleBottomLevel.rptdesign</file>
+			</design>     
+		</report>
+		<report>
+			<!-- entry in the Report List Panel -->
+			<title>Basic DrillDown Sample</title>
+
+			<!-- entry in the Report Description Panel -->
+			<description>This sample contains basic drill-down example with no parameters</description>
+
+			<!-- report design files located in content/custom directory -->
+			<!-- note that this can contain multiple files for drill-down -->
+			<design>
+				<file>test.rptdesign</file>
+				<file>empty.rptdesign</file>
+			</design>     
+		</report>
+	</custom-reports> 
+</policy-application>

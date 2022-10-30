@@ -1,0 +1,8 @@
+Main-Class: com.bluejungle.pf.tools.GenerateAPPLDIF
+Class-Path: ../common/lib/commons-logging.jar
+  ../common/lib/common-framework.jar
+  ../common/lib/server-pf.jar 
+  ../common/lib/ddif-tools.jar 
+  ../common/lib/agent-ipc.jar 
+  ../common/lib/antlr.jar
+ 			 

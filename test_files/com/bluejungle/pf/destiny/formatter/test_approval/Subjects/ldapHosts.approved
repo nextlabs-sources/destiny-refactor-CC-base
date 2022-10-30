@@ -1,0 +1,28 @@
+ID null COMPONENT with_groups2 = (host.ldapgroup = "ldap3" OR host.ldapgroup = "ldap4")
+
+
+================ Re-parsed PQL =================
+
+ANNOTATED_DEFINITION: ''
+    ANNOTATIONS: ''
+        IDNUMBER: 'null'
+        "status": 'empty'
+        CREATOR_ATTRIBUTE: 'empty'
+        ACCESS_CONTROL_POLICY: ''
+            "empty": ''
+            "empty": ''
+            "empty": ''
+    "component": 'COMPONENT'
+        IDENTIFIER: 'with_groups2'
+        COMPONENT_EXPR: ''
+            "or": ''
+                RELATION_OP: '='
+                    DOT_EXPRESSION: ''
+                        IDENTIFIER: 'host'
+                        IDENTIFIER: 'ldapgroup'
+                    QUOTED_STRING: 'ldap3'
+                RELATION_OP: '='
+                    DOT_EXPRESSION: ''
+                        IDENTIFIER: 'host'
+                        IDENTIFIER: 'ldapgroup'
+                    QUOTED_STRING: 'ldap4'

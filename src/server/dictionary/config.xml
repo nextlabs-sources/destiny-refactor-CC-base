@@ -1,0 +1,78 @@
+<config>
+        <jars>
+                <jar in="${initial.jar.name}" out="${final.jar.name}"/>
+        </jars>
+        <property name="incremental-obfuscation" value="../../build-scripts/etc/allatori-log.xml"/>
+        <property name="log-file" value="log.xml"/>
+        <keep-names>
+                <!-- Keep serialization information around in general -->
+                <class template="class * instanceof java.io.Serializable">
+                        <field template="static final long serialVersionUID"/>
+                        <method template="void writeObject(java.io.ObjectOutputStream)"/>
+                        <method template="void readObject(java.io.ObjectInputStream)"/>
+                        <method template="java.lang.Object writeReplace()"/>
+                        <method template="java.lang.Object readResolve()"/>
+                </class>
+	         <class template="class com.bluejungle.dictionary.Dictionary">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+                <!-- Set by reflection, hence the "private" access -->
+	         <class template="class com.bluejungle.dictionary.Enrollment">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.dictionary.EnrollmentProperty">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.dictionary.EnumeratedGroup">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.dictionary.GroupBase">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.dictionary.DictionaryElementBase">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.dictionary.ExternalFieldMapping">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.dictionary.EnumerationMember">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.dictionary.EnumerationGroupMember">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.dictionary.EnumerationProvisionalMember">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.dictionary.UpdateRecord">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.dictionary.ElementField">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.dictionary.ElementType">
+		         <field access="private+"/>
+		         <method access="private+"/>
+	         </class>
+	         <class template="class com.bluejungle.dictionary.ConfigurationSession">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+	         <class template="class com.bluejungle.dictionary.DictionarySession">
+		         <field access="protected+"/>
+		         <method access="protected+"/>
+	         </class>
+        </keep-names>
+</config>

@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v2004 rel. 4 U (http://www.xmlspy.com) by Martin Robert Cagan (Blue Jungle Inc) -->
+<wsdl:definitions 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+					xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+					xmlns:common="http://bluejungle.com/destiny/framework/types"
+					xmlns:domainTypes="http://bluejungle.com/domain/types"
+					xmlns:types="http://bluejungle.com/destiny/services/management/types" 
+					xmlns:tns="http://bluejungle.com/destiny/services/management" 
+					targetNamespace="http://bluejungle.com/destiny/services/management" 
+					name="AgentService">
+
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://bluejungle.com/destiny/services/management" xmlns:types="http://bluejungle.com/destiny/services/management/types">
+			<xsd:import namespace="http://bluejungle.com/destiny/services/management/types" schemaLocation="types/AgentDTO.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/services/management/types" schemaLocation="types/AgentStatistics.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/services/management/types" schemaLocation="types/MgmtFaults.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/framework/types" 
+						schemaLocation="../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicFaults.xsd"/>
+			<xsd:import namespace="http://bluejungle.com/destiny/framework/types" 
+						schemaLocation="../../../../../../../../../../common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicTypes.xsd"/>						
+			<xsd:import namespace="http://bluejungle.com/domain/types" 
+						schemaLocation="../../../../../../../../../../common/domain/src/xsd/com/bluejungle/domain/types/AgentType.xsd"/>
+		</xsd:schema>
+				
+	</wsdl:types>
+	
+	<wsdl:message name="getAgentTypesRequest">
+	</wsdl:message>
+	<wsdl:message name="getAgentTypesResponse">
+		<wsdl:part name="agentTypeList" type="types:AgentTypeDTOList" />
+	</wsdl:message>
+	
+	<wsdl:message name="getAgentsRequest">
+		<wsdl:part name="querySpec" type="types:AgentDTOQuerySpec"/>
+	</wsdl:message>
+	
+	<wsdl:message name="unregisterAgentRequest">
+		<wsdl:part name="id" type="common:ID"/>
+	</wsdl:message>
+	<wsdl:message name="unregisterAgentResponse">
+	</wsdl:message>
+	
+	<wsdl:message name="getAgentsResponse">
+		<wsdl:part name="result" type="types:AgentQueryResultsDTO"/>
+	</wsdl:message>
+	
+	<wsdl:message name="getAgentByIdRequest">
+		<wsdl:part name="id" type="common:ID"/>
+	</wsdl:message>
+	<wsdl:message name="getAgentByIdResponse">
+		<wsdl:part name="agent" type="types:AgentDTO"/>
+	</wsdl:message>
+	
+	<wsdl:message name="getAgentStatisticsRequest"/>
+	<wsdl:message name="getAgentStatisticsResponse">
+		<wsdl:part name="stats" type="types:AgentStatistics"/>
+	</wsdl:message>
+
+	<wsdl:message name="setCommProfileRequest">
+		<wsdl:part name="id" type="common:ID"/>
+		<wsdl:part name="profileName" type="xsd:string"/>
+	</wsdl:message>
+	<wsdl:message name="setCommProfileResponse">
+	</wsdl:message>
+
+	<wsdl:message name="setCommProfileBulkRequest">
+		<wsdl:part name="agentIDList" type="common:IDList"/>
+		<wsdl:part name="profileId" type="common:ID"/>
+	</wsdl:message>
+	<wsdl:message name="setCommProfileResponse">
+	</wsdl:message>
+	
+	<wsdl:message name="setAgentProfileRequest">
+		<wsdl:part name="id" type="common:ID"/>
+		<wsdl:part name="profileName" type="xsd:string"/>
+	</wsdl:message>
+	<wsdl:message name="setAgentProfileResponse">
+	</wsdl:message>
+
+	<wsdl:message name="ServiceNotReadyFault">
+		<wsdl:part name="ServiceNotReadyFault" type="common:ServiceNotReadyFault"/>
+	</wsdl:message>
+	
+	<wsdl:message name="UnauthorizedCallerFault">
+		<wsdl:part name="UnauthorizedCallerFault" type="common:UnauthorizedCallerFault"/>
+	</wsdl:message>
+	
+	<wsdl:message name="UnknownEntryFault">
+		<wsdl:part name="UnknownEntryFault" type="common:UnknownEntryFault"/>
+	</wsdl:message>
+	<wsdl:message name="CommitFault">
+		<wsdl:part name="CommitFault" type="common:CommitFault"/>
+	</wsdl:message>
+
+	<wsdl:portType name="AgentServiceIF">
+
+		<wsdl:operation name="unregisterAgent">
+			<wsdl:input message="tns:unregisterAgentRequest"/>
+			<wsdl:output message="tns:unregisterAgentResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnauthorizedCallerFault" message="tns:UnauthorizedCallerFault"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+			<wsdl:fault name="CommitFault" message="tns:CommitFault"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="getAgentTypes">
+			<wsdl:input message="tns:getAgentTypesRequest"/>
+			<wsdl:output message="tns:getAgentTypesResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+		</wsdl:operation>
+				
+		<wsdl:operation name="getAgents">
+			<wsdl:input message="tns:getAgentsRequest"/>
+			<wsdl:output message="tns:getAgentsResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="getAgentById">
+			<wsdl:input message="tns:getAgentByIdRequest"/>
+			<wsdl:output message="tns:getAgentByIdResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getAgentStatistics">
+			<wsdl:input message="tns:getAgentStatisticsRequest"/>
+			<wsdl:output message="tns:getAgentStatisticsResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="setCommProfile">
+			<wsdl:input message="tns:setCommProfileRequest"/>
+			<wsdl:output message="tns:setCommProfileResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+		</wsdl:operation>
+
+		<wsdl:operation name="setCommProfileForAgents">
+			<wsdl:input message="tns:setCommProfileBulkRequest"/>
+			<wsdl:output message="tns:setCommProfileResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+		</wsdl:operation>
+		
+		<wsdl:operation name="setAgentProfile">
+			<wsdl:input message="tns:setAgentProfileRequest"/>
+			<wsdl:output message="tns:setAgentProfileResponse"/>
+			<wsdl:fault name="ServiceNotReadyFault" message="tns:ServiceNotReadyFault"/>
+			<wsdl:fault name="UnknownEntryFault" message="tns:UnknownEntryFault"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="AgentServiceIFBinding" type="tns:AgentServiceIF">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	
+		<wsdl:operation name="unregisterAgent">
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnauthorizedCallerFault">
+				<soap:fault name="UnauthorizedCallerFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UknownEntryException" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="CommitFault">
+				<soap:fault name="CommitFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+
+		<wsdl:operation name="getAgentTypes">
+			<wsdl:input/>
+			<wsdl:output>
+				<soap:body parts="agentTypeList" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+				
+		<wsdl:operation name="getAgents">
+			<wsdl:input>
+				<soap:body parts="querySpec" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="result" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+
+		<wsdl:operation name="getAgentById">
+			<wsdl:input>
+				<soap:body parts="id" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body parts="agent" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="getAgentStatistics">
+			<wsdl:input/>
+			<wsdl:output>
+				<soap:body parts="stats" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+
+		<wsdl:operation name="setCommProfile">
+			<wsdl:input>
+				<soap:body parts="Id profileName" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+
+		<wsdl:operation name="setCommProfileForAgents">
+			<wsdl:input>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" namespace="http://bluejungle.com/destiny/services/management"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+				
+		<wsdl:operation name="setAgentProfile">
+			<wsdl:input>
+				<soap:body parts="Id profileName" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="ServiceNotReadyFault">
+				<soap:fault name="ServiceNotReadyFault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="UnknownEntryFault">
+				<soap:fault name="UnknownEntryFault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+	</wsdl:binding>
+	
+	<wsdl:service name="AgentService">
+		<wsdl:port name="AgentServiceIFPort" binding="tns:AgentServiceIFBinding">
+			<soap:address location="http://localhost:8080/dms/services/AgentServiceIFPort"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

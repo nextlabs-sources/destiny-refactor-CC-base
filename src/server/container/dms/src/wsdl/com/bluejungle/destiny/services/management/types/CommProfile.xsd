@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:types="http://bluejungle.com/destiny/services/management/types" 
+	xmlns:basicTypes="http://bluejungle.com/destiny/framework/types"
+	xmlns:domainTypes="http://bluejungle.com/domain/types"
+	targetNamespace="http://bluejungle.com/destiny/services/management/types">
+	
+	<xs:import namespace="http://bluejungle.com/destiny/framework/types" 
+			   schemaLocation="../../../../../../../../../../../../src/common/framework/src/xsd/com/bluejungle/destiny/framework/types/BasicTypes.xsd"/>
+	
+	<xs:import namespace="http://bluejungle.com/domain/types" 
+			   schemaLocation="../../../../../../../../../../../common/domain/src/xsd/com/bluejungle/domain/types/ActionType.xsd"/>
+
+	<xs:import namespace="http://bluejungle.com/domain/types" 
+			   schemaLocation="../../../../../../../../../../../common/domain/src/xsd/com/bluejungle/domain/types/AgentType.xsd"/>
+			   
+	<xs:include schemaLocation="BaseProfile.xsd"/>
+	
+	<xs:complexType name="CommProfileInfo">
+		<xs:annotation>
+			<xs:docomentation> 
+				Communication Profile Info. A Profile Info 
+				contains all elements of a Profile that are modifiable (e.g not 
+				ID, created date, modified date). 
+			</xs:docomentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="types:BaseProfileInfo">
+				<xs:sequence>
+					<xs:element name="DABSLocation" type="xs:anyURI" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="agentType" type="domainTypes:AgentTypeDTO" minOccurs="0" maxOccurs="1" default="DesktopAgent"/>
+					<xs:element name="heartBeatFrequency" type="basicTypes:time-interval-DTO" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="logLimit" type="xs:unsignedShort" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="logFrequency" type="basicTypes:time-interval-DTO" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="pushEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1" default="true" />
+					<xs:element name="defaultPushPort" type="xs:unsignedShort" minOccurs="1" maxOccurs="1" />
+					<xs:element name="password" type="xs:string" minOccurs="1" maxOccurs="1" />
+					<!-- The following is of type string to allow for future configuration of predefined settings -->
+					<xs:element name="assignedActivityJournalingName" type="xs:string" minOccurs="0" maxOccurs="1" />
+				    <xs:element name="customActivityJournalingSettingsAssigned" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+					<xs:element name="customActivityJournalingSettings" type="types:ActivityJournalingSettingsInfo" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="CommProfileDTO">
+		<xs:annotation>
+			<xs:docomentation> Communication Profile Data Transer Object. 
+				</xs:docomentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="types:BaseProfileDTO">
+				<xs:sequence>
+					<xs:element name="DABSLocation" type="xs:anyURI" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="agentType" type="domainTypes:AgentTypeDTO" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="heartBeatFrequency" type="basicTypes:time-interval-DTO" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="logLimit" type="xs:unsignedShort" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="logFrequency" type="basicTypes:time-interval-DTO" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="pushEnabled" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="defaultPushPort" type="xs:unsignedShort" minOccurs="1" maxOccurs="1" />
+					<xs:element name="passwordHash" type="xs:base64Binary" minOccurs="1" maxOccurs="1" />
+					
+					<!-- password generally nill.  Set to a value when updating profile to set a new password -->
+					<xs:element name="password" type="xs:string" minOccurs="1" maxOccurs="1" nillable="true"/>					
+					<xs:element name="currentActivityJournalingSettings" type="types:ActivityJournalingSettingsDTO" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="customActivityJournalingSettings" type="types:ActivityJournalingSettingsDTO" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="CommProfileDTOList">
+		<xs:complexContent>
+			<xs:extension base="types:BaseProfileDTOList">
+				<xs:sequence>
+					<xs:element name="commProfileDTO" 
+						type="types:CommProfileDTO" minOccurs="0" 
+						maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:simpleType name="CommProfileDTOQueryField">
+		<xs:annotation>
+			<xs:docomentation> Represents an enumeration of fields used to 
+				query for a list of Communication Profiles </xs:docomentation>
+		</xs:annotation>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="id"/>
+				<xs:enumeration value="createdDate"/>
+				<xs:enumeration value="modifiedDate"/>
+				<xs:enumeration value="name"/>
+				<xs:enumeration value="agentType"/>
+			</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="CommProfileDTOQueryTerm">
+		<xs:sequence>
+			<xs:element name="commProfileDTOQueryField" 
+				type="types:CommProfileDTOQueryField"/>
+			<xs:element name="value" type="xs:anyType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CommProfileDTOQueryTermSet">
+		<xs:sequence>
+			<xs:element name="commProfileDTOQueryTerm" 
+				type="types:CommProfileDTOQueryTerm" minOccurs="1" 
+				maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ActivityJournalingSettingsInfo">
+		<xs:annotation>
+			<xs:docomentation>
+				Journaling settings specifying at comm profile creation time
+			</xs:docomentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="loggedActivities" type="domainTypes:ActionTypeDTOList" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+		
+	<xs:complexType name="ActivityJournalingSettingsDTO">
+		<xs:annotation>
+			<xs:docomentation>
+				Journaling settings specifying what actions will lead to log entries
+			</xs:docomentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="loggedActivities" type="domainTypes:ActionTypeDTOList" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ActivityJournalingSettingsDTOList">
+		<xs:annotation>
+			<xs:docomentation>A list of ActivityJouranlingSettingsDTO instances</xs:docomentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="activityJournalingSettings" type="types:ActivityJournalingSettingsDTO" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

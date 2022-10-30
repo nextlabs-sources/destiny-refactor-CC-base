@@ -1,0 +1,3 @@
+policy PredicatesWithRefs is FileSystemPolicy
+    on a:b or c:d:e or f
+do  allow
